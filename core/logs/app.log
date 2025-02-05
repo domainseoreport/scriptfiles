@@ -1,0 +1,444 @@
+[2025-02-05 12:39:35] [debug] Checked: hi
+[2025-02-05 12:40:19] [debug] Checked: hi Array
+[2025-02-05 12:40:19] [debug] Checked: print_r(Array, true);
+[2025-02-05 12:40:24] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 12:40:27] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 12:40:27] [debug] Checked: print_r(Array, true);
+[2025-02-05 12:40:33] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 12:40:40] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 12:41:42] [debug] Checked: print_r(Array, true);
+[2025-02-05 12:41:43] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 12:41:43] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 12:41:43] [debug] Checked: print_r(Array, true);
+[2025-02-05 12:41:44] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 12:41:44] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 12:41:44] [debug] Selected best URL: https://www.silverandgem.com
+[2025-02-05 12:41:51] [debug] Checked: print_r(Array, true);
+[2025-02-05 12:41:56] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 12:42:00] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 12:42:00] [debug] Checked: print_r(Array, true);
+[2025-02-05 12:42:03] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 12:42:06] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 12:42:06] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 12:42:44] [debug] Checked: print_r(Array, true);
+[2025-02-05 12:42:46] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 12:42:48] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 12:42:48] [debug] Checked: print_r(Array, true);
+[2025-02-05 12:42:51] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 12:42:53] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 12:42:53] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 13:19:13] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:19:20] [debug] Checked: https://http://silverandgem.com => https://http//silverandgem.com [0]
+[2025-02-05 13:19:20] [debug] Checked: https://www.http://silverandgem.com => https://www.http//silverandgem.com [0]
+[2025-02-05 13:19:20] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:19:23] [debug] Checked: http://http://silverandgem.com => http://http//silverandgem.com [0]
+[2025-02-05 13:19:23] [debug] Checked: http://www.http://silverandgem.com => http://www.http//silverandgem.com [0]
+[2025-02-05 13:19:56] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:20:04] [debug] Checked: https://http://silverandgem.com => https://http//silverandgem.com [0]
+[2025-02-05 13:20:04] [debug] Checked: https://www.http://silverandgem.com => https://www.http//silverandgem.com [0]
+[2025-02-05 13:20:04] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:20:06] [debug] Checked: http://http://silverandgem.com => http://http//silverandgem.com [0]
+[2025-02-05 13:20:06] [debug] Checked: http://www.http://silverandgem.com => http://www.http//silverandgem.com [0]
+[2025-02-05 13:21:02] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:21:09] [debug] Checked: https://http://silverandgem.com => https://http//silverandgem.com [0]
+[2025-02-05 13:21:09] [debug] Checked: https://www.http://silverandgem.com => https://www.http//silverandgem.com [0]
+[2025-02-05 13:21:09] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:21:12] [debug] Checked: http://http://silverandgem.com => http://http//silverandgem.com [0]
+[2025-02-05 13:21:12] [debug] Checked: http://www.http://silverandgem.com => http://www.http//silverandgem.com [0]
+[2025-02-05 13:21:45] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:21:46] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:21:47] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:21:47] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:21:47] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:21:48] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:21:48] [debug] Selected best URL: https://www.silverandgem.com
+[2025-02-05 13:23:54] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:23:55] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:23:55] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:23:55] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:23:56] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:23:57] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:23:57] [debug] Selected best URL: https://www.silverandgem.com
+[2025-02-05 13:24:04] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:24:10] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:24:12] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:24:12] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:24:15] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:24:17] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:24:17] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 13:24:22] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:24:24] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:24:26] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:24:26] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:24:29] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:24:32] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:24:32] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 13:25:33] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:25:38] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:25:40] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:25:40] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:25:45] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:25:48] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:25:48] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 13:25:52] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:25:52] [debug] Checked: https://sfsfsfsfsdf.com => https://sfsfsfsfsdf.com/ [0]
+[2025-02-05 13:25:52] [debug] Checked: https://www.sfsfsfsfsdf.com => https://www.sfsfsfsfsdf.com/ [0]
+[2025-02-05 13:25:52] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:25:52] [debug] Checked: http://sfsfsfsfsdf.com => http://sfsfsfsfsdf.com/ [0]
+[2025-02-05 13:25:52] [debug] Checked: http://www.sfsfsfsfsdf.com => http://www.sfsfsfsfsdf.com/ [0]
+[2025-02-05 13:26:02] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:26:03] [debug] Checked: https://sdsdsdsddddddddddddd.com => https://sdsdsdsddddddddddddd.com/ [0]
+[2025-02-05 13:26:03] [debug] Checked: https://www.sdsdsdsddddddddddddd.com => https://www.sdsdsdsddddddddddddd.com/ [0]
+[2025-02-05 13:26:03] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:26:03] [debug] Checked: http://sdsdsdsddddddddddddd.com => http://sdsdsdsddddddddddddd.com/ [0]
+[2025-02-05 13:26:03] [debug] Checked: http://www.sdsdsdsddddddddddddd.com => http://www.sdsdsdsddddddddddddd.com/ [0]
+[2025-02-05 13:26:17] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:26:21] [debug] Checked: https://jaipurtravels.com => https://www.jaipurtravels.com/ [200]
+[2025-02-05 13:26:22] [debug] Checked: https://www.jaipurtravels.com => https://www.jaipurtravels.com/ [200]
+[2025-02-05 13:26:22] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:26:24] [debug] Checked: http://jaipurtravels.com => https://www.jaipurtravels.com/ [200]
+[2025-02-05 13:26:25] [debug] Checked: http://www.jaipurtravels.com => https://www.jaipurtravels.com/ [200]
+[2025-02-05 13:26:25] [debug] Selected best URL: https://www.jaipurtravels.com
+[2025-02-05 13:27:13] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:27:18] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:27:20] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:27:20] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:27:23] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:27:26] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:27:26] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 13:29:42] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:29:47] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:29:49] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:29:49] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:29:52] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:29:55] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:29:55] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 13:34:28] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:34:32] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:34:36] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:34:36] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:34:40] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:34:42] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:34:42] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 13:34:42] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:34:45] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:34:47] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:34:47] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:34:49] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:34:52] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:34:52] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 13:35:44] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:35:47] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:35:49] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:35:49] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:35:52] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:35:55] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:35:55] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 13:48:44] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:48:47] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:48:49] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:48:49] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:48:52] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:48:55] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 13:48:55] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 13:49:12] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:49:13] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:49:14] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:49:14] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:49:14] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:49:15] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:49:15] [debug] Selected best URL: https://www.silverandgem.com
+[2025-02-05 13:50:23] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:50:24] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:50:25] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:50:25] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:50:25] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:50:26] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:50:26] [debug] Selected best URL: https://www.silverandgem.com
+[2025-02-05 13:58:08] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:58:08] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:58:09] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:58:09] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:58:09] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:58:10] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:58:10] [debug] Selected best URL: https://www.silverandgem.com
+[2025-02-05 13:58:49] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:58:50] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:58:51] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:58:51] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:58:52] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:58:52] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 13:58:52] [debug] Selected best URL: https://www.silverandgem.com
+[2025-02-05 13:59:28] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:59:29] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 13:59:30] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 13:59:30] [debug] Checked: print_r(Array, true);
+[2025-02-05 13:59:31] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 13:59:33] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 13:59:33] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 14:01:49] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:01:50] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:01:52] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:01:52] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:01:53] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:01:54] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:01:54] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 14:13:01] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:13:02] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:13:03] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:13:03] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:13:05] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:13:06] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:13:06] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 14:13:24] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:13:26] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:13:27] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:13:27] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:13:28] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:13:29] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:13:29] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 14:15:03] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:15:05] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:15:06] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:15:06] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:15:07] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:15:08] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:15:08] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 14:15:24] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:15:25] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:15:26] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:15:26] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:15:28] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:15:29] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:15:29] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 14:16:37] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:16:38] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:16:39] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:16:39] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:16:40] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:16:41] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:16:41] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 14:17:19] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:17:20] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:17:21] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:17:21] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:17:22] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:17:24] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:17:24] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 14:17:59] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:18:00] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:18:01] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:18:01] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:18:02] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:18:03] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:18:03] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 14:54:44] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:54:46] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:54:47] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:54:47] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:54:48] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:54:49] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:54:49] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 14:59:39] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:59:41] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:59:42] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:59:42] [debug] Checked: print_r(Array, true);
+[2025-02-05 14:59:43] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:59:45] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 14:59:45] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 15:00:16] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:00:17] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:00:19] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:00:19] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:00:21] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:00:22] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:00:22] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 15:00:38] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:00:39] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:00:40] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:00:40] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:00:41] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:00:43] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:00:43] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 15:01:39] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:01:40] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:01:41] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:01:41] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:01:42] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:01:43] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:01:43] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 15:02:04] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:02:05] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:02:06] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:02:06] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:02:07] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:02:08] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:02:08] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 15:02:30] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:02:32] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:02:33] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:02:33] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:02:34] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:02:36] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:02:36] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 15:02:56] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:02:57] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:02:58] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:02:58] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:02:59] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:03:00] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:03:00] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 15:28:07] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:28:09] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:28:10] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:28:10] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:28:11] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:28:12] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:28:12] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 15:29:36] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:29:38] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:29:39] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:29:39] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:29:40] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:29:41] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:29:41] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 15:29:47] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:29:49] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:29:51] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:29:51] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:29:52] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:29:54] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 15:29:54] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 15:29:54] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:29:55] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 15:29:56] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 15:29:56] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:29:56] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 15:29:58] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-05 15:29:58] [debug] Selected best URL: https://www.silverandgem.com
+[2025-02-05 15:29:58] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:30:04] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:30:05] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:30:05] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:30:09] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:30:12] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:30:12] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 15:32:48] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:32:51] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:32:53] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:32:53] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:32:56] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:32:59] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:32:59] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 15:33:08] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:33:11] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:33:12] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:33:12] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:33:15] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:33:17] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:33:17] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 15:33:30] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:33:32] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:33:34] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:33:34] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:33:37] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:33:39] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:33:39] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 15:47:28] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:47:32] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:47:33] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:47:33] [debug] Checked: print_r(Array, true);
+[2025-02-05 15:47:36] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:47:39] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 15:47:39] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 16:15:16] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:15:19] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 16:15:21] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 16:15:21] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:15:24] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 16:15:27] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 16:15:27] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 16:16:36] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:16:40] [debug] Checked: https://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 16:16:41] [debug] Checked: https://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 16:16:41] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:16:44] [debug] Checked: http://voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 16:16:47] [debug] Checked: http://www.voyageinindia.fr => https://www.voyageinindia.fr/ [200]
+[2025-02-05 16:16:47] [debug] Selected best URL: https://www.voyageinindia.fr
+[2025-02-05 16:16:50] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:16:51] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:16:52] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:16:52] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:16:53] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:16:55] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:16:55] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 16:19:03] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:19:04] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:19:05] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:19:05] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:19:07] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:19:08] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:19:08] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 16:26:02] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:26:03] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:26:04] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:26:04] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:26:06] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:26:07] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:26:07] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 16:26:52] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:26:53] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:26:54] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:26:54] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:26:56] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:26:57] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:26:57] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 16:27:26] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:27:27] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:27:28] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:27:28] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:27:29] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:27:30] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:27:30] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 16:28:09] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:28:11] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:28:12] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:28:12] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:28:13] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:28:14] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:28:14] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 16:29:24] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:29:25] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:29:26] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:29:26] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:29:27] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:29:28] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:29:28] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 16:30:41] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:30:43] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:30:44] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:30:44] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:30:45] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:30:46] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:30:46] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 16:31:08] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:31:10] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:31:11] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:31:11] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:31:12] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:31:14] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:31:14] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 16:31:52] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:31:53] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:31:54] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:31:54] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:31:55] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:31:56] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:31:56] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-05 16:39:16] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:39:18] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:39:19] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:39:19] [debug] Checked: print_r(Array, true);
+[2025-02-05 16:39:20] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:39:21] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-05 16:39:21] [debug] Selected best URL: https://www.jaipurroutes.com

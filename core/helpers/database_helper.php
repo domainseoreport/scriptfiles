@@ -265,6 +265,8 @@ function insertToDb($con,$tableName,$arr){
 }
 
 function insertToDbPrepared($con,$tableName,$arr){
+
+   
     $params = array();
     $error = $typeDef = $part1 = $part2 = '';
     $part1 .= 'INSERT INTO '.$tableName.' (';
@@ -282,7 +284,7 @@ function insertToDbPrepared($con,$tableName,$arr){
         }
     }
     $buildQuery = $part1.$part2;
-
+ 
     $stmt = mysqli_prepare($con,$buildQuery);
     
     if (false===$stmt)

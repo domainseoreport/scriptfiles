@@ -8,3 +8,72 @@ Piyush No accessible URL found for domain: silverandgem.com
 
 [05-Feb-2025 12:27:00 Asia/Calcutta] App Notice:  debug | Request From ::1
 
+[05-Feb-2025 12:37:47 Asia/Calcutta] PHP Fatal error:  Uncaught ValueError: Path cannot be empty in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php:435
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php(435): file_put_contents('', 'Piyush No acces...', 8)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php(768): putMyData(NULL, 'Piyush No acces...', 8)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php(55): isDomainAccessible('voyageinindia.f...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 435
+[05-Feb-2025 12:37:50 Asia/Calcutta] PHP Fatal error:  Uncaught ValueError: Path cannot be empty in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php:435
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php(435): file_put_contents('', 'Piyush No acces...', 8)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php(768): putMyData(NULL, 'Piyush No acces...', 8)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php(55): isDomainAccessible('silverandgem.co...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 435
+[05-Feb-2025 12:39:04 Asia/Calcutta] PHP Fatal error:  Uncaught ValueError: Path cannot be empty in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php:435
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php(435): file_put_contents('', 'Piyush No acces...', 8)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php(768): putMyData(NULL, 'Piyush No acces...', 8)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php(55): isDomainAccessible('silverandgem.co...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 435
+[05-Feb-2025 12:39:35 Asia/Calcutta] PHP Fatal error:  Uncaught ValueError: Path cannot be empty in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php:435
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php(435): file_put_contents('', 'Piyush No acces...', 8)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php(768): putMyData(NULL, 'Piyush No acces...', 8)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php(55): isDomainAccessible('silverandgem.co...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 435
+[05-Feb-2025 13:19:23 Asia/Calcutta] App Notice:  debug | Request From ::1
+
+[05-Feb-2025 13:20:06 Asia/Calcutta] App Notice:  debug | Request From ::1
+
+[05-Feb-2025 13:21:12 Asia/Calcutta] App Notice:  debug | Request From ::1
+
+[05-Feb-2025 13:25:52 Asia/Calcutta] App Notice:  debug | Request From ::1
+
+[05-Feb-2025 13:26:03 Asia/Calcutta] App Notice:  debug | Request From ::1
+
+[05-Feb-2025 13:44:18 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\core/vendor/autoload.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php:3
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\index.php(16): require()
+#1 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 3
+[05-Feb-2025 14:15:29 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\core\controllers/../core/SeoAnalyzer.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php:224
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php on line 224
+[05-Feb-2025 14:16:42 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\core\controllers/../core/SeoAnalyzer.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php:224
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php on line 224
+[05-Feb-2025 15:00:23 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\core\controllers/../core/SeoAnalyzer.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php:225
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php on line 225

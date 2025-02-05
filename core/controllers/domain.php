@@ -49,14 +49,10 @@ if(isset($route[2])){
    if($updateCheck == 'update')
        $updateFound = true;
 }
-echo $pointOut."<br>";
+ 
 //Get User Request
 $my_url = raino_trim($pointOut);
-$url = isDomainAccessible($my_url);
-echo "$my_url <pre>";
-print_r($url);
-echo "</pre>";
-die();
+ 
 $my_url = 'http://'.clean_url($my_url);
 
 
@@ -159,7 +155,8 @@ $filename = TEMP_DIR.$hashCode.'.tdata';
 
 //Get Data of the URL
 if($updateFound){
-    
+    $my_url = isDomainAccessible(clean_url($my_url)); /// fetch the best URL for the operation 
+  
     $capOkay = true;
     extract(loadCapthca($con));
     if(isSelected($reviewer_page)){
@@ -176,8 +173,14 @@ if($updateFound){
     }
     
     if($capOkay){
-        $sourceData = curlGET($my_url);
-        
+       // $sourceData = urlcGET($my_url);
+       $sourceData = robustFetchHtml($my_url); 
+
+       if ($sourceData === false) {
+            // Handle the error (e.g., log it or show an error message)
+            echo "Failed to fetch content.";
+        }  
+     
         if($sourceData == ''){
             //Second try
             $sourceData = getMyData($my_url);
@@ -185,66 +188,64 @@ if($updateFound){
             if($sourceData == '')
                 $error  = trans('Input Site is not valid!',$lang['8'],true);
         }
+
+
         
-        if(!isset($error)){
+        // Assume $error is not set before.
+        if (!isset($error)) {
+
+            // Mark domain as online and store the raw HTML.
             $isOnline = '1';
-            putMyData($filename,$sourceData);
-            
-            //Bad Word Filter - Patch - START
-            $title = $description = $keywords = '';
-            $badWordBan = false;
-            $doc = new DOMDocument();
-            @$doc->loadHTML(mb_convert_encoding($sourceData, 'HTML-ENTITIES', 'UTF-8'));
-            $nodes = $doc->getElementsByTagName('title');
-            $title = strtolower($nodes->item(0)->nodeValue);
-            $metas = $doc->getElementsByTagName('meta');
+            putMyData($filename, $sourceData);
         
-            for ($i = 0; $i < $metas->length; $i++){
-            $meta = $metas->item($i);
-            if($meta->getAttribute('name') == 'description')
-               $description = strtolower($meta->getAttribute('content'));
-            if($meta->getAttribute('name') == 'keywords')
-                $keywords = strtolower($meta->getAttribute('content'));
+            // Extract meta information
+            $metaData = extractMetaData($sourceData);
+            $title       = $metaData['title'] ?? '';
+            $description = $metaData['description'] ?? '';
+            $keywords    = $metaData['keywords'] ?? '';
+        
+            // Bad Word Filter - Block sites containing restricted words
+            if (hasRestrictedWords($title, $description, $keywords, $list)) {
+                redirectTo(createLink('warning/restricted-words', true));
+                die();
             }
-    
-            foreach ($list[1] as $badWord){
-                if(check_str_contains($title, trim($badWord), true))
-                    $badWordBan = true;
-            }
-            if(!$badWordBan){
-                foreach ($list[2] as $badWord){
-                    if(check_str_contains($description, trim($badWord), true))
-                        $badWordBan = true;
-                }
-            }
-            if(!$badWordBan){
-                foreach ($list[3] as $badWord){
-                    if(check_str_contains($keywords, trim($badWord), true))
-                        $badWordBan = true;
-                }
-            }
-            if($badWordBan){
-                redirectTo(createLink('warning/restricted-words',true));
-                die();  
-            }
-            //Bad Word Filter - Patch - END
-
-            //Create the Domain
-            if($newDomain) {
-
-                if(!isset($_SESSION['TWEB_HOMEPAGE'])){
+         
+            // Create Domain Record if this is a new domain.
+            if ($newDomain) {
+                if (!isset($_SESSION['TWEB_HOMEPAGE'])) {
                     $_SESSION['TWEB_HOMEPAGE'] = 1;
-                    redirectTo(createLink('',true));
+                    redirectTo(createLink('', true));
                     die();
                 }
+        
 
-                if (insertToDbPrepared($con, 'domains_data', array('domain' => $domainStr,'slug' => slugify($domainStr), 'date' => $nowDate)))
-                    $error = trans('Database Error - Contact Support!', $lang['12'], true);
+                
+                // Insert into database with meta information
+                $result = createDomainRecord($con, $domainStr, $nowDate, $title, $description, $keywords);
+     
+                if ($result !== true) {
+                    $error = $result;
+                }
             }
+        
+            // At this point, you can instantiate your SeoAnalyzer to perform further operations.
+            require_once dirname(__DIR__) . '/SeoAnalyzer.php'; // Adjust the path accordingly.
+            $seo = new SeoAnalyzer();
+            $analysisResult = $seo->analyze($domainStr);  // Pass the URL or domain string as needed.
+        
+            // Process the analysis result as desired...
         }
+
+      
+         
     }
     
 }
+
+
+ 
+
+
 
 if(!isset($error)){
     if($updateFound){

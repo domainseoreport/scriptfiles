@@ -1,5 +1,6 @@
 <?php
-
+define('LOG_PATH', LOG_DIR); 
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 /**
  * @author Balaji
  * @name: Rainbow PHP Framework
@@ -761,9 +762,7 @@ function slugify($text)
  * @return string|null
  */
 function isDomainAccessible($domain)
-{
-     
-     
+{ 
     $protocols    = ['https://', 'http://'];
     $timeout      = 10;
     $maxRedirects = 5;
@@ -775,7 +774,7 @@ function isDomainAccessible($domain)
 
     $checkedUrls   = [];
     $effectiveUrls = [];
-
+     
     // Test each protocol and its variations.
     foreach ($protocols as $protocol) {
         // Always check the domain as-is.
@@ -786,7 +785,7 @@ function isDomainAccessible($domain)
             // The following line is redundant if $protocol . $domain is already added.
             // $variations[] = $protocol . $domain;
         }
-      
+        log_message('debug', "Checked: print_r($variations, true);");
         foreach ($variations as $url) {
             if (in_array($url, $checkedUrls)) {
                 continue;
@@ -813,7 +812,7 @@ function isDomainAccessible($domain)
             $redirectCount = curl_getinfo($ch, CURLINFO_REDIRECT_COUNT);
             curl_close($ch);
 
-            writeLog('debug', "Checked: {$url} => {$effectiveUrl} [{$httpCode}]");
+            log_message('debug', "Checked: {$url} => {$effectiveUrl} [{$httpCode}]");
 
             // If no cURL error and HTTP status is acceptable.
             if (!$curlError && $httpCode >= 200 && $httpCode < 400) {
@@ -826,10 +825,7 @@ function isDomainAccessible($domain)
             }
         }
     }
-    echo "<pre>";
-    print_r($effectiveUrls);
-    echo "</pre>";
-    die();
+  
     // Sort accessible URLs based on HTTPS preference, then www preference (favoring www), then fewer redirects.
     uasort($effectiveUrls, function($a, $b) {
         if ($a['https'] !== $b['https']) {
@@ -850,4 +846,209 @@ function isDomainAccessible($domain)
 
     writeLog('debug', "No accessible URL found for domain: {$domain}");
     return null;
+}
+
+
+if (!function_exists('log_message')) {
+    /**
+     * Write a log message to a log file.
+     *
+     * @param string $level   The log level (e.g., 'debug', 'info', 'error').
+     * @param string $message The message to log.
+     */
+    function log_message($level, $message)
+    {
+        // Use a defined constant for log path if available; otherwise, use a default path.
+        $logPath = defined('LOG_PATH') ? LOG_PATH : __DIR__ . '/../logs/';
+
+        // Ensure the log directory exists; if not, create it.
+        if (!is_dir($logPath)) {
+            mkdir($logPath, 0777, true);
+        }
+
+        // Prepare the log message.
+        $date = date('Y-m-d H:i:s');
+        $logMessage = "[$date] [$level] $message" . PHP_EOL;
+
+        // Write (append) the message to app.log.
+        file_put_contents($logPath . 'app.log', $logMessage, FILE_APPEND);
+    }
+}
+
+
+/**
+ * Fetch HTML content using multiple fallback methods:
+ *  1) Custom curlGET() function.
+ *  2) file_get_contents() if allow_url_fopen is enabled.
+ *  3) Guzzle HTTP client (if available via Composer).
+ *
+ * @param string $url      The target URL.
+ * @param string $ref_url  The referrer URL (default is "https://www.google.com/").
+ * @param string $agent    The user agent string (default defined by CURL_UA constant).
+ * @return string|false    Returns the fetched HTML content, or false if all methods fail.
+ */
+function robustFetchHtml($url, $ref_url = "https://www.google.com/", $agent = CURL_UA) {
+    // 1. Try using the custom curlGET() function.
+    $html = curlGET($url, $ref_url, $agent);
+    if ($html !== false && !empty($html)) {
+        return $html;
+    }
+
+    // 2. Fallback to file_get_contents() if allow_url_fopen is enabled.
+    if (ini_get('allow_url_fopen')) {
+        $contextOptions = [
+            "http" => [
+                "method" => "GET",
+                "header" => "User-Agent: " . $agent . "\r\n" . 
+                            "Referer: " . $ref_url . "\r\n" .
+                            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n"
+            ]
+        ];
+        $context = stream_context_create($contextOptions);
+        $html = @file_get_contents($url, false, $context);
+        if ($html !== false && !empty($html)) {
+            return $html;
+        }
+    }
+
+    // 3. Fallback to using Guzzle if it is available.
+    if (class_exists('GuzzleHttp\Client')) {
+        try {
+            $client = new \GuzzleHttp\Client(['timeout' => 10]);
+            $response = $client->request('GET', $url, [
+                'headers' => [
+                    'User-Agent'        => $agent,
+                    'Referer'           => $ref_url,
+                    'Accept-Encoding'   => 'gzip, deflate',
+                    'Accept'            => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+                ]
+            ]);
+            if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 400) {
+                return (string) $response->getBody();
+            }
+        } catch (\Exception $e) {
+            // Optionally log the exception using your custom logging function.
+            writeLog('CURL ERROR | Guzzle Fallback: ' . $e->getMessage());
+        }
+    }
+
+    // If all methods fail, return false.
+    return false;
+}
+
+/**
+ * Filter out pages containing restricted words in title, description, or keywords.
+ *
+ * @param string $html      The HTML source data.
+ * @param array  $badLists  An array of bad words arrays; index 1 for title, 2 for description, 3 for keywords.
+ * @return bool             Returns true if bad words are found; otherwise, false.
+ */
+function hasRestrictedWords($html, $badLists) {
+    $doc = new DOMDocument();
+    // Suppress warnings if HTML is not well formed.
+    @$doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+    
+    // Get title.
+    $title = '';
+    $nodes = $doc->getElementsByTagName('title');
+    if ($nodes->length > 0) {
+        $title = strtolower($nodes->item(0)->nodeValue);
+    }
+    
+    // Get meta description and keywords.
+    $description = $keywords = '';
+    $metas = $doc->getElementsByTagName('meta');
+    foreach ($metas as $meta) {
+        $name = strtolower($meta->getAttribute('name'));
+        if ($name === 'description') {
+            $description = strtolower($meta->getAttribute('content'));
+        } elseif ($name === 'keywords') {
+            $keywords = strtolower($meta->getAttribute('content'));
+        }
+    }
+    
+    // Check bad words in title.
+    foreach ($badLists[1] as $badWord) {
+        if (stripos($title, trim($badWord)) !== false) {
+            return true;
+        }
+    }
+    // Check in description.
+    foreach ($badLists[2] as $badWord) {
+        if (stripos($description, trim($badWord)) !== false) {
+            return true;
+        }
+    }
+    // Check in keywords.
+    foreach ($badLists[3] as $badWord) {
+        if (stripos($keywords, trim($badWord)) !== false) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Insert a new domain record along with meta data (using serBase encryption).
+ *
+ * @param resource $con         Your database connection.
+ * @param string   $domainStr   The domain name.
+ * @param string   $nowDate     The current date.
+ * @param string   $title       Page title.
+ * @param string   $description Page description.
+ * @param string   $keywords    Page keywords.
+ * @return mixed                Returns true on success, or error message on failure.
+ */
+function createDomainRecord($con, $domainStr, $nowDate, $title, $description, $keywords) {
+    // Encrypt the meta data using serBase()
+    $metaEncrypted = serBase([$title, $description, $keywords]);
+
+    $data = [
+        'domain'      => $domainStr,
+        'slug'        => slugify($domainStr),
+        'date'        => $nowDate,
+        'meta_data'   => $metaEncrypted // Storing the encrypted meta data
+    ];
+
+    if (!insertToDbPrepared($con, 'domains_data', $data)) {
+        return trans('Database Error - Contact Support!', 'Error Message', true);
+    }
+    return true;
+}
+
+
+/**
+ * Extract basic meta data (title, description, keywords) from HTML content.
+ *
+ * @param string $html The HTML source data.
+ * @return array       Returns an array with extracted meta data.
+ */
+function extractMetaData($html) {
+    $metaData = [
+        'title'       => '',
+        'description' => '',
+        'keywords'    => ''
+    ];
+
+    $doc = new DOMDocument();
+    @$doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+    // Get title
+    $nodes = $doc->getElementsByTagName('title');
+    if ($nodes->length > 0) {
+        $metaData['title'] = strtolower($nodes->item(0)->nodeValue);
+    }
+
+    // Get meta description and keywords
+    $metas = $doc->getElementsByTagName('meta');
+    foreach ($metas as $meta) {
+        $name = strtolower($meta->getAttribute('name'));
+        if ($name === 'description') {
+            $metaData['description'] = strtolower($meta->getAttribute('content'));
+        } elseif ($name === 'keywords') {
+            $metaData['keywords'] = strtolower($meta->getAttribute('content'));
+        }
+    }
+
+    return $metaData;
 }
