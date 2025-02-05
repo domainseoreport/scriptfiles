@@ -763,6 +763,12 @@ function slugify($text)
  */
 function isDomainAccessible($domain)
 { 
+    // Use checkdnsrr to verify that the domain has either an A or AAAA record.
+    if (!checkdnsrr($domain, 'A') && !checkdnsrr($domain, 'AAAA')) {
+        log_message('debug', "DNS resolution failed for domain: {$domain}");
+        return null;
+    }
+    
     $protocols    = ['https://', 'http://'];
     $timeout      = 10;
     $maxRedirects = 5;
@@ -782,10 +788,9 @@ function isDomainAccessible($domain)
         if ($checkWWW) {
             // Also test with the www prefix.
             $variations[] = $protocol . 'www.' . $domain;
-            // The following line is redundant if $protocol . $domain is already added.
-            // $variations[] = $protocol . $domain;
         }
-        log_message('debug', "Checked: print_r($variations, true);");
+
+        log_message('debug', "Checked: " . print_r($variations, true));
         foreach ($variations as $url) {
             if (in_array($url, $checkedUrls)) {
                 continue;
@@ -818,33 +823,38 @@ function isDomainAccessible($domain)
             if (!$curlError && $httpCode >= 200 && $httpCode < 400) {
                 $effectiveUrl = rtrim($effectiveUrl, '/');
                 $effectiveUrls[$effectiveUrl] = [
-                    'https'     => parse_url($effectiveUrl, PHP_URL_SCHEME) === 'https',
-                    'www'       => strpos(parse_url($effectiveUrl, PHP_URL_HOST), 'www.') === 0,
+                    'https'     => (parse_url($effectiveUrl, PHP_URL_SCHEME) === 'https'),
+                    'www'       => (strpos(parse_url($effectiveUrl, PHP_URL_HOST), 'www.') === 0),
                     'redirects' => $redirectCount,
                 ];
             }
         }
     }
-  
+   
     // Sort accessible URLs based on HTTPS preference, then www preference (favoring www), then fewer redirects.
     uasort($effectiveUrls, function($a, $b) {
+        // Compare HTTPS status.
         if ($a['https'] !== $b['https']) {
-            return $b['https'] <=> $a['https'];
+            return ($b['https'] === true) ? -1 : 1;
         }
-        // Invert the comparison to favor URLs with "www" over those without.
+        // Compare "www" status (favor URLs with "www").
         if ($a['www'] !== $b['www']) {
-            return $b['www'] <=> $a['www'];
+            return ($b['www'] === true) ? -1 : 1;
         }
-        return $a['redirects'] <=> $b['redirects'];
+        // Compare number of redirects: fewer redirects are preferred.
+        if ($a['redirects'] == $b['redirects']) {
+            return 0;
+        }
+        return ($a['redirects'] < $b['redirects']) ? -1 : 1;
     });
-
+    
     if (!empty($effectiveUrls)) {
         $bestUrl = array_key_first($effectiveUrls);
         log_message('debug', "Selected best URL: {$bestUrl}");
         return $bestUrl;
     }
 
-    writeLog('debug', "No accessible URL found for domain: {$domain}");
+    log_message('debug', "No accessible URL found for domain: {$domain}");
     return null;
 }
 
@@ -1004,15 +1014,18 @@ function createDomainRecord($con, $domainStr, $nowDate, $title, $description, $k
     $metaEncrypted = serBase([$title, $description, $keywords]);
 
     $data = [
-        'domain'      => $domainStr,
-        'slug'        => slugify($domainStr),
-        'date'        => $nowDate,
-        'meta_data'   => $metaEncrypted // Storing the encrypted meta data
+        'domain'    => $domainStr,
+        'slug'      => slugify($domainStr),
+        'date'      => $nowDate,
+        'meta_data' => $metaEncrypted // Storing the encrypted meta data
     ];
 
-    if (!insertToDbPrepared($con, 'domains_data', $data)) {
+    // Check if there is an error returned from the insert.
+    $error = insertToDbPrepared($con, 'domains_data', $data);
+    if ($error !== '') {
         return trans('Database Error - Contact Support!', 'Error Message', true);
     }
+    
     return true;
 }
 
