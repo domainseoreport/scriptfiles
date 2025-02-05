@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rainbowTheme compatibility="1.0" basename="tWeb" app="Turbo Website Reviewer" url="http://prothemes.biz/">
+    <themeDetails>
+        <name>Aqua Theme</name>
+        <themeBaseName>aqua-theme</themeBaseName>
+        <description>Default template for Turbo Website Reviewer</description>
+        <version>1.0</version>
+        <author>Balaji</author>
+        <authorEmail>rainbowbalajib@gmail.com</authorEmail>
+        <authorWebsite>http://prothemes.biz/</authorWebsite>
+        <copyright>Copyright &#169; 2017 ProThemes.Biz</copyright>
+        <preview>img/preview.png</preview>
+        <builder>builder/client/default/aqua-theme</builder>
+    </themeDetails>
+</rainbowTheme>
