@@ -752,3 +752,102 @@ function slugify($text)
     $slug = trim($text, '-'); 
     return $slug;
 }
+
+/**
+ * Check if the domain is accessible via HTTP/HTTPS.
+ * It tests various URL variations and returns the best accessible URL.
+ *
+ * @param string $domain
+ * @return string|null
+ */
+function isDomainAccessible($domain)
+{
+     
+     
+    $protocols    = ['https://', 'http://'];
+    $timeout      = 10;
+    $maxRedirects = 5;
+    $userAgent    = 'Mozilla/5.0 (compatible; SEO-Checker/1.0)';
+
+    // For simple domains (e.g., example.com), also check www variations.
+    $domainParts = explode('.', $domain);
+    $checkWWW = (count($domainParts) <= 2);
+
+    $checkedUrls   = [];
+    $effectiveUrls = [];
+
+    // Test each protocol and its variations.
+    foreach ($protocols as $protocol) {
+        // Always check the domain as-is.
+        $variations = [$protocol . $domain];
+        if ($checkWWW) {
+            // Also test with the www prefix.
+            $variations[] = $protocol . 'www.' . $domain;
+            // The following line is redundant if $protocol . $domain is already added.
+            // $variations[] = $protocol . $domain;
+        }
+      
+        foreach ($variations as $url) {
+            if (in_array($url, $checkedUrls)) {
+                continue;
+            }
+            $checkedUrls[] = $url;
+
+            $ch = curl_init();
+            curl_setopt_array($ch, [
+                CURLOPT_URL            => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT        => $timeout,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_MAXREDIRS      => $maxRedirects,
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYHOST => 2,
+                CURLOPT_USERAGENT      => $userAgent,
+                CURLOPT_NOBODY         => false, // Perform a full GET request.
+            ]);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $effectiveUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+            $curlError = curl_error($ch);
+            $redirectCount = curl_getinfo($ch, CURLINFO_REDIRECT_COUNT);
+            curl_close($ch);
+
+            writeLog('debug', "Checked: {$url} => {$effectiveUrl} [{$httpCode}]");
+
+            // If no cURL error and HTTP status is acceptable.
+            if (!$curlError && $httpCode >= 200 && $httpCode < 400) {
+                $effectiveUrl = rtrim($effectiveUrl, '/');
+                $effectiveUrls[$effectiveUrl] = [
+                    'https'     => parse_url($effectiveUrl, PHP_URL_SCHEME) === 'https',
+                    'www'       => strpos(parse_url($effectiveUrl, PHP_URL_HOST), 'www.') === 0,
+                    'redirects' => $redirectCount,
+                ];
+            }
+        }
+    }
+    echo "<pre>";
+    print_r($effectiveUrls);
+    echo "</pre>";
+    die();
+    // Sort accessible URLs based on HTTPS preference, then www preference (favoring www), then fewer redirects.
+    uasort($effectiveUrls, function($a, $b) {
+        if ($a['https'] !== $b['https']) {
+            return $b['https'] <=> $a['https'];
+        }
+        // Invert the comparison to favor URLs with "www" over those without.
+        if ($a['www'] !== $b['www']) {
+            return $b['www'] <=> $a['www'];
+        }
+        return $a['redirects'] <=> $b['redirects'];
+    });
+
+    if (!empty($effectiveUrls)) {
+        $bestUrl = array_key_first($effectiveUrls);
+        log_message('debug', "Selected best URL: {$bestUrl}");
+        return $bestUrl;
+    }
+
+    writeLog('debug', "No accessible URL found for domain: {$domain}");
+    return null;
+}

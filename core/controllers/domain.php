@@ -49,10 +49,16 @@ if(isset($route[2])){
    if($updateCheck == 'update')
        $updateFound = true;
 }
-
+echo $pointOut."<br>";
 //Get User Request
 $my_url = raino_trim($pointOut);
+$url = isDomainAccessible($my_url);
+echo "$my_url <pre>";
+print_r($url);
+echo "</pre>";
+die();
 $my_url = 'http://'.clean_url($my_url);
+
 
 //Parse Host
 $my_url_parse = parse_url($my_url);

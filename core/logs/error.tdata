@@ -1,16 +1,10 @@
-[04-Feb-2025 19:15:43 Asia/Calcutta] App Notice:  Unable to connect to Mysql Server | Request From ::1
+Piyush No accessible URL found for domain: silverandgem.com
 
-[04-Feb-2025 19:19:36 Asia/Calcutta] App Notice:  Unable to connect to Mysql Server | Request From ::1
+[05-Feb-2025 12:26:58 Asia/Calcutta] App Notice:  debug | Request From ::1
 
-[04-Feb-2025 22:30:11 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:2435
-Stack trace:
-#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
-#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
-#2 {main}
-  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 2435
-[04-Feb-2025 22:38:14 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:2435
-Stack trace:
-#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
-#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
-#2 {main}
-  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 2435
+[05-Feb-2025 12:26:58 Asia/Calcutta] App Notice:  debug | Request From ::1
+
+[05-Feb-2025 12:26:59 Asia/Calcutta] App Notice:  debug | Request From ::1
+
+[05-Feb-2025 12:27:00 Asia/Calcutta] App Notice:  debug | Request From ::1
+

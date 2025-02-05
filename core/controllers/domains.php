@@ -587,7 +587,10 @@ if(isset($_POST['textRatio'])){
     </div>';
     die();
 }
- 
+echo "<pre>"; 
+print_r($_POST);
+echo "</pre>";
+die();
 //Check GZIP Compression 
 if(isset($_POST['gzip'])){
     
