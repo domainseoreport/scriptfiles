@@ -101,3 +101,699 @@
 [2025-02-13 15:32:03] [debug] In Else 
 [2025-02-13 15:32:28] [debug] In Else 
 [2025-02-13 15:33:53] [debug] In Else 
+[2025-02-13 15:35:11] [debug] In Else 
+[2025-02-13 15:38:15] [debug] In Else 
+[2025-02-13 15:38:16] [debug] In Else 
+[2025-02-13 15:38:25] [debug] Checked: Array
+(
+    [0] => https://jaipurroutes.com
+    [1] => https://www.jaipurroutes.com
+)
+
+[2025-02-13 15:38:27] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-13 15:38:28] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-13 15:38:28] [debug] Checked: Array
+(
+    [0] => http://jaipurroutes.com
+    [1] => http://www.jaipurroutes.com
+)
+
+[2025-02-13 15:38:29] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-13 15:38:31] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-13 15:38:31] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-13 15:38:32] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-13 15:38:32] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:32] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:32] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:32] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:32] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:32] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:32] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:32] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:32] [debug] Keyword Consistency Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:32] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:32] [debug] GZIP Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:34] [debug] WWW Resolve Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:34] [debug] IP Canonicalization Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:34] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:34] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:34] [debug] Sitemap Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:37] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:37] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:37] [debug] Broken Links Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:37] [debug] Robots.txt Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:38] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:38] [debug] Embedded Objects Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:38] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:38] [debug] iFrame Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:38] [debug] WHOIS Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:58] [debug] Indexed Pages Tag Call for URL jaipurroutes.com
+[2025-02-13 15:38:59] [debug] Backlinks Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:00] [debug] URL Length Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:00] [debug] Custom 404 Page Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:02] [debug] Page Load Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:03] [debug] Page Speed Insight Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:04] [debug] Availability Checker Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:11] [debug] Email Privacy Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:11] [debug] Safe Browsing Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:11] [debug] Mobile Friendliness Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:29] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:29] [debug] Mobile Compatibility Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:29] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:31] [debug] Speed Tips Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:31] [debug] DocType Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:31] [debug] W3C Validity Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:31] [debug] Encoding Tag Call for URL jaipurroutes.com
+[2025-02-13 15:39:40] [debug] In Else 
+[2025-02-13 15:41:14] [debug] In Else 
+[2025-02-13 15:41:42] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-13 15:41:42] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:42] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:42] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:42] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:42] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:42] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:42] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:42] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:43] [debug] Keyword Consistency Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:43] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:43] [debug] GZIP Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:44] [debug] WWW Resolve Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:44] [debug] IP Canonicalization Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:44] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:44] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:44] [debug] Sitemap Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:49] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:49] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:49] [debug] Broken Links Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:49] [debug] Robots.txt Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:51] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:51] [debug] Embedded Objects Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:51] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:51] [debug] iFrame Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:51] [debug] WHOIS Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:52] [debug] Indexed Pages Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:53] [debug] Backlinks Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:53] [debug] URL Length Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:53] [debug] Custom 404 Page Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:55] [debug] Page Load Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:56] [debug] Page Speed Insight Tag Call for URL jaipurroutes.com
+[2025-02-13 15:41:57] [debug] Availability Checker Tag Call for URL jaipurroutes.com
+[2025-02-13 15:42:03] [debug] Email Privacy Tag Call for URL jaipurroutes.com
+[2025-02-13 15:42:03] [debug] Safe Browsing Tag Call for URL jaipurroutes.com
+[2025-02-13 15:42:04] [debug] Mobile Friendliness Tag Call for URL jaipurroutes.com
+[2025-02-13 15:42:23] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 15:42:23] [debug] Mobile Compatibility Tag Call for URL jaipurroutes.com
+[2025-02-13 15:42:23] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-13 15:42:25] [debug] Speed Tips Tag Call for URL jaipurroutes.com
+[2025-02-13 15:42:25] [debug] DocType Tag Call for URL jaipurroutes.com
+[2025-02-13 15:42:25] [debug] W3C Validity Tag Call for URL jaipurroutes.com
+[2025-02-13 15:42:25] [debug] Encoding Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:53] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-13 16:31:54] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:54] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:54] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:54] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:54] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:54] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:54] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:54] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:54] [debug] Keyword Consistency Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:54] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:54] [debug] GZIP Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:56] [debug] WWW Resolve Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:56] [debug] IP Canonicalization Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:56] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:56] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:56] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:56] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:56] [debug] Broken Links Tag Call for URL jaipurroutes.com
+[2025-02-13 16:31:56] [debug] Sitemap Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:01] [debug] Robots.txt Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:02] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:02] [debug] Embedded Objects Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:02] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:02] [debug] iFrame Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:02] [debug] WHOIS Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:04] [debug] Indexed Pages Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:06] [debug] Backlinks Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:07] [debug] URL Length Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:08] [debug] Custom 404 Page Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:09] [debug] In Else 
+[2025-02-13 16:32:09] [debug] Page Load Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:10] [debug] Page Speed Insight Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:11] [debug] Availability Checker Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:17] [debug] Email Privacy Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:17] [debug] Safe Browsing Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:18] [debug] Mobile Friendliness Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:28] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:28] [debug] Mobile Compatibility Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:28] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:29] [debug] Speed Tips Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:29] [debug] DocType Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:29] [debug] W3C Validity Tag Call for URL jaipurroutes.com
+[2025-02-13 16:32:29] [debug] Encoding Tag Call for URL jaipurroutes.com
+[2025-02-13 16:50:08] [debug] In Else 
+[2025-02-13 16:50:31] [debug] In Else 
+[2025-02-13 16:51:00] [debug] In Else 
+[2025-02-13 16:56:33] [debug] In Else 
+[2025-02-13 17:01:57] [debug] In Else 
+[2025-02-13 17:02:25] [debug] In Else 
+[2025-02-13 17:04:21] [debug] In Else 
+[2025-02-13 17:04:35] [debug] In Else 
+[2025-02-13 17:13:44] [debug] In Else 
+[2025-02-13 17:14:22] [debug] In Else 
+[2025-02-13 17:16:03] [debug] In Else 
+[2025-02-13 17:16:25] [debug] In Else 
+[2025-02-13 17:16:34] [debug] In Else 
+[2025-02-13 17:17:04] [debug] In Else 
+[2025-02-13 17:17:27] [debug] In Else 
+[2025-02-13 17:18:00] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-13 17:18:00] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:00] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:00] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:00] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:01] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:01] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:01] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:01] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:01] [debug] Keyword Consistency Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:01] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:01] [debug] GZIP Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:02] [debug] WWW Resolve Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:02] [debug] IP Canonicalization Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:03] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:03] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:03] [debug] Sitemap Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:08] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:08] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:08] [debug] Broken Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:08] [debug] Robots.txt Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:10] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:10] [debug] Embedded Objects Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-13 17:18:11] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] iFrame Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] Keyword Consistency Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:11] [debug] GZIP Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:13] [debug] WWW Resolve Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:13] [debug] IP Canonicalization Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:13] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:13] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:13] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:13] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:13] [debug] Broken Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:13] [debug] Sitemap Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:16] [debug] Robots.txt Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:18] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:18] [debug] Embedded Objects Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:18] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:18] [debug] iFrame Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:18] [debug] WHOIS Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:25] [debug] Indexed Pages Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:27] [debug] Backlinks Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:27] [debug] URL Length Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:27] [debug] Custom 404 Page Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:29] [debug] Page Load Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:31] [debug] Page Speed Insight Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:32] [debug] Availability Checker Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:37] [debug] Email Privacy Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:38] [debug] Safe Browsing Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:38] [debug] Mobile Friendliness Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:50] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:50] [debug] Mobile Compatibility Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:50] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:52] [debug] Speed Tips Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:52] [debug] DocType Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:52] [debug] W3C Validity Tag Call for URL jaipurroutes.com
+[2025-02-13 17:18:52] [debug] Encoding Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:45] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-13 17:19:45] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:45] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:45] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:45] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:45] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:46] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:46] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:46] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:46] [debug] Keyword Consistency Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:46] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:46] [debug] GZIP Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:47] [debug] WWW Resolve Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:47] [debug] IP Canonicalization Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:47] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:47] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:48] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:48] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:48] [debug] Broken Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:48] [debug] Sitemap Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:50] [debug] Robots.txt Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:52] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:52] [debug] Embedded Objects Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:52] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:52] [debug] iFrame Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:52] [debug] WHOIS Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:53] [debug] Indexed Pages Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:53] [debug] Backlinks Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:54] [debug] URL Length Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:54] [debug] Custom 404 Page Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:56] [debug] Page Load Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:57] [debug] Page Speed Insight Tag Call for URL jaipurroutes.com
+[2025-02-13 17:19:58] [debug] Availability Checker Tag Call for URL jaipurroutes.com
+[2025-02-13 17:20:04] [debug] Email Privacy Tag Call for URL jaipurroutes.com
+[2025-02-13 17:20:04] [debug] Safe Browsing Tag Call for URL jaipurroutes.com
+[2025-02-13 17:20:04] [debug] Mobile Friendliness Tag Call for URL jaipurroutes.com
+[2025-02-13 17:20:20] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:20:20] [debug] Mobile Compatibility Tag Call for URL jaipurroutes.com
+[2025-02-13 17:20:20] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-13 17:20:23] [debug] Speed Tips Tag Call for URL jaipurroutes.com
+[2025-02-13 17:20:23] [debug] DocType Tag Call for URL jaipurroutes.com
+[2025-02-13 17:20:23] [debug] W3C Validity Tag Call for URL jaipurroutes.com
+[2025-02-13 17:20:23] [debug] Encoding Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:20] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-13 17:21:21] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:21] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:21] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:21] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:21] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:21] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:21] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:21] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:21] [debug] Keyword Consistency Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:21] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:21] [debug] GZIP Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:22] [debug] WWW Resolve Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:23] [debug] IP Canonicalization Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:23] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:23] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:23] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:23] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:23] [debug] Broken Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:23] [debug] Sitemap Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:26] [debug] Robots.txt Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:27] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:27] [debug] Embedded Objects Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:27] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:27] [debug] iFrame Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:27] [debug] WHOIS Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:33] [debug] Indexed Pages Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:33] [debug] Backlinks Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:34] [debug] URL Length Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:34] [debug] Custom 404 Page Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:36] [debug] Page Load Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:37] [debug] In Else 
+[2025-02-13 17:21:37] [debug] Page Speed Insight Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:38] [debug] Availability Checker Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:43] [debug] Email Privacy Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:43] [debug] Safe Browsing Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:43] [debug] Mobile Friendliness Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:51] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:51] [debug] Mobile Compatibility Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:52] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:53] [debug] Speed Tips Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:53] [debug] DocType Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:54] [debug] W3C Validity Tag Call for URL jaipurroutes.com
+[2025-02-13 17:21:54] [debug] Encoding Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:02] [debug] Checked: Array
+(
+    [0] => https://jaipurroutes.com
+    [1] => https://www.jaipurroutes.com
+)
+
+[2025-02-13 17:22:03] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-13 17:22:04] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-13 17:22:04] [debug] Checked: Array
+(
+    [0] => http://jaipurroutes.com
+    [1] => http://www.jaipurroutes.com
+)
+
+[2025-02-13 17:22:06] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-13 17:22:07] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-13 17:22:07] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-13 17:22:08] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-13 17:22:09] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:09] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:09] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:09] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:09] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:09] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:09] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:09] [debug] Keyword Cloud Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:09] [debug] Keyword Consistency Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:09] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:09] [debug] GZIP Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:10] [debug] WWW Resolve Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:11] [debug] IP Canonicalization Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:11] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:11] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:11] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:11] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:11] [debug] Broken Links Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:11] [debug] Sitemap Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:13] [debug] Robots.txt Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:15] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:15] [debug] Embedded Objects Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:15] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:15] [debug] iFrame Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:15] [debug] WHOIS Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:16] [debug] Indexed Pages Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:17] [debug] Backlinks Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:17] [debug] URL Length Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:17] [debug] Custom 404 Page Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:19] [debug] Page Load Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:20] [debug] Page Speed Insight Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:21] [debug] Availability Checker Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:26] [debug] Email Privacy Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:26] [debug] Safe Browsing Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:27] [debug] Mobile Friendliness Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:35] [debug] DOM Library Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:35] [debug] Mobile Compatibility Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:35] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:37] [debug] Speed Tips Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:37] [debug] DocType Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:37] [debug] W3C Validity Tag Call for URL jaipurroutes.com
+[2025-02-13 17:22:37] [debug] Encoding Tag Call for URL jaipurroutes.com
+[2025-02-13 17:34:00] [debug] Checked: Array
+(
+    [0] => https://silverandgem.com
+    [1] => https://www.silverandgem.com
+)
+
+[2025-02-13 17:34:01] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-13 17:34:02] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-13 17:34:02] [debug] Checked: Array
+(
+    [0] => http://silverandgem.com
+    [1] => http://www.silverandgem.com
+)
+
+[2025-02-13 17:34:03] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-13 17:34:05] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-13 17:34:05] [debug] Selected best URL: https://www.silverandgem.com
+[2025-02-13 17:34:05] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-13 17:34:06] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 17:34:07] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 17:34:07] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 17:34:07] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-13 17:34:07] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 17:34:07] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 17:34:07] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 17:34:07] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 17:34:07] [debug] Keyword Consistency Tag Call for URL silverandgem.com
+[2025-02-13 17:34:08] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-13 17:34:08] [debug] GZIP Tag Call for URL silverandgem.com
+[2025-02-13 17:34:09] [debug] WWW Resolve Tag Call for URL silverandgem.com
+[2025-02-13 17:34:09] [debug] IP Canonicalization Tag Call for URL silverandgem.com
+[2025-02-13 17:34:09] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 17:34:09] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 17:34:09] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 17:34:09] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 17:34:09] [debug] Broken Links Tag Call for URL silverandgem.com
+[2025-02-13 17:34:09] [debug] Sitemap Tag Call for URL silverandgem.com
+[2025-02-13 17:34:10] [debug] Robots.txt Tag Call for URL silverandgem.com
+[2025-02-13 17:34:10] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 17:34:10] [debug] Embedded Objects Tag Call for URL silverandgem.com
+[2025-02-13 17:34:10] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 17:34:10] [debug] iFrame Tag Call for URL silverandgem.com
+[2025-02-13 17:34:10] [debug] WHOIS Tag Call for URL silverandgem.com
+[2025-02-13 17:34:17] [debug] Indexed Pages Tag Call for URL silverandgem.com
+[2025-02-13 17:34:17] [debug] Backlinks Tag Call for URL silverandgem.com
+[2025-02-13 17:34:18] [debug] URL Length Tag Call for URL silverandgem.com
+[2025-02-13 17:34:18] [debug] Custom 404 Page Tag Call for URL silverandgem.com
+[2025-02-13 17:34:18] [debug] Page Load Tag Call for URL silverandgem.com
+[2025-02-13 17:34:19] [debug] Page Speed Insight Tag Call for URL silverandgem.com
+[2025-02-13 17:34:20] [debug] Availability Checker Tag Call for URL silverandgem.com
+[2025-02-13 17:34:26] [debug] Email Privacy Tag Call for URL silverandgem.com
+[2025-02-13 17:34:26] [debug] Safe Browsing Tag Call for URL silverandgem.com
+[2025-02-13 17:34:26] [debug] Mobile Friendliness Tag Call for URL silverandgem.com
+[2025-02-13 17:34:46] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 17:34:46] [debug] Mobile Compatibility Tag Call for URL silverandgem.com
+[2025-02-13 17:34:46] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-13 17:34:48] [debug] Speed Tips Tag Call for URL silverandgem.com
+[2025-02-13 17:34:48] [debug] DocType Tag Call for URL silverandgem.com
+[2025-02-13 17:34:48] [debug] W3C Validity Tag Call for URL silverandgem.com
+[2025-02-13 17:34:48] [debug] Encoding Tag Call for URL silverandgem.com
+[2025-02-13 17:34:58] [debug] In Else 
+[2025-02-13 17:35:03] [debug] In Else 
+[2025-02-13 17:35:05] [debug] In Else 
+[2025-02-13 17:36:58] [debug] In Else 
+[2025-02-13 17:37:02] [debug] In Else 
+[2025-02-13 17:37:28] [debug] In Else 
+[2025-02-13 17:37:54] [debug] In Else 
+[2025-02-13 17:43:16] [debug] In Else 
+[2025-02-13 17:49:34] [debug] In Else 
+[2025-02-13 17:50:33] [debug] In Else 
+[2025-02-13 17:53:02] [debug] In Else 
+[2025-02-13 17:53:48] [debug] In Else 
+[2025-02-13 17:53:50] [debug] In Else 
+[2025-02-13 17:54:06] [debug] In Else 
+[2025-02-13 17:55:02] [debug] In Else 
+[2025-02-13 17:56:13] [debug] In Else 
+[2025-02-13 17:56:58] [debug] In Else 
+[2025-02-13 17:57:06] [debug] In Else 
+[2025-02-13 17:58:08] [debug] In Else 
+[2025-02-13 18:01:45] [debug] In Else 
+[2025-02-13 18:01:54] [debug] In Else 
+[2025-02-13 18:02:05] [debug] In Else 
+[2025-02-13 18:02:13] [debug] In Else 
+[2025-02-13 18:02:19] [debug] In Else 
+[2025-02-13 18:03:02] [debug] In Else 
+[2025-02-13 18:03:28] [debug] In Else 
+[2025-02-13 18:03:45] [debug] In Else 
+[2025-02-13 18:04:21] [debug] In Else 
+[2025-02-13 18:04:54] [debug] In Else 
+[2025-02-13 18:05:21] [debug] In Else 
+[2025-02-13 18:06:10] [debug] In Else 
+[2025-02-13 18:07:23] [debug] In Else 
+[2025-02-13 18:12:13] [debug] In Else 
+[2025-02-13 18:23:55] [debug] In Else 
+[2025-02-13 18:24:52] [debug] In Else 
+[2025-02-13 18:25:10] [debug] In Else 
+[2025-02-13 18:25:13] [debug] In Else 
+[2025-02-13 18:34:18] [debug] In Else 
+[2025-02-13 18:34:49] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-13 18:34:49] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 18:34:49] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 18:34:49] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:34:49] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-13 18:34:49] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 18:34:49] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 18:34:49] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 18:34:49] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 18:34:49] [debug] Keyword Consistency Tag Call for URL silverandgem.com
+[2025-02-13 18:34:50] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-13 18:34:50] [debug] GZIP Tag Call for URL silverandgem.com
+[2025-02-13 18:34:50] [debug] WWW Resolve Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] IP Canonicalization Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] Broken Links Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] Sitemap Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] Robots.txt Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] Embedded Objects Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] iFrame Tag Call for URL silverandgem.com
+[2025-02-13 18:34:51] [debug] WHOIS Tag Call for URL silverandgem.com
+[2025-02-13 18:34:52] [debug] Indexed Pages Tag Call for URL silverandgem.com
+[2025-02-13 18:34:53] [debug] Backlinks Tag Call for URL silverandgem.com
+[2025-02-13 18:34:54] [debug] URL Length Tag Call for URL silverandgem.com
+[2025-02-13 18:34:54] [debug] Custom 404 Page Tag Call for URL silverandgem.com
+[2025-02-13 18:34:54] [debug] Page Load Tag Call for URL silverandgem.com
+[2025-02-13 18:34:55] [debug] Page Speed Insight Tag Call for URL silverandgem.com
+[2025-02-13 18:34:56] [debug] Availability Checker Tag Call for URL silverandgem.com
+[2025-02-13 18:35:01] [debug] Email Privacy Tag Call for URL silverandgem.com
+[2025-02-13 18:35:01] [debug] Safe Browsing Tag Call for URL silverandgem.com
+[2025-02-13 18:35:02] [debug] Mobile Friendliness Tag Call for URL silverandgem.com
+[2025-02-13 18:35:22] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:35:22] [debug] Mobile Compatibility Tag Call for URL silverandgem.com
+[2025-02-13 18:35:22] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-13 18:35:24] [debug] Speed Tips Tag Call for URL silverandgem.com
+[2025-02-13 18:35:24] [debug] DocType Tag Call for URL silverandgem.com
+[2025-02-13 18:35:24] [debug] W3C Validity Tag Call for URL silverandgem.com
+[2025-02-13 18:35:24] [debug] Encoding Tag Call for URL silverandgem.com
+[2025-02-13 18:37:20] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-13 18:37:20] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 18:37:20] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 18:37:21] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:21] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-13 18:37:21] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 18:37:21] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 18:37:21] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 18:37:21] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 18:37:21] [debug] Keyword Consistency Tag Call for URL silverandgem.com
+[2025-02-13 18:37:21] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-13 18:37:21] [debug] GZIP Tag Call for URL silverandgem.com
+[2025-02-13 18:37:22] [debug] WWW Resolve Tag Call for URL silverandgem.com
+[2025-02-13 18:37:22] [debug] IP Canonicalization Tag Call for URL silverandgem.com
+[2025-02-13 18:37:22] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:22] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 18:37:22] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:22] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 18:37:22] [debug] Broken Links Tag Call for URL silverandgem.com
+[2025-02-13 18:37:22] [debug] Sitemap Tag Call for URL silverandgem.com
+[2025-02-13 18:37:23] [debug] Robots.txt Tag Call for URL silverandgem.com
+[2025-02-13 18:37:23] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:23] [debug] Embedded Objects Tag Call for URL silverandgem.com
+[2025-02-13 18:37:23] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:23] [debug] iFrame Tag Call for URL silverandgem.com
+[2025-02-13 18:37:23] [debug] WHOIS Tag Call for URL silverandgem.com
+[2025-02-13 18:37:24] [debug] Indexed Pages Tag Call for URL silverandgem.com
+[2025-02-13 18:37:25] [debug] Backlinks Tag Call for URL silverandgem.com
+[2025-02-13 18:37:25] [debug] URL Length Tag Call for URL silverandgem.com
+[2025-02-13 18:37:25] [debug] Custom 404 Page Tag Call for URL silverandgem.com
+[2025-02-13 18:37:26] [debug] Page Load Tag Call for URL silverandgem.com
+[2025-02-13 18:37:26] [debug] Page Speed Insight Tag Call for URL silverandgem.com
+[2025-02-13 18:37:27] [debug] Availability Checker Tag Call for URL silverandgem.com
+[2025-02-13 18:37:32] [debug] Email Privacy Tag Call for URL silverandgem.com
+[2025-02-13 18:37:32] [debug] Safe Browsing Tag Call for URL silverandgem.com
+[2025-02-13 18:37:33] [debug] Mobile Friendliness Tag Call for URL silverandgem.com
+[2025-02-13 18:37:53] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-13 18:37:54] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] Mobile Compatibility Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] Keyword Consistency Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-13 18:37:54] [debug] GZIP Tag Call for URL silverandgem.com
+[2025-02-13 18:37:55] [debug] WWW Resolve Tag Call for URL silverandgem.com
+[2025-02-13 18:37:55] [debug] IP Canonicalization Tag Call for URL silverandgem.com
+[2025-02-13 18:37:55] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:55] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 18:37:56] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:56] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 18:37:56] [debug] Broken Links Tag Call for URL silverandgem.com
+[2025-02-13 18:37:56] [debug] Sitemap Tag Call for URL silverandgem.com
+[2025-02-13 18:37:56] [debug] Robots.txt Tag Call for URL silverandgem.com
+[2025-02-13 18:37:56] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:56] [debug] Embedded Objects Tag Call for URL silverandgem.com
+[2025-02-13 18:37:56] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:37:56] [debug] iFrame Tag Call for URL silverandgem.com
+[2025-02-13 18:37:56] [debug] WHOIS Tag Call for URL silverandgem.com
+[2025-02-13 18:37:57] [debug] Indexed Pages Tag Call for URL silverandgem.com
+[2025-02-13 18:37:58] [debug] Backlinks Tag Call for URL silverandgem.com
+[2025-02-13 18:37:59] [debug] URL Length Tag Call for URL silverandgem.com
+[2025-02-13 18:37:59] [debug] Custom 404 Page Tag Call for URL silverandgem.com
+[2025-02-13 18:37:59] [debug] Page Load Tag Call for URL silverandgem.com
+[2025-02-13 18:38:00] [debug] Page Speed Insight Tag Call for URL silverandgem.com
+[2025-02-13 18:38:01] [debug] Availability Checker Tag Call for URL silverandgem.com
+[2025-02-13 18:38:05] [debug] In Else 
+[2025-02-13 18:38:05] [debug] Email Privacy Tag Call for URL silverandgem.com
+[2025-02-13 18:38:08] [debug] In Else 
+[2025-02-13 18:39:18] [debug] In Else 
+[2025-02-13 18:47:12] [debug] In Else 
+[2025-02-13 18:47:23] [debug] In Else 
+[2025-02-13 18:47:26] [debug] In Else 
+[2025-02-13 18:48:31] [debug] In Else 
+[2025-02-13 18:50:53] [debug] In Else 
+[2025-02-13 18:51:53] [debug] In Else 
+[2025-02-13 18:53:09] [debug] In Else 
+[2025-02-13 18:53:47] [debug] In Else 
+[2025-02-13 18:54:13] [debug] In Else 
+[2025-02-13 18:54:17] [debug] In Else 
+[2025-02-13 18:54:19] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-13 18:54:20] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 18:54:20] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 18:54:20] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:54:20] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-13 18:54:20] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 18:54:20] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 18:54:20] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 18:54:20] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 18:54:20] [debug] Keyword Consistency Tag Call for URL silverandgem.com
+[2025-02-13 18:54:20] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-13 18:54:20] [debug] GZIP Tag Call for URL silverandgem.com
+[2025-02-13 18:54:21] [debug] WWW Resolve Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] IP Canonicalization Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] Broken Links Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] Sitemap Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] Robots.txt Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] Embedded Objects Tag Call for URL silverandgem.com
+[2025-02-13 18:54:22] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:54:23] [debug] iFrame Tag Call for URL silverandgem.com
+[2025-02-13 18:54:23] [debug] WHOIS Tag Call for URL silverandgem.com
+[2025-02-13 18:54:24] [debug] Indexed Pages Tag Call for URL silverandgem.com
+[2025-02-13 18:54:24] [debug] Backlinks Tag Call for URL silverandgem.com
+[2025-02-13 18:54:25] [debug] URL Length Tag Call for URL silverandgem.com
+[2025-02-13 18:54:25] [debug] Custom 404 Page Tag Call for URL silverandgem.com
+[2025-02-13 18:54:26] [debug] Page Load Tag Call for URL silverandgem.com
+[2025-02-13 18:54:27] [debug] Page Speed Insight Tag Call for URL silverandgem.com
+[2025-02-13 18:54:28] [debug] Availability Checker Tag Call for URL silverandgem.com
+[2025-02-13 18:54:33] [debug] Email Privacy Tag Call for URL silverandgem.com
+[2025-02-13 18:54:33] [debug] Safe Browsing Tag Call for URL silverandgem.com
+[2025-02-13 18:54:34] [debug] Mobile Friendliness Tag Call for URL silverandgem.com
+[2025-02-13 18:54:54] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:54:54] [debug] Mobile Compatibility Tag Call for URL silverandgem.com
+[2025-02-13 18:54:54] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-13 18:54:56] [debug] Speed Tips Tag Call for URL silverandgem.com
+[2025-02-13 18:54:56] [debug] DocType Tag Call for URL silverandgem.com
+[2025-02-13 18:54:56] [debug] W3C Validity Tag Call for URL silverandgem.com
+[2025-02-13 18:54:56] [debug] Encoding Tag Call for URL silverandgem.com
+[2025-02-13 18:56:46] [debug] In Else 
+[2025-02-13 18:56:57] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-13 18:56:57] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 18:56:57] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 18:56:57] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:56:57] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-13 18:56:58] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 18:56:58] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 18:56:58] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 18:56:58] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 18:56:58] [debug] Keyword Consistency Tag Call for URL silverandgem.com
+[2025-02-13 18:56:58] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-13 18:56:58] [debug] GZIP Tag Call for URL silverandgem.com
+[2025-02-13 18:56:58] [debug] WWW Resolve Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] IP Canonicalization Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] Broken Links Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] Sitemap Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] Robots.txt Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] Embedded Objects Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] iFrame Tag Call for URL silverandgem.com
+[2025-02-13 18:56:59] [debug] WHOIS Tag Call for URL silverandgem.com
+[2025-02-13 18:57:01] [debug] Indexed Pages Tag Call for URL silverandgem.com
+[2025-02-13 18:57:03] [debug] Backlinks Tag Call for URL silverandgem.com
+[2025-02-13 18:57:04] [debug] URL Length Tag Call for URL silverandgem.com
+[2025-02-13 18:57:04] [debug] Custom 404 Page Tag Call for URL silverandgem.com
+[2025-02-13 18:57:05] [debug] Page Load Tag Call for URL silverandgem.com
+[2025-02-13 18:57:06] [debug] Page Speed Insight Tag Call for URL silverandgem.com
+[2025-02-13 18:57:07] [debug] Availability Checker Tag Call for URL silverandgem.com
+[2025-02-13 18:57:11] [debug] Email Privacy Tag Call for URL silverandgem.com
+[2025-02-13 18:57:11] [debug] Safe Browsing Tag Call for URL silverandgem.com
+[2025-02-13 18:57:12] [debug] Mobile Friendliness Tag Call for URL silverandgem.com
+[2025-02-13 18:57:32] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 18:57:32] [debug] Mobile Compatibility Tag Call for URL silverandgem.com
+[2025-02-13 18:57:32] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-13 18:57:34] [debug] In Else 
+[2025-02-13 18:57:34] [debug] Speed Tips Tag Call for URL silverandgem.com
+[2025-02-13 18:57:34] [debug] DocType Tag Call for URL silverandgem.com
+[2025-02-13 18:57:34] [debug] W3C Validity Tag Call for URL silverandgem.com
+[2025-02-13 18:57:34] [debug] Encoding Tag Call for URL silverandgem.com

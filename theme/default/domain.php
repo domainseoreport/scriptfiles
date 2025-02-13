@@ -1,200 +1,232 @@
 <?php
+// Prevent direct access to this script
 defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
 
 /*
- * @author Balaji
- * @Theme: Default Style
- * @copyright 2023 ProThemes.Biz
- *
+ * Author: Balaji
+ * Theme: Default Style
+ * Copyright 2023 ProThemes.Biz
  */
 
-$solveMsg = array($lang['29'],$lang['30'],$lang['31'],$lang['32']);
+// Array of messages used for solving SEO issues
+$solveMsg = array(
+    $lang['29'],
+    $lang['30'],
+    $lang['31'],
+    $lang['32']
+);
 
-//Loading Bar
-$loadingBar = '<div class="text-center">
-            <img src="'.themeLink('img/load.gif',true).'" />
-            <br />
-            <br />
-                '.$lang['33'].'...
-            <br />
-            <br />
-        </div>';
+// HTML for the loading bar animation
+$loadingBar = '
+    <div class="text-center">
+        <img src="' . themeLink('img/load.gif', true) . '" alt="Loading..." />
+        <br /><br />
+        ' . $lang['33'] . '...
+        <br /><br />
+    </div>
+';
 
-if($updateFound){
-    for($i=1;$i<=49;$i++)
+// If update is found, initialize each SEO box with the loading bar content
+if ($updateFound) {
+    for ($i = 1; $i <= 49; $i++) {
         ${'seoBox' . $i} = $loadingBar;
-}else{ ?>
-<script>
-var passScore = '<?php echo makeJavascriptStr($passScore); ?>';
-var improveScore = '<?php echo makeJavascriptStr($improveScore); ?>';
-var errorScore = '<?php echo makeJavascriptStr($errorScore); ?>';
-</script>
+    }
+} else {
+    ?>
+    <!-- Define JavaScript variables for non-update scenario -->
+    <script>
+        var passScore    = '<?php echo makeJavascriptStr($passScore); ?>';
+        var improveScore = '<?php echo makeJavascriptStr($improveScore); ?>';
+        var errorScore   = '<?php echo makeJavascriptStr($errorScore); ?>';
+    </script>
 <?php } ?>
+
 <script>
-var hashCode = '<?php echo $hashCode; ?>';
-var inputHost = '<?php echo $my_url_host; ?>';
-var isOnline = '<?php echo $isOnline; ?>';
-var pdfUrl = '<?php echo $pdfUrl;?>';
-var pdfMsg = '<?php echo makeJavascriptStr($lang['34']); ?>';
-var domainPath = '<?php createLink('domains'); ?>';
-var scoreTxt = '<?php echo makeJavascriptStr($lang['195']); ?>';
-var CANV_GAUGE_FONTS_PATH = '<?php themeLink('fonts'); ?>';
+    // Set up additional configuration variables for JavaScript use
+    var hashCode    = '<?php echo $hashCode; ?>';
+    var inputHost   = '<?php echo $my_url_host; ?>';
+    var isOnline    = '<?php echo $isOnline; ?>';
+    var pdfUrl      = '<?php echo $pdfUrl; ?>';
+    var pdfMsg      = '<?php echo makeJavascriptStr($lang['34']); ?>';
+    var domainPath  = '<?php createLink('domains'); ?>';
+    var scoreTxt    = '<?php echo makeJavascriptStr($lang['195']); ?>';
+    var CANV_GAUGE_FONTS_PATH = '<?php themeLink('fonts'); ?>';
 </script>
 
-<script src="<?php themeLink('js/circle-progress.js'); ?>"></script>  
+<!-- Include external JavaScript and CSS files -->
+<script src="<?php themeLink('js/circle-progress.js'); ?>"></script>
 <script src="<?php themeLink('js/pagespeed.min.js'); ?>" type="text/javascript"></script>
 <link href="<?php themeLink('css/www.css'); ?>" rel="stylesheet" />
 
 <div class="container">
-  <div class="row">
-
-    <div class="col-sm-4 mobilefix">
-         
-    </div>
-    
-    <div class="col-sm-8">   
-           
-        <div class="xd_top_box top40 text-center">
-         <?php echo $ads_720x90; ?>
-        </div>
-
-           <?php
-           //Output Block
-           if(isset($error)) {
-            
-            echo '<br/><br/><div class="alert alert-error">
-            <strong>'.$lang['53'].'</strong> '.$error.'
-            </div><br/><br/>
-            <div class="text-center"><a class="btn btn-info" href="'.$baseURL.'">'.trans('Go to homepage',$lang['22'],true).'</a>
-            </div><br/>';
-            
-           } else {
-           ?>
-           
-         <div id="overview">
-           
-            <br />  
-            <?php if($updateFound){ ?>
-            <style>.progress-bar-primary { background-color: #3498DC; } .progress { margin-top: 20px; background-color: #d2d2d2; }</style>      
-            
-            <div class="progress progress-lg" id="progress-bar">
-                <div id="progressbar" class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuemin="5" aria-valuemax="100">
-                    <div style="font-weight: bold; position: absolute; width: 100%; color: white;"><?php trans('Analyzing Website', $lang['MS6']); ?> - <span id="progress-label">0%</span> <?php trans('Complete', $lang['MS7']); ?></div>
-                </div>
-            </div>
-            <?php } ?>
-            <br />
-            
-            <div id="scoreBoard" class="row">
-                <div class="col-md-4 screenBox">
-                    <div id="screenshot">
-                        <div id="screenshotData">
-                        <div class="loader">
-                          <div class="side"></div>
-                          <div class="side"></div>
-                          <div class="side"></div>
-                          <div class="side"></div>
-                          <div class="side"></div>
-                          <div class="side"></div>
-                          <div class="side"></div>
-                          <div class="side"></div>
+    <div class="row">
+        <div class="col-sm-12">
+            <?php
+            // If there is an error, display the error message and a link to the homepage
+            if (isset($error)) {
+                echo '
+                    <br/><br/>
+                    <div class="alert alert-error">
+                        <strong>' . $lang['53'] . '</strong> ' . $error . '
+                    </div>
+                    <br/><br/>
+                    <div class="text-center">
+                        <a class="btn btn-info" href="' . $baseURL . '">' . trans('Go to homepage', $lang['22'], true) . '</a>
+                    </div>
+                    <br/>';
+            } else {
+            ?>
+                <div id="overview">
+                    <br />
+                    <?php if ($updateFound) { ?>
+                        <!-- Inline styles for the progress bar; consider moving these to an external CSS file -->
+                        <style>
+                            .progress-bar-primary {
+                                background-color: #3498DC;
+                            }
+                            .progress {
+                                margin-top: 20px;
+                                background-color: #d2d2d2;
+                            }
+                        </style>
+                        <div class="progress progress-lg" id="progress-bar">
+                            <div id="progressbar" class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuemin="5" aria-valuemax="100">
+                                <div style="font-weight: bold; position: absolute; width: 100%; color: white;">
+                                    <?php trans('Analyzing Website', $lang['MS6']); ?> - 
+                                    <span id="progress-label">0%</span> 
+                                    <?php trans('Complete', $lang['MS7']); ?>
+                                </div>
+                            </div>
                         </div>
-                        <div class="loaderLabel"><?php trans('Loading...',$lang['23']); ?></div>
+                    <?php } ?>
+                    <br />
+
+                    <!-- Scoreboard Section -->
+                    <div id="scoreBoard" class="row">
+                        <!-- Screenshot Display -->
+                        <div class="col-md-4 screenBox">
+                            <div id="screenshot">
+                                <div id="screenshotData">
+                                    <div class="loader">
+                                        <div class="side"></div>
+                                        <div class="side"></div>
+                                        <div class="side"></div>
+                                        <div class="side"></div>
+                                        <div class="side"></div>
+                                        <div class="side"></div>
+                                        <div class="side"></div>
+                                        <div class="side"></div>
+                                    </div>
+                                    <div class="loaderLabel">
+                                        <?php trans('Loading...', $lang['23']); ?>
+                                    </div>
+                                </div>
+                                <div class="computer"></div>
+                            </div>
                         </div>
-                        <div class="computer"></div>
+                        <!-- URL Host and Progress Bars -->
+                        <div class="col-md-5 levelBox">
+                            <div>
+                                <h1><?php echo ucfirst($my_url_host); ?></h1>
+                            </div>
+                            <div class="timeBox">
+                                <?php echo $disDate; ?>
+                            </div>
+                            <div class="progressBox">
+                                <span class="scoreProgress-label passedBox">
+                                    <?php trans('Passed', $lang['26']); ?>
+                                </span>
+                                <div class="scoreProgress scoreProgress-xs scoreProgress-success">
+                                    <div id="passScore" aria-valuemax="100" aria-valuenow="0" aria-valuemin="0" role="progressbar" class="scoreProgress-bar">
+                                        <span class="scoreProgress-value">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="progressBox">
+                                <span class="scoreProgress-label improveBox">
+                                    <?php trans('To Improve', $lang['25']); ?>
+                                </span>
+                                <div class="scoreProgress scoreProgress-xs scoreProgress-warning">
+                                    <div id="improveScore" aria-valuemax="100" aria-valuenow="0" aria-valuemin="0" role="progressbar" class="scoreProgress-bar">
+                                        <span class="scoreProgress-value">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="progressBox">
+                                <span class="scoreProgress-label errorBox">
+                                    <?php trans('Errors', $lang['24']); ?>
+                                </span>
+                                <div class="scoreProgress scoreProgress-xs scoreProgress-danger">
+                                    <div id="errorScore" aria-valuemax="100" aria-valuenow="0" aria-valuemin="0" role="progressbar" class="scoreProgress-bar">
+                                        <span class="scoreProgress-value">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <!-- Overall Score Gauge -->
+                        <div class="col-md-2 circleBox">
+                            <div class="second circle" data-size="130" data-thickness="5">
+                                <canvas width="130" height="130"></canvas>
+                                <strong id="overallscore">
+                                    0<i class="newI"><?php echo $lang['195']; ?></i>
+                                </strong>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                <div class="col-md-5 levelBox">
-                <div>
-                <a href="http://<?php echo $my_url_host; ?>" target="_blank" rel="nofollow" class="mainLink"><?php echo ucfirst($my_url_host); ?></a>
                 </div>
-                <div class="timeBox">
-                <?php echo $disDate; ?>
-                </div>
-                <div class="progressBox">
-                <span class="scoreProgress-label passedBox"><?php trans('Passed',$lang['26']); ?></span>
-                <div class="scoreProgress scoreProgress-xs scoreProgress-success">
-                    <div id="passScore" aria-valuemax="100" aria-valuenow="0" aria-valuemin="0" role="progressbar" class="scoreProgress-bar">
-                        <span class="scoreProgress-value">0%</span>
-                    </div>
-                </div>
-                </div>
-                
-                <div class="progressBox">
-                <span class="scoreProgress-label improveBox"><?php trans('To Improve',$lang['25']); ?></span>
-                <div class="scoreProgress scoreProgress-xs scoreProgress-warning">
-                    <div id="improveScore" aria-valuemax="100" aria-valuenow="0" aria-valuemin="0" role="progressbar" class="scoreProgress-bar">
-                        <span class="scoreProgress-value">0%</span>
-                    </div>
-                </div>
-                </div>
-                
-                <div class="progressBox">
-                <span class="scoreProgress-label errorBox"><?php trans('Errors',$lang['24']); ?></span>
-                <div class="scoreProgress scoreProgress-xs scoreProgress-danger">
-                    <div id="errorScore" aria-valuemax="100" aria-valuenow="0" aria-valuemin="0" role="progressbar" class="scoreProgress-bar">
-                        <span class="scoreProgress-value">0%</span>
-                    </div>
-                </div>
-                </div>
-                
-                <br />
-                
 
-                
-            </div>
-            <div class="col-md-2 circleBox">
-            <div class="second circle" data-size="130" data-thickness="5"><canvas width="130" height="130"></canvas>
-            <strong id="overallscore">0<i class="newI"><?php echo $lang['195']; ?></i></strong>
-            </div>
-            </div>
-            
-            </div>
-            
-            <div class="row">
-                <div class="col-md-4">
-                </div>
-                <div class="col-md-7">
-                    <div class="pdfBox">
-                    <a href="<?php echo $pdfUrl; ?>" id="pdfLink"  class="btn btn-lgreen btn-sm"> <i class="fa fa-cloud-download"></i> <?php trans('Download as PDF',$lang['28']); ?> </a>
-                    <a href="<?php echo $updateUrl; ?>" class="btn btn-red btn-sm"> <i class="fa fa-refresh"></i> <?php trans('Update Data',$lang['27']); ?> </a>
-                    <a href="<?php createLink('site-vs-site/'.$my_url_host); ?>" class="btn btn-violet btn-sm"> <i class="fa fa-star-half-empty"></i> <?php trans('Compare',$lang['196']); ?> </a>
-                    <a id="shareBtn" class="btn btn-blue btn-sm"> <i class="fa fa-share-alt-square"></i> <?php trans('Share',$lang['116']); ?> </a>
+                <!-- Social Sharing and Download/Update Links -->
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="top40">
+                            <ul class="social-icons icon-circle icon-rotate list-unstyled list-inline text-center">
+                                <li><?php trans('SHARE', $lang['122']); ?></li>
+                                <li> <a target="_blank" rel="nofollow" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $shareLink; ?>"><i class="fa fa-facebook"></i></a></li>  
+                                <li><a target="_blank" rel="nofollow" href="https://twitter.com/home?status=<?php echo $shareLink; ?>"><i class="fa fa-twitter"></i></a> </li> 
+                                <li> <a target="_blank" rel="nofollow" href="https://pinterest.com/pin/create/button/?url=<?php echo $shareLink; ?>"><i class="fa fa-pinterest"></i></a> </li>
+                                <li> <a target="_blank" rel="nofollow" href="https://www.tumblr.com/share/link?url=<?php echo $shareLink; ?>"><i class="fa fa-tumblr"></i></a> </li> 
+                                <li> <a target="_blank" rel="nofollow" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo $shareLink; ?>"><i class="fa fa-linkedin"></i></a> </li> 
+                                <li> <a target="_blank" rel="nofollow" href="https://del.icio.us/post?url=<?php echo $shareLink; ?>"><i class="fa fa-delicious"></i></a> </li> 
+                                <li> <a target="_blank" rel="nofollow" href="https://www.stumbleupon.com/submit?url=<?php echo $shareLink; ?>"><i class="fa fa-stumbleupon"></i></a></li> 
+                                <li> <a target="_blank" rel="nofollow" href="https://www.reddit.com/login?dest=https://www.reddit.com/submit?url=<?php echo $shareLink; ?>&title=<?php echo ucfirst($my_url_host); ?>"><i class="fa fa-reddit"></i></a></li> 
+                                <li> <a target="_blank" rel="nofollow" href="https://digg.com/submit?phase=2&url=<?php echo $shareLink; ?>"><i class="fa fa-digg"></i></a></li> 
+                                <li> <a target="_blank" rel="nofollow" href="https://vk.com/share.php?url=<?php echo $shareLink; ?>"><i class="fa fa-vk"></i></a></li>   
+                                <!-- Additional social sharing links omitted for brevity -->
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 align-items-center">
+                        <div class="pdfBox">
+                            <a href="<?php echo $pdfUrl; ?>" id="pdfLink" class="btn btn-lgreen btn-sm">
+                                <i class="fa fa-cloud-download"></i> 
+                                <?php trans('Download as PDF', $lang['28']); ?>
+                            </a>
+                            <a href="<?php echo $updateUrl; ?>" class="btn btn-red btn-sm">
+                                <i class="fa fa-refresh"></i> 
+                                <?php trans('Update Data', $lang['27']); ?>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="shareBox top40">
-        	  	<ul class="social-icons icon-circle icon-rotate list-unstyled list-inline text-center"> 
-     	          <li><?php trans('SHARE',$lang['122']); ?></li> 
-         	      <li> <a target="_blank" rel="nofollow" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $shareLink; ?>"><i class="fa fa-facebook"></i></a></li>  
-        	      <li><a target="_blank" rel="nofollow" href="https://twitter.com/home?status=<?php echo $shareLink; ?>"><i class="fa fa-twitter"></i></a> </li> 
-        	      <li><a target="_blank" rel="nofollow" href="https://plus.google.com/share?url=<?php echo $shareLink; ?>"><i class="fa fa-google-plus"></i></a> </li>   
-        	      <li> <a target="_blank" rel="nofollow" href="https://pinterest.com/pin/create/button/?url=<?php echo $shareLink; ?>"><i class="fa fa-pinterest"></i></a> </li>
-        	      <li> <a target="_blank" rel="nofollow" href="https://www.tumblr.com/share/link?url=<?php echo $shareLink; ?>"><i class="fa fa-tumblr"></i></a> </li> 
-        	      <li> <a target="_blank" rel="nofollow" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo $shareLink; ?>"><i class="fa fa-linkedin"></i></a> </li> 
-        	      <li> <a target="_blank" rel="nofollow" href="https://del.icio.us/post?url=<?php echo $shareLink; ?>"><i class="fa fa-delicious"></i></a> </li> 
-        	      <li> <a target="_blank" rel="nofollow" href="https://www.stumbleupon.com/submit?url=<?php echo $shareLink; ?>"><i class="fa fa-stumbleupon"></i></a></li> 
-        	      <li> <a target="_blank" rel="nofollow" href="https://www.reddit.com/login?dest=https://www.reddit.com/submit?url=<?php echo $shareLink; ?>&title=<?php echo ucfirst($my_url_host); ?>"><i class="fa fa-reddit"></i></a></li> 
-        	      <li> <a target="_blank" rel="nofollow" href="https://digg.com/submit?phase=2&url=<?php echo $shareLink; ?>"><i class="fa fa-digg"></i></a></li> 
-        	      <li> <a target="_blank" rel="nofollow" href="https://vk.com/share.php?url=<?php echo $shareLink; ?>"><i class="fa fa-vk"></i></a></li>   
-        	  	</ul>
-            </div>
-        </div>
-        
+                <div class="clearfix"></div>
+
+                <!-- SEO Analysis Sections -->
+
+
         <div class="clearfix"></div>
                  
-               <div id="seo">  
-                <div class="clearSep"></div>
+               <div id="seo1">   
                 <h2 class="seoBox-title">
                     <?php trans('SEO',$lang['35']); ?>
                 </h2>
-               <div class="seoBox" onclick="javascript:showSuggestion('seoBox1');">
-                    <?php outHeadBox($lang['AN1'],$solveMsg,1); ?>
+               <div class="seoBox"  >
+                    <?php outHeadBox($lang['CUST1'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox1">
                         <?php echo $seoBox1; ?>
                     </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
+                    <?php //outQuestionBox($lang['AN4']); ?>
 	            </div>
                 
                 <div class="seoBox" onclick="javascript:showSuggestion('seoBox2');">
@@ -422,9 +454,9 @@ var CANV_GAUGE_FONTS_PATH = '<?php themeLink('fonts'); ?>';
 	            </div> 
                 
                 <div class="seoBox" onclick="javascript:showSuggestion('seoBox31');">
-                    <?php outHeadBox($lang['AN99'],$solveMsg,1); ?>
+                    <?php outHeadBox($lang['AN99'],$solveMsg,1); ?> 
                     <div class="contentBox" id="seoBox31">
-                        <?php echo $seoBox31; ?>
+                        <?php echo $seoBox31; ?> 
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
@@ -627,41 +659,40 @@ var CANV_GAUGE_FONTS_PATH = '<?php themeLink('fonts'); ?>';
 
                </div>  
                   
-                <div class="text-center">
-                <br /> &nbsp; <br />
-                <h4 style="color: #989ea8;"><?php trans('Try New Site',$lang['38']); ?></h4>
-                <form method="POST" action="<?php createLink('domain'); ?>" onsubmit="return fixURL();">
-                <div class="input-group reviewBox">
-                    <div class="input-container">
-                        <input type="text" tabindex="1" placeholder="<?php trans('Website URL to review',$lang['37']); ?>" id="url" name="url" class="form-control reviewIn"/>
-                    </div>
-                    
-                    <div class="input-group-btn">
-                        <button tabindex="2" type="submit" name="generate" class="btn btn-info url-lg">
-                            <span class="ready"><?php trans('Analyze',$lang['36']); ?></span>
-                        </button>
-                    </div>
+                           <!-- New Site Analysis Form -->
+                           <div class="text-center">
+                    <br /> &nbsp; <br />
+                    <h4 style="color: #989ea8;">
+                        <?php trans('Try New Site', $lang['38']); ?>
+                    </h4>
+                    <form method="POST" action="<?php createLink('domain'); ?>" onsubmit="return fixURL();">
+                        <div class="input-group reviewBox">
+                            <div class="input-container">
+                                <input type="text" tabindex="1" placeholder="<?php trans('Website URL to review', $lang['37']); ?>" id="url" name="url" class="form-control reviewIn"/>
+                            </div>
+                            <div class="input-group-btn">
+                                <button tabindex="2" type="submit" name="generate" class="btn btn-info url-lg">
+                                    <span class="ready"><?php trans('Analyze', $lang['36']); ?></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <br />
                 </div>
-                </form>
-                <br />
-                </div>
-
             <?php } ?>
-            
             <br />
-            
+
+            <!-- Advertisement Section -->
             <div class="xd_top_box bottom40 text-center">
-            <?php echo $ads_720x90; ?>
+                <?php echo $ads_720x90; ?>
             </div>
-            
-            </div>     
-    
-  </div>
+        </div>
+    </div>
 </div>
 
-<!-- App -->
-<?php if($updateFound) { ?>
-<script src="<?php themeLink('js/domain.js?v6'); ?>" type="text/javascript"></script>
+<!-- Conditionally include JavaScript based on update status -->
+<?php if ($updateFound) { ?>
+    <script src="<?php themeLink('js/domain.js?v6'); ?>" type="text/javascript"></script>
 <?php } else { ?>
-<script src="<?php themeLink('js/dbdomain.js?v6'); ?>" type="text/javascript"></script>
+    <script src="<?php themeLink('js/dbdomain.js?v6'); ?>" type="text/javascript"></script>
 <?php } ?>

@@ -153,6 +153,7 @@ $(document).ready(function() {
     $.post(domainPath,{meta:'1', metaOut:'1', hashcode:hashCode, url:inputHost},function(data){
         myArr = data.split('!!!!8!!!!');
         updateProgress(5);
+        alert("Meta Called");
         $("#seoBox1").html(myArr[0]);
         updateScore(document.getElementById("seoBox1").childNodes[0].className.toLowerCase());
         $("#seoBox2").html(myArr[1]);

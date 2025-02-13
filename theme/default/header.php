@@ -32,9 +32,9 @@ defined('APP_NAME') or die(header('HTTP/1.0 403 Forbidden'));
         <meta property="og:site_name" content="<?php echo $site_name; ?>" />
         <meta property="og:type" content="website" />
         <meta property="og:description" content="<?php echo $des; ?>" />
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Lora:400italic" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
         
         <?php genCanonicalData($baseURL, $currentLink, $loadedLanguages, false, isSelected($themeOptions['general']['langSwitch'])); ?>
 
@@ -168,9 +168,7 @@ defined('APP_NAME') or die(header('HTTP/1.0 403 Forbidden'));
     </section>
     <?php } else { ?>
     <div class="bg-primary-color page-block"> 
-    	<div class="container"> 
-    		<h1 class="pageTitle text-center"><?php echo $pageTitle; ?></h1>
-    	</div>
+    	
     </div>
     <?php } ?>
 </div>

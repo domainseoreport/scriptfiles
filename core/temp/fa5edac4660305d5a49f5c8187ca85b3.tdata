@@ -54,7 +54,7 @@
 		padding: 0 !important;
 	}
 </style>
-<link rel='stylesheet' id='wp-block-library-css' href='https://www.jaipurroutes.com/wp-includes/css/dist/block-library/style.min.css?ver=6.7.1' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-css' href='https://www.jaipurroutes.com/wp-includes/css/dist/block-library/style.min.css?ver=6.7.2' type='text/css' media='all' />
 <style id='rank-math-toc-block-style-inline-css' type='text/css'>
 .wp-block-rank-math-toc-block nav ol{counter-reset:item}.wp-block-rank-math-toc-block nav ol li{display:block}.wp-block-rank-math-toc-block nav ol li:before{content:counters(item, ".") ". ";counter-increment:item}
 
@@ -77,21 +77,21 @@
 :where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
 :root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
 </style>
-<link rel='stylesheet' id='nouislider-css' href='https://www.jaipurroutes.com/wp-content/plugins/mikado-tours/assets/css/nouislider.min.css?ver=6.7.1' type='text/css' media='all' />
+<link rel='stylesheet' id='nouislider-css' href='https://www.jaipurroutes.com/wp-content/plugins/mikado-tours/assets/css/nouislider.min.css?ver=6.7.2' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='contact-form-7-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=1706032519' type='text/css' media='all' />
 <link rel='stylesheet' id='wpcf7-redirect-script-frontend-css' href='https://www.jaipurroutes.com/wp-content/plugins/wpcf7-redirect/build/css/wpcf7-redirect-frontend.min.css?ver=1.1' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='quform-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/plugins/quform/cache/quform.css?ver=1706032519' type='text/css' media='all' />
-<link rel='stylesheet' id='gotravel-style-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/style.css?ver=6.7.1' type='text/css' media='all' />
+<link rel='stylesheet' id='gotravel-style-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/style.css?ver=6.7.2' type='text/css' media='all' />
 <link rel='stylesheet' id='gotravel-child-style-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel-theme-child/style.css?ver=1.0.0' type='text/css' media='all' />
-<link rel='stylesheet' id='gotravel-mikado-default-style-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/style.css?ver=6.7.1' type='text/css' media='all' />
+<link rel='stylesheet' id='gotravel-mikado-default-style-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/style.css?ver=6.7.2' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='gotravel-mikado-font_awesome-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/css/font-awesome/css/font-awesome.min.css?ver=1706032519' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='gotravel-mikado-font_elegant-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/css/elegant-icons/style.min.css?ver=1706032519' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='gotravel-mikado-ion_icons-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/css/ion-icons/css/ionicons.min.css?ver=1706032519' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='gotravel-mikado-linea_icons-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/css/linea-icons/style.css?ver=1706032519' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='gotravel-mikado-linear_icons-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/css/linear-icons/style.css?ver=1706032519' type='text/css' media='all' />
 <link rel='stylesheet' id='mediaelement-css' href='https://www.jaipurroutes.com/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css?ver=4.2.17' type='text/css' media='all' />
-<link rel='stylesheet' id='wp-mediaelement-css' href='https://www.jaipurroutes.com/wp-includes/js/mediaelement/wp-mediaelement.min.css?ver=6.7.1' type='text/css' media='all' />
-<link rel='stylesheet' id='gotravel-mikado-modules-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/css/modules.min.css?ver=6.7.1' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-mediaelement-css' href='https://www.jaipurroutes.com/wp-includes/js/mediaelement/wp-mediaelement.min.css?ver=6.7.2' type='text/css' media='all' />
+<link rel='stylesheet' id='gotravel-mikado-modules-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/css/modules.min.css?ver=6.7.2' type='text/css' media='all' />
 <style id='gotravel-mikado-modules-inline-css' type='text/css'>
 #gallerytop .mkdf-masonry-gallery-holder .mkdf-mg-item.mkdf-mg-standard .mkdf-mg-item-inner{
 opacity: 1 !important;
@@ -310,10 +310,10 @@ font-size : 30px;
 text-align : center;
 }
 </style>
-<link rel='stylesheet' id='gotravel-mikado-tours-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/css/tours.min.css?ver=6.7.1' type='text/css' media='all' />
-<link rel='stylesheet' id='gotravel-mikado-tours-responsive-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/css/tours-responsive.min.css?ver=6.7.1' type='text/css' media='all' />
+<link rel='stylesheet' id='gotravel-mikado-tours-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/css/tours.min.css?ver=6.7.2' type='text/css' media='all' />
+<link rel='stylesheet' id='gotravel-mikado-tours-responsive-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/css/tours-responsive.min.css?ver=6.7.2' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='gotravel-mikado-style-dynamic-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/css/style_dynamic.css?ver=1706032519' type='text/css' media='all' />
-<link rel='stylesheet' id='gotravel-mikado-modules-responsive-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/css/modules-responsive.min.css?ver=6.7.1' type='text/css' media='all' />
+<link rel='stylesheet' id='gotravel-mikado-modules-responsive-css' href='https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/css/modules-responsive.min.css?ver=6.7.2' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='gotravel-mikado-style-dynamic-responsive-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/css/style_dynamic_responsive.css?ver=1706032519' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='js_composer_front-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/plugins/js_composer/assets/css/js_composer.min.css?ver=1706032519' type='text/css' media='all' />
 <link data-minify="1" rel='stylesheet' id='gotravel-mikado-google-fonts-css' href='https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/uploads/omgf/gotravel-mikado-google-fonts/gotravel-mikado-google-fonts.css?ver=1706032519' type='text/css' media='all' />
@@ -339,7 +339,7 @@ gtag("config", "AW-10850954504");
 
 <!-- End Google tag (gtag.js) snippet added by Site Kit -->
 <script type="rocketlazyloadscript"></script><link rel="https://api.w.org/" href="https://www.jaipurroutes.com/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://www.jaipurroutes.com/wp-json/wp/v2/pages/6793" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.jaipurroutes.com/xmlrpc.php?rsd" />
-<meta name="generator" content="WordPress 6.7.1" />
+<meta name="generator" content="WordPress 6.7.2" />
 <link rel='shortlink' href='https://www.jaipurroutes.com/' />
 <link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://www.jaipurroutes.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.jaipurroutes.com%2F" />
 <link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://www.jaipurroutes.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.jaipurroutes.com%2F&#038;format=xml" />
@@ -925,7 +925,7 @@ a.foter-text {
                     <span aria-hidden="true" class="mkdf-icon-font-elegant icon_mail mkdf-icon-element" style="color: #808285;font-size:14px" ></span>            </span>
 
 
-<span style="font-size: 14px;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a7cec9c1c8e7e0e8d3d5c6d1c2cb89c4c8ca">[email&#160;protected]</a></span></div>
+<span style="font-size: 14px;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bbd2d5ddd4fbfcf4cfc9dacdded795d8d4d6">[email&#160;protected]</a></span></div>
 		</div>
 		<div id="mkd_social_icon_widget-13" class="widget mkdf-sidearea widget_mkd_social_icon_widget">
 		<a class="mkdf-social-icon-widget-holder" data-hover-color="#00bdbb" style="color: #808285;font-size: 11px;margin: -17px 10px 34px 0" href="https://www.instagram.com/" target="_blank">
@@ -956,10 +956,10 @@ a.foter-text {
 		<a class="mkdf-social-icon-widget-holder" data-hover-color="#00bdbb" style="color: #808285;font-size: 11px;margin: -17px 0 34px 0" href="https://www.linkedin.com/" target="_blank">
 			<span class="mkdf-social-icon-widget social_linkedin"></span>		</a>
 
-		</div>		<div id="search-4" class="widget mkdf-sidearea widget_search"><h5 class="mkdf-sidearea-widget-title">Find Your Destination</h5><form method="get" id="searchform-1990085191" class="searchform clearfix" action="https://www.jaipurroutes.com/">
+		</div>		<div id="search-4" class="widget mkdf-sidearea widget_search"><h5 class="mkdf-sidearea-widget-title">Find Your Destination</h5><form method="get" id="searchform-1723467101" class="searchform clearfix" action="https://www.jaipurroutes.com/">
 	<div class="clearfix">
-		<input type="text" value="" placeholder="Search" name="s" id="s-298604139"/>
-		<input type="submit" id="searchsubmit-397145142" value="&#x55;"/>
+		<input type="text" value="" placeholder="Search" name="s" id="s-679264173"/>
+		<input type="submit" id="searchsubmit-1229268999" value="&#x55;"/>
 	</div>
 </form></div></section>    
         <div class="mkdf-wrapper">
@@ -1680,9 +1680,9 @@ a.foter-text {
 
 		</div>
 	</div>
-<div class="mkdf-elements-holder mkdf-responsive-mode-768" ><div class="mkdf-eh-item mkdf-horizontal-alignment-center"   data-item-class="mkdf-eh-custom-224615" data-1280-1600="21px 26% 0 26%" data-1024-1280="21px 25% 0 25%" data-768-1024="21px 19% 0 19%" data-600-768="21px 7% 0 7%" data-480-600="21px 5% 0 5%" data-480="21px 5% 0 5%">
+<div class="mkdf-elements-holder mkdf-responsive-mode-768" ><div class="mkdf-eh-item mkdf-horizontal-alignment-center"   data-item-class="mkdf-eh-custom-826761" data-1280-1600="21px 26% 0 26%" data-1024-1280="21px 25% 0 25%" data-768-1024="21px 19% 0 19%" data-600-768="21px 7% 0 7%" data-480-600="21px 5% 0 5%" data-480="21px 5% 0 5%">
 	<div class="mkdf-eh-item-inner">
-		<div class="mkdf-eh-item-content mkdf-eh-custom-224615" style="padding: 21px 32% 0 32%">
+		<div class="mkdf-eh-item-content mkdf-eh-custom-826761" style="padding: 21px 32% 0 32%">
 			
 <h6 class="mkdf-custom-font-holder" style="color: #808285">
 </h6>		</div>
@@ -1955,7 +1955,7 @@ Jaipur 302012, Rajasthan, India
                     <span aria-hidden="true" class="mkdf-icon-font-elegant icon_mail mkdf-icon-element" style="color: #bbbbbb;font-size:14px" ></span>            </span>
 
 
-<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="117b7078616463637e6465746251767c70787d3f727e7c">[email&#160;protected]</a></div></div><div id="text-12" class="widget mkdf-footer-column-4 widget_text">			<div class="textwidget"><div class="vc_empty_space"   style="height: 3px"><span class="vc_empty_space_inner"></span></div>
+<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="741e151d040106061b01001107341319151d185a171b19">[email&#160;protected]</a></div></div><div id="text-12" class="widget mkdf-footer-column-4 widget_text">			<div class="textwidget"><div class="vc_empty_space"   style="height: 3px"><span class="vc_empty_space_inner"></span></div>
 </div>
 		</div>
 		<div id="mkd_social_icon_widget-7" class="widget mkdf-footer-column-4 widget_mkd_social_icon_widget">
@@ -2054,11 +2054,11 @@ var mkdfGlobalVars = {"vars":{"mkdfAddForAdminBar":0,"mkdfElementAppearAmount":-
 var mkdfPerPageVars = {"vars":{"mkdfStickyScrollAmount":0,"mkdfStickyScrollAmountFullScreen":false,"mkdfHeaderTransparencyHeight":0}};
 /* ]]> */
 </script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules.min.js?ver=6.7.1" id="gotravel-mikado-modules-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/mikado-tours/assets/js/script.min.js?ver=6.7.1" id="mkdf-tours-script-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/mikado-tours/assets/js/nouislider.min.js?ver=6.7.1" id="nouislider-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/mikado-tours/assets/js/typeahead.bundle.min.js?ver=6.7.1" id="typeahead-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/mikado-tours/assets/js/bloodhound.min.js?ver=6.7.1" id="bloodhound-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules.min.js?ver=6.7.2" id="gotravel-mikado-modules-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/mikado-tours/assets/js/script.min.js?ver=6.7.2" id="mkdf-tours-script-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/mikado-tours/assets/js/nouislider.min.js?ver=6.7.2" id="nouislider-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/mikado-tours/assets/js/typeahead.bundle.min.js?ver=6.7.2" id="typeahead-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/mikado-tours/assets/js/bloodhound.min.js?ver=6.7.2" id="bloodhound-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/revslider/public/assets/js/rbtools.min.js?ver=6.5.8" defer async id="tp-tools-js"></script>
 <script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/revslider/public/assets/js/rs6.min.js?ver=6.5.8" defer async id="revmin-js"></script>
 <script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-includes/js/dist/hooks.min.js?ver=4d63a3d491d11ffd8ac6" id="wp-hooks-js"></script>
@@ -2101,42 +2101,42 @@ var mejsL10n = {"language":"en","strings":{"mejs.download-file":"Download File",
 /* ]]> */
 </script>
 <script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-includes/js/mediaelement/mediaelement-and-player.min.js?ver=4.2.17" id="mediaelement-core-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-includes/js/mediaelement/mediaelement-migrate.min.js?ver=6.7.1" id="mediaelement-migrate-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-includes/js/mediaelement/mediaelement-migrate.min.js?ver=6.7.2" id="mediaelement-migrate-js" data-rocket-defer defer></script>
 <script type="text/javascript" id="mediaelement-js-extra">
 /* <![CDATA[ */
 var _wpmejsSettings = {"pluginPath":"\/wp-includes\/js\/mediaelement\/","classPrefix":"mejs-","stretching":"responsive","audioShortcodeLibrary":"mediaelement","videoShortcodeLibrary":"mediaelement"};
 /* ]]> */
 </script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-includes/js/mediaelement/wp-mediaelement.min.js?ver=6.7.1" id="wp-mediaelement-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-includes/js/mediaelement/wp-mediaelement.min.js?ver=6.7.2" id="wp-mediaelement-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-minify="1" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.appear.js?ver=1706032519" id="appear-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-minify="1" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/js/modules/plugins/modernizr.custom.85257.js?ver=1706032519" id="modernizr-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-includes/js/hoverIntent.min.js?ver=1.10.2" id="hoverIntent-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-minify="1" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.plugin.js?ver=1706032519" id="jquery-plugin-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.countdown.min.js?ver=6.7.1" id="jquery-countdown-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/owl.carousel.min.js?ver=6.7.1" id="owl-carousel-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/parallax.min.js?ver=6.7.1" id="parallax-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.countdown.min.js?ver=6.7.2" id="jquery-countdown-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/owl.carousel.min.js?ver=6.7.2" id="owl-carousel-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/parallax.min.js?ver=6.7.2" id="parallax-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-minify="1" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/js/modules/plugins/easypiechart.js?ver=1706032519" id="easypiechart-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.waypoints.min.js?ver=6.7.1" id="waypoints-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/Chart.min.js?ver=6.7.1" id="chart-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.waypoints.min.js?ver=6.7.2" id="waypoints-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/Chart.min.js?ver=6.7.2" id="chart-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-minify="1" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/js/modules/plugins/counter.js?ver=1706032519" id="counter-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-minify="1" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/js/modules/plugins/absoluteCounter.js?ver=1706032519" id="absolute-counter-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/fluidvids.min.js?ver=6.7.1" id="fluidvids-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/fluidvids.min.js?ver=6.7.2" id="fluidvids-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/js_composer/assets/lib/prettyphoto/js/jquery.prettyPhoto.min.js?ver=7.0" id="prettyphoto-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.nicescroll.min.js?ver=6.7.1" id="jquery.nicescroll-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/ScrollToPlugin.min.js?ver=6.7.1" id="ScrollToPlugin-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/TweenLite.min.js?ver=6.7.1" id="tweenLite-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/TimelineLite.min.js?ver=6.7.1" id="TimelineLite-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/CSSPlugin.min.js?ver=6.7.1" id="CSSPlugin-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/EasePack.min.js?ver=6.7.1" id="EasePack-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.mixitup.min.js?ver=6.7.1" id="jquery-mixitup-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.nicescroll.min.js?ver=6.7.2" id="jquery.nicescroll-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/ScrollToPlugin.min.js?ver=6.7.2" id="ScrollToPlugin-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/TweenLite.min.js?ver=6.7.2" id="tweenLite-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/TimelineLite.min.js?ver=6.7.2" id="TimelineLite-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/CSSPlugin.min.js?ver=6.7.2" id="CSSPlugin-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/EasePack.min.js?ver=6.7.2" id="EasePack-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.mixitup.min.js?ver=6.7.2" id="jquery-mixitup-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-minify="1" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.waitforimages.js?ver=1706032519" id="waitforimages-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.infinitescroll.min.js?ver=6.7.1" id="jquery-infinitescroll-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.infinitescroll.min.js?ver=6.7.2" id="jquery-infinitescroll-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-minify="1" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.easing.1.3.js?ver=1706032519" id="jquery-easing-1.3-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-minify="1" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/js/modules/plugins/skrollr.js?ver=1706032519" id="skrollr-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-minify="1" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/cache/min/1/wp-content/themes/gotravel/assets/js/modules/plugins/bootstrapCarousel.js?ver=1706032519" id="bootstrapCarousel-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.touchSwipe.min.js?ver=6.7.1" id="touchSwipe-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/modules/plugins/jquery.touchSwipe.min.js?ver=6.7.2" id="touchSwipe-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/js_composer/assets/lib/bower/isotope/dist/isotope.pkgd.min.js?ver=7.0" id="isotope-js" data-rocket-defer defer></script>
-<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/packery-mode.pkgd.min.js?ver=6.7.1" id="packery-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/themes/gotravel/assets/js/packery-mode.pkgd.min.js?ver=6.7.2" id="packery-js" data-rocket-defer defer></script>
 <script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://www.jaipurroutes.com/wp-content/plugins/js_composer/assets/js/dist/js_composer_front.min.js?ver=7.0" id="wpb_composer_front_js-js" data-rocket-defer defer></script>
 <script type="text/javascript" id="gotravel-mikado-like-js-extra">
 /* <![CDATA[ */
@@ -2199,6 +2199,6 @@ var mkdfLike = {"ajaxurl":"https:\/\/www.jaipurroutes.com\/wp-admin\/admin-ajax.
 <script>window.lazyLoadOptions=[{elements_selector:"img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,callback_loaded:function(element){if(element.tagName==="IFRAME"&&element.dataset.rocketLazyload=="fitvidscompatible"){if(element.classList.contains("lazyloaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}},{elements_selector:".rocket-lazyload",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,}];window.addEventListener('LazyLoad::Initialized',function(e){var lazyLoadInstance=e.detail.instance;if(window.MutationObserver){var observer=new MutationObserver(function(mutations){var image_count=0;var iframe_count=0;var rocketlazy_count=0;mutations.forEach(function(mutation){for(var i=0;i<mutation.addedNodes.length;i++){if(typeof mutation.addedNodes[i].getElementsByTagName!=='function'){continue}
 if(typeof mutation.addedNodes[i].getElementsByClassName!=='function'){continue}
 images=mutation.addedNodes[i].getElementsByTagName('img');is_image=mutation.addedNodes[i].tagName=="IMG";iframes=mutation.addedNodes[i].getElementsByTagName('iframe');is_iframe=mutation.addedNodes[i].tagName=="IFRAME";rocket_lazy=mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');image_count+=images.length;iframe_count+=iframes.length;rocketlazy_count+=rocket_lazy.length;if(is_image){image_count+=1}
-if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="https://www.jaipurroutes.com/wp-content/plugins/wp-rocket/assets/js/lazyload/17.8.3/lazyload.min.js"></script><script type="rocketlazyloadscript">var rocket_beacon_data = {"ajax_url":"https:\/\/www.jaipurroutes.com\/wp-admin\/admin-ajax.php","nonce":"1310a59966","url":"https:\/\/www.jaipurroutes.com","is_mobile":false,"width_threshold":1600,"height_threshold":700,"delay":500,"debug":null,"status":{"atf":true},"elements":"img, video, picture, p, main, div, li, svg, section, header, span"}</script><script type="rocketlazyloadscript" data-name="wpr-wpr-beacon" data-rocket-src='https://www.jaipurroutes.com/wp-content/plugins/wp-rocket/assets/js/wpr-beacon.min.js' async></script></body>
+if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="https://www.jaipurroutes.com/wp-content/plugins/wp-rocket/assets/js/lazyload/17.8.3/lazyload.min.js"></script><script type="rocketlazyloadscript">var rocket_beacon_data = {"ajax_url":"https:\/\/www.jaipurroutes.com\/wp-admin\/admin-ajax.php","nonce":"2201295479","url":"https:\/\/www.jaipurroutes.com","is_mobile":false,"width_threshold":1600,"height_threshold":700,"delay":500,"debug":null,"status":{"atf":true},"elements":"img, video, picture, p, main, div, li, svg, section, header, span"}</script><script type="rocketlazyloadscript" data-name="wpr-wpr-beacon" data-rocket-src='https://www.jaipurroutes.com/wp-content/plugins/wp-rocket/assets/js/wpr-beacon.min.js' async></script></body>
 </html>
-<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1739294502 -->
+<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1739382994 -->
