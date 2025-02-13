@@ -1009,16 +1009,22 @@ function hasRestrictedWords($html, $badLists) {
  * @param string   $keywords    Page keywords.
  * @return mixed                Returns true on success, or error message on failure.
  */
-function createDomainRecord($con, $domainStr, $nowDate, $title, $description, $keywords) {
-    // Encrypt the meta data using serBase()
-    $metaEncrypted = serBase([$title, $description, $keywords]);
+function createDomainRecord($con, $domainStr,$accessurl,$nowDate, $title, $description, $keywords) {
 
+    $meta['title']=trim($title);
+    $meta['description'] = trim($description);
+    $meta['keywords'] = trim($keywords);
+    // Encrypt the meta data using serBase()
+    $metaEncrypted = jsonEncode($meta);
+ 
     $data = [
         'domain'    => $domainStr,
+        'domain_access_url' => $accessurl,
         'slug'      => slugify($domainStr),
         'date'      => $nowDate,
         'meta_data' => $metaEncrypted // Storing the encrypted meta data
     ];
+   
 
     // Check if there is an error returned from the insert.
     $error = insertToDbPrepared($con, 'domains_data', $data);

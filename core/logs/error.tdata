@@ -344,3 +344,1000 @@ Stack trace:
 #3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
 #4 {main}
   thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 918
+[05-Feb-2025 23:57:17 Asia/Calcutta] PHP Fatal error:  Maximum execution time of 300 seconds exceeded in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 669
+[06-Feb-2025 12:30:48 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined function load_html() in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php:125
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(89): SeoTools->processImageAlts('\r\n<!DOCTYPE htm...', 'silverandgem.co...')
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 125
+[06-Feb-2025 12:37:20 Asia/Calcutta] PHP Fatal error:  Maximum execution time of 300 seconds exceeded in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 669
+[06-Feb-2025 12:58:23 Asia/Calcutta] PHP Fatal error:  Maximum execution time of 300 seconds exceeded in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 669
+[06-Feb-2025 13:00:30 Asia/Calcutta] PHP Fatal error:  Maximum execution time of 300 seconds exceeded in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 669
+[06-Feb-2025 15:34:03 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php:1014
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php(1014): json_decode(Array)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php(255): createDomainRecord(Object(mysqli), 'silverandgem.co...', 'https://www.sil...', '02/06/2025 03:3...', '\r\n\tsilver jewel...', 'silver & gem ex...', 'silver jeweller...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#4 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 1014
+[06-Feb-2025 15:53:55 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Object of class mysqli_stmt could not be converted to string in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\database_helper.php:360
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(137): updateToDbPrepared(Object(mysqli), 'domains_data', Array, Array)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\database_helper.php on line 360
+[06-Feb-2025 15:53:55 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Object of class mysqli_stmt could not be converted to string in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\database_helper.php:360
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\track.php(76): updateToDbPrepared(Object(mysqli), 'rainbow_track', Array, Array)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\database_helper.php on line 360
+[06-Feb-2025 15:56:35 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 15:57:17 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 15:57:33 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 15:57:45 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 15:57:57 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 15:58:08 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 15:59:05 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 16:00:08 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 16:00:24 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 16:00:29 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 16:00:49 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 16:01:13 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:137
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 137
+[06-Feb-2025 17:41:12 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:116
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 116
+[06-Feb-2025 17:41:50 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:116
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 116
+[06-Feb-2025 17:42:10 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:116
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 116
+[06-Feb-2025 17:43:14 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 17:43:22 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 17:43:47 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 17:43:56 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 17:44:30 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 17:44:49 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 17:44:53 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 17:46:41 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 17:47:07 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 17:47:11 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 17:47:14 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 17:47:39 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 17:47:54 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 17:48:41 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 17:48:47 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 17:49:12 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 17:49:36 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 17:50:12 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processMeta() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:94
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 94
+[06-Feb-2025 18:43:06 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:43:39 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:44:19 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:44:40 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:44:46 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:44:52 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:44:56 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:45:07 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:45:19 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:46:17 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:46:23 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[06-Feb-2025 18:46:44 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:24:46 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:24:59 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:25:29 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:25:46 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:26:55 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:27:10 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:27:26 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:28:30 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:29:19 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:29:47 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:30:20 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:30:53 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:31:18 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:31:34 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:36:15 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:36:17 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:36:26 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:39:35 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:39:50 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:41:11 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Cannot use object of type DOMElement as array in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:93
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 93
+[11-Feb-2025 18:41:57 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: base64_decode(): Argument #1 ($string) must be of type string, DOMElement given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): base64_decode(Object(DOMElement))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(98): jsonDecode(Object(DOMElement))
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#4 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[11-Feb-2025 18:42:53 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: base64_decode(): Argument #1 ($string) must be of type string, DOMElement given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): base64_decode(Object(DOMElement))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(98): jsonDecode(Object(DOMElement))
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#4 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[11-Feb-2025 18:44:13 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: base64_decode(): Argument #1 ($string) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:367
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(367): base64_decode(Array)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(98): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#4 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 367
+[11-Feb-2025 18:44:36 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:367
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(367): json_decode(Array)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(98): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#4 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 367
+[11-Feb-2025 18:44:38 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:367
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(367): json_decode(Array)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(98): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#4 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 367
+[11-Feb-2025 19:29:50 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, DOMNodeList given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:213
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(213): trim(Object(DOMNodeList))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 213
+[11-Feb-2025 19:30:02 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, DOMNodeList given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:213
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(213): trim(Object(DOMNodeList))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 213
+[11-Feb-2025 19:52:05 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, DOMNodeList given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:213
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(213): trim(Object(DOMNodeList))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 213
+[11-Feb-2025 19:52:05 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, DOMNodeList given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:213
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(213): trim(Object(DOMNodeList))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 213
+[11-Feb-2025 20:39:17 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, DOMNodeList given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:213
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(213): trim(Object(DOMNodeList))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 213
+[11-Feb-2025 20:41:34 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, DOMNodeList given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:213
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(213): trim(Object(DOMNodeList))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 213
+[11-Feb-2025 20:42:14 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, DOMNodeList given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:213
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(213): trim(Object(DOMNodeList))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 213
+[11-Feb-2025 20:43:25 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, DOMNodeList given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:213
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(213): trim(Object(DOMNodeList))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 213
+[11-Feb-2025 20:43:33 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: trim(): Argument #1 ($string) must be of type string, DOMNodeList given in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:213
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(213): trim(Object(DOMNodeList))
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 213
+[12-Feb-2025 08:01:31 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:01:31 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:03:00 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:03:00 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:03:45 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:03:45 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:03:48 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:03:48 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:04:04 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:04:04 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:04:33 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:04:33 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'SeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:06:42 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\coreSeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:06:42 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\coreSeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:06:49 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\coreSeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:06:49 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\coreSeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:07:02 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\coreSeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:07:02 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\coreSeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:08:05 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\coreSeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 08:08:05 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\seowebdevelopment\htdocs\scriptfiles\coreSeoTools.php' (include_path='C:\seowebdevelopment\php\PEAR') in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:15
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 15
+[12-Feb-2025 09:46:36 Asia/Calcutta] PHP Fatal error:  Uncaught ArgumentCountError: print_r() expects at least 1 argument, 0 given in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php:293
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(293): print_r()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(171): SeoTools->processImage()
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#4 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 293
+[12-Feb-2025 12:51:11 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(509): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(219): SeoTools->showTextRatio(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 12:51:18 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(509): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(219): SeoTools->showTextRatio(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 12:51:58 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(509): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(219): SeoTools->showTextRatio(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 12:57:52 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(510): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(219): SeoTools->showTextRatio(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 12:59:50 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(511): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(219): SeoTools->showTextRatio(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 13:00:22 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(221): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#4 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 13:07:27 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(542): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(243): SeoTools->showGzip(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 13:08:39 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(542): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(243): SeoTools->showGzip(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 14:05:33 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(594): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(247): SeoTools->showWWWResolve(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 14:05:40 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(594): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(247): SeoTools->showWWWResolve(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 15:08:49 Asia/Calcutta] PHP Fatal error:  Maximum execution time of 300 seconds exceeded in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 669
+[12-Feb-2025 15:18:06 Asia/Calcutta] PHP Fatal error:  Maximum execution time of 300 seconds exceeded in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php on line 669
+[12-Feb-2025 18:02:36 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1723): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(394): SeoTools->showBacklinks(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 18:03:32 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1723): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(394): SeoTools->showBacklinks(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 18:04:27 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1723): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(394): SeoTools->showBacklinks(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 18:04:59 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1723): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(394): SeoTools->showBacklinks(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 18:05:56 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1723): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(394): SeoTools->showBacklinks(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 20:43:48 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1342): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(435): SeoTools->showPageLoad(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 20:45:14 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1342): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(427): SeoTools->showPageLoad(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[12-Feb-2025 20:46:00 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1342): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(430): SeoTools->showPageLoad(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 11:05:43 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 11:07:03 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 11:09:31 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 11:12:24 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 11:16:56 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 11:18:41 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 11:23:53 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 12:37:38 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 12:39:46 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 12:41:55 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 12:43:20 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(562): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 12:50:28 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(546): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 13:03:46 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(555): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 13:17:21 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(555): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 13:20:11 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(557): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 13:28:33 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(583): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 13:31:56 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(583): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 13:39:10 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1685): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(579): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 14:26:38 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1686): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(580): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+[13-Feb-2025 14:28:40 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(1686): jsonDecode(Array)
+#2 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(580): SeoTools->showW3c(Array)
+#3 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#4 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#5 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366

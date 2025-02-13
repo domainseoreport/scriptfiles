@@ -48,77 +48,11 @@ var CANV_GAUGE_FONTS_PATH = '<?php themeLink('fonts'); ?>';
 <div class="container">
   <div class="row">
 
-    <div class="col-sm-3 mobilefix">
-        <nav id="scroll-menu" class="affix-top" data-spy="affix" data-offset-top="205" data-offset-bottom="420">
-          <ul id="scroll-nav" class="nav nav-pills nav-stacked">
-            <li class="active">        
-            <a href="#top" class="scroll-link">
-                <span class="scroll-icon"><i class="fa fa-chevron-up"></i></span>
-                <span class="scroll-text"><?php trans('Return to top',$lang['13']); ?></span>
-                <span class="scroll-arrow"><i class="fa fa-chevron-right"></i></span>
-            </a>
-            </li>
-            <li>        
-            <a href="#overview" class="scroll-link">
-                <span class="scroll-icon"><i class="fa fa-bar-chart-o"></i></span>
-                <span class="scroll-text"><?php trans('Overview',$lang['14']); ?></span>
-                <span class="scroll-arrow"><i class="fa fa-chevron-right"></i></span>
-            </a>
-            </li>
-            <li>        
-            <a href="#seo" class="scroll-link">
-                <span class="scroll-icon"><i class="fa fa-search"></i></span>
-                <span class="scroll-text"><?php trans('SEO',$lang['15']); ?></span>
-                <span class="scroll-arrow"><i class="fa fa-chevron-right"></i></span>
-            </a>
-            </li>
-            <li>        
-            <a href="#usability" class="scroll-link">
-                <span class="scroll-icon"><i class="fa fa-hand-o-up"></i></span>
-                <span class="scroll-text"><?php trans('Usability',$lang['16']); ?></span>
-                <span class="scroll-arrow"><i class="fa fa-chevron-right"></i></span>
-            </a>
-            </li>
-            <li>        
-            <a href="#mobile" class="scroll-link">
-                <span class="scroll-icon"><i class="fa fa-mobile phonefix"></i></span>
-                <span class="scroll-text"><?php trans('Mobile',$lang['17']); ?></span>
-                <span class="scroll-arrow"><i class="fa fa-chevron-right"></i></span>
-            </a>
-            </li>
-            <li>        
-            <a href="#technologies" class="scroll-link">
-                <span class="scroll-icon"><i class="fa fa-rocket"></i></span>
-                <span class="scroll-text"><?php trans('Technologies',$lang['18']); ?></span>
-                <span class="scroll-arrow"><i class="fa fa-chevron-right"></i></span>
-            </a>
-            </li>
-            <li>        
-            <a href="#social" class="scroll-link">
-                <span class="scroll-icon"><i class="fa fa-thumbs-o-up"></i></span>
-                <span class="scroll-text"><?php trans('Social',$lang['19']); ?></span>
-                <span class="scroll-arrow"><i class="fa fa-chevron-right"></i></span>
-            </a>
-            </li>
-            <li>        
-            <a href="#visitors" class="scroll-link hide">
-                <span class="scroll-icon"><i class="fa fa-users"></i></span>
-                <span class="scroll-text"><?php trans('Visitors',$lang['20']); ?></span>
-                <span class="scroll-arrow"><i class="fa fa-chevron-right"></i></span>
-            </a>
-            </li>
-            <li>        
-            <a href="#link-analysis" class="scroll-link">
-                <span class="scroll-icon"><i class="fa fa-link"></i></span>
-                <span class="scroll-text"><?php trans('Link Analysis',$lang['21']); ?></span>
-                <span class="scroll-arrow"><i class="fa fa-chevron-right"></i></span>
-            </a>
-            </li>
-          </ul>
-          </nav>
+    <div class="col-sm-4 mobilefix">
+         
     </div>
     
-    <div class="col-sm-9">   
+    <div class="col-sm-8">   
            
         <div class="xd_top_box top40 text-center">
          <?php echo $ads_720x90; ?>

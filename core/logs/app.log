@@ -1,17 +1,36 @@
-[2025-02-05 23:29:49] [debug] Not Valid Domain: 
-[2025-02-05 23:29:55] [debug] Not Valid Domain: 
-[2025-02-05 23:30:47] [debug] Not Valid Domain: 
-[2025-02-05 23:30:50] [debug] Not Valid Domain: 
-[2025-02-05 23:33:02] [debug] Not Valid Domain: 
-[2025-02-05 23:33:05] [debug] Not Valid Domain: 
-[2025-02-05 23:33:08] [debug] DNS resolution failed for domain: wdwerwerwerwer.com
-[2025-02-05 23:33:08] [debug] Domain not accessible: wdwerwerwerwer.com
-[2025-02-05 23:33:21] [debug] DNS resolution failed for domain: gogogogogogogo.com
-[2025-02-05 23:33:21] [debug] Domain not accessible: gogogogogogogo.com
-[2025-02-05 23:41:32] [debug] Not Valid Domain: 
-[2025-02-05 23:41:36] [debug] Not Valid Domain: 
-[2025-02-05 23:44:09] [debug] Not Valid Domain: 
-[2025-02-05 23:44:12] [debug] Not Valid Domain: 
-[2025-02-05 23:44:14] [debug] Not Valid Domain: 
-[2025-02-05 23:47:49] [debug] Not Valid Domain: 
-[2025-02-05 23:47:53] [debug] Not Valid Domain: 
+[2025-02-13 14:30:23] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-13 14:30:24] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 14:30:24] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 14:30:24] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 14:30:24] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-13 14:30:24] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 14:30:24] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-13 14:30:24] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-13 14:30:24] [debug] Keyword Cloud Tag Call for URL silverandgem.com
+[2025-02-13 14:30:24] [debug] Keyword Consistency Tag Call for URL silverandgem.com
+[2025-02-13 14:30:24] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-13 14:30:24] [debug] GZIP Tag Call for URL silverandgem.com
+[2025-02-13 14:30:29] [debug] WWW Resolve Tag Call for URL silverandgem.com
+[2025-02-13 14:30:30] [debug] IP Canonicalization Tag Call for URL silverandgem.com
+[2025-02-13 14:30:30] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 14:30:30] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 14:30:31] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 14:30:31] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-13 14:30:31] [debug] Broken Links Tag Call for URL silverandgem.com
+[2025-02-13 14:30:31] [debug] Sitemap Tag Call for URL silverandgem.com
+[2025-02-13 14:30:33] [debug] Robots.txt Tag Call for URL silverandgem.com
+[2025-02-13 14:30:34] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 14:30:34] [debug] Embedded Objects Tag Call for URL silverandgem.com
+[2025-02-13 14:30:34] [debug] DOM Library Tag Call for URL silverandgem.com
+[2025-02-13 14:30:34] [debug] iFrame Tag Call for URL silverandgem.com
+[2025-02-13 14:30:34] [debug] WHOIS Tag Call for URL silverandgem.com
+[2025-02-13 14:30:35] [debug] Indexed Pages Tag Call for URL silverandgem.com
+[2025-02-13 14:30:36] [debug] Backlinks Tag Call for URL silverandgem.com
+[2025-02-13 14:30:36] [debug] URL Length Tag Call for URL silverandgem.com
+[2025-02-13 14:30:36] [debug] Custom 404 Page Tag Call for URL silverandgem.com
+[2025-02-13 14:30:40] [debug] Page Load Tag Call for URL silverandgem.com
+[2025-02-13 14:30:46] [debug] Page Speed Insight Tag Call for URL silverandgem.com
+[2025-02-13 14:30:47] [debug] Availability Checker Tag Call for URL silverandgem.com
+[2025-02-13 14:30:52] [debug] Email Privacy Tag Call for URL silverandgem.com
+[2025-02-13 14:30:52] [debug] Safe Browsing Tag Call for URL silverandgem.com
+[2025-02-13 14:30:52] [debug] Mobile Friendliness Tag Call for URL silverandgem.com

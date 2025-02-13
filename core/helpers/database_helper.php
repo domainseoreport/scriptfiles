@@ -326,51 +326,191 @@ function updateToDb($con,$tableName,$arr,$where){
     return mysqli_error($con);
 }
 
-function updateToDbPrepared($con,$tableName,$arr,$where,$customTypeDef=false,$typeDefStr=''){
-    $params = array();
-    $error = $typeDef = $part1 = $part2 = '';
-    $i = $j = 0;
-    $part1 .= 'UPDATE '.$tableName.' SET ';
-    $part2 .= ' WHERE ';
-    $queryCount = count($arr);
-    foreach($arr as $key=>$val){
-        $params[$i] = &$arr[$key];
-        $typeDef .= 's';
-        if(++$i === $queryCount) {
-            $part1 .= $key."= ? ";
-        }else{
-            $part1 .= $key."= ?,";
-        }
-    }
-    foreach($where as $key=>$val){
-        $params[$i] = &$where[$key];
-        $typeDef .= 's';
-        if($j == 1) {
-            $part2 .= ' AND '.$key."=?";
-            break;
-        }else{
-            $part2 .= $key."=?";
-        }
-        $i++; $j++;
-    }
-    $buildQuery = $part1.$part2;
-    $stmt = mysqli_prepare($con,$buildQuery);
+// function updateToDbPrepared($con, $tableName, $data, $conditions, $customTypeDef = false, $typeDefStr = '')
+// {
     
-    if (false===$stmt)
-        return mysqli_error($con);
-        
-    if($customTypeDef)
-        $typeDef = $typeDefStr; 
+//     // Check for empty arrays to avoid invalid queries.
+//     if (empty($data)) {
+//         return 'No data provided for update.';
+//     }
+//     if (empty($conditions)) {
+//         return 'No WHERE conditions provided; refusing to update all rows.';
+//     }
 
-    call_user_func_array("mysqli_stmt_bind_param",array_merge(array(&$stmt, &$typeDef), $params));
+//     // Ensure table and column names are valid (implement your own validation as needed)
+//     // For example, you might use a whitelist of allowed table/column names here.
+
+//     $params = [];
+//     $typeDef = '';
+//     $setClause = '';
+//     $whereClause = '';
+    
+//     // Build SET clause
+//     $i = 0;
+//     $dataCount = count($data);
+//     foreach ($data as $column => $value) {
+//         // Append comma if not the first column
+//         $setClause .= ($i > 0 ? ', ' : '') . $column . " = ?";
+//         $params[] = &$data[$column];
+//         $typeDef .= 's'; // Default to string type
+//         $i++;
+//     }
+    
+//     // Build WHERE clause
+//     $first = true;
+//     foreach ($conditions as $column => $value) {
+//         // Append 'AND' for subsequent conditions
+//         $whereClause .= ($first ? '' : ' AND ') . $column . " = ?";
+//         $params[] = &$conditions[$column];
+//         $typeDef .= 's'; // Default to string type
+//         $first = false;
+//     }
+    
+//     // Construct the final query
+//     $query = "UPDATE $tableName SET $setClause WHERE $whereClause";
+     
+//     $stmt = mysqli_prepare($con, $query);
+//     if ($stmt === false) {
+//         return mysqli_error($con);
+//     }
+    
+//     // Optionally override type definitions if required
+//     if ($customTypeDef) {
+//         $typeDef = $typeDefStr;
+//     }
+    
+//     // Bind parameters. Note: The mysqli_stmt_bind_param requires variables to be passed by reference.
+//     $bindNames = array_merge([$stmt, $typeDef], $params);
+//     call_user_func_array('mysqli_stmt_bind_param', $bindNames);
+    
+//     mysqli_stmt_execute($stmt);
+//     $error = mysqli_stmt_error($stmt);
+//     mysqli_stmt_close($stmt);
+    
+//     return $error; // Returns empty string if no error occurred.
+// }
+/**
+ * Updates a database table using a prepared statement.
+ *
+ * @param mysqli  $con            The MySQLi connection object.
+ * @param string  $tableName      The table name to update.
+ * @param array   $updateData     Associative array of columns and values to update. 
+ *                                Example: ['col1' => 'value1', 'col2' => 'value2']
+ * @param array   $where          Associative array for the WHERE clause.
+ *                                Example: ['id' => 123]
+ * @param bool    $customTypeDef  If true, use the custom type definition string provided.
+ * @param string  $typeDefStr     The custom type definition string (e.g. 'iss' for int, string, string).
+ * @param bool    $debug          If true, debugging information will be output.
+ *
+ * @return string  An error message if one occurs, or an empty string on success.
+ */
+function updateToDbPrepared($con, $tableName, $updateData, $where, $customTypeDef = false, $typeDefStr = '', $debug = false) {
+    // Array to store references to the parameter values
+    $params = array();
+  
+    // Initialize variables for building the SQL query and type definition string.
+    $typeDef = '';
+    $setClause = '';
+    $whereClause = '';
+    
+    // Build the SET clause from the $updateData array.
+    // Each column in $updateData is appended as "column = ?" to the SET clause.
+    $i = 0; // Counter for the number of parameters in SET clause.
+    foreach ($updateData as $column => $value) {
+        // Append a comma before subsequent columns.
+        if ($i > 0) {
+            $setClause .= ', ';
+        }
+        $setClause .= $column . ' = ?';
+        // Store a reference to the value for binding.
+        $params[] = &$updateData[$column];
+        // For simplicity, we assume each parameter is a string ('s').
+        $typeDef .= 's';
+        $i++;
+    }
+    
+    // Build the WHERE clause from the $where array.
+    // Each condition is appended as "column = ?" and joined with "AND".
+    $j = 0; // Counter for WHERE clause parameters.
+    foreach ($where as $column => $value) {
+        // Append "AND" if this is not the first condition.
+        if ($j > 0) {
+            $whereClause .= ' AND ';
+        }
+        $whereClause .= $column . ' = ?';
+        // Add a reference to the value for binding.
+        $params[] = &$where[$column];
+        // Again, assume each value is a string ('s').
+        $typeDef .= 's';
+        $j++;
+        $i++; // Increment the overall parameter count.
+    }
+    
+    // Construct the full SQL update query.
+    $sql = "UPDATE {$tableName} SET {$setClause} WHERE {$whereClause}";
+   
+    // Debug output: show the built query, type definition, and parameters.
+    if ($debug) {
+        echo "DEBUG: SQL Query: {$sql}\n";
+        echo "DEBUG: Type Definition String: {$typeDef}\n";
+        echo "DEBUG: Parameters: " . print_r($params, true) . "\n";
+    }
+   
+    // Prepare the SQL statement.
+    $stmt = mysqli_prepare($con, $sql);
+    if ($stmt === false) {
+        // Debug output for preparation error.
+        if ($debug) {
+            echo "DEBUG: Statement preparation failed: " . mysqli_error($con) . "\n";
+        }
+        return mysqli_error($con);
+    }
+    
+    // If a custom type definition is provided, override the auto-generated one.
+    if ($customTypeDef) {
+        $typeDef = $typeDefStr;
+    }
+    
+    // Prepare an array for binding parameters.
+    // Note: mysqli_stmt_bind_param requires arguments passed by reference.
+    $bindParams = array();
+    $bindParams[] = $stmt;
+    $bindParams[] = $typeDef;
+    // Loop through $params (already by reference) and add them.
+    foreach ($params as $key => $param) {
+        $bindParams[] = &$params[$key];
+    }
+    
+    // Bind parameters to the prepared statement.
+    $bindResult = call_user_func_array("mysqli_stmt_bind_param", $bindParams);
+    if ($bindResult === false) {
+        if ($debug) {
+            echo "DEBUG: Parameter binding failed: " . mysqli_stmt_error($stmt) . "\n";
+        }
+        return mysqli_stmt_error($stmt);
+    }
+   
+    // Execute the prepared statement.
     mysqli_stmt_execute($stmt);
+ 
+    // Retrieve any error message from execution.
     $error = mysqli_stmt_error($stmt);
+    
+    // Debug output: show any execution error.
+    if ($debug && $error) {
+        echo "DEBUG: Statement execution error: {$error}\n";
+    }
+    
+    // Close the statement to free resources.
     mysqli_stmt_close($stmt);
     
+    // Return the error message if any, or an empty string on success.
     return $error;
 }
 
 function mysqliPreparedQuery($con,$query,$typeDef = false,$params = false, $noSingle = true){
+ 
+    
   $result = $bindParams = array();
   $countRes = 0;$multiQuery = false;
   if($stmt = mysqli_prepare($con,$query)){

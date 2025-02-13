@@ -37,6 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
         
         $row = mysqliPreparedQuery($con, "SELECT * FROM admin WHERE user=?",'s',array($emailBox));
+    
         if($row !== false) {
             $adminPssword = Trim($row['pass']);
             $adminID =   Trim($row['id']);

@@ -1,6 +1,7 @@
 <?php
 defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
 define('TEMP_DIR', APP_DIR.'temp'.D_S);
+  
 
 /*
  * @author Balaji
@@ -87,6 +88,7 @@ $my_url_host  = str_replace('www.', '', $my_url_parse['host']);
 $domainStr    = escapeTrim($con, strtolower($my_url_host));
 $pageTitle    = $domainName = ucfirst($my_url_host);
 
+ 
 //Check Empty Host
 if ($my_url_host == '')
     die(trans('Input Site is not valid!', $lang['8'], true));
@@ -154,10 +156,12 @@ if ($reviewerSettings['snap_service']['options'] == 'prothemes_pro') {
 
 //Check Domain Name Exists
 $data = mysqliPreparedQuery($con, "SELECT * FROM domains_data WHERE domain=?", 's', array($domainStr));
+ 
 
 if ($data !== false) {
     if ($data['completed'] == 'yes') {
         $domainFound = true;
+        
     } else {
         $updateFound   = true;
         $domainFound   = false;
@@ -167,7 +171,11 @@ if ($data !== false) {
     $domainFound = false;
     $newDomain   = true;
 }
-
+if($newDomain){
+    $my_url = isDomainAccessible(clean_url($my_url));
+}else{
+    $my_url = $data['domain_access_url'];
+} 
 //Hash Code
 $hashCode = md5($my_url_host);
 $filename = TEMP_DIR . $hashCode . '.tdata';
@@ -175,8 +183,9 @@ $filename = TEMP_DIR . $hashCode . '.tdata';
 //Get Data of the URL
 if ($updateFound) {
     // Attempt to get the best accessible URL.
-    $accessibleUrl = isDomainAccessible(clean_url($my_url));
-    if (!$accessibleUrl) {
+   
+   
+    if (!$my_url) {
         $error = trans('The provided domain is not accessible or does not exist!', $lang['8'], true);
         log_message('debug', "Domain not accessible: " . clean_url($my_url));
         
@@ -184,7 +193,7 @@ if ($updateFound) {
         redirectTo(createLink('', true));
         die();
     }
-    $my_url = $accessibleUrl; // update $my_url with the best accessible URL
+     
 
     $capOkay = true;
     extract(loadCapthca($con));
@@ -243,8 +252,8 @@ if ($updateFound) {
                     redirectTo(createLink('', true));
                     die();
                 }
-                
-                $result = createDomainRecord($con, $domainStr, $nowDate, $title, $description, $keywords);
+            
+                $result = createDomainRecord($con, $domainStr,$my_url,$nowDate, $title, $description, $keywords);
                 
                 if ($result !== true) {
                     log_message('debug', "Not able to insert domain in DB: $result for URL {$my_url}");
@@ -262,7 +271,7 @@ if ($updateFound) {
     }
 }
 
-log_message('debug', "This Place Done $error");
+
 
 if (!isset($error)) {
     if ($updateFound) {
@@ -270,6 +279,7 @@ if (!isset($error)) {
         
         if (!isset($_SESSION['twebAdminToken'])) {
             //Free Users
+            log_message('debug', "This Place Done 2222222 $error");
             if (!isset($_SESSION['twebUsername'])) {
                 if (isset($_SESSION['TWEB_FREE_LIMIT'])) {
                     $limitUsed = (int)$_SESSION['TWEB_FREE_LIMIT'];
@@ -287,15 +297,16 @@ if (!isset($error)) {
         }
         
     } else {
+        log_message('debug', "In Else $error");
         //Extract DB Data
         define('DB_DOMAIN', true);
         require(CON_DIR.'db-domain.php');
         $reviewerSettings['domain_data'] = dbStrToArr($reviewerSettings['domain_data']);
         $metaTitle = shortCodeFilter($reviewerSettings['domain_data']['domain']['title']);
-        $des       = shortCodeFilter($reviewerSettings['domain_data']['domain']['des']);
+        $des = shortCodeFilter($reviewerSettings['domain_data']['domain']['des']);
     }
 } else {
-    
+    log_message('debug', "In Domain Else $error");
     $_SESSION['TWEB_CALLBACK_ERR'] = $error;
     redirectTo(createLink('', true));
     die();

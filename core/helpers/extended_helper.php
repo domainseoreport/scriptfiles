@@ -358,6 +358,14 @@ function decSerBase($str){
     return unserialize(base64_decode($str));
 }
 
+function jsonEncode($arr){ 
+    return json_encode($arr);
+}
+
+function jsonDecode($str){  
+    return json_decode($str, true);
+}
+
 function fixJSON($json) {
     $regex = <<<'REGEX'
 ~
