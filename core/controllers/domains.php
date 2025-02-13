@@ -604,37 +604,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * and outputs the result.
      */
     if (isset($_POST['socialData'])) {
-        $social_Msg = $lang['AN216'];
-        $socialClass = 'lowImpactBox';
-
-        $socialData = getSocialData($sourceData);
-
-        $facebook_like = ($socialData['fb'] === '-') ? $false : $true . ' ' . $socialData['fb'];
-        $twit_count = ($socialData['twit'] === '-') ? $false : $true . ' ' . $socialData['twit'];
-        $insta_count = ($socialData['insta'] === '-') ? $false : $true . ' ' . $socialData['insta'];
-
-        $updateStr = serBase(array($facebook_like, $twit_count, $insta_count, 0));
-        updateToDbPrepared($con, 'domains_data', array('social' => $updateStr), array('domain' => $domainStr));
-
-        if (!isset($_SESSION['twebUsername'])) {
-            if (!isAllowedStats($con, 'seoBox44')) {
-                die($seoBoxLogin);
-            }
-        }
-
-        echo '<div class="' . $socialClass . '">
-            <div class="msgBox">   
-                ' . $lang['AN167'] . '<br />
-                <div class="altImgGroup">
-                    <br>
-                    <div class="social-box"><i class="fa fa-facebook social-facebook"></i> Facebook: ' . $facebook_like . '</div><br>
-                    <div class="social-box"><i class="fa fa-twitter social-linkedin"></i> Twitter: ' . $twit_count . '</div><br>
-                    <div class="social-box"><i class="fa fa-instagram social-google"></i> Instagram: ' . $insta_count . '</div>
-                </div>
-                <br />
-            </div>
-            <div class="seoBox44 suggestionBox">' . $social_Msg . '</div>
-        </div>';
+        $socialData = $seoTools->processSocialData();
+        echo $seoTools->showSocialData($socialData);
         die();
     }
 
@@ -646,41 +617,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * and outputs the result.
      */
     if (isset($_POST['visitorsData'])) {
-        $visitors_Msg = $lang['AN219'];
-        $visitorsClass = 'lowImpactBox';
-
-        $data = mysqliPreparedQuery($con, "SELECT alexa FROM domains_data WHERE domain=?", 's', array($domainStr));
-        if ($data !== false) {
-            $alexa = decSerBase($data['alexa']);
-            $alexaDatas = array(
-                array('', 'Popularity at', $alexa[1]),
-                array('', 'Regional Rank', $alexa[2])
-            );
-        }
-
-        $alexaDataCount = count($alexaDatas);
-        $visitorsMsg = '';
-        foreach ($alexaDatas as $alexaData) {
-            $visitorsMsg .= '<tr><td>' . $alexaData[1] . '</td><td>' . $alexaData[2] . '</td></tr>';
-        }
-
-        if (!isset($_SESSION['twebUsername'])) {
-            if (!isAllowedStats($con, 'seoBox47')) {
-                die($seoBoxLogin);
-            }
-        }
-
-        echo '<div class="' . $visitorsClass . '">
-            <div class="msgBox">   
-                ' . $lang['AN171'] . '<br /><br />
-                ' . (($alexaDataCount != 0) ? '
-                <table class="table table-hover table-bordered table-striped">
-                    <tbody>' . $visitorsMsg . '</tbody>
-                </table>' : $lang['AN170']) . '
-                <br />
-            </div>
-            <div class="seoBox47 suggestionBox">' . $visitors_Msg . '</div>
-        </div>';
+        $visitorsData = $seoTools->processVisitorsData();
+        echo $seoTools->showVisitorsData($visitorsData);
         die();
     }
 
@@ -690,36 +628,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * Updates the final score, adds the site to recent history, and clears the cached data.
      */
-    if (isset($_POST['cleanOut'])) {
-        $passscore = raino_trim($_POST['passscore']);
-        $improvescore = raino_trim($_POST['improvescore']);
-        $errorscore = raino_trim($_POST['errorscore']);
-        $score = array($passscore, $improvescore, $errorscore);
-        $updateStr = serBase($score);
-        updateToDbPrepared($con, 'domains_data', array('score' => $updateStr, 'completed' => 'yes'), array('domain' => $domainStr));
-
-        $data = mysqliPreparedQuery($con, "SELECT * FROM domains_data WHERE domain=?", 's', array($domainStr));
-        if ($data !== false) {
-            $pageSpeedInsightData = decSerBase($data['page_speed_insight']);
-            $alexa = decSerBase($data['alexa']);
-            $finalScore = ($passscore == '') ? '0' : $passscore;
-            $globalRank = ($alexa[0] == '') ? '0' : $alexa[0];
-            $pageSpeed = ($pageSpeedInsightData[0] == '') ? '0' : $pageSpeedInsightData[0];
-
-            $username = (!isset($_SESSION['twebUsername'])) ? trans('Guest', $lang['11'], true) : $_SESSION['twebUsername'];
-
-            if ($globalRank == 'No Global Rank')
-                $globalRank = 0;
-
-            $other = serBase(array($finalScore, $globalRank, $pageSpeed));
-            addToRecentSites($con, $domainStr, $ip, $username, $other);
-        }
-
-        // Clear the cached data file.
-        delFile($filename);
+     if (isset($_POST['cleanOut'])) {
+        $seoTools->cleanOut();
     }
-} // End of POST REQUEST HANDLER
-
+}
 // End of AJAX Handler script.
 die();
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 defined('DB_DOMAIN') or die(header('HTTP/1.1 403 Forbidden'));
-
+ 
 /*
  * @author Balaji
  * @name Turbo Website Reviewer - PHP Script

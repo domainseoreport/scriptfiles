@@ -686,7 +686,7 @@ class SeoTools {
         }
         // Save the raw links data in the database.
        
-        $updateStr = serBase($ex_data);
+        $updateStr = jsonEncode($ex_data); 
         updateToDbPrepared($this->con, 'domains_data', array('links_analyser' => $updateStr), array('domain' => $this->domainStr));
         return $ex_data;
     }
@@ -702,6 +702,11 @@ class SeoTools {
      * @return string The complete HTML output.
      */
     protected function processAndRenderInPageLinks($ex_data) {
+        // echo "sdsdsd<pre>";
+        // print_r($ex_data);
+        // echo "</pre>sdsdsd";
+        // die();
+        //$ex_data = jsonDecode($ex_data);
         // Initialize counters and arrays.
         $t_count = 0;
         $i_links = 0;
@@ -920,7 +925,7 @@ class SeoTools {
      * @param array $linksData The raw links data (as returned by processInPageLinks()).
      * @return string The HTML output.
      */
-    public function showInPageLinks($linksData) {
+    public function showInPageLinks($linksData) {  
         return $this->processAndRenderInPageLinks($linksData);
     }
 
@@ -1047,6 +1052,7 @@ class SeoTools {
             $embeddedCheck = true;
             break;
         }
+       
         
         updateToDbPrepared($this->con, 'domains_data', array('embedded' => $embeddedCheck), array('domain' => $this->domainStr));
         return $embeddedCheck;
@@ -1862,7 +1868,7 @@ class SeoTools {
         // Retrieve visitor localization info from DB (simulate here)
         $data = mysqliPreparedQuery($this->con, "SELECT alexa FROM domains_data WHERE domain=?", 's', array($this->domainStr));
         if ($data !== false) {
-            $alexa = decSerBase($data['alexa']);
+            $alexa = jsonDecode($data['alexa']);
             $alexaDatas = array(
                 array('', 'Popularity at', $alexa[1]),
                 array('', 'Regional Rank', $alexa[2])
@@ -2016,8 +2022,8 @@ EOT;
 
         $data = mysqliPreparedQuery($this->con, "SELECT * FROM domains_data WHERE domain=?", 's', array($this->domainStr));
         if ($data !== false) {
-            $pageSpeedInsightData = decSerBase($data['page_speed_insight']);
-            $alexa = decSerBase($data['alexa']);
+            $pageSpeedInsightData = jsonDecode($data['page_speed_insight']);
+            $alexa = jsonDecode($data['alexa']);
             $finalScore = ($passscore == '') ? '0' : $passscore;
             $globalRank = ($alexa[0] == '') ? '0' : $alexa[0];
             $pageSpeed = ($pageSpeedInsightData[0] == '') ? '0' : $pageSpeedInsightData[0];

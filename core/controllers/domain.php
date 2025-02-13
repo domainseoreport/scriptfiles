@@ -296,12 +296,12 @@ if (!isset($error)) {
             }
         }
         
-    } else {
+    } else { 
         log_message('debug', "In Else $error");
         //Extract DB Data
-        define('DB_DOMAIN', true);
-        require(CON_DIR.'db-domain.php');
-        $reviewerSettings['domain_data'] = dbStrToArr($reviewerSettings['domain_data']);
+        define('DB_DOMAIN', true); 
+        require(CON_DIR.'db-domain.php');  
+        $reviewerSettings['domain_data'] = dbStrToArr($reviewerSettings['domain_data']); 
         $metaTitle = shortCodeFilter($reviewerSettings['domain_data']['domain']['title']);
         $des = shortCodeFilter($reviewerSettings['domain_data']['domain']['des']);
     }
