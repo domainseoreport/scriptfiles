@@ -1619,6 +1619,72 @@ footer .copyright {
 	-o-transform: scale(1.1) rotate(360deg);
 	transform: scale(1.1) rotate(360deg);
 }
+/* Google Preview Styling */
+.googlePreview {
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* Individual Preview Boxes */
+.google-preview-box {
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 8px;
+  background: #fff;
+  text-align: left;
+  min-height: 120px;
+}
+
+/* Title Styling */
+.google-title a {
+  color: #1a0dab;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* URL */
+.google-url {
+  color: #006621;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Description */
+.google-desc {
+  color: #545454;
+  font-size: 14px;
+}
+
+/* Device-Specific Previews */
+.desktop-preview {
+  max-width: 700px;
+  margin: 20px auto;
+}
+
+.tablet-preview {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.mobile-preview {
+  max-width: 350px;
+  margin: 0 auto;
+  background: #f8f9fa;
+  padding: 12px;
+}
+
+/* Responsive Spacing */
+@media (max-width: 768px) {
+  .google-preview-box {
+      margin-bottom: 15px;
+  }
+}
+
  
 .social-icons .fa-adn{background-color:#504e54;} 
 .social-icons .fa-apple{background-color:#aeb5c5;} 

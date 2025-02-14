@@ -21,6 +21,8 @@ function finalScore(){
 $(".seoBox").on("click","a",function(event){
     showSuggestion(showSuggestionBox);
 });
+
+ 
     
 $("#seoBox4").on("click", ".showMore1", function(){
     jQuery(".hideTr1").fadeIn();

@@ -41,6 +41,7 @@ defined('APP_NAME') or die(header('HTTP/1.0 403 Forbidden'));
         <!-- Main style -->
         <link href="<?php themeLink('css/bootstrap.min.css'); ?>" rel="stylesheet" />
         
+
         <!-- Font-Awesome -->
         <link href="<?php themeLink('css/font-awesome.min.css'); ?>" rel="stylesheet" />
         

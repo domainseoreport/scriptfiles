@@ -154,17 +154,47 @@ class SeoTools {
                         </div>
                         <div class="seoBox3 suggestionBox">' . $keyMsg . '</div>
                     </div>' . $this->sepUnique;
-        $output .= '<div class="' . $classKey . '">
-                        <div class="msgBox">
-                            <div class="googlePreview">
-                                <p>' . $site_title . '</p>
-                                <p><span class="bold">' . $this->urlParse['host'] . '</span>/</p>
-                                <p>' . $site_description . '</p>
+                    $output .= '<div class="' . $classKey . '">
+                    <div class="msgBox">
+                        <div class="googlePreview">
+                        
+                            <!-- First Row: Mobile & Tablet Views -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="google-preview-box mobile-preview">
+                                        <h6>Mobile View</h6>
+                                        <p class="google-title"><a href="#">' . htmlspecialchars($site_title) . '</a></p>
+                                        <p class="google-url"><span class="bold">' . htmlspecialchars($this->urlParse['host']) . '</span>/</p>
+                                        <p class="google-desc">' . htmlspecialchars($site_description) . '</p>
+                                    </div>
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <div class="google-preview-box tablet-preview">
+                                        <h6>Tablet View</h6>
+                                        <p class="google-title"><a href="#">' . htmlspecialchars($site_title) . '</a></p>
+                                        <p class="google-url"><span class="bold">' . htmlspecialchars($this->urlParse['host']) . '</span>/</p>
+                                        <p class="google-desc">' . htmlspecialchars($site_description) . '</p>
+                                    </div>
+                                </div>
                             </div>
-                            <br />
+                
+                            <!-- Second Row: Desktop View -->
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="google-preview-box desktop-preview">
+                                        <h6>Desktop View</h6>
+                                        <p class="google-title"><a href="#">' . htmlspecialchars($site_title) . '</a></p>
+                                        <p class="google-url"><span class="bold">' . htmlspecialchars($this->urlParse['host']) . '</span>/</p>
+                                        <p class="google-desc">' . htmlspecialchars($site_description) . '</p>
+                                    </div>
+                                </div>
+                            </div>
+    
                         </div>
-                        <div class="seoBox5 suggestionBox">' . $googleMsg . '</div>
-                    </div>';
+                    </div>
+                    <div class="seoBox5 suggestionBox">' . htmlspecialchars($googleMsg) . '</div>
+                </div>';
                     
         return $output;
     }
@@ -212,47 +242,88 @@ class SeoTools {
      * @return string The HTML output.
      */
     public function showHeading($headings) {
-        $headings = jsonDecode($headings);
-        $headings =  $headings[0];
-        
-        $counts = array();
-        foreach ($headings as $tag => $texts) {
-            $counts[$tag] = count($texts);
+        // Decode the JSON string into an array
+        $headingsArr = jsonDecode($headings);
+    
+        // Validate data to prevent errors
+        if (!is_array($headingsArr) || !isset($headingsArr[0])) {
+            return '<div class="errorBox"><div class="msgBox">Invalid heading data.</div></div>';
         }
-
-     
-        
-        // Decide a CSS class based on simple conditions.
-        $class = (isset($counts['h1']) && $counts['h1'] > 2) ? 'improveBox' : ((isset($counts['h1']) && isset($counts['h2'])) ? 'passedBox' : 'errorBox');
+    
+        $elementList = $headingsArr[0];
+    
+        // Define heading tags and initialize counts
+        $tags = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6');
+        $counts = [];
+        foreach ($tags as $tag) {
+            $counts[$tag] = isset($elementList[$tag]) ? count($elementList[$tag]) : 0;
+        }
+    
+        // Determine CSS class based on heading count
+        $class = ($counts['h1'] > 2) ? 'improveBox' :
+                 (($counts['h1'] > 0 && $counts['h2'] > 0) ? 'passedBox' : 'errorBox');
+    
+        // Start output with table for heading count summary
         $output = '<div class="' . $class . '">
-                        <div class="msgBox">
-                            <table class="table table-striped table-responsive centerTable">
-                                <thead>
-                                    <tr>
-                                        <th>&lt;H1&gt;</th>
-                                        <th>&lt;H2&gt;</th>
-                                        <th>&lt;H3&gt;</th>
-                                        <th>&lt;H4&gt;</th>
-                                        <th>&lt;H5&gt;</th>
-                                        <th>&lt;H6&gt;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>' . (isset($counts['h1']) ? $counts['h1'] : 0) . '</td>
-                                        <td>' . (isset($counts['h2']) ? $counts['h2'] : 0) . '</td>
-                                        <td>' . (isset($counts['h3']) ? $counts['h3'] : 0) . '</td>
-                                        <td>' . (isset($counts['h4']) ? $counts['h4'] : 0) . '</td>
-                                        <td>' . (isset($counts['h5']) ? $counts['h5'] : 0) . '</td>
-                                        <td>' . (isset($counts['h6']) ? $counts['h6'] : 0) . '</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="seoBox4 suggestionBox">' . $this->lang['AN176'] . '</div>
-                   </div>';
+            <div class="msgBox">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>&lt;H1&gt;</th>
+                            <th>&lt;H2&gt;</th>
+                            <th>&lt;H3&gt;</th>
+                            <th>&lt;H4&gt;</th>
+                            <th>&lt;H5&gt;</th>
+                            <th>&lt;H6&gt;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>' . $counts['h1'] . '</td>
+                            <td>' . $counts['h2'] . '</td>
+                            <td>' . $counts['h3'] . '</td>
+                            <td>' . $counts['h4'] . '</td>
+                            <td>' . $counts['h5'] . '</td>
+                            <td>' . $counts['h6'] . '</td>
+                        </tr>
+                    </tbody>
+                </table>';
+    
+        // Generate detailed headings display
+        $hideCount = 0;
+        $headStr = '<table class="table table-striped table-responsive">
+                        <tbody>';
+        foreach ($tags as $tag) {
+            if (!empty($elementList[$tag])) {
+                foreach ($elementList[$tag] as $headingText) {
+                    $hideClass = ($hideCount >= 3) ? 'hideTr hideTr1' : '';
+                    $headStr .= '<tr class="' . $hideClass . '">
+                                    <td>&lt;' . strtoupper($tag) . '&gt; <b>' . htmlspecialchars($headingText) . '</b> &lt;/' . strtoupper($tag) . '&gt;</td>
+                                 </tr>';
+                    $hideCount++;
+                }
+            }
+        }
+        $headStr .= '</tbody></table>';
+        $output .= $headStr;
+    
+        // Add toggle buttons only if more than 3 headings exist
+        if ($hideCount > 3) {
+            $output .= '
+                <div class="showLinks">
+                    <a class="showMore">' . $this->lang['AN18'] . ' <br /><i class="fa fa-angle-double-down"></i></a>
+                    <a class="showLess"><i class="fa fa-angle-double-up"></i> <br /> ' . $this->lang['AN19'] . '</a>
+                </div>';
+        }
+    
+        // Closing div and returning output
+        $output .= '</div></div>';
+        
         return $output;
     }
+    
+    
+    
 
     /*===================================================================
      * IMAGE ALT TAG HANDLER

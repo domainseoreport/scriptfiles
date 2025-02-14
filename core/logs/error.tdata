@@ -1,10 +1,42 @@
-[13-Feb-2025 15:22:02 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: json_decode(): Argument #1 ($json) must be of type string, array given in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php:366
+[14-Feb-2025 14:07:46 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined function print_t() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\db-domain.php:24
 Stack trace:
-#0 C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php(366): json_decode(Array, true)
-#1 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(705): jsonDecode(Array)
-#2 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(925): SeoTools->processAndRenderInPageLinks(Array)
-#3 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(284): SeoTools->showInPageLinks(Array)
-#4 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
-#5 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
-#6 {main}
-  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\extended_helper.php on line 366
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php(303): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\db-domain.php on line 24
+[14-Feb-2025 14:08:38 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined function print_t() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\db-domain.php:24
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php(303): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\db-domain.php on line 24
+[14-Feb-2025 14:08:56 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined function print_t() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\db-domain.php:24
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domain.php(303): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
+#2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#3 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\db-domain.php on line 24
+[14-Feb-2025 15:23:25 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: outHeadBox(): Argument #2 ($sugMsg) must be of type array, string given, called in C:\seowebdevelopment\htdocs\scriptfiles\theme\default\domain.php on line 225 and defined in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\website_review_helper.php:59
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\theme\default\domain.php(225): outHeadBox('Title Tag', '', 1)
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(29): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\helpers\website_review_helper.php on line 59
+[14-Feb-2025 15:49:54 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::processHeading() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:147
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 147
+[14-Feb-2025 18:03:46 Asia/Calcutta] PHP Fatal error:  Cannot redeclare getHeadingSuggestion() (previously declared in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php:1076) in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 281
+[14-Feb-2025 18:05:27 Asia/Calcutta] PHP Fatal error:  Cannot redeclare getHeadingSuggestion() (previously declared in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php:1076) in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 281
+[14-Feb-2025 18:05:34 Asia/Calcutta] PHP Fatal error:  Cannot redeclare getHeadingSuggestion() (previously declared in C:\seowebdevelopment\htdocs\scriptfiles\core\functions.php:1076) in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 281
+[14-Feb-2025 18:05:39 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::showHeading() in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php:149
+Stack trace:
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require()
+#1 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
+#2 {main}
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php on line 149

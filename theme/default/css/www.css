@@ -53,7 +53,7 @@
 }
 .contentBox{
     margin-top: 16px;
-    padding-left: 8px;
+    padding-left: 0px;
 }
 .passedBox{
     background: rgba(0, 0, 0, 0) url("../img/correct.png") no-repeat scroll 1px top;

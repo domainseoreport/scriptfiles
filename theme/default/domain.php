@@ -10,10 +10,8 @@ defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
 
 // Array of messages used for solving SEO issues
 $solveMsg = array(
-    $lang['29'],
-    $lang['30'],
-    $lang['31'],
-    $lang['32']
+    
+    
 );
 
 // HTML for the loading bar animation
@@ -222,33 +220,33 @@ if ($updateFound) {
                     <?php trans('SEO',$lang['35']); ?>
                 </h2>
                <div class="seoBox"  >
-                    <?php outHeadBox($lang['CUST1'],$solveMsg,1); ?>
+                     <?php outHeadBox($lang['AN1'],$solveMsg,1); ?> 
                     <div class="contentBox" id="seoBox1">
                         <?php echo $seoBox1; ?>
                     </div>
                     <?php //outQuestionBox($lang['AN4']); ?>
 	            </div>
                 
-                <div class="seoBox" onclick="javascript:showSuggestion('seoBox2');">
+                <div class="seoBox" >
                     <?php outHeadBox($lang['AN2'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox2">
                         <?php echo $seoBox2; ?>
                     </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
+                    <?php //outQuestionBox($lang['AN4']); ?>
 	            </div>
                 
-                <div class="seoBox" onclick="javascript:showSuggestion('seoBox3');">
+                <div class="seoBox">
                     <?php outHeadBox($lang['AN3'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox3">
                         <?php echo $seoBox3; ?>
                     </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
+                    <?php //outQuestionBox($lang['AN4']); ?>
 	            </div>  
                 
-                <div class="seoBox headingResult" onclick="javascript:showSuggestion('seoBox4');">
+                <div class="seoBox headingResult"  >
                     <?php outHeadBox($lang['AN16'],$solveMsg,2); ?>
                     <div class="contentBox" id="seoBox4">
-                        <?php echo $seoBox4; ?>
+                    <?php echo $seoBox4; ?>
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>  
@@ -689,7 +687,10 @@ if ($updateFound) {
         </div>
     </div>
 </div>
-
+$(document).ready(function () {
+    // Ensure the first tab (Desktop View) is always active on load
+    $('#googlePreviewTabs a:first').tab('show');
+});
 <!-- Conditionally include JavaScript based on update status -->
 <?php if ($updateFound) { ?>
     <script src="<?php themeLink('js/domain.js?v6'); ?>" type="text/javascript"></script>

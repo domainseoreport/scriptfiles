@@ -1071,3 +1071,22 @@ function extractMetaData($html) {
 
     return $metaData;
 }
+
+// A simple helper function for suggestions:
+    function getHeadingSuggestion($tag, $count) {
+        // Return a suggestion string based on tag & count
+        $tagUpper = strtoupper($tag);
+        if ($count === 0) {
+            if ($tag === 'h1') {
+                return "No {$tagUpper} found. We recommend having at least one H1 tag for SEO.";
+            } else {
+                return "No {$tagUpper} found. Consider adding if needed for structure.";
+            }
+        }
+        // Example: If user has more than 2 H1 tags
+        if ($tag === 'h1' && $count > 2) {
+            return "You have more than 2 H1 headings. Typically, only one H1 is recommended.";
+        }
+        // Otherwise, no special message
+        return "Looks good for {$tagUpper}.";
+    }

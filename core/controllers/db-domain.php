@@ -19,11 +19,14 @@ $seoBoxLogin = '<div class="lowImpactBox">
 </div>';
     
 //Meta Data  
-$meta_data = decSerBase($data['meta_data']);
-
-$metatitle = $meta_data[0];
-$metadescription = $meta_data[1];
-$metakeywords = $meta_data[2];
+$meta_data = jsonDecode($data['meta_data']);
+// echo "<pre>";
+// print_r($meta_data);
+// echo "</pre>";
+ 
+$metatitle = $meta_data["title"];
+$metadescription = $meta_data["description"];
+$metakeywords = $meta_data["keywords"];
 
 $lenTitle = mb_strlen($metatitle,'utf8');
 $lenDes = mb_strlen($metadescription,'utf8');
@@ -89,101 +92,178 @@ $seoBox3 = '<div class="'.$classKey.'">
 </div>';
 
 
+ 
+ 
+  
+ 
+ 
 $seoBox5 = '<div class="'.$classKey.'">
-<div class="msgBox">       
-     <div class="googlePreview">
-		<p>'.$site_title.'</p>
-		<p><span class="bold">'.$my_url_parse['host'].'</span>/</p>
-		<p>'.$site_description.'</p>
-    </div>
-<br />
-</div>
-<div class="seoBox5 suggestionBox">
-'.$googleMsg.'
-</div> 
-</div>';
-
-
-//Heading Data 
-$headings = decSerBase($data['headings']);
-
-//Get H1 to H6 Tags
-$tags = array ('h1', 'h2', 'h3', 'h4', 'h5', 'h6');
-$h1Count = $h2Count = $h3Count = $h4Count = $h5Count = $h6Count = 0;
-$elementListData = $headings[0];
-$texts = $headings[1];
-$hideCount = 0;
-$hideClass = $headStr = '';
-
-foreach($tags as $tag)
-{
-  if (isset($elementListData[$tag])) {
-      foreach($elementListData[$tag] as $element) {
-         if($hideCount == 3)
-            $hideClass = 'hideTr hideTr1';
-         $headStr.= '<tr class="'.$hideClass.'"> <td>&lt;'.$element[0].'&gt; <b>'.$element[1].'</b> &lt;/'.$element[0].'&gt;</td> </tr>';
-         $hideCount++;
-      }
-  }
-}
-$headMsg = $lang['AN176'];
-
-$h1Count = isset($texts['h1']) ? count($texts['h1']) : 0;
-$h2Count = isset($texts['h2']) ? count($texts['h2']) : 0;
-$h3Count = isset($texts['h3']) ? count($texts['h3']) : 0;
-$h4Count = isset($texts['h4']) ? count($texts['h4']) : 0;
-$h5Count = isset($texts['h5']) ? count($texts['h5']) : 0;
-$h6Count = isset($texts['h6']) ? count($texts['h6']) : 0;
-
-if($h1Count > 2)
-    $class = 'improveBox';
-elseif($h1Count != 0 && $h2Count != 0 )
-    $class = 'passedBox';
-else
-    $class = 'errorBox';
-
-$seoBox4 = '<div class="'.$class.'">
-        <div class="msgBox">       
-        <table class="table table-striped table-responsive centerTable">
-			<thead>
-				<tr>
-            		<th>&lt;H1&gt;</th>
-                    <th>&lt;H2&gt;</th>
-                    <th>&lt;H3&gt;</th>
-                    <th>&lt;H4&gt;</th>
-                    <th>&lt;H5&gt;</th>
-                    <th>&lt;H6&gt;</th>
-      			</tr>
-		    </thead>
-  			<tbody>
-                <tr>
-        			<td>'.$h1Count.'</td>
-                    <td>'.$h2Count.'</td>
-                    <td>'.$h3Count.'</td>
-                    <td>'.$h4Count.'</td>
-                    <td>'.$h5Count.'</td>
-                    <td>'.$h6Count.'</td>
-                </tr>
-           </tbody>
-        </table>
+    <div class="msgBox">
+        <div class="googlePreview">
         
-        <table class="table table-striped table-responsive">
-            <tbody>
-                '.$headStr.'
-    	   </tbody>
-        </table>
-        '.(($hideCount > 3)? '
-        <div class="showLinks showLinks1">
-            <a class="showMore showMore1">'.$lang['AN18'].' <br /> <i class="fa fa-angle-double-down"></i></a>
-            <a class="showLess showLess1"><i class="fa fa-angle-double-up"></i> <br /> '.$lang['AN19'].'</a>
-        </div>' : '').'
-        
-        <br />
+            <!-- First Row: Mobile & Tablet Views -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="google-preview-box mobile-preview">
+                        <h6>Mobile View</h6>
+                        <p class="google-title"><a href="#">'.$site_title.'</a></p>
+                        <p class="google-url"><span class="bold">'.$my_url_parse['host'].'</span>/</p>
+                        <p class="google-desc">'.$site_description.'</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="google-preview-box tablet-preview">
+                        <h6>Tablet View</h6>
+                        <p class="google-title"><a href="#">'.$site_title.'</a></p>
+                        <p class="google-url"><span class="bold">'.$my_url_parse['host'].'</span>/</p>
+                        <p class="google-desc">'.$site_description.'</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Row: Desktop View -->
+            <div class="row mt-3">
+                <div class="col-12 ">
+                    <div class="google-preview-box desktop-preview">
+                        <h6>Desktop View</h6>
+                        <p class="google-title"><a href="#">'.$site_title.'</a></p>
+                        <p class="google-url"><span class="bold">'.$my_url_parse['host'].'</span>/</p>
+                        <p class="google-desc">'.$site_description.'</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
-<div class="seoBox4 suggestionBox">
-'.$headMsg.'
-</div> 
+    </div>
 </div>';
+
+
+
+
+
+
+
+// die();
+
+// Decode your headings data 
+$headings = jsonDecode($data['headings']); 
+
+// Check that the decoded data is an array and has at least one element
+if (!is_array($headings) || !isset($headings[0])) {
+    die("Invalid headings data.");
+}
+
+// Typically, $headings[0] contains the arrays of heading tags => array of heading texts
+$elementListData = $headings[0];
+
+// If there's a second array with text data for counting, you can use it here:
+$texts = isset($headings[1]) ? $headings[1] : [];
+
+// Define the tags
+$tags = array('h1','h2','h3','h4','h5','h6');
+
+// Determine how many headings exist for each tag
+$counts = [];
+foreach ($tags as $tag) {
+    // Use $texts if available, otherwise fall back to $elementListData
+    if (isset($texts[$tag])) {
+        $counts[$tag] = count($texts[$tag]);
+    } elseif (isset($elementListData[$tag])) {
+        $counts[$tag] = count($elementListData[$tag]);
+    } else {
+        $counts[$tag] = 0;
+    }
+}
+
+// Decide the outer container’s CSS class based on H1/H2 logic
+if ($counts['h1'] > 2) {
+    $boxClass = 'improveBox'; 
+} elseif ($counts['h1'] > 0 && $counts['h2'] > 0) {
+    $boxClass = 'passedBox';
+} else {
+    $boxClass = 'errorBox';
+}
+
+// Suggestion text from language array (ensure $lang is defined)
+$headMsg = isset($lang['AN176']) ? $lang['AN176'] : "Please review your heading structure.";
+
+// Define helper function for suggestions if not already defined
+if (!function_exists('getHeadingSuggestion')) {
+    function getHeadingSuggestion($tag, $count) {
+        $tagUpper = strtoupper($tag);
+        if ($count === 0) {
+            if ($tag === 'h1') {
+                return "No {$tagUpper} found. We recommend having at least one H1 tag for SEO.";
+            } else {
+                return "No {$tagUpper} found. Consider adding if needed for structure.";
+            }
+        }
+        if ($tag === 'h1' && $count > 2) {
+            return "You have more than 2 H1 headings. Typically, only one is recommended.";
+        }
+        return "Looks good for {$tagUpper}.";
+    }
+}
+
+// Build the table rows for each tag
+$rowsHtml = "";
+foreach ($tags as $tag) {
+    $count = $counts[$tag];
+    // Build a bullet list of headings, or show "None found."
+    if (isset($elementListData[$tag]) && count($elementListData[$tag]) > 0) {
+        $headingsList = '<ul class="list-unstyled mb-0">';
+        foreach ($elementListData[$tag] as $text) {
+            $headingsList .= '<li>&lt;' . $tag . '&gt; <b>' . htmlspecialchars($text) . '</b> &lt;/' . $tag . '&gt;</li>';
+        }
+        $headingsList .= '</ul>';
+    } else {
+        $headingsList = '<em class="text-muted">None found.</em>';
+    }
+    
+    // Build the suggestion text
+    $suggestion = getHeadingSuggestion($tag, $count);
+    
+    // Add one table row
+    $rowsHtml .= '
+        <tr>
+            <td><strong>' . strtoupper($tag) . '</strong></td>
+            <td>' . $count . '</td>
+            <td>' . $headingsList . '</td>
+            <td class="text-muted small">' . $suggestion . '</td>
+        </tr>';
+}
+
+// Wrap everything in the main box
+$seoBox4 = ' 
+    <div class="contentBox" id="seoBox4">
+        <div class="msgBox">
+            <table class="table table-bordered table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th width="50px">Tag</th>
+                        <th width="100px">Count</th>
+                        <th>Headings</th>
+                        <th width="200px">Suggestion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ' . $rowsHtml . '
+                </tbody>
+            </table>
+        </div>
+        <div class="seoBox4 suggestionBox">
+             ' . $headMsg . '
+        </div>
+    </div>
+    <div class="questionBox" data-original-title="More Information" data-toggle="tooltip" data-placement="top">
+        <i class="fa fa-question-circle grayColor"></i>
+    </div> ';
+ 
+
+
+
+
 
 //Image without Alt Tag
 $image_alt = decSerBase($data['image_alt']);

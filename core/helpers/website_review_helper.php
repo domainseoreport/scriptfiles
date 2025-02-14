@@ -82,9 +82,7 @@ function outHeadBox($title,array $sugMsg, $type){
     echo '<div class="headBox clearfix">
             <h4 class="titleStr">'.$title.'</h4>
             <h4 class="solveMsg" data-original-title="'.$solveMsg.'" data-toggle="tooltip" data-placement="top">
-                <i class="fa fa-gear fa-xs '.$one.'"></i>
-                <i class="fa fa-gear fa-xs '.$two.'"></i>
-                <i class="fa fa-gear fa-xs '.$three.'"></i>
+                
             </h4>
          </div>';
 }
