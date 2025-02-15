@@ -52,20 +52,16 @@ $("#seoBox6").on("click", ".showLess2", function(){
     $('body,html').animate({ scrollTop: pos.top },800);
     return false;
 });
-$("#seoBox8").on("click", ".showMore3", function(){
-    jQuery(".hideTr3").fadeIn();
-    jQuery(".showMore3").css({"display":"none"});
-    jQuery(".showLess3").css({"display":"block"});
-    return false;
-});
-$("#seoBox8").on("click", ".showLess3", function(){
-    jQuery(".hideTr3").fadeOut();
-    jQuery(".showLess3").css({"display":"none"});
-    jQuery(".showMore3").css({"display":"block"});
-    var pos = $('.keyConsResult').offset();
-    $('body,html').animate({ scrollTop: pos.top },800);
-    return false;
-});
+$(document).on('click', '.showMore3', function() {
+    $('.hideTr3').show();
+    $(this).hide();
+    $('.showLess3').show();
+ });
+ $(document).on('click', '.showLess3', function() {
+    $('.hideTr3').hide();
+    $(this).hide();
+    $('.showMore3').show();
+ });
 $("#seoBox13").on("click", ".showMore4", function(){
     jQuery(".hideTr4").fadeIn();
     jQuery(".showMore4").css({"display":"none"});

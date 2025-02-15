@@ -125,7 +125,7 @@ $seoBox5 = '<div class="'.$classKey.'">
             <!-- Second Row: Desktop View -->
             <div class="row mt-3">
                 <div class="col-12 ">
-                    <div class="google-preview-box desktop-preview">
+                    <div class="google-preview-box desktop-preview mt-5">
                         <h6>Desktop View</h6>
                         <p class="google-title"><a href="#">'.$site_title.'</a></p>
                         <p class="google-url"><span class="bold">'.$my_url_parse['host'].'</span>/</p>
@@ -265,63 +265,194 @@ $seoBox4 = '
 
 
 
-//Image without Alt Tag
-$image_alt = decSerBase($data['image_alt']);
+  $image_alt = jsonDecode($data['image_alt']);
 
-$imageCount = $image_alt[0];
-$imageWithOutAltTag = 0;
-$hideClass = $imageWithOutAltTagData = '';
-$imageMsg = $lang['AN178'];
-$imgArr = $image_alt[2];
+// Ensure each key is at least an empty array so array_map won't fail
+$image_alt['images_missing_alt']        = $image_alt['images_missing_alt']        ?? [];
+$image_alt['images_with_empty_alt']     = $image_alt['images_with_empty_alt']     ?? [];
+$image_alt['images_with_short_alt']     = $image_alt['images_with_short_alt']     ?? [];
+$image_alt['images_with_long_alt']      = $image_alt['images_with_long_alt']      ?? [];
+$image_alt['images_with_redundant_alt'] = $image_alt['images_with_redundant_alt'] ?? [];
+$image_alt['suggestions']              = $image_alt['suggestions']              ?? [];
 
-foreach($imgArr as $imgLink){
-    if($imageWithOutAltTag == 3)
-        $hideClass = 'hideTr hideTr2';
-    $imageWithOutAltTagData .= '<tr class="'.$hideClass.'"> <td>'.$imgLink.'</td> </tr>';
-    $imageWithOutAltTag++;
+// Total images
+$imageCount = $image_alt['total_images'] ?? 0;
+
+// Aggregate images missing alt attribute.
+$imageWithOutAltTag = array_sum(array_map(function($item) {
+    return $item['count'];
+}, $image_alt['images_missing_alt']));
+$imageWithOutAltTagData = '';
+foreach ($image_alt['images_missing_alt'] as $item) {
+    $imageWithOutAltTagData .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td>' . $item['count'] . '</td></tr>';
 }
 
-$imageWithOutAltTag = $image_alt[1];
+// Aggregate images with empty alt attribute.
+$imageWithEmptyAltCount = array_sum(array_map(function($item) {
+    return $item['count'];
+}, $image_alt['images_with_empty_alt']));
+$imageWithEmptyAltData = '';
+foreach ($image_alt['images_with_empty_alt'] as $item) {
+    $imageWithEmptyAltData .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td>' . $item['count'] . '</td></tr>';
+}
 
-if($imageWithOutAltTag == 0)
-    $altClass = 'passedBox';
-elseif($imageWithOutAltTag < 2)
-    $altClass = 'improveBox';
-else
-    $altClass = 'errorBox';
+// Aggregate images with short alt text.
+$imageWithShortAltCount = array_sum(array_map(function($item) {
+    return $item['count'];
+}, $image_alt['images_with_short_alt']));
+$imageWithShortAltData = '';
+foreach ($image_alt['images_with_short_alt'] as $item) {
+    $imageWithShortAltData .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td>' . $item['count'] . '</td></tr>';
+}
 
+// Aggregate images with long alt text.
+$imageWithLongAltCount = array_sum(array_map(function($item) {
+    return $item['count'];
+}, $image_alt['images_with_long_alt']));
+$imageWithLongAltData = '';
+foreach ($image_alt['images_with_long_alt'] as $item) {
+    $imageWithLongAltData .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td>' . $item['count'] . '</td></tr>';
+}
 
-$seoBox6 = '<div class="'.$altClass.'">
-<div class="msgBox">       
-    '.str_replace('[image-count]',$imageCount,$lang['AN21']).' <br />
-    <div class="altImgGroup"> 
-    '.(($imageWithOutAltTag == 0)? '
-    <img src="'.$theme_path.'img/true.png" alt="'.$lang['AN24'].'" title="'.$lang['AN25'].'" /> '.$lang['AN27'].'</div><br />': ' 
-    <img src="'.$theme_path.'img/false.png" alt="'.$lang['AN23'].'" title="'.$lang['AN22'].'" />
-     '.str_replace('[missing-alt-tag]',$imageWithOutAltTag,$lang['AN26']).'
+// Aggregate images with redundant alt text.
+$imageWithRedundantAltCount = array_sum(array_map(function($item) {
+    return $item['count'];
+}, $image_alt['images_with_redundant_alt']));
+$imageWithRedundantAltData = '';
+foreach ($image_alt['images_with_redundant_alt'] as $item) {
+    $imageWithRedundantAltData .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td>' . $item['count'] . '</td></tr>';
+}
+
+// Calculate overall issues count.
+$issuesCount = $imageWithOutAltTag 
+             + $imageWithEmptyAltCount 
+             + $imageWithShortAltCount 
+             + $imageWithLongAltCount 
+             + $imageWithRedundantAltCount;
+
+// Determine the CSS class based on the overall issue count.
+$altClass = ($issuesCount == 0) ? 'passedBox' : (($issuesCount < 3) ? 'improveBox' : 'errorBox');
+
+// Build the suggestion messages.
+$imageMsg = '';
+foreach ($image_alt['suggestions'] as $sugg) {
+    $imageMsg .= '<p>' . htmlspecialchars($sugg) . '</p>';
+}
+
+// Build the final HTML output similar to your original $seoBox6.
+$seoBox6 = '<div class="' . $altClass . '">
+    <div class="msgBox">       
+        ' . str_replace('[image-count]', $imageCount, $lang['AN21']) . ' <br />
+        <div class="altImgGroup"> 
+            ' . (
+                ($imageWithOutAltTag == 0)
+                ? '<img src="' . $theme_path . 'img/true.png" alt="' . $lang['AN24'] . '" title="' . $lang['AN25'] . '" /> ' . $lang['AN27']
+                : '<img src="' . $theme_path . 'img/false.png" alt="' . $lang['AN23'] . '" title="' . $lang['AN22'] . '" />
+                   ' . str_replace('[missing-alt-tag]', $imageWithOutAltTag, $lang['AN26'])
+            ) . '
+        </div>
+        <br />
+        
+        <!-- Table for images missing alt -->
+        <table class="table table-striped table-responsive">
+            <thead>
+              <tr>
+                <th>Image Source</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              ' . $imageWithOutAltTagData . '
+            </tbody>
+        </table>
+        ' . (
+            ($imageWithOutAltTag > 3)
+            ? '<div class="showLinks showLinks2">
+                   <a class="showMore showMore2">' . $lang['AN18'] . ' <br /> <i class="fa fa-angle-double-down"></i></a>
+                   <a class="showLess showLess2"><i class="fa fa-angle-double-up"></i> <br /> ' . $lang['AN19'] . '</a>
+               </div>'
+            : ''
+        ) . '
+        <br />
+        
+        <!-- Images With Empty Alt -->
+        ' . (
+            $imageWithEmptyAltCount > 0 
+            ? '<h4>Images With Empty Alt Attribute (' . $imageWithEmptyAltCount . ')</h4>
+               <table class="table table-striped table-responsive">
+                  <thead>
+                    <tr>
+                      <th>Image Source</th>
+                      <th>Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>' . $imageWithEmptyAltData . '</tbody>
+               </table>'
+            : ''
+        ) . '
+        
+        <!-- Images With Short Alt -->
+        ' . (
+            $imageWithShortAltCount > 0 
+            ? '<h4>Images With Short Alt Text (' . $imageWithShortAltCount . ')</h4>
+               <table class="table table-striped table-responsive">
+                  <thead>
+                    <tr>
+                      <th>Image Source</th>
+                      <th>Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>' . $imageWithShortAltData . '</tbody>
+               </table>'
+            : ''
+        ) . '
+        
+        <!-- Images With Long Alt -->
+        ' . (
+            $imageWithLongAltCount > 0 
+            ? '<h4>Images With Long Alt Text (' . $imageWithLongAltCount . ')</h4>
+               <table class="table table-striped table-responsive">
+                  <thead>
+                    <tr>
+                      <th>Image Source</th>
+                      <th>Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>' . $imageWithLongAltData . '</tbody>
+               </table>'
+            : ''
+        ) . '
+        
+        <!-- Images With Redundant Alt -->
+        ' . (
+            $imageWithRedundantAltCount > 0 
+            ? '<h4>Images With Redundant Alt Text (' . $imageWithRedundantAltCount . ')</h4>
+               <table class="table table-striped table-responsive">
+                  <thead>
+                    <tr>
+                      <th>Image Source</th>
+                      <th>Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>' . $imageWithRedundantAltData . '</tbody>
+               </table>'
+            : ''
+        ) . '
+        
     </div>
-    <br />
-    <table class="table table-striped table-responsive">
-        <tbody>
-              '.$imageWithOutAltTagData.'
-	   </tbody>
-    </table>').'
-    
-    '.(($imageWithOutAltTag > 3)? '
-    <div class="showLinks showLinks2">
-        <a class="showMore showMore2">'.$lang['AN18'].' <br /> <i class="fa fa-angle-double-down"></i></a>
-        <a class="showLess showLess2"><i class="fa fa-angle-double-up"></i> <br /> '.$lang['AN19'].'</a>
-    </div>' : '').'
-    
-    <br />
-</div>
-<div class="seoBox6 suggestionBox">
-'.$imageMsg.'
-</div> 
+    <div class="seoBox6 suggestionBox">
+        ' . $imageMsg . '
+    </div> 
 </div>';
 
+  
+
 //Keyword Cloud
-$keywords_cloud = decSerBase($data['keywords_cloud']);
+$keywords_cloud = jsonDecode($data['keywords_cloud']);
+echo "<pre>";
+print_r($keywords_cloud);
+echo "</pre>";
+
 $outCount = $keywords_cloud[0];
 $outArr = $keywords_cloud[1];
 $keyData = '';

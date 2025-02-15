@@ -202,15 +202,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      */
     if (isset($_POST['keyConsistency'])) {
         log_message('debug', "Keyword Consistency Tag Call for URL {$my_url_host}");
-        $metaData = jsonDecode($seoTools->processMeta());
+    
+        // 1. Get the meta data and headings (decoded)
+        $metaData    = jsonDecode($seoTools->processMeta());
         $headingData = jsonDecode($seoTools->processHeading());
+        
+    
+        // 2. Generate your keyword cloud (includes unigrams, bigrams, trigrams)
         $keyCloudResult = $seoTools->processKeyCloud();
-        $consistency = $seoTools->processKeyConsistency(
-            $keyCloudResult['keyCloudData'] ?? $keyCloudResult, 
-            $metaData, 
-            $headingData[0] // Assuming headings are stored in the first element.
+          
+        // 3. (Optional) If you still want to store or show the single consistency table:
+        //    (This is your old approach)
+        $consistencyJson = $seoTools->processKeyConsistency(
+            $keyCloudResult['keyCloudData'] ?? [],
+            $metaData,
+            $headingData[0] // Typically the headings are in index [0].
         );
-        echo $seoTools->showKeyConsistency($consistency);
+      
+        // If you still need the single-table output for some reason, do:
+        // echo $seoTools->showKeyConsistency($consistencyJson);
+        
+        // 4. NEW multi-table approach: 
+        //    Grab the 'fullCloud' array from $keyCloudResult to get unigrams, bigrams, trigrams
+        $fullCloud = $keyCloudResult['fullCloud'] ?? [];
+        
+    
+        // 5. Now display three separate tables (unigrams/bigrams/trigrams)
+        echo $seoTools->showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headingData[0]);
+    
         die();
     }
 

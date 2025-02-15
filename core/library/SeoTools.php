@@ -193,7 +193,7 @@ class SeoTools {
     
                         </div>
                     </div>
-                    <div class="seoBox5 suggestionBox">' . htmlspecialchars($googleMsg) . '</div>
+                     
                 </div>';
                     
         return $output;
@@ -242,10 +242,10 @@ class SeoTools {
      * @return string The HTML output.
      */
     public function showHeading($headings) {
-        // Decode the JSON string into an array
+        // Decode JSON safely
         $headingsArr = jsonDecode($headings);
     
-        // Validate data to prevent errors
+        // Validate data structure
         if (!is_array($headingsArr) || !isset($headingsArr[0])) {
             return '<div class="errorBox"><div class="msgBox">Invalid heading data.</div></div>';
         }
@@ -253,72 +253,87 @@ class SeoTools {
         $elementList = $headingsArr[0];
     
         // Define heading tags and initialize counts
-        $tags = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6');
+        $tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
         $counts = [];
         foreach ($tags as $tag) {
             $counts[$tag] = isset($elementList[$tag]) ? count($elementList[$tag]) : 0;
         }
     
-        // Determine CSS class based on heading count
-        $class = ($counts['h1'] > 2) ? 'improveBox' :
-                 (($counts['h1'] > 0 && $counts['h2'] > 0) ? 'passedBox' : 'errorBox');
+        // Determine CSS class based on heading structure
+        $boxClass = ($counts['h1'] > 2) ? 'improveBox' :
+                    (($counts['h1'] > 0 && $counts['h2'] > 0) ? 'passedBox' : 'errorBox');
     
-        // Start output with table for heading count summary
-        $output = '<div class="' . $class . '">
+        // Suggestion text from language array
+        $headMsg = isset($this->lang['AN176']) ? $this->lang['AN176'] : "Please review your heading structure.";
+    
+        // Helper function for suggestions
+        if (!function_exists('getHeadingSuggestion')) {
+            function getHeadingSuggestion($tag, $count) {
+                $tagUpper = strtoupper($tag);
+                if ($count === 0) {
+                    return ($tag === 'h1') 
+                        ? "No {$tagUpper} found. At least one H1 tag is recommended for SEO."
+                        : "No {$tagUpper} found. Consider adding for better structure.";
+                }
+                return ($tag === 'h1' && $count > 2)
+                    ? "More than 2 H1 tags found. Best practice is to have only one."
+                    : "Looks good for {$tagUpper}.";
+            }
+        }
+    
+        // Build the heading count table
+        $output = '<div class="contentBox" id="seoBox4">
             <div class="msgBox">
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>&lt;H1&gt;</th>
-                            <th>&lt;H2&gt;</th>
-                            <th>&lt;H3&gt;</th>
-                            <th>&lt;H4&gt;</th>
-                            <th>&lt;H5&gt;</th>
-                            <th>&lt;H6&gt;</th>
+                            <th width="50px">Tag</th>
+                            <th width="100px">Count</th>
+                            <th>Headings</th>
+                            <th width="200px">Suggestion</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>' . $counts['h1'] . '</td>
-                            <td>' . $counts['h2'] . '</td>
-                            <td>' . $counts['h3'] . '</td>
-                            <td>' . $counts['h4'] . '</td>
-                            <td>' . $counts['h5'] . '</td>
-                            <td>' . $counts['h6'] . '</td>
-                        </tr>
-                    </tbody>
-                </table>';
+                    <tbody>';
     
-        // Generate detailed headings display
-        $hideCount = 0;
-        $headStr = '<table class="table table-striped table-responsive">
-                        <tbody>';
+        // Generate heading details
         foreach ($tags as $tag) {
+            $count = $counts[$tag];
+    
+            // Build list of headings or show "None found"
             if (!empty($elementList[$tag])) {
-                foreach ($elementList[$tag] as $headingText) {
-                    $hideClass = ($hideCount >= 3) ? 'hideTr hideTr1' : '';
-                    $headStr .= '<tr class="' . $hideClass . '">
-                                    <td>&lt;' . strtoupper($tag) . '&gt; <b>' . htmlspecialchars($headingText) . '</b> &lt;/' . strtoupper($tag) . '&gt;</td>
-                                 </tr>';
-                    $hideCount++;
+                $headingsList = '<ul class="list-unstyled mb-0">';
+                foreach ($elementList[$tag] as $text) {
+                    $headingsList .= '<li>&lt;' . strtoupper($tag) . '&gt; <b>' . htmlspecialchars($text) . '</b> &lt;/' . strtoupper($tag) . '&gt;</li>';
                 }
+                $headingsList .= '</ul>';
+            } else {
+                $headingsList = '<em class="text-muted">None found.</em>';
             }
-        }
-        $headStr .= '</tbody></table>';
-        $output .= $headStr;
     
-        // Add toggle buttons only if more than 3 headings exist
-        if ($hideCount > 3) {
+            // Generate suggestion text
+            $suggestion = getHeadingSuggestion($tag, $count);
+    
+            // Add row to the table
             $output .= '
-                <div class="showLinks">
-                    <a class="showMore">' . $this->lang['AN18'] . ' <br /><i class="fa fa-angle-double-down"></i></a>
-                    <a class="showLess"><i class="fa fa-angle-double-up"></i> <br /> ' . $this->lang['AN19'] . '</a>
-                </div>';
+                <tr>
+                    <td><strong>' . strtoupper($tag) . '</strong></td>
+                    <td>' . $count . '</td>
+                    <td>' . $headingsList . '</td>
+                    <td class="text-muted small">' . $suggestion . '</td>
+                </tr>';
         }
     
-        // Closing div and returning output
-        $output .= '</div></div>';
-        
+        // Complete table and close divs
+        $output .= '
+                    </tbody>
+                </table>
+            </div>
+            <div class="seoBox4 suggestionBox">' . $headMsg . '</div>
+        </div>
+        <div class="questionBox" data-original-title="More Information" data-toggle="tooltip" data-placement="top">
+            <i class="fa fa-question-circle grayColor"></i>
+        </div>';
+    
         return $output;
     }
     
@@ -330,145 +345,413 @@ class SeoTools {
      *===================================================================
      */
 
-    /**
-     * processImage()
-     *
-     * Processes image tags to count total images and those missing an "alt" attribute.
-     *
-     * @return array Array with keys: imageCount, missingAlt, missingAltData.
-     */
-    public function processImage() {
-        $imageCount = 0;
-        $missingAlt = 0;
-        $missingAltData = array();
-        $doc = new DOMDocument();
-        @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
-        $images = $doc->getElementsByTagName('img');
-        foreach ($images as $img) {
-            $src = trim($img->getAttribute('src'));
-            if ($src != "") {
-                $imageCount++;
-                if (trim($img->getAttribute('alt')) == "") {
-                    $missingAlt++;
-                    $missingAltData[] = $src;
-                }
+   /**
+ * processImage()
+ *
+ * Processes image tags to evaluate alt attributes in detail:
+ * - Counts total images.
+ * - Gathers images missing alt attributes.
+ * - Gathers images with empty, very short (<5 characters), very long (>100 characters),
+ *   or redundant alt text.
+ * - Provides suggestions based on the analysis.
+ *
+ * @return string JSON encoded array of results.
+ */
+/**
+ * processImage()
+ *
+ * Processes image tags to evaluate alt attributes in detail:
+ * - Counts total images.
+ * - Aggregates images missing alt attributes, with empty, very short (<5 characters), very long (>100 characters),
+ *   or redundant alt text.
+ * - Provides suggestions based on the analysis.
+ *
+ * For duplicate images (by src) in a category, their count is aggregated.
+ *
+ * @return string JSON encoded array of results.
+ */
+public function processImage() {
+    $doc = new DOMDocument();
+    // Load the HTML while handling encoding issues.
+    @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
+    $xpath = new DOMXPath($doc);
+    $imgTags = $xpath->query("//img");
+    
+    // Initialize results arrays as associative arrays keyed by image src.
+    $results = [
+        'total_images' => $imgTags->length,
+        'images_missing_alt'       => [],
+        'images_with_empty_alt'    => [],
+        'images_with_short_alt'    => [],
+        'images_with_long_alt'     => [],
+        'images_with_redundant_alt'=> [],
+        'suggestions' => []
+    ];
+    
+    // Helper function to aggregate duplicate images by src.
+    $aggregate = function(&$array, $data) {
+        $src = $data['src'];
+        if(isset($array[$src])) {
+            $array[$src]['count']++;
+        } else {
+            $data['count'] = 1;
+            $array[$src] = $data;
+        }
+    };
+    
+    foreach ($imgTags as $img) {
+        $src = trim($img->getAttribute('src')) ?: 'N/A';
+        $alt = $img->getAttribute('alt');
+        $title = trim($img->getAttribute('title')) ?: 'N/A';
+        $width = trim($img->getAttribute('width')) ?: 'N/A';
+        $height = trim($img->getAttribute('height')) ?: 'N/A';
+        $class = trim($img->getAttribute('class')) ?: 'N/A';
+        $parentTag = $img->parentNode->nodeName;
+        $parentTxt = trim($img->parentNode->textContent);
+        // Optionally, if you need node position, implement this method or use a default.
+        $position = method_exists($this, 'getNodePosition') ? $this->getNodePosition($img) : 'N/A';
+        
+        // Data to be aggregated
+        $data = compact('src', 'title', 'width', 'height', 'class', 'parentTag', 'parentTxt', 'position');
+        
+        // Check for missing alt attribute.
+        if (!$img->hasAttribute('alt')) {
+            $aggregate($results['images_missing_alt'], $data);
+        }
+        // Check for empty alt attribute.
+        elseif (trim($alt) === '') {
+            $aggregate($results['images_with_empty_alt'], $data);
+        } else {
+            $altLength = mb_strlen($alt);
+            $normalizedAlt = strtolower($alt);
+            $redundantAlt = in_array($normalizedAlt, ['image','photo','picture','logo']);
+            if ($altLength < 5) {
+                $data['alt'] = $alt;
+                $data['length'] = $altLength;
+                $aggregate($results['images_with_short_alt'], $data);
+            }
+            if ($altLength > 100) {
+                $data['alt'] = $alt;
+                $data['length'] = $altLength;
+                $aggregate($results['images_with_long_alt'], $data);
+            }
+            if ($redundantAlt) {
+                $data['alt'] = $alt;
+                $aggregate($results['images_with_redundant_alt'], $data);
             }
         }
-       
-        $updateStr = jsonEncode(array(
-            'imageCount' => $imageCount,
-            'missingAlt' => $missingAlt,
-            'missingAltData' => $missingAltData
-        ));
-       
-        
-        //$updateStr = serBase(array($imageCount, $missingAlt, $missingAltData));
-        updateToDbPrepared($this->con, 'domains_data', array('image_alt' => $updateStr), array('domain' => $this->domainStr));
-        return $updateStr;
     }
+    
+    // Build suggestions based on counts for aggregated arrays.
+    $totalMissing = array_sum(array_map(function($i){ return $i['count']; }, $results['images_missing_alt']));
+    $totalEmpty   = array_sum(array_map(function($i){ return $i['count']; }, $results['images_with_empty_alt']));
+    $totalShort   = array_sum(array_map(function($i){ return $i['count']; }, $results['images_with_short_alt']));
+    $totalLong    = array_sum(array_map(function($i){ return $i['count']; }, $results['images_with_long_alt']));
+    $totalRedund  = array_sum(array_map(function($i){ return $i['count']; }, $results['images_with_redundant_alt']));
+    
+    if ($totalMissing > 0) {
+        $results['suggestions'][] = "There are {$totalMissing} image instances missing alt attributes.";
+    }
+    if ($totalEmpty > 0) {
+        $results['suggestions'][] = "There are {$totalEmpty} image instances with empty alt attributes.";
+    }
+    if ($totalShort > 0) {
+        $results['suggestions'][] = "There are {$totalShort} image instances with very short alt text (<5 chars).";
+    }
+    if ($totalLong > 0) {
+        $results['suggestions'][] = "There are {$totalLong} image instances with very long alt text (>100 chars).";
+    }
+    if ($totalRedund > 0) {
+        $results['suggestions'][] = "There are {$totalRedund} image instances with redundant alt text (e.g., 'image','logo').";
+    }
+    if ($totalMissing === 0 && $totalEmpty === 0 && $totalShort === 0 && $totalLong === 0 && $totalRedund === 0) {
+        $results['suggestions'][] = "Great job! All images have appropriate alt attributes.";
+    }
+    
+    $updateStr = jsonEncode($results);
+    updateToDbPrepared($this->con, 'domains_data', ['image_alt' => $updateStr], ['domain' => $this->domainStr]);
+    return $updateStr;
+}
 
-    /**
-     * showImage()
-     *
-     * Returns HTML output for the image alt tag analysis.
-     *
-     * @param array $imageData The array returned by processImage().
-     * @return string HTML output.
-     */
-    public function showImage($imageData) {
-        $imageData = jsonDecode($imageData);
-       
-        $altClass = ($imageData['missingAlt'] == 0) ? 'passedBox' : (($imageData['missingAlt'] < 2) ? 'improveBox' : 'errorBox');
-        $output = '<div class="' . $altClass . '">
-                        <div class="msgBox">
-                            ' . str_replace('[image-count]', $imageData['imageCount'], $this->lang['AN21']) . '<br />
-                            <div class="altImgGroup">';
-        if ($imageData['missingAlt'] == 0) {
-            $output .= '<img src="' . themeLink('img/true.png', true) . '" alt="' . $this->lang['AN24'] . '" title="' . $this->lang['AN25'] . '" /> ' . $this->lang['AN27'] . '<br />';
-        } else {
-            $output .= '<img src="' . themeLink('img/false.png', true) . '" alt="' . $this->lang['AN23'] . '" title="' . $this->lang['AN22'] . '" /> ' . str_replace('[missing-alt-tag]', $imageData['missingAlt'], $this->lang['AN26']);
-        }
-        $output .= '       </div>
-                            <br />
-                            <table class="table table-striped table-responsive">
-                                <tbody>';
-        foreach ($imageData['missingAltData'] as $src) {
-            $output .= '<tr><td>' . $src . '</td></tr>';
-        }
-        $output .= '       </tbody>
-                            </table>
-                        </div>
-                        <div class="seoBox6 suggestionBox">' . $this->lang['AN178'] . '</div>
-                   </div>';
-        return $output;
+/**
+ * showImage()
+ *
+ * Returns HTML output for the detailed image alt tag analysis.
+ * Displays overall counts, individual tables for each issue category (aggregated by image src),
+ * and suggestions.
+ *
+ * @param string $imageData JSON string as returned by processImage().
+ * @return string HTML output.
+ */
+public function showImage($imageData) {
+    $data = jsonDecode($imageData);
+    
+    // Calculate total issue count based on instance counts.
+    $issuesCount = array_sum(array_map(function($i){ return $i['count']; }, $data['images_missing_alt'])) +
+                   array_sum(array_map(function($i){ return $i['count']; }, $data['images_with_empty_alt'])) +
+                   array_sum(array_map(function($i){ return $i['count']; }, $data['images_with_short_alt'])) +
+                   array_sum(array_map(function($i){ return $i['count']; }, $data['images_with_long_alt'])) +
+                   array_sum(array_map(function($i){ return $i['count']; }, $data['images_with_redundant_alt']));
+    
+    // Choose a CSS class based on issue severity.
+    $altClass = ($issuesCount == 0) ? 'passedBox' : (($issuesCount < 3) ? 'improveBox' : 'errorBox');
+    
+    $output = '<div class="' . $altClass . '">
+                    <div class="msgBox">
+                        ' . str_replace('[image-count]', $data['total_images'], $this->lang['AN21']) . '<br />
+                        <div class="altImgGroup">';
+    // Display appropriate icon based on issues.
+    if ($issuesCount == 0) {
+        $output .= '<img src="' . themeLink('img/true.png', true) . '" alt="' . $this->lang['AN24'] . '" title="' . $this->lang['AN25'] . '" /> ' . $this->lang['AN27'] . '<br />';
+    } else {
+        $output .= '<img src="' . themeLink('img/false.png', true) . '" alt="' . $this->lang['AN23'] . '" title="' . $this->lang['AN22'] . '" /> ';
+        $output .= "Issues found: " . $issuesCount;
     }
+    $output .= '</div>
+                        <br />';
+    
+    // Helper function to generate tables for a given category.
+    $buildTable = function($title, $items) {
+        if (count($items) > 0) {
+            $table = '<h4>' . $title . ' (' . array_sum(array_map(function($i){ return $i['count']; }, $items)) . ')</h4>';
+            $table .= '<table class="table table-striped table-responsive"><thead><tr><th>Image Source</th><th>Count</th></tr></thead><tbody>';
+            foreach ($items as $item) {
+                $table .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td>' . $item['count'] . '</td></tr>';
+            }
+            $table .= '</tbody></table>';
+            return $table;
+        }
+        return '';
+    };
+    
+    // Build tables for each category.
+    $output .= $buildTable('Images Missing Alt Attribute', $data['images_missing_alt']);
+    $output .= $buildTable('Images With Empty Alt Attribute', $data['images_with_empty_alt']);
+    $output .= $buildTable('Images With Short Alt Text', $data['images_with_short_alt']);
+    $output .= $buildTable('Images With Long Alt Text', $data['images_with_long_alt']);
+    $output .= $buildTable('Images With Redundant Alt Text', $data['images_with_redundant_alt']);
+    
+    // Display suggestions.
+    $output .= '<br /><ul>';
+    foreach ($data['suggestions'] as $suggestion) {
+        $output .= '<li>' . $suggestion . '</li>';
+    }
+    $output .= '</ul>
+                    </div>
+                     
+               </div>';
+    
+    return $output;
+}
+
+
+
+/**
+ * getNodePosition()
+ *
+ * Returns the position of the given node among its siblings.
+ *
+ * @param DOMNode $node
+ * @return int Position index (starting from 1).
+ */
+private function getNodePosition(DOMNode $node) {
+    $position = 1;
+    while ($node->previousSibling) {
+        $node = $node->previousSibling;
+        $position++;
+    }
+    return $position;
+}
 
     /*===================================================================
      * KEYWORD CLOUD HANDLER
      *===================================================================
      */
 
+      /**
+     * Returns an array of common stop words.
+     */
+    private function getStopWords(): array {
+        return [
+            "a","about","above","after","again","against","all","am","an","and","any","are","aren't","as","at","be","because","been","before","being","below","between","both","but","by","can","can't","cannot","could","couldn't","did","didn't","do","does","doesn't","doing","don't","down","during","each","few","for","from","further","had","hadn't","has","hasn't","have","haven't","having","he","he'd","he'll","he's","her","here","here's","hers","herself","him","himself","his","how","how's","i","i'd","i'll","i'm","i've","if","in","into","is","isn't","it","it's","its","itself","let's","me","more","most","mustn't","my","myself","no","nor","not","of","off","on","once","only","or","other","ought","our","ours","ourselves","out","over","own","same","shan't","she","she'd","she'll","she's","should","shouldn't","so","some","such","than","that","that's","the","their","theirs","them","themselves","then","there","there's","these","they","they'd","they'll","they're","they've","this","those","through","to","too","under","until","up","very","was","wasn't","we","we'd","we'll","we're","we've","were","weren't","what","what's","when","when's","where","where's","which","while","who","who's","whom","why","why's","with","won't","would","wouldn't","you","you'd","you'll","you're","you've","your","yours","yourself","yourselves"
+            // Add additional words as needed.
+        ];
+    }
+
+    /**
+     * Builds frequency data for an array of tokens.
+     */
+    private function buildFrequencyData(array $tokens, int $minCount = 2): array {
+        $counts = array_count_values($tokens);
+        $counts = array_filter($counts, function($cnt) use ($minCount) {
+            return $cnt >= $minCount;
+        });
+        arsort($counts);
+        $total = array_sum($counts);
+        $result = [];
+        foreach ($counts as $phrase => $count) {
+            $density = $total > 0 ? ($count / $total) * 100 : 0;
+            $result[] = [
+                'phrase'  => $phrase,
+                'count'   => $count,
+                'density' => round($density, 2)
+            ];
+        }
+        return $result;
+    }
+
+    /**
+     * Detect overused phrases from frequency data.
+     * This example flags phrases with count > 5 or density > 5%.
+     */
+    private function detectOveruse(array $data): array {
+        $overused = [];
+        foreach ($data as $d) {
+            if ($d['count'] > 5 || $d['density'] > 5) {
+                $overused[] = $d['phrase'];
+            }
+        }
+        return $overused;
+    }
+
+    /**
+     * generateKeywordCloud()
+     *
+     * Extracts the textual content from the HTML, cleans it by removing scripts,
+     * styles, comments, and HTML tags, then converts it to lowercase. It splits the
+     * text into words and filters out stop words and short words. It then generates
+     * unigrams, bigrams, and trigrams arrays, builds frequency data for each, and
+     * returns all this data along with suggestions based on possible overuse.
+     *
+     * @param DOMDocument $dom The DOMDocument instance loaded with the page HTML.
+     * @return array Associative array containing 'unigrams', 'bigrams', 'trigrams', and 'suggestions'.
+     */
+    private function generateKeywordCloud(DOMDocument $dom): array {
+        // Get the full HTML and remove scripts, styles, and comments.
+        $html = $dom->saveHTML();
+        $html = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $html);
+        $html = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $html);
+        $html = preg_replace('/<!--(.*?)-->/', '', $html);
+        $html = html_entity_decode($html, ENT_QUOTES|ENT_HTML5, 'UTF-8');
+
+        // Strip HTML tags and remove HTML entities.
+        $textContent = strip_tags($html);
+        $textContent = preg_replace('/&[A-Za-z0-9#]+;/', ' ', $textContent);
+        $textContent = strtolower($textContent);
+        // Replace non-letters with spaces.
+        $textContent = preg_replace('/[^a-z\s]/', ' ', $textContent);
+        $textContent = preg_replace('/\s+/', ' ', $textContent);
+        $textContent = trim($textContent);
+
+        // Split text into words.
+        $words = explode(' ', $textContent);
+        $words = array_filter($words);
+
+        // Filter out stop words and words shorter than 3 characters.
+        $stopWords = $this->getStopWords();
+        $filtered = array_filter($words, function($w) use ($stopWords) {
+            return !in_array($w, $stopWords) && strlen($w) > 2;
+        });
+        $filtered = array_values($filtered);
+
+        // Unigrams.
+        $unigrams = $filtered;
+
+        // Bigrams.
+        $bigrams = [];
+        for ($i = 0; $i < count($filtered) - 1; $i++) {
+            $bigrams[] = $filtered[$i] . ' ' . $filtered[$i + 1];
+        }
+
+        // Trigrams.
+        $trigrams = [];
+        for ($i = 0; $i < count($filtered) - 2; $i++) {
+            $trigrams[] = $filtered[$i] . ' ' . $filtered[$i + 1] . ' ' . $filtered[$i + 2];
+        }
+
+        // Build frequency data.
+        $uniCloud = $this->buildFrequencyData($unigrams);
+        $biCloud  = $this->buildFrequencyData($bigrams);
+        $triCloud = $this->buildFrequencyData($trigrams);
+
+        // Detect possible overused phrases.
+        $overusedSingles  = $this->detectOveruse($uniCloud);
+        $overusedBigrams  = $this->detectOveruse($biCloud);
+        $overusedTrigrams = $this->detectOveruse($triCloud);
+        $allOverused = array_unique(array_merge($overusedSingles, $overusedBigrams, $overusedTrigrams));
+        $suggestions = [];
+        if (!empty($allOverused)) {
+            $suggestions[] = "Possible overuse of phrases: " . implode(', ', $allOverused);
+        }
+
+        return [
+            'unigrams'    => $uniCloud,
+            'bigrams'     => $biCloud,
+            'trigrams'    => $triCloud,
+            'suggestions' => $suggestions,
+        ];
+    }
+
     /**
      * processKeyCloud()
      *
-     * Extracts keywords from the HTML text.
-     * This example implementation strips HTML, lowercases the text,
-     * removes punctuation and a set of common stop words, then counts word frequencies.
-     * It returns the top 15 keywords with their count and percentage.
+     * Uses generateKeywordCloud() to extract unigrams, bigrams, and trigrams from the HTML.
+     * For the AJAX output, it builds an HTML list from the top 15 unigrams (you can adjust
+     * which n-gram set to display as needed) and updates the database with the complete data.
      *
-     * @return array Returns an array of keywords.
+     * @return array Returns an array with keys 'keyCloudData', 'keyDataHtml', and 'outCount'.
      */
     public function processKeyCloud() {
-        // Create a KD object to get keyword results.
-        $kd = new KD();
-        $kd->domain = $this->urlParse['host'];
-        $kd->domainData = $this->html;
-        $resdata = $kd->result();
-        $keyData = '';
-        $blockChars = array('~', '=', '+', '?', ':', '_', '[', ']', '"', '.', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<', '>', '{', '}', '|', '\\', '/', ',');
-        $blockWords = array('and', 'is', 'was', 'to', 'into', 'with', 'without', 'than', 'then', 'that', 'these', 'this', 'their', 'them', 'from', 'your', 'able', 'which', 'when', 'what', 'who');
-        $outArr = array();
+        // Load the HTML into DOMDocument.
+        $dom = new DOMDocument();
+        @$dom->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
+
+        // Generate keyword cloud data (including unigrams, bigrams, trigrams and suggestions).
+        $cloudData = $this->generateKeywordCloud($dom);
+
+        // For display purposes, we use the unigrams.
+        $unigrams = $cloudData['unigrams'];
+        $keyDataHtml = '';
+        $outArr = [];
         $keyCount = 0;
-        // Process each keyword from the KD result.
-        foreach ($resdata as $outData) {
-            if (isset($outData['keyword'])) {
-                $keyword = trim($outData['keyword']);
-                if ($keyword != "") {
-                    $blockCharsBol = false;
-                    foreach ($blockChars as $blockChar) {
-                        if (check_str_contains($keyword, $blockChar)) {
-                            $blockCharsBol = true;
-                            break;
-                        }
-                    }
-                    if (!preg_match('/[0-9]+/', $keyword)) {
-                        if (!$blockCharsBol && !in_array($keyword, $blockWords)) {
-                            if ($keyCount == 15) {
-                                break;
-                            }
-                            $outArr[] = array($keyword, $outData['count'], $outData['percent']);
-                            $keyData .= '<li><span class="keyword">' . $keyword . '</span><span class="number">' . $outData['count'] . '</span></li>';
-                            $keyCount++;
-                        }
-                    }
-                }
+        $maxKeywords = 15;
+        foreach ($unigrams as $data) {
+            if ($keyCount >= $maxKeywords) {
+                break;
             }
+            $keyword = $data['phrase'];
+            $outArr[] = [$keyword, $data['count'], $data['density']];
+            $keyDataHtml .= '<li><span class="keyword">' . htmlspecialchars($keyword) . '</span><span class="number">' . $data['count'] . '</span></li>';
+            $keyCount++;
         }
         $outCount = count($outArr);
-        
-        $updateStr = jsonEncode(array('keyCloudData' => $outArr, 'keyDataHtml' => $keyData, 'outCount' => $outCount));
-       // $updateStr = serBase(array($outCount, $outArr));
-        updateToDbPrepared($this->con, 'domains_data', array('keywords_cloud' => $updateStr), array('domain' => $this->domainStr));
-        return array('keyCloudData' => $outArr, 'keyDataHtml' => $keyData, 'outCount' => $outCount);
-    }
 
+        // Optionally, you might want to merge in suggestions or save all n-gram data.
+        $updateStr = jsonEncode([
+            'keyCloudData' => $outArr,
+            'keyDataHtml'  => $keyDataHtml,
+            'outCount'     => $outCount,
+            'fullCloud'    => $cloudData  // Contains unigrams, bigrams, trigrams, and suggestions.
+        ]);
+
+        
+        updateToDbPrepared($this->con, 'domains_data', ['keywords_cloud' => $updateStr], ['domain' => $this->domainStr]);
+ 
+        return [
+            'keyCloudData' => $outArr,
+            'keyDataHtml'  => $keyDataHtml,
+            'outCount'     => $outCount,
+            'fullCloud'    => $cloudData,
+        ];
+    }
 
     /**
      * showKeyCloud()
      *
      * Returns HTML output for the keyword cloud.
+     * This method preserves your CSS classes and IDs and uses AJAX-friendly markup.
      *
-     * @param array $keyCloudData The data returned by processKeyCloud().
+     * @param array $data The data returned by processKeyCloud().
      * @return string HTML output.
      */
     public function showKeyCloud($data) {
@@ -491,7 +774,6 @@ class SeoTools {
                    </div>';
         return $output;
     }
-
     /*===================================================================
      * KEYWORD CONSISTENCY HANDLER
      *===================================================================
@@ -502,6 +784,7 @@ class SeoTools {
     public function processKeyConsistency($keyCloudData, $metaData, $headings) {
         $result = array();
         foreach ($keyCloudData as $item) {
+            // Here, $item is expected to be an array: [ keyword, count, density ]
             $keyword = $item[0];
             $inTitle = (stripos($metaData['title'], $keyword) !== false);
             $inDesc  = (stripos($metaData['description'], $keyword) !== false);
@@ -515,18 +798,16 @@ class SeoTools {
                 }
             }
             $result[] = array(
-                'keyword' => $keyword,
-                'count' => $item[1],
-                'title' => $inTitle,
+                'keyword'     => $keyword,
+                'count'       => $item[1],
+                'title'       => $inTitle,
                 'description' => $inDesc,
-                'heading' => $inHeading
+                'heading'     => $inHeading
             );
         }
-        $result = jsonEncode($result);
-        
-        
-        updateToDbPrepared($this->con, 'domains_data', array('key_consistency' => jsonEncode($result)), array('domain' => $this->domainStr));
-        return $result;
+        $resultJson = jsonEncode($result);
+        updateToDbPrepared($this->con, 'domains_data', array('key_consistency' => jsonEncode($resultJson)), array('domain' => $this->domainStr));
+        return $resultJson;
     }
 
     public function showKeyConsistency($consistencyData) { 
@@ -564,6 +845,152 @@ class SeoTools {
         return $output;
     }
 
+
+   
+/**
+ * showKeyConsistencyNgramsTabs()
+ *
+ * Displays three tables (Trigrams, Bigrams, Unigrams) in separate tabs.
+ * By default, we'll open the "Trigrams" tab first, but you can easily reorder.
+ *
+ * @param array $fullCloud  The 'fullCloud' array from processKeyCloud()
+ *                          e.g. ['unigrams'=>[...], 'bigrams'=>[...], 'trigrams'=>[...], 'suggestions'=>[...]].
+ * @param array $metaData   Decoded array from processMeta() (keys: 'title', 'description', etc.).
+ * @param array $headings   Decoded array from processHeading()[0] (the array of h1–h6).
+ * @return string           HTML output with Bootstrap-based tabs for each n‑gram type.
+ */
+public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings)
+{
+    // Ensure we have icons defined
+    $this->true  = '<i class="fa fa-check text-success"></i>';
+    $this->false = '<i class="fa fa-times text-danger"></i>';
+
+    // Extract arrays for unigrams, bigrams, trigrams
+    $unigrams = $fullCloud['unigrams'] ?? [];
+    $bigrams  = $fullCloud['bigrams']  ?? [];
+    $trigrams = $fullCloud['trigrams'] ?? [];
+
+    // Build each table separately using your existing helper:
+    $trigramTable = $this->buildConsistencyTable('Trigrams', $trigrams, $metaData, $headings);
+    $bigramTable  = $this->buildConsistencyTable('Bigrams',  $bigrams,  $metaData, $headings);
+    $unigramTable = $this->buildConsistencyTable('Unigrams', $unigrams, $metaData, $headings);
+
+    // Now build the tab layout. 
+    // Using Bootstrap 4 or 5 markup. Adjust class names as needed if using a different version.
+    // We'll make "Trigrams" the default active tab. You can reorder if desired.
+    $output = <<<HTML
+<div class="keyword-consistency container-fluid">
+    <h3>Keyword Consistency</h3>
+    <ul class="nav nav-tabs" id="consistencyTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="trigrams-tab" data-toggle="tab" href="#trigrams-pane" role="tab" aria-controls="trigrams-pane" aria-selected="true">
+                Trigrams
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="bigrams-tab" data-toggle="tab" href="#bigrams-pane" role="tab" aria-controls="bigrams-pane" aria-selected="false">
+                Bigrams
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="unigrams-tab" data-toggle="tab" href="#unigrams-pane" role="tab" aria-controls="unigrams-pane" aria-selected="false">
+                Unigrams
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="consistencyTabsContent">
+        <!-- Trigrams Tab Pane -->
+        <div class="tab-pane fade show active" id="trigrams-pane" role="tabpanel" aria-labelledby="trigrams-tab">
+            {$trigramTable}
+        </div>
+
+        <!-- Bigrams Tab Pane -->
+        <div class="tab-pane fade" id="bigrams-pane" role="tabpanel" aria-labelledby="bigrams-tab">
+            {$bigramTable}
+        </div>
+
+        <!-- Unigrams Tab Pane -->
+        <div class="tab-pane fade" id="unigrams-pane" role="tabpanel" aria-labelledby="unigrams-tab">
+            {$unigramTable}
+        </div>
+    </div>
+</div>
+HTML;
+
+    return $output;
+}
+
+
+/**
+ * buildConsistencyTable()
+ *
+ * Helper function that builds one table (e.g., "Unigrams") with columns:
+ *   - Phrase
+ *   - Count
+ *   - Title (check or X)
+ *   - Desc  (check or X)
+ *   - <H>   (check or X)
+ *
+ * @param string $label    Section label, e.g. "Unigrams", "Bigrams", or "Trigrams".
+ * @param array  $ngrams   An array like [ ['phrase'=>'...', 'count'=>X, 'density'=>Y], ... ].
+ * @param array  $metaData Decoded array with 'title' and 'description'.
+ * @param array  $headings Decoded array of headings.
+ *
+ * @return string HTML table for the given n‑gram set.
+ */
+private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
+    $rows = '';
+    $hideCount = 1;
+    foreach ($ngrams as $item) {
+        $phrase = $item['phrase'];
+        $count  = $item['count'];
+        $inTitle = (stripos($metaData['title'] ?? '', $phrase) !== false);
+        $inDesc  = (stripos($metaData['description'] ?? '', $phrase) !== false);
+        $inHeading = false;
+        foreach ($headings as $tag => $texts) {
+            foreach ($texts as $text) {
+                if (stripos($text, $phrase) !== false) {
+                    $inHeading = true;
+                    break 2;
+                }
+            }
+        }
+        $hideClass = ($hideCount > 5) ? 'hideTr hideTr3' : '';
+        $rows .= '<tr class="' . $hideClass . '">
+                    <td>' . htmlspecialchars($phrase) . '</td>
+                    <td>' . $count . '</td>
+                    <td>' . ($inTitle ? $this->true : $this->false) . '</td>
+                    <td>' . ($inDesc ? $this->true : $this->false) . '</td>
+                    <td>' . ($inHeading ? $this->true : $this->false) . '</td>
+                </tr>';
+        $hideCount++;
+    }
+    $output = '<div class="passedBox">
+        <div class="msgBox">
+            <h4>' . $label . '</h4>
+            <table class="table table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>' . $this->lang['AN31'] . '</th>
+                        <th>' . $this->lang['AN32'] . '</th>
+                        <th>' . $this->lang['AN33'] . '</th>
+                        <th>' . $this->lang['AN34'] . '</th>
+                        <th>&lt;H&gt;</th>
+                    </tr>
+                </thead>
+                <tbody>' . $rows . '</tbody>
+            </table>
+            ' . (($hideCount > 6) ? '
+            <div class="showLinks showLinks3">
+                <a class="showMore showMore3">' . $this->lang['AN18'] . ' <br /><i class="fa fa-angle-double-down"></i></a>
+                <a class="showLess showLess3">' . $this->lang['AN19'] . '</a>
+            </div>' : '') . '
+        </div>
+        <div class="seoBox8 suggestionBox">' . $this->lang['AN180'] . '</div>
+    </div>';
+    return $output;
+}
     /*===================================================================
      * TEXT RATIO HANDLER
      *===================================================================

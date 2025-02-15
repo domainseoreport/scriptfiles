@@ -687,13 +687,11 @@ if ($updateFound) {
         </div>
     </div>
 </div>
-$(document).ready(function () {
-    // Ensure the first tab (Desktop View) is always active on load
-    $('#googlePreviewTabs a:first').tab('show');
-});
+ 
 <!-- Conditionally include JavaScript based on update status -->
 <?php if ($updateFound) { ?>
     <script src="<?php themeLink('js/domain.js?v6'); ?>" type="text/javascript"></script>
 <?php } else { ?>
     <script src="<?php themeLink('js/dbdomain.js?v6'); ?>" type="text/javascript"></script>
 <?php } ?>
+

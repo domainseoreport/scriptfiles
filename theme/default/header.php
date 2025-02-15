@@ -38,7 +38,7 @@ defined('APP_NAME') or die(header('HTTP/1.0 403 Forbidden'));
         
         <?php genCanonicalData($baseURL, $currentLink, $loadedLanguages, false, isSelected($themeOptions['general']['langSwitch'])); ?>
 
-        <!-- Main style -->
+        <!-- Main style --> 
         <link href="<?php themeLink('css/bootstrap.min.css'); ?>" rel="stylesheet" />
         
 
