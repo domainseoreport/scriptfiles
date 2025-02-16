@@ -174,7 +174,7 @@ if ($data !== false) {
 if($newDomain){
     $my_url = isDomainAccessible(clean_url($my_url));
 }else{
-    $my_url = $data['domain_access_url'];
+    $my_url = $data['domain_access_url']; 
 } 
 //Hash Code
 $hashCode = md5($my_url_host);

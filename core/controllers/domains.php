@@ -81,7 +81,8 @@ $seoBoxLogin = '<div class="lowImpactBox">
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Retrieve and sanitize the website URL from POST data.
-    $my_url = 'http://' . clean_url(raino_trim($_POST['url']));
+    $my_url =  raino_trim($_POST['url']); 
+    log_message('info', "Called {$my_url}");
     // Retrieve the unique hash code used for caching.
     $hashCode = raino_trim($_POST['hashcode']);
     // Construct the filename where the website source data is stored.
@@ -115,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // If no source data is found, exit with an error message.
     if ($sourceData == '')
         die($lang['AN10']);
-
+ 
     // Instantiate the SeoTools class with the necessary parameters.
     $seoTools = new SeoTools($html, $con, $domainStr, $lang, $my_url_parse, $sepUnique, $seoBoxLogin);    
 

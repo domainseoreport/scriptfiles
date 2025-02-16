@@ -24,7 +24,9 @@ var showSuggestionBox = null;  // Tracks which suggestion box is currently open
  * we do $('#seoBox8').slideToggle(100).
  */
 function showSuggestion(sugBox) {
-  
+  showSuggestionBox = sugBox;
+  // Toggle by ID instead of class:
+  $('#' + sugBox).slideToggle(100);
 }
 
 /**

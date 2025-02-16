@@ -10,18 +10,18 @@ defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
 
 // Array of messages used for solving SEO issues
 $solveMsg = array(
-    
-    
+    // Fill in as required...
 );
 
 // HTML for the loading bar animation
 $loadingBar = '
     <div class="text-center">
-        <img src="' . themeLink('img/load.gif', true) . '" alt="Loading..." />
-        <br /><br />
-        ' . $lang['33'] . '...
-        <br /><br />
+         <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">' . $lang['33'] . '</span>
+        </div>
+        <br /><br /> 
     </div>
+    
 ';
 
 // If update is found, initialize each SEO box with the loading bar content
@@ -42,7 +42,7 @@ if ($updateFound) {
 <script>
     // Set up additional configuration variables for JavaScript use
     var hashCode    = '<?php echo $hashCode; ?>';
-    var inputHost   = '<?php echo $my_url_host; ?>';
+    var inputHost   = '<?php echo $data["domain_access_url"]; ?>';
     var isOnline    = '<?php echo $isOnline; ?>';
     var pdfUrl      = '<?php echo $pdfUrl; ?>';
     var pdfMsg      = '<?php echo makeJavascriptStr($lang['34']); ?>';
@@ -60,7 +60,6 @@ if ($updateFound) {
     <div class="row">
         <div class="col-sm-12">
             <?php
-            // If there is an error, display the error message and a link to the homepage
             if (isset($error)) {
                 echo '
                     <br/><br/>
@@ -77,7 +76,6 @@ if ($updateFound) {
                 <div id="overview">
                     <br />
                     <?php if ($updateFound) { ?>
-                        <!-- Inline styles for the progress bar; consider moving these to an external CSS file -->
                         <style>
                             .progress-bar-primary {
                                 background-color: #3498DC;
@@ -101,7 +99,6 @@ if ($updateFound) {
 
                     <!-- Scoreboard Section -->
                     <div id="scoreBoard" class="row">
-                        <!-- Screenshot Display -->
                         <div class="col-md-4 screenBox">
                             <div id="screenshot">
                                 <div id="screenshotData">
@@ -122,7 +119,6 @@ if ($updateFound) {
                                 <div class="computer"></div>
                             </div>
                         </div>
-                        <!-- URL Host and Progress Bars -->
                         <div class="col-md-5 levelBox">
                             <div>
                                 <h1><?php echo ucfirst($my_url_host); ?></h1>
@@ -162,7 +158,6 @@ if ($updateFound) {
                             </div>
                             <br />
                         </div>
-                        <!-- Overall Score Gauge -->
                         <div class="col-md-2 circleBox">
                             <div class="second circle" data-size="130" data-thickness="5">
                                 <canvas width="130" height="130"></canvas>
@@ -197,12 +192,10 @@ if ($updateFound) {
                     <div class="col-md-3 align-items-center">
                         <div class="pdfBox">
                             <a href="<?php echo $pdfUrl; ?>" id="pdfLink" class="btn btn-lgreen btn-sm">
-                                <i class="fa fa-cloud-download"></i> 
-                                <?php trans('Download as PDF', $lang['28']); ?>
+                                <i class="fa fa-cloud-download"></i> <?php trans('Download as PDF', $lang['28']); ?>
                             </a>
                             <a href="<?php echo $updateUrl; ?>" class="btn btn-red btn-sm">
-                                <i class="fa fa-refresh"></i> 
-                                <?php trans('Update Data', $lang['27']); ?>
+                                <i class="fa fa-refresh"></i> <?php trans('Update Data', $lang['27']); ?>
                             </a>
                         </div>
                     </div>
@@ -219,70 +212,124 @@ if ($updateFound) {
                 <h2 class="seoBox-title">
                     <?php trans('SEO',$lang['35']); ?>
                 </h2>
-               <div class="seoBox"  >
-                     <?php outHeadBox($lang['AN1'],$solveMsg,1); ?> 
-                    <div class="contentBox" id="seoBox1">
-                        <?php echo $seoBox1; ?>
-                    </div>
-                    <?php //outQuestionBox($lang['AN4']); ?>
-	            </div>
-                
-                <div class="seoBox" >
-                    <?php outHeadBox($lang['AN2'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox2">
-                        <?php echo $seoBox2; ?>
-                    </div>
-                    <?php //outQuestionBox($lang['AN4']); ?>
-	            </div>
-                
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN3'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox3">
-                        <?php echo $seoBox3; ?>
-                    </div>
-                    <?php //outQuestionBox($lang['AN4']); ?>
-	            </div>  
-                
-                <div class="seoBox headingResult"  >
-                    <?php outHeadBox($lang['AN16'],$solveMsg,2); ?>
-                    <div class="contentBox" id="seoBox4">
+
+<?php //////////////////////////////////////////// Title Tags Section ///////////////////////////////////////////////////////// ?>
+
+<div class="card shadow seo-card mb-4">
+    <div class="card-body">
+    <div class="d-flex">
+        <div class="me-3">
+          <i class="fa fa-check-circle text-success" style="font-size:2rem;"></i>
+        </div>
+        <div>
+          <h5 class="fw-bold">Meta Information</h5> 
+        </div>
+      </div> 
+      <hr>
+      <div class="row align-items-center">
+        <div class="col-md-3 d-flex align-items-center">
+          <div class="me-3 text-success">
+            <i class="fa fa-check-circle"></i>
+          </div>
+          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN1'],$solveMsg,1); ?></h5>
+        </div>
+        <div class="col-md-9" id="seoBox1">
+        <?php echo $seoBox1; ?>
+        </div>
+      </div>
+            <hr>
+
+      <div class="row align-items-center">
+        <div class="col-md-3 d-flex align-items-center">
+          <div class="me-3 text-success">
+            <i class="fa fa-check-circle"></i>
+          </div>
+          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN2'],$solveMsg,1); ?></h5>
+        </div>
+        <div class="col-md-9" id="seoBox2">
+                <?php echo $seoBox2; ?>
+        </div>
+      </div>
+
+        <hr> 
+
+        <div class="row align-items-center">
+        <div class="col-md-3 d-flex align-items-center">
+            <div class="me-3 text-success">
+            <i class="fa fa-check-circle"></i>
+            </div>
+            <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN3'],$solveMsg,1); ?></h5>
+        </div>
+        <div class="col-md-9" id="seoBox3">
+                <?php echo $seoBox3; ?>
+        </div>
+        </div>
+
+    </div>
+  </div> 
+
+  
+<?php //////////////////////////////////////////// Heading Tags [ H1 - H6 ] Section ///////////////////////////////////////////////////////// ?> 
+<div class="card shadow seo-card mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+      <div class="d-flex">
+        <div class="me-3">
+          <i class="fa fa-check-circle text-success" style="font-size:2rem;"></i>
+        </div>
+        <div>
+          <h5 class="fw-bold"><?php outHeadBox($lang['AN16'],$solveMsg,2); ?></h5> 
+        </div>
+      </div> 
+      
+      <div class="contentBox" id="seoBox4">
                     <?php echo $seoBox4; ?>
                     </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>  
-                
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN17'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox5">
-                        <?php echo $seoBox5; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>  
-                
-                <div class="seoBox altImgResult">
-                    <?php outHeadBox($lang['AN20'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox6">
-                        <?php echo $seoBox6; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>  
-                
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN28'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox7">
-                        <?php echo $seoBox7; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>  
-                
-                <div class="seoBox keyConsResult">
-                    <?php outHeadBox($lang['AN30'],$solveMsg,1); ?>
+      </div>
+    </div>
+  </div>
+
+ 
+               
+<?php //////////////////////////////////////////// Keywords Cloud Section ///////////////////////////////////////////////////////// ?> 
+
+<div class="card shadow seo-card mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-3 d-flex align-items-center">
+          <div class="me-3 text-success">
+            <i class="fa fa-check-circle"></i>
+          </div>
+          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN28'],$solveMsg,4); ?></h5>
+        </div>
+        <div class="col-md-9" id="seoBox7">
+                            <?php echo $seoBox7; ?> 
+        </div>
+        
+        <hr>
+        
+        <div class="d-flex">
+        <div class="me-3">
+          <i class="fa fa-check-circle text-success" style="font-size:2rem;"></i>
+        </div>
+        <div>
+          <h5 class="fw-bold"><?php outHeadBox($lang['AN30'],$solveMsg,1); ?></h5> 
+        </div>
+      </div>  
                     <div class="contentBox" id="seoBox8">
                         <?php echo $seoBox8; ?>
                     </div>
+
+      </div>
+    </div>
+  </div>
+                  
+<?php //////////////////////////////////////////// Keyword Consistency Section ///////////////////////////////////////////////////////// ?>                  
+                <div class="seoBox keyConsResult">
+                    
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>  
-                
+<?php //////////////////////////////////////////// Text/HTML Ratio Section ///////////////////////////////////////////////////////// ?>               
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN35'],$solveMsg,2); ?>
                     <div class="contentBox" id="seoBox9">
@@ -290,23 +337,67 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div> 
-                
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN40'],$solveMsg,2); ?>
-                    <div class="contentBox" id="seoBox10">
-                        <?php echo $seoBox10; ?>
+<?php //////////////////////////////////////////// Alt Attribute Section ///////////////////////////////////////////////////////// ?>                 
+                <div class="seoBox altImgResult">
+                    <?php outHeadBox($lang['AN20'],$solveMsg,1); ?>
+                    <div class="contentBox" id="seoBox6">
+                        <?php echo $seoBox6; ?>
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
-	            </div> 
+	            </div>  
+<?php //////////////////////////////////////////// SEO Section ///////////////////////////////////////////////////////// ?>  
+
+<?php //////////////////////////////////////////// Page Load Section ///////////////////////////////////////////////////////// ?>  
+<div class="card shadow seo-card mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-3 d-flex align-items-center">
+          <div class="me-3 text-success">
+            <i class="fa fa-check-circle"></i>
+          </div>
+          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN28'],$solveMsg,4); ?></h5>
+        </div>
+        <div class="col-md-9" id="seoBox30">
+        <?php echo $seoBox30; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?php //////////////////////////////////////////// GZIP compression Ratio Section ///////////////////////////////////////////////////////// ?>  
+  <div class="card shadow seo-card mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-3 d-flex align-items-center">
+          <div class="me-3 text-success">
+            <i class="fa fa-check-circle"></i>
+          </div>
+          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN40'],$solveMsg,2); ?></h5>
+        </div>
+        <div class="col-md-9" id="seoBox10">
+        <?php echo $seoBox10; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <?php //////////////////////////////////////////// WWW Resolve Ratio Section ///////////////////////////////////////////////////////// ?>  
+  <div class="card shadow seo-card mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-3 d-flex align-items-center">
+          <div class="me-3 text-success">
+            <i class="fa fa-check-circle"></i>
+          </div>
+          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN45'],$solveMsg,1); ?></h5>
+        </div>
+        <div class="col-md-9" id="seoBox11">
+        <?php echo $seoBox11; ?>
+        </div>
+      </div>
+    </div>
+  </div> 
                 
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN45'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox11">
-                        <?php echo $seoBox11; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div> 
-                
+<?php //////////////////////////////////////////// IP Canonicalization Ratio Section ///////////////////////////////////////////////////////// ?>               
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN48'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox12">
@@ -314,7 +405,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div> 
-                        
+<?php //////////////////////////////////////////// XML Sitemap Ratio Section ///////////////////////////////////////////////////////// ?>                     
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN59'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox15">
@@ -322,7 +413,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div> 
-                        
+<?php //////////////////////////////////////////// XML Sitemap Ratio Section ///////////////////////////////////////////////////////// ?>                       
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN60'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox16">
@@ -330,7 +421,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div> 
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN61'],$solveMsg,2); ?>
                     <div class="contentBox" id="seoBox17">
@@ -338,7 +429,15 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div> 
-                
+<?php //////////////////////////////////////////// Google Preview Section ///////////////////////////////////////////////////////// ?>                  
+                <div class="seoBox">
+                    <?php outHeadBox($lang['AN17'],$solveMsg,4); ?>
+                    <div class="contentBox" id="seoBox5">
+                        <?php echo $seoBox5; ?>
+                    </div>
+                    <?php outQuestionBox($lang['AN4']); ?>
+	            </div>  
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN62'],$solveMsg,3); ?>
                     <div class="contentBox" id="seoBox18">
@@ -346,7 +445,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN63'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox19">
@@ -354,7 +453,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN76'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox20">
@@ -362,7 +461,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN81'],$solveMsg,4); ?>
                     <div class="contentBox" id="seoBox21">
@@ -370,7 +469,9 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>     
+
+
                 <div class="seoBox whois">
                     <?php outHeadBox($lang['AN83'],$solveMsg,4); ?>
                     <div class="contentBox" id="seoBox22">
@@ -378,7 +479,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN110'],$solveMsg,2); ?>
                     <div class="contentBox" id="seoBox42">
@@ -386,7 +487,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN111'],$solveMsg,4); ?>
                     <div class="contentBox" id="seoBox43">
@@ -394,7 +495,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 </div>
  
                 <div id="usability">
@@ -403,6 +504,7 @@ if ($updateFound) {
                 <h2 class="seoBox-title">
                     <?php trans('Usability',$lang['16']); ?>
                 </h2>
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN94'],$solveMsg,4); ?>
                     <div class="contentBox" id="seoBox26">
@@ -410,7 +512,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN95'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox27">
@@ -418,7 +520,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN96'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox28">
@@ -426,7 +528,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN97'],$solveMsg,2); ?>
                     <div class="contentBox" id="seoBox29">
@@ -434,15 +536,8 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN98'],$solveMsg,3); ?>
-                    <div class="contentBox" id="seoBox30">
-                        <?php echo $seoBox30; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-                
+
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['120'],$solveMsg,3); ?>
                     <div class="contentBox" id="seoBox48">
@@ -450,7 +545,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div> 
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN99'],$solveMsg,1); ?> 
                     <div class="contentBox" id="seoBox31">
@@ -458,7 +553,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN100'],$solveMsg,4); ?>
                     <div class="contentBox" id="seoBox32">
@@ -466,7 +561,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN101'],$solveMsg,4); ?>
                     <div class="contentBox" id="seoBox33">
@@ -474,7 +569,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN102'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox34">
@@ -482,7 +577,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN103'],$solveMsg,1); ?>
                     <div class="contentBox" id="seoBox35">
@@ -490,7 +585,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 </div>
                 
                 <div id="mobile">
@@ -498,6 +593,7 @@ if ($updateFound) {
                     <h2 class="seoBox-title">
                         <?php trans('Mobile',$lang['17']); ?>
                     </h2>
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>        
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN91'],$solveMsg,3); ?>
                     <div class="contentBox" id="seoBox23">
@@ -505,7 +601,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN92'],$solveMsg,4); ?>
                     <div class="contentBox" id="seoBox24">
@@ -513,7 +609,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN93'],$solveMsg,2); ?>
                     <div class="contentBox" id="seoBox25">
@@ -521,7 +617,7 @@ if ($updateFound) {
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
-                
+<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
                     <?php outHeadBox($lang['121'],$solveMsg,3); ?>
                     <div class="contentBox" id="seoBox49">

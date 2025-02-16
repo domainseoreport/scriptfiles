@@ -21,6 +21,10 @@ a:focus {
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
+.fixed-top{
+  background-color: #3674B5;
+
+}
 .form-control:focus {
   border-color: #66afe9;
   outline: 0;

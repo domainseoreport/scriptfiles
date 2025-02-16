@@ -157,9 +157,7 @@ defined('APP_NAME') or die(header('HTTP/1.0 403 Forbidden'));
         </section>
       <?php } else { ?>
         <div class="bg-primary-color page-block">
-          <div class="container">
-            <h1 class="pageTitle text-center"><?php echo $pageTitle; ?></h1>
-          </div>
+           
         </div>
       <?php } ?>
     </div>

@@ -156,156 +156,23 @@ $seoBox7 = $seoTools->showKeyCloud($keywords_cloud);
   
 $fullCloud = $keywords_cloud['fullCloud'] ?? [];
 $seoBox8 = $seoTools->showKeyConsistencyNgramsTabs($fullCloud, $meta_data, $headings[0]);;
-
+ 
 //Text to HTML Ratio
-$textRatio = decSerBase($data['ratio_data']);
+$textRatio =  $data['ratio_data'];  
+$seoBox9 = $seoTools->showTextRatio($textRatio);
 
-if(round($textRatio[2]) < 2)
-    $textClass = 'errorBox';
-elseif(round($textRatio[2]) < 10)
-    $textClass = 'improveBox';
-else
-    $textClass = 'passedBox';
-    
-$textMsg = $lang['AN181'];
-
-$seoBox9 = '<div class="'.$textClass.'">
-<div class="msgBox">       
-    '.$lang['AN36'].': <b>'.round($textRatio[2],2).'%</b><br />
-    <br />
-    <table class="table table-responsive">
-        <tbody>
-            <tr> 
-            <td>'.$lang['AN37'].'</td> 
-            <td>'.$textRatio[1].' '.$lang['AN39'].'</td> 
-            </tr>
-            
-            <tr> 
-            <td>'.$lang['AN38'].'</td> 
-            <td>'.$textRatio[0].' '.$lang['AN39'].'</td>  
-            </tr>
-	   </tbody>
-    </table>
-</div>
-<div class="seoBox9 suggestionBox">
-'.$textMsg.'
-</div> 
-</div>';
-
-//Check GZIP Compression 
-$gzipClass = $gzipHead = $gzipBody = '';
-$outData = decSerBase($data['gzip']);
-$comSize = $outData[0];
-$unComSize = $outData[1];
-$isGzip = $outData[2];
-$gzdataSize = $outData[3];
-$header = $outData[4];
-$body = Trim($outData[5]);
-
-if($body == ""){
-    $gzipHead = $lang['AN10'];
-    $gzipClass = 'improveBox';
-}else{
-if($isGzip){
-    $percentage = round(((((int)$unComSize - (int)$comSize) / (int)$unComSize) * 100),1);
-    $gzipClass = 'passedBox';
-    $gzipHead = $lang['AN42'];
-    $gzipBody = $true . ' ' . str_replace(array('[total-size]','[compressed-size]','[percentage]'),array(size_as_kb($unComSize),size_as_kb($comSize),$percentage),$lang['AN41']);
-}else{
-    $percentage = round(((((int)$unComSize - (int)$gzdataSize) / (int)$unComSize) * 100),1);
-    $gzipClass = 'errorBox';
-    $gzipHead = $lang['AN43'];
-    $gzipBody = $false . ' ' . str_replace(array('[total-size]','[compressed-size]','[percentage]'),array(size_as_kb($unComSize),size_as_kb($gzdataSize),$percentage),$lang['AN44']);
-}
-}
-
-$gzipMsg = $lang['AN182'];
-            
-$seoBox10 = '<div class="'.$gzipClass.'">
-<div class="msgBox">       
-     '.$gzipHead.'
-    <br />
-    <div class="altImgGroup">
-        '.$gzipBody.'
-    </div>
-    <br />
-</div>
-<div class="seoBox10 suggestionBox">
-'.$gzipMsg.'
-</div> 
-</div>';
+//Check GZIP Compression  
+$gzipData =  $data['gzip']; 
+$seoBox10 =  $seoTools->showGzip($gzipData); 
 
 
 //WWW Resolve
-$resolve = decSerBase($data['resolve']);
-
-$www_resolveMsg = $lang['AN183'];
-$resolveClass = 'improveBox';
-$resolveMsg = $lang['AN47'];
-$re301 = false;
-$url_with_www = "http://www.$my_url_host";
-$url_no_www = "http://$my_url_host";
-
-$data1 = $resolve[0];
-$data2 = $resolve[1];
-
-
-if($data1 =='301'){
-    $re301 = true;
-    $resolveClass = 'passedBox';
-    $resolveMsg = $lang['AN46'];
-}
-
-if($data2 =='301'){
-    $re301= true;
-    $resolveClass = 'passedBox';
-    $resolveMsg = $lang['AN46'];
-}
-
-$seoBox11 = '<div class="'.$resolveClass.'">
-<div class="msgBox">       
-     '.$resolveMsg.'
-    <br />
-    <br />
-</div>
-<div class="seoBox11 suggestionBox">
-'.$www_resolveMsg.'
-</div> 
-</div>';
-
+$resolveData = $data['resolve'];  
+$seoBox11 = $seoTools->showWWWResolve($resolveData); 
 
 //IP Canonicalization
-$ip_can = decSerBase($data['ip_can']);
-
-$ip_canMsg = $lang['AN184'];
-$ipClass = 'improveBox';
-$hostIP = $ipMsg = '';
-$tType = $ip_can[1];
-$redirectURLhost = $ip_can[3];
-$hostIP = $ip_can[0];
-
-if($tType){
-    if($my_url_host == $redirectURLhost){
-        $ipMsg = str_replace(array('[ip]','[host]'),array($hostIP,$my_url_host),$lang['AN50']);
-        $ipClass = 'passedBox';
-    }else{
-       $ipMsg = str_replace(array('[ip]','[host]'),array($hostIP,$my_url_host),$lang['AN49']); 
-    }
-    $tType = true;
-}else{
-    $ipMsg = str_replace(array('[ip]','[host]'),array($hostIP,$my_url_host),$lang['AN49']);
-}
-
-$seoBox12 = '<div class="'.$ipClass.'">
-<div class="msgBox">       
-     '.$ipMsg.'
-    <br />
-    <br />
-</div>
-<div class="seoBox12 suggestionBox">
-'.$ip_canMsg.'
-</div> 
-</div>';
+$ipData = $data['ip_can'];  
+$seoBox12 = $seoTools->showIPCanonicalization($ipData);
 
 
 //In-Page Links analyser

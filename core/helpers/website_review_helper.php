@@ -79,12 +79,7 @@ function outHeadBox($title,array $sugMsg, $type){
         $three = '';
      }
      
-    echo '<div class="headBox clearfix">
-            <h4 class="titleStr">'.$title.'</h4>
-            <h4 class="solveMsg" data-original-title="'.$solveMsg.'" data-toggle="tooltip" data-placement="top">
-                
-            </h4>
-         </div>';
+    echo  $title ;
 }
 
 function storeMobilePreview($site,$data){

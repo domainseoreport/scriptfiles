@@ -346,18 +346,7 @@ class SeoTools {
      *===================================================================
      */
 
-   /**
- * processImage()
- *
- * Processes image tags to evaluate alt attributes in detail:
- * - Counts total images.
- * - Gathers images missing alt attributes.
- * - Gathers images with empty, very short (<5 characters), very long (>100 characters),
- *   or redundant alt text.
- * - Provides suggestions based on the analysis.
- *
- * @return string JSON encoded array of results.
- */
+ 
 /**
  * processImage()
  *
@@ -515,9 +504,9 @@ public function showImage($imageData) {
     $buildTable = function($title, $items) {
         if (count($items) > 0) {
             $table = '<h4>' . $title . ' (' . array_sum(array_map(function($i){ return $i['count']; }, $items)) . ')</h4>';
-            $table .= '<table class="table table-striped table-responsive"><thead><tr><th>Image Source</th><th>Count</th></tr></thead><tbody>';
+            $table .= '<table class="table table-striped table-responsive"><thead><tr><th width="80%">Image Source</th><th><center>Count</center></th></tr></thead><tbody>';
             foreach ($items as $item) {
-                $table .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td>' . $item['count'] . '</td></tr>';
+                $table .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td><center>' . $item['count'] . '</center></td></tr>';
             }
             $table .= '</tbody></table>';
             return $table;
@@ -763,7 +752,7 @@ private function getNodePosition(DOMNode $node) {
         if (!isset($_SESSION['twebUsername']) && !isAllowedStats($this->con, 'seoBox7')) {
             die($this->seoBoxLogin);
         }
-        $output = '<div class="' . $keycloudClass . '">
+        $output = '<div class="">
                         <div class="msgBox padRight10 bottom5">';
         if ($outCount != 0) {
             $output .= '<ul class="keywordsTags">' . $keyDataHtml . '</ul>';
@@ -877,8 +866,7 @@ public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings)
 
     // Build the tab layout using Bootstrap 5 markup:
     $output = <<<HTML
-<div class="keyword-consistency container-fluid">
-    <h3>Keyword Consistency</h3>
+<div class="keyword-consistency container-fluid"> 
     <ul class="nav nav-tabs" id="consistencyTabs" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="trigrams-tab" data-bs-toggle="tab" href="#trigrams-pane" role="tab" aria-controls="trigrams-pane" aria-selected="true">
@@ -1005,33 +993,258 @@ private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
      * TEXT RATIO HANDLER
      *===================================================================
      */
+/**
+ * Processes the extended text ratio metrics by fetching the URL,
+ * calculating the text-to-HTML ratio, and updating the database.
+ *
+ * @return string JSON encoded extended text ratio data.
+ */
+public function processTextRatio() {
+    // Construct the full URL from the parsed URL.
+    $url = $this->urlParse['scheme'] . "://" . $this->urlParse['host'];
+    
+    // Calculate extended text ratio metrics using robustFetchHtml().
+    $textRatioData = $this->calculateTextHtmlRatioExtended($url);
+ 
+    // The extended metrics are contained under the "text_html_ratio" key.
+    $textRatio = $textRatioData['text_html_ratio'];
+    
+    // Encode and update the metrics in the database.
+    $textRatioJson = jsonEncode($textRatio);
+    updateToDbPrepared($this->con, 'domains_data', array('ratio_data' => $textRatioJson), array('domain' => $this->domainStr));
+    
+    return $textRatioJson;
+}
 
-    public function processTextRatio() {
-        // Assuming calTextRatio() is a defined function that returns an array.
-        $textRatio = calTextRatio($this->html);  
-        updateToDbPrepared($this->con, 'domains_data', array('ratio_data' => jsonEncode($textRatio)), array('domain' => $this->domainStr)); 
-        return jsonEncode($textRatio);
+/**
+ * Builds a detailed, user-friendly HTML view of the text ratio analysis.
+ * This AJAX-friendly output includes an outer container with a unique ID.
+ *
+ * @param string $textRatio JSON encoded extended text ratio data.
+ * @return string HTML output.
+ */
+/**
+ * Builds a detailed, user-friendly HTML view of the text ratio analysis.
+ * If an error occurred (e.g. HTML not fetched), the error message is displayed.
+ *
+ * @param string $textRatio JSON encoded extended text ratio data.
+ * @return string HTML output.
+ */
+public function showTextRatio($textRatio): string {
+    $data =  jsonDecode($textRatio);
+    
+    // If the data is not an array, assume it's an error message.
+    if (!is_array($data)) {
+        return '<div class="errorBox"><p>' . htmlspecialchars($data) . '</p></div>';
+    }
+    
+    // Determine the CSS class based on the text ratio percentage.
+    $ratio = $data['ratio_percent'] ?? 0;
+    $textClass = ($ratio < 2) ? 'errorBox' : (($ratio < 10) ? 'improveBox' : 'passedBox');
+    
+    // Build an explanatory table with all key metrics.
+    $table = '
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>HTML Size (bytes)</td>
+                    <td>' . formatBytes($data['html_size_bytes']) . '</td>
+                    <td>Total size of the HTML source.</td>
+                </tr>
+                <tr>
+                    <td>Text Size (bytes)</td>
+                    <td>' . formatBytes($data['text_size_bytes']) . '</td>
+                    <td>Total size of visible text.</td>
+                </tr>
+                <tr>
+                    <td>Text Ratio (%)</td>
+                    <td>' . $ratio . '%</td>
+                    <td>Percentage of text compared to total HTML. (Low value indicates an HTML-heavy page.)</td>
+                </tr>
+                <tr>
+                    <td>Ratio Category</td>
+                    <td>' . $data['ratio_category'] . '</td>
+                    <td>Descriptive category (e.g. HTML-heavy, Balanced, Text-heavy).</td>
+                </tr>
+                <tr>
+                    <td>Word Count</td>
+                    <td>' . $data['word_count'] . '</td>
+                    <td>Total number of words in visible text.</td>
+                </tr>
+                <tr>
+                    <td>Estimated Reading Time</td>
+                    <td>' . $data['estimated_reading_time'] . ' min</td>
+                    <td>Approximate time needed to read the page.</td>
+                </tr>
+                <tr>
+                    <td>Load Time</td>
+                    <td>' . $data['load_time_seconds'] . ' sec</td>
+                    <td>Time taken to fetch the HTML.</td>
+                </tr>
+                <tr>
+                    <td>Total HTML Tags</td>
+                    <td>' . $data['total_html_tags'] . '</td>
+                    <td>Count of all HTML tags on the page.</td>
+                </tr>
+                <tr>
+                    <td>Total Links</td>
+                    <td>' . $data['total_links'] . '</td>
+                    <td>Number of hyperlink tags.</td>
+                </tr>
+                <tr>
+                    <td>Total Images</td>
+                    <td>' . $data['total_images'] . '</td>
+                    <td>Number of image tags.</td>
+                </tr>
+                <tr>
+                    <td>Total Scripts</td>
+                    <td>' . $data['total_scripts'] . '</td>
+                    <td>Number of script tags.</td>
+                </tr>
+                <tr>
+                    <td>Total Styles</td>
+                    <td>' . $data['total_styles'] . '</td>
+                    <td>Number of style tags.</td>
+                </tr>
+                <tr>
+                    <td>HTTP Response Code</td>
+                    <td>' . $data['http_response_code'] . '</td>
+                    <td>Status code received when fetching the page.</td>
+                </tr>
+            </tbody>
+        </table>';
+    
+    $output = '<div id="ajaxTextRatio" class="' . $textClass . '">
+                    <div class="msgBox">
+                        <h4>' . $this->lang['AN36'] . ': <b>' . $ratio . '%</b> (' . $data['ratio_category'] . ')</h4>
+                        <p>
+                          A low text ratio indicates that your page is heavy on HTML code relative to visible text.
+                          This may affect both SEO and page load performance.
+                        </p>
+                        ' . $table . '
+                    </div>
+                    <div class="seoBox9 suggestionBox">
+                        ' . $this->lang['AN181'] . '<br>
+                        Consider optimizing your page by reducing unnecessary HTML markup or increasing quality textual content.
+                    </div>
+                </div>';
+                
+    return $output;
+}
+
+
+/**
+ * Calculates extended text-to-HTML ratio metrics for the given URL.
+ *
+ * This function fetches the HTML for the page (using robustFetchHtml()),
+ * then calculates:
+ *   - HTML size in bytes
+ *   - Visible text size (by stripping tags)
+ *   - Text-to-HTML ratio (percentage)
+ *   - A descriptive ratio category (HTML-heavy, Balanced, or Text-heavy)
+ *   - Word count and estimated reading time (assuming 200 wpm)
+ *   - Total counts for HTML tags, links, images, scripts, and style tags
+ *   - The HTTP response code for the URL
+ *
+ * @param string $url The URL to analyze.
+ * @return array An associative array under the key 'text_html_ratio' with all metrics.
+ */
+private function calculateTextHtmlRatioExtended(string $url): array {
+    $start = microtime(true);
+    // Use robustFetchHtml() to fetch the HTML.
+    // robustFetchHtml() is assumed to return the HTML content or false on failure.
+    $html = robustFetchHtml($url);
+    $loadTime = microtime(true) - $start;
+    
+    if (!$html) {
+        return ['text_html_ratio' => "Error: couldn't fetch HTML."];
     }
 
-    public function showTextRatio($textRatio) {
-        
-        $textRatio = jsonDecode($textRatio); 
-        $textClass = (round($textRatio[2]) < 2) ? 'errorBox' : ((round($textRatio[2]) < 10) ? 'improveBox' : 'passedBox');
-        $output = '<div class="' . $textClass . '">
-                        <div class="msgBox">
-                            ' . $this->lang['AN36'] . ': <b>' . round($textRatio[2], 2) . '%</b><br /><br />
-                            <table class="table table-responsive">
-                                <tbody>
-                                    <tr><td>' . $this->lang['AN37'] . '</td><td>' . $textRatio[1] . ' ' . $this->lang['AN39'] . '</td></tr>
-                                    <tr><td>' . $this->lang['AN38'] . '</td><td>' . $textRatio[0] . ' ' . $this->lang['AN39'] . '</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="seoBox9 suggestionBox">' . $this->lang['AN181'] . '</div>
-                   </div>';
-        return $output;
-    }
+    // Calculate HTML and text sizes.
+    $htmlSize = strlen($html);
+    $plainText = strip_tags($html);
+    $textSize = strlen($plainText);
 
+    // Calculate the text-to-HTML ratio.
+    $ratio = ($htmlSize > 0) ? ($textSize / $htmlSize) * 100 : 0;
+    
+    // Calculate word count and estimated reading time (in minutes).
+    $wordCount = str_word_count($plainText);
+    $readTime = round($wordCount / 200); // Assuming 200 words per minute.
+    
+    // Determine the ratio category.
+    $cat = 'Text-heavy';
+    if ($ratio < 10) {
+        $cat = 'HTML-heavy';
+    } elseif ($ratio <= 50) {
+        $cat = 'Balanced';
+    }
+    
+    // Count total HTML tags.
+    preg_match_all('/<([a-z][a-z0-9]*)\b[^>]*>/i', $html, $tagMatches);
+    $tagCount = count($tagMatches[1]);
+    
+    // Count hyperlink tags.
+    preg_match_all('/<a\s+(?:[^>]*?\s+)?href=[\'"]([^\'"]+)[\'"]/i', $html, $linkMatches);
+    $linkCount = count($linkMatches[1]);
+    
+    // Count image tags.
+    preg_match_all('/<img\b[^>]*>/i', $html, $imgMatches);
+    $imageCount = count($imgMatches[0]);
+    
+    // Count script tags.
+    preg_match_all('/<script\b[^>]*>/i', $html, $scriptMatches);
+    $scriptCount = count($scriptMatches[0]);
+    
+    // Count style tags.
+    preg_match_all('/<style\b[^>]*>/i', $html, $styleMatches);
+    $styleCount = count($styleMatches[0]);
+    
+    // Get HTTP response code using the existing method.
+    $httpCode = $this->getHttpResponseCode($url);
+
+    return [
+        'text_html_ratio' => [
+            'html_size_bytes'      => $htmlSize,
+            'text_size_bytes'      => $textSize,
+            'ratio_percent'        => round($ratio, 2),
+            'ratio_category'       => $cat,
+            'word_count'           => $wordCount,
+            'estimated_reading_time' => $readTime,
+            'load_time_seconds'    => round($loadTime, 2),
+            'total_html_tags'      => $tagCount,
+            'total_links'          => $linkCount,
+            'total_images'         => $imageCount,
+            'total_scripts'        => $scriptCount,
+            'total_styles'         => $styleCount,
+            'http_response_code'   => $httpCode,
+        ]
+    ];
+}
+
+/**
+ * Get HTTP response code for a given URL.
+ *
+ * @param string $url The URL to check.
+ * @return int The HTTP response code, or 0 on failure.
+ */
+private function getHttpResponseCode(string $url): int {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return $httpCode ? (int)$httpCode : 0;
+}
     /*===================================================================
      * GZIP COMPRESSION HANDLER
      *===================================================================
@@ -1142,11 +1355,12 @@ private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
         } 
         $updateStr = jsonEncode(array($hostIP, $tType, $this->urlParse['host'], $redirectURLhost));
         updateToDbPrepared($this->con, 'domains_data', array('ip_can' => $updateStr), array('domain' => $this->domainStr));
-        return array('hostIP' => $hostIP, 'redirectURLhost' => $redirectURLhost);
+        return $updateStr;
     }
 
     public function showIPCanonicalization($ipData) {
-       
+        $ipData = jsonDecode($ipData);
+      
         if ($this->urlParse['host'] == $ipData['redirectURLhost']) {
             $ipClass = 'passedBox';
             $ipMsg = str_replace(array('[ip]', '[host]'), array($ipData['hostIP'], $this->urlParse['host']), $this->lang['AN50']);
@@ -1192,6 +1406,7 @@ private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
                 );
             }
         }
+        
         // Save the raw links data in the database.
        
         $updateStr = jsonEncode($ex_data); 
@@ -2514,6 +2729,9 @@ EOT;
                     </div>';
         return $seoBox48 . $this->sepUnique . $seoBox49;
     }
+
+
+    
 
     /*===================================================================
      * CLEAN OUT HANDLER
