@@ -176,6 +176,15 @@ textarea.form-control {
 .offcanvas .offcanvas-menu {
   opacity: 1;
 }
+
+/* Ensure inactive tab panes do not reserve extra space */
+.tab-pane.fade {
+  display: none;
+}
+.tab-pane.fade.show {
+  display: block !important;
+  margin-top: 30px;
+}
 .menu .nav-child.small {
   font-size: inherit;
 }
@@ -1871,4 +1880,55 @@ footer .copyright {
     .compare-table > tbody > tr > td {
         display: inline-block;
     }
+}
+
+/* Force the progress bar text to be centered and visible */
+/* --- PROGRESS BAR FIXES --- */
+/* Increase the overall height of the progress bar */
+#progress-bar.progress-lg {
+  height: 40px !important;   /* or your desired height */
+  min-height: 40px !important;
+}
+
+/* Make sure the actual bar is also that tall */
+#progress-bar .progress-bar {
+  height: 40px !important;
+  line-height: 40px !important;
+  position: relative;
+  color: #fff;               /* keep text visible */
+  text-align: center;
+}
+
+/* Center the text within the bar */
+#progress-bar .progress-bar > div {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  line-height: 40px;         /* matches the bar height */
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+}
+
+/* --- SOCIAL ICONS FIXES --- */
+.social-icons.icon-circle li {
+  display: inline-block;
+  margin: 5px;
+}
+.social-icons.icon-circle li a {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: #666;
+  background-color: #f2f2f2;
+  border-radius: 50%;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.social-icons.icon-circle li a:hover {
+  background-color: #3498DC;
+  color: #fff;
+  text-decoration: none;
 }

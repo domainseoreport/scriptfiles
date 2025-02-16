@@ -242,6 +242,7 @@ class SeoTools {
      * @return string The HTML output.
      */
     public function showHeading($headings) {
+       
         // Decode JSON safely
         $headingsArr = jsonDecode($headings);
     
@@ -754,7 +755,7 @@ private function getNodePosition(DOMNode $node) {
      * @param array $data The data returned by processKeyCloud().
      * @return string HTML output.
      */
-    public function showKeyCloud($data) {
+    public function showKeyCloud($data) { 
         $outCount = $data['outCount'];
         $keyDataHtml = $data['keyDataHtml'];
         $keycloudClass = 'lowImpactBox';
@@ -770,7 +771,7 @@ private function getNodePosition(DOMNode $node) {
             $output .= ' ' . $this->lang['AN29'];
         }
         $output .= '</div>
-                        <div class="seoBox7 suggestionBox">' . $keyMsg . '</div>
+                         
                    </div>';
         return $output;
     }
@@ -840,7 +841,7 @@ private function getNodePosition(DOMNode $node) {
                                 <tbody>' . $rows . '</tbody>
                             </table>
                         </div>
-                        <div class="seoBox8 suggestionBox">' . $this->lang['AN180'] . '</div>
+                        
                    </div>';
         return $output;
     }
@@ -850,14 +851,13 @@ private function getNodePosition(DOMNode $node) {
 /**
  * showKeyConsistencyNgramsTabs()
  *
- * Displays three tables (Trigrams, Bigrams, Unigrams) in separate tabs.
- * By default, we'll open the "Trigrams" tab first, but you can easily reorder.
+ * Displays three tables (Trigrams, Bigrams, Unigrams) in separate Bootstrap tabs.
  *
  * @param array $fullCloud  The 'fullCloud' array from processKeyCloud()
- *                          e.g. ['unigrams'=>[...], 'bigrams'=>[...], 'trigrams'=>[...], 'suggestions'=>[...]].
- * @param array $metaData   Decoded array from processMeta() (keys: 'title', 'description', etc.).
- * @param array $headings   Decoded array from processHeading()[0] (the array of h1–h6).
- * @return string           HTML output with Bootstrap-based tabs for each n‑gram type.
+ *                          (contains unigrams, bigrams, trigrams, and suggestions).
+ * @param array $metaData   Decoded meta data (e.g., ['title'=>'...', 'description'=>'...']).
+ * @param array $headings   Decoded headings array (use index 0).
+ * @return string HTML output with tabs.
  */
 public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings)
 {
@@ -867,33 +867,31 @@ public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings)
 
     // Extract arrays for unigrams, bigrams, trigrams
     $unigrams = $fullCloud['unigrams'] ?? [];
-    $bigrams  = $fullCloud['bigrams']  ?? [];
+    $bigrams  = $fullCloud['bigrams'] ?? [];
     $trigrams = $fullCloud['trigrams'] ?? [];
 
-    // Build each table separately using your existing helper:
+    // Build each table separately using your helper:
     $trigramTable = $this->buildConsistencyTable('Trigrams', $trigrams, $metaData, $headings);
-    $bigramTable  = $this->buildConsistencyTable('Bigrams',  $bigrams,  $metaData, $headings);
+    $bigramTable  = $this->buildConsistencyTable('Bigrams', $bigrams, $metaData, $headings);
     $unigramTable = $this->buildConsistencyTable('Unigrams', $unigrams, $metaData, $headings);
 
-    // Now build the tab layout. 
-    // Using Bootstrap 4 or 5 markup. Adjust class names as needed if using a different version.
-    // We'll make "Trigrams" the default active tab. You can reorder if desired.
+    // Build the tab layout using Bootstrap 5 markup:
     $output = <<<HTML
 <div class="keyword-consistency container-fluid">
     <h3>Keyword Consistency</h3>
     <ul class="nav nav-tabs" id="consistencyTabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="trigrams-tab" data-toggle="tab" href="#trigrams-pane" role="tab" aria-controls="trigrams-pane" aria-selected="true">
+            <a class="nav-link active" id="trigrams-tab" data-bs-toggle="tab" href="#trigrams-pane" role="tab" aria-controls="trigrams-pane" aria-selected="true">
                 Trigrams
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="bigrams-tab" data-toggle="tab" href="#bigrams-pane" role="tab" aria-controls="bigrams-pane" aria-selected="false">
+            <a class="nav-link" id="bigrams-tab" data-bs-toggle="tab" href="#bigrams-pane" role="tab" aria-controls="bigrams-pane" aria-selected="false">
                 Bigrams
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="unigrams-tab" data-toggle="tab" href="#unigrams-pane" role="tab" aria-controls="unigrams-pane" aria-selected="false">
+            <a class="nav-link" id="unigrams-tab" data-bs-toggle="tab" href="#unigrams-pane" role="tab" aria-controls="unigrams-pane" aria-selected="false">
                 Unigrams
             </a>
         </li>
@@ -917,7 +915,6 @@ public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings)
     </div>
 </div>
 HTML;
-
     return $output;
 }
 
@@ -925,12 +922,9 @@ HTML;
 /**
  * buildConsistencyTable()
  *
- * Helper function that builds one table (e.g., "Unigrams") with columns:
- *   - Phrase
- *   - Count
- *   - Title (check or X)
- *   - Desc  (check or X)
- *   - <H>   (check or X)
+ * Helper function that builds one table (e.g. "Unigrams", "Bigrams", or "Trigrams")
+ * with columns: Phrase, Count, Title (check/X), Desc (check/X), &lt;H&gt; (check/X).
+ * It appends a unique suffix (based on the label) so that the extra rows and toggles are unique.
  *
  * @param string $label    Section label, e.g. "Unigrams", "Bigrams", or "Trigrams".
  * @param array  $ngrams   An array like [ ['phrase'=>'...', 'count'=>X, 'density'=>Y], ... ].
@@ -940,6 +934,16 @@ HTML;
  * @return string HTML table for the given n‑gram set.
  */
 private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
+    // Determine a unique suffix based on label.
+    $suffix = '';
+    if (strcasecmp($label, 'Trigrams') === 0) {
+        $suffix = 'Trigrams';
+    } elseif (strcasecmp($label, 'Bigrams') === 0) {
+        $suffix = 'Bigrams';
+    } elseif (strcasecmp($label, 'Unigrams') === 0) {
+        $suffix = 'Unigrams';
+    }
+    
     $rows = '';
     $hideCount = 1;
     foreach ($ngrams as $item) {
@@ -956,7 +960,7 @@ private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
                 }
             }
         }
-        $hideClass = ($hideCount > 5) ? 'hideTr hideTr3' : '';
+        $hideClass = ($hideCount > 5) ? 'hideTr hideTr' . $suffix : '';
         $rows .= '<tr class="' . $hideClass . '">
                     <td>' . htmlspecialchars($phrase) . '</td>
                     <td>' . $count . '</td>
@@ -966,6 +970,11 @@ private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
                 </tr>';
         $hideCount++;
     }
+    
+    // Unique toggle links:
+    $showMoreClass = 'showMore' . $suffix;
+    $showLessClass = 'showLess' . $suffix;
+    
     $output = '<div class="passedBox">
         <div class="msgBox">
             <h4>' . $label . '</h4>
@@ -980,17 +989,18 @@ private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
                     </tr>
                 </thead>
                 <tbody>' . $rows . '</tbody>
-            </table>
-            ' . (($hideCount > 6) ? '
-            <div class="showLinks showLinks3">
-                <a class="showMore showMore3">' . $this->lang['AN18'] . ' <br /><i class="fa fa-angle-double-down"></i></a>
-                <a class="showLess showLess3">' . $this->lang['AN19'] . '</a>
-            </div>' : '') . '
-        </div>
-        <div class="seoBox8 suggestionBox">' . $this->lang['AN180'] . '</div>
+            </table>';
+    if ($hideCount > 6) {
+        $output .= '<div class="showLinks">
+                <a class="' . $showMoreClass . '">' . $this->lang['AN18'] . ' <br /><i class="fa fa-angle-double-down"></i></a>
+                <a class="' . $showLessClass . '" style="display:none;">' . $this->lang['AN19'] . '</a>
+            </div>';
+    }
+    $output .= '</div> 
     </div>';
     return $output;
 }
+
     /*===================================================================
      * TEXT RATIO HANDLER
      *===================================================================
