@@ -342,6 +342,7 @@ if ($updateFound) {
 <?php //////////////////////////////////////////// SEO Section ///////////////////////////////////////////////////////// ?>  
 
 <?php //////////////////////////////////////////// Page Load Section ///////////////////////////////////////////////////////// ?>  
+ 
 <div class="card shadow seo-card mb-4">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -390,6 +391,30 @@ if ($updateFound) {
       </div>
     </div>
   </div> 
+
+
+  <?php //////////////////////////////////////////// Server Details Section ///////////////////////////////////////////////////////// ?>
+
+
+
+
+
+                    <div id="serverdetails-analysis" class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0"><?php outHeadBox($lang['AN104'], $solveMsg, 4); ?></h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="contentBox" id="seoBox36">
+                                    <?php echo $seoBox36; ?>
+                                 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+  
+
                 
 <?php //////////////////////////////////////////// IP Canonicalization Ratio Section ///////////////////////////////////////////////////////// ?>               
                 <div class="seoBox">
@@ -627,13 +652,7 @@ if ($updateFound) {
                 <h2 class="seoBox-title">
                     <?php trans('Technologies',$lang['18']); ?>
                 </h2>
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN104'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox36">
-                        <?php echo $seoBox36; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
+               
                 
                 <div class="seoBox">
                     <?php outHeadBox($lang['AN105'],$solveMsg,3); ?>
