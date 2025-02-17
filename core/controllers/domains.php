@@ -15,35 +15,22 @@
 defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
 
 // Include the SEO tools library.
-require_once(LIB_DIR . 'SeoTools.php'); 
-
+require_once(LIB_DIR . 'SeoTools.php');
 // Define the temporary directory constant for cached files.
 define('TEMP_DIR', APP_DIR . 'temp' . D_S);
-
 /*
  * ---------------------------------------------------------------------
  * GET REQUEST HANDLER
  * ---------------------------------------------------------------------
- *
- * If the 'getImage' parameter is set in the GET request, this block returns a 
- * base64-encoded snapshot of the requested website.
  */
 if (isset($_GET['getImage'])) {
-    // If a custom snapshot link is available in the session, use it.
     if (isset($_SESSION['snap'])) {
         $customSnapAPI = true;
         $customSnapLink = $_SESSION['snap'];
     }
-    // Close session writing to prevent session lock issues.
     session_write_close();
-
-    // Clean and prepare the requested site URL.
     $my_url = clean_url(raino_trim($_GET['site']));
-
-    // Retrieve image data by generating a snapshot from the site.
     $imageData = getMyData(getSiteSnap($my_url, $item_purchase_code, $baseLink, $customSnapAPI, $customSnapLink));
-    
-    // Clear output buffers and return the base64 encoded image data.
     ob_clean();
     echo base64_encode($imageData);
     die();
@@ -51,51 +38,28 @@ if (isset($_GET['getImage'])) {
 
 /*
  * ---------------------------------------------------------------------
- * PREPARE LOGIN BOX HTML
- * ---------------------------------------------------------------------
- *
- * This HTML snippet is displayed when a user is not logged in or does not have
- * permission to view certain statistics.
- */
-$seoBoxLogin = '<div class="lowImpactBox">
-    <div class="msgBox">   
-        ' . $lang['39'] . '
-        <br /><br />
-        <div class="altImgGroup">
-            <a class="btn btn-success forceLogin" target="_blank" href="' . createLink('account/login', true) . '" title="' . $lang['40'] . '">
-                ' . $lang['40'] . '
-            </a>
-        </div>
-        <br />
-    </div>
-</div>';
-
-/*
- * ---------------------------------------------------------------------
  * POST REQUEST HANDLER
  * ---------------------------------------------------------------------
- *
- * This block handles various POST requests by checking for specific keys in $_POST.
- * Each block processes a particular SEO test and returns HTML output while updating the database.
  */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Retrieve and sanitize the website URL from POST data.
-    $my_url =  raino_trim($_POST['url']); 
+    $my_url = raino_trim($_POST['url']);
     log_message('info', "Called {$my_url}");
-    // Retrieve the unique hash code used for caching.
+
+    // Retrieve the unique hash code for caching.
     $hashCode = raino_trim($_POST['hashcode']);
+
     // Construct the filename where the website source data is stored.
     $filename = TEMP_DIR . $hashCode . '.tdata';
+
     // Define a unique separator string used to split output sections.
     $sepUnique = '!!!!8!!!!';
 
-    // Parse the input URL to extract the scheme and host.
+    // Parse the input URL to extract scheme and host.
     $my_url_parse = parse_url($my_url);
     $inputHost = $my_url_parse['scheme'] . "://" . $my_url_parse['host'];
-    // Normalize host by removing "www." for consistent DB lookups.
     $my_url_host = str_replace("www.", "", $my_url_parse['host']);
-    // Prepare a normalized domain string for database storage.
     $domainStr = escapeTrim($con, strtolower($my_url_host));
 
     // Define HTML for "true" and "false" icons.
@@ -104,33 +68,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Retrieve the stored HTML source data from the cached file.
     $sourceData = getMyData($filename);
-
-    // Replace uppercase meta tag names with lowercase to avoid issues.
-    $html = str_ireplace(array("Title", "TITLE"), "title", $sourceData);
-    $html = str_ireplace(array("Description", "DESCRIPTION"), "description", $html);
-    $html = str_ireplace(array("Keywords", "KEYWORDS"), "keywords", $html);
-    $html = str_ireplace(array("Content", "CONTENT"), "content", $html);
-    $html = str_ireplace(array("Meta", "META"), "meta", $html);
-    $html = str_ireplace(array("Name", "NAME"), "name", $html);
-
-    // If no source data is found, exit with an error message.
     if ($sourceData == '')
         die($lang['AN10']);
- 
-    // Instantiate the SeoTools class with the necessary parameters.
-    $seoTools = new SeoTools($html, $con, $domainStr, $lang, $my_url_parse, $sepUnique, $seoBoxLogin);    
+
+    // Normalize the HTML (replace uppercase meta tag names with lowercase).
+    $html = str_ireplace(["Title", "TITLE"], "title", $sourceData);
+    $html = str_ireplace(["Description", "DESCRIPTION"], "description", $html);
+    $html = str_ireplace(["Keywords", "KEYWORDS"], "keywords", $html);
+    $html = str_ireplace(["Content", "CONTENT"], "content", $html);
+    $html = str_ireplace(["Meta", "META"], "meta", $html);
+    $html = str_ireplace(["Name", "NAME"], "name", $html);
+
+    // Instantiate the SeoTools class with the cached HTML and parameters.
+    $seoTools = new SeoTools($html, $con, $domainStr, $lang, $my_url_parse, $sepUnique, $seoBoxLogin);
 
     /*
      * -----------------------------------------------------------------
      * META DATA HANDLER
      * -----------------------------------------------------------------
-     * Extracts the page title, description, and keywords from the HTML source,
-     * updates the database, and outputs the result if requested.
      */
     if (isset($_POST['meta'])) {
         log_message('debug', "Meta Tag Call for URL {$my_url_host}");
-        $metaData = $seoTools->processMeta(); 
-        if (isset($_POST['metaOut'])) { 
+        $metaData = $seoTools->processMeta();
+        if (isset($_POST['metaOut'])) {
             echo $seoTools->showMeta($metaData);
             die();
         }
@@ -140,12 +100,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * HEADING DATA HANDLER
      * -----------------------------------------------------------------
-     * Extracts all heading tags (H1-H6) from the HTML source,
-     * updates the database, and outputs the result if requested.
      */
     if (isset($_POST['heading'])) {
         log_message('debug', "Heading Tag Call for URL {$my_url_host}");
-        $headings = $seoTools->processHeading(); 
+        $headings = $seoTools->processHeading();
         if (isset($_POST['headingOut'])) {
             echo $seoTools->showHeading($headings);
             die();
@@ -156,7 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * LOAD DOM LIBRARY (if needed)
      * -----------------------------------------------------------------
-     * Loads the simple_html_dom library to parse the HTML source into a DOM object.
      */
     if (isset($_POST['loaddom'])) {
         log_message('debug', "DOM Library Tag Call for URL {$my_url_host}");
@@ -168,12 +125,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * IMAGE ALT TAG CHECKER
      * -----------------------------------------------------------------
-     * Checks for images missing an "alt" attribute, updates the database,
-     * and outputs the results.
      */
     if (isset($_POST['image'])) {
         log_message('debug', "Image Tag Call for URL {$my_url_host}");
-        $imageData = $seoTools->processImage(); 
+        $imageData = $seoTools->processImage();
         echo $seoTools->showImage($imageData);
         die();
     }
@@ -182,8 +137,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * KEYWORD CLOUD GENERATOR
      * -----------------------------------------------------------------
-     * Processes a keyword cloud by analyzing the HTML source for keywords,
-     * updates the database, and outputs the result if requested.
      */
     if (isset($_POST['keycloud'])) {
         log_message('debug', "Keyword Cloud Tag Call for URL {$my_url_host}");
@@ -198,39 +151,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * KEYWORD CONSISTENCY CHECKER
      * -----------------------------------------------------------------
-     * Checks whether keywords appear in the title, description, and headings,
-     * updates the database, and outputs a consistency table.
      */
     if (isset($_POST['keyConsistency'])) {
         log_message('debug', "Keyword Consistency Tag Call for URL {$my_url_host}");
-    
-        // 1. Get the meta data and headings (decoded)
         $metaData    = jsonDecode($seoTools->processMeta());
         $headingData = jsonDecode($seoTools->processHeading());
-        
-    
-        // 2. Generate your keyword cloud (includes unigrams, bigrams, trigrams)
         $keyCloudResult = $seoTools->processKeyCloud();
-          
-        // 3. (Optional) If you still want to store or show the single consistency table:
-        //    (This is your old approach)
-        $consistencyJson = $seoTools->processKeyConsistency(
-            $keyCloudResult['keyCloudData'] ?? [],
-            $metaData,
-            $headingData[0] // Typically the headings are in index [0].
-        );
-      
-        // If you still need the single-table output for some reason, do:
-        // echo $seoTools->showKeyConsistency($consistencyJson);
-        
-        // 4. NEW multi-table approach: 
-        //    Grab the 'fullCloud' array from $keyCloudResult to get unigrams, bigrams, trigrams
         $fullCloud = $keyCloudResult['fullCloud'] ?? [];
-        
-    
-        // 5. Now display three separate tables (unigrams/bigrams/trigrams)
         echo $seoTools->showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headingData[0]);
-    
         die();
     }
 
@@ -238,12 +166,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * TEXT TO HTML RATIO CALCULATOR
      * -----------------------------------------------------------------
-     * Calculates the ratio of text content to HTML code,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['textRatio'])) {
         log_message('debug', "Text Ratio Tag Call for URL {$my_url_host}");
-        $textRatio = $seoTools->processTextRatio();  
+        $textRatio = $seoTools->processTextRatio();
         echo $seoTools->showTextRatio($textRatio);
         die();
     }
@@ -252,8 +178,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * GZIP COMPRESSION TEST
      * -----------------------------------------------------------------
-     * Checks whether GZIP compression is enabled on the site,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['gzip'])) {
         log_message('debug', "GZIP Tag Call for URL {$my_url_host}");
@@ -266,8 +190,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * WWW RESOLVE CHECK
      * -----------------------------------------------------------------
-     * Determines if the site resolves properly with and without "www",
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['www_resolve'])) {
         log_message('debug', "WWW Resolve Tag Call for URL {$my_url_host}");
@@ -280,8 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * IP CANONICALIZATION CHECK
      * -----------------------------------------------------------------
-     * Checks whether accessing the site via its IP address redirects to the correct domain,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['ip_can'])) {
         log_message('debug', "IP Canonicalization Tag Call for URL {$my_url_host}");
@@ -294,12 +214,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * IN-PAGE LINKS ANALYZER
      * -----------------------------------------------------------------
-     * Analyzes all internal and external links on the page,
-     * updates the database, and outputs the result if requested.
      */
     if (isset($_POST['in_page'])) {
         log_message('debug', "In-Page Links Tag Call for URL {$my_url_host}");
         $linksData = $seoTools->processInPageLinks();
+ 
         if (isset($_POST['inPageoutput'])) {
             echo $seoTools->showInPageLinks($linksData);
             die();
@@ -310,8 +229,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * BROKEN LINKS CHECKER
      * -----------------------------------------------------------------
-     * Checks for broken links (HTTP 404 errors) on the page,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['brokenlinks'])) {
         log_message('debug', "Broken Links Tag Call for URL {$my_url_host}");
@@ -324,8 +241,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * ROBOTS.TXT CHECKER
      * -----------------------------------------------------------------
-     * Checks for the existence of a robots.txt file on the site,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['robot'])) {
         log_message('debug', "Robots.txt Tag Call for URL {$my_url_host}");
@@ -338,8 +253,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * SITEMAP CHECKER
      * -----------------------------------------------------------------
-     * Checks for the existence of a sitemap, updates the database,
-     * and outputs the result.
      */
     if (isset($_POST['sitemap'])) {
         log_message('debug', "Sitemap Tag Call for URL {$my_url_host}");
@@ -352,8 +265,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * EMBEDDED OBJECT CHECK
      * -----------------------------------------------------------------
-     * Checks for embedded objects (<object> or <embed> tags) on the page,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['embedded'])) {
         log_message('debug', "Embedded Objects Tag Call for URL {$my_url_host}");
@@ -366,8 +277,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * IFRAME CHECK
      * -----------------------------------------------------------------
-     * Checks for <iframe> tags on the page,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['iframe'])) {
         log_message('debug', "iFrame Tag Call for URL {$my_url_host}");
@@ -380,13 +289,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * WHOIS DATA RETRIEVAL
      * -----------------------------------------------------------------
-     * Retrieves WHOIS information for the domain,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['whois'])) {
         log_message('debug', "WHOIS Tag Call for URL {$my_url_host}");
-        $whoisData = $seoTools->processWhois();
-        echo $seoTools->showWhois($whoisData);
+        echo "Whois";
+        //$whoisData = $seoTools->processWhois();
+        //echo $seoTools->showWhois($whoisData);
         die();
     }
 
@@ -394,8 +302,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * INDEXED PAGES COUNTER
      * -----------------------------------------------------------------
-     * Determines the number of pages indexed by Google for the site,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['indexedPages'])) {
         log_message('debug', "Indexed Pages Tag Call for URL {$my_url_host}");
@@ -408,8 +314,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * BACKLINK COUNTER / ALEXA RANK / SITE WORTH
      * -----------------------------------------------------------------
-     * Retrieves Alexa ranking data, backlink count, and calculates site worth,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['backlinks'])) {
         log_message('debug', "Backlinks Tag Call for URL {$my_url_host}");
@@ -422,8 +326,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * URL LENGTH & FAVICON CHECKER
      * -----------------------------------------------------------------
-     * Checks the length of the host name and retrieves the favicon via Google's service,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['urlLength'])) {
         log_message('debug', "URL Length Tag Call for URL {$my_url_host}");
@@ -436,8 +338,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * CUSTOM 404 PAGE CHECKER
      * -----------------------------------------------------------------
-     * Checks if a custom 404 error page is in place by comparing the size of a test error page,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['errorPage'])) {
         log_message('debug', "Custom 404 Page Tag Call for URL {$my_url_host}");
@@ -450,8 +350,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * PAGE LOAD / SIZE / LANGUAGE CHECKER
      * -----------------------------------------------------------------
-     * Measures page load time, calculates HTML size, and attempts to detect the language code,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['pageLoad'])) {
         log_message('debug', "Page Load Tag Call for URL {$my_url_host}");
@@ -464,8 +362,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * PAGE SPEED INSIGHT CHECKER
      * -----------------------------------------------------------------
-     * Retrieves desktop and mobile speed scores using the PageSpeed Insights API,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['pageSpeedInsightChecker'])) {
         log_message('debug', "Page Speed Insight Tag Call for URL {$my_url_host}");
@@ -478,8 +374,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * DOMAIN & TYPO AVAILABILITY CHECKER
      * -----------------------------------------------------------------
-     * Checks the availability of the domain across various TLDs and suggests typo domains,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['availabilityChecker'])) {
         log_message('debug', "Availability Checker Tag Call for URL {$my_url_host}");
@@ -492,8 +386,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * EMAIL PRIVACY CHECK
      * -----------------------------------------------------------------
-     * Searches for email addresses in the HTML source to detect privacy issues,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['emailPrivacy'])) {
         log_message('debug', "Email Privacy Tag Call for URL {$my_url_host}");
@@ -506,8 +398,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * SAFE BROWSING CHECK
      * -----------------------------------------------------------------
-     * Checks if the site is flagged by safe browsing services,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['safeBrowsing'])) {
         log_message('debug', "Safe Browsing Tag Call for URL {$my_url_host}");
@@ -520,8 +410,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * MOBILE FRIENDLINESS CHECK
      * -----------------------------------------------------------------
-     * Tests if the site is mobile-friendly,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['mobileCheck'])) {
         log_message('debug', "Mobile Friendliness Tag Call for URL {$my_url_host}");
@@ -534,8 +422,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * MOBILE COMPATIBILITY CHECKER
      * -----------------------------------------------------------------
-     * Checks for elements (iframes, objects, embeds) that may not be mobile compatible,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['mobileCom'])) {
         log_message('debug', "Mobile Compatibility Tag Call for URL {$my_url_host}");
@@ -548,13 +434,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * SERVER LOCATION INFORMATION
      * -----------------------------------------------------------------
-     * Retrieves the server's IP, country, and ISP details,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['serverIP'])) {
         log_message('debug', "Server IP Tag Call for URL {$my_url_host}");
-        $serverIPData = $seoTools->processServerIP();
-        echo $seoTools->showServerIP($serverIPData);
+        $serverDataJson = $seoTools->processServerInfo();
+        // Later (or on a separate page) to display:
+        echo $seoTools->showServerInfo($serverDataJson);
         die();
     }
 
@@ -562,8 +447,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * SPEED TIPS ANALYZER
      * -----------------------------------------------------------------
-     * Analyzes the number of CSS/JS files, nested tables, and inline CSS usage,
-     * updates the database, and outputs suggestions to improve speed.
      */
     if (isset($_POST['speedTips'])) {
         log_message('debug', "Speed Tips Tag Call for URL {$my_url_host}");
@@ -576,8 +459,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * ANALYTICS & DOCUMENT TYPE CHECKER
      * -----------------------------------------------------------------
-     * Checks for analytics code (e.g., Google Analytics) and the DOCTYPE declaration,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['docType'])) {
         log_message('debug', "DocType Tag Call for URL {$my_url_host}");
@@ -590,13 +471,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * W3C VALIDITY CHECKER
      * -----------------------------------------------------------------
-     * Validates the HTML using the W3C Validator API,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['w3c'])) {
         log_message('debug', "W3C Validity Tag Call for URL {$my_url_host}");
-        
-        $w3cData = $seoTools->processW3c(); 
+        $w3cData = $seoTools->processW3c();
         echo $seoTools->showW3c($w3cData);
         die();
     }
@@ -605,8 +483,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * ENCODING TYPE CHECKER
      * -----------------------------------------------------------------
-     * Checks the charset meta tag to determine the document's encoding,
-     * updates the database, and outputs the result.
      */
     if (isset($_POST['encoding'])) {
         log_message('debug', "Encoding Tag Call for URL {$my_url_host}");
@@ -619,9 +495,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * SOCIAL DATA RETRIEVAL
      * -----------------------------------------------------------------
-     * (This block may be unreachable if a previous die() is encountered.)
-     * Gathers social media statistics from the HTML source, updates the database,
-     * and outputs the result.
      */
     if (isset($_POST['socialData'])) {
         $socialData = $seoTools->processSocialData();
@@ -633,8 +506,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * VISITORS LOCALIZATION
      * -----------------------------------------------------------------
-     * Retrieves visitor data (e.g., Alexa rankings) for localization purposes,
-     * and outputs the result.
      */
     if (isset($_POST['visitorsData'])) {
         $visitorsData = $seoTools->processVisitorsData();
@@ -646,12 +517,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      * CLEAN OUT / FINALIZE ANALYSIS
      * -----------------------------------------------------------------
-     * Updates the final score, adds the site to recent history, and clears the cached data.
      */
-     if (isset($_POST['cleanOut'])) {
+    if (isset($_POST['cleanOut'])) {
         $seoTools->cleanOut();
     }
 }
-// End of AJAX Handler script.
+// End of AJAX Handler.
 die();
 ?>

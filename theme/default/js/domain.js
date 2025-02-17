@@ -170,7 +170,7 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
     
     // Load screenshot via AJAX
-    $.get(domainPath + '&getImage&site=' + inputHost, function (data) {
+    $.get(domainPath + '?getImage&site=' + inputHost, function (data) {
         $("#screenshotData").html('<img src="data:image/jpeg;base64,' + data + '"/>');
     });
     

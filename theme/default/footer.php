@@ -1,4 +1,5 @@
 <?php
+//footer.php
 defined('APP_NAME') or die(header('HTTP/1.0 403 Forbidden'));
 
 /*
@@ -62,7 +63,8 @@ defined('APP_NAME') or die(header('HTTP/1.0 403 Forbidden'));
 </footer>
 
 <!-- Load Bootstrap JS (make sure jQuery is already loaded) -->
-<script src="<?php themeLink('js/bootstrap.min.js'); ?>" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <?php if($controller == CON_MAIN) { ?>
     <script type="text/javascript" src="<?php themeLink('js/particleground.min.js'); ?>"></script>
 <?php } ?>

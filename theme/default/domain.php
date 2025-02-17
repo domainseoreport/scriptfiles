@@ -18,10 +18,9 @@ $loadingBar = '
     <div class="text-center">
          <div class="spinner-border text-primary" role="status">
             <span class="sr-only">' . $lang['33'] . '</span>
-        </div>
-        <br /><br /> 
+         </div>
+         <br /><br /> 
     </div>
-    
 ';
 
 // If update is found, initialize each SEO box with the loading bar content
@@ -40,7 +39,7 @@ if ($updateFound) {
 <?php } ?>
 
 <script>
-    // Set up additional configuration variables for JavaScript use
+    // Setup configuration variables for JavaScript use
     var hashCode    = '<?php echo $hashCode; ?>';
     var inputHost   = '<?php echo $data["domain_access_url"]; ?>';
     var isOnline    = '<?php echo $isOnline; ?>';
@@ -56,10 +55,12 @@ if ($updateFound) {
 <script src="<?php themeLink('js/pagespeed.min.js'); ?>" type="text/javascript"></script>
 <link href="<?php themeLink('css/www.css'); ?>" rel="stylesheet" />
 
+<!-- Main Container -->
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
             <?php
+            // If an error is set, display an alert and a homepage button.
             if (isset($error)) {
                 echo '
                     <br/><br/>
@@ -73,18 +74,11 @@ if ($updateFound) {
                     <br/>';
             } else {
             ?>
+                <!-- Overview Section -->
                 <div id="overview">
                     <br />
                     <?php if ($updateFound) { ?>
-                        <style>
-                            .progress-bar-primary {
-                                background-color: #3498DC;
-                            }
-                            .progress {
-                                margin-top: 20px;
-                                background-color: #d2d2d2;
-                            }
-                        </style>
+                        <!-- Progress Bar displayed during update -->
                         <div class="progress progress-lg" id="progress-bar">
                             <div id="progressbar" class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuemin="5" aria-valuemax="100">
                                 <div style="font-weight: bold; position: absolute; width: 100%; color: white;">
@@ -99,6 +93,7 @@ if ($updateFound) {
 
                     <!-- Scoreboard Section -->
                     <div id="scoreBoard" class="row">
+                        <!-- Screenshot Column -->
                         <div class="col-md-4 screenBox">
                             <div id="screenshot">
                                 <div id="screenshotData">
@@ -119,6 +114,7 @@ if ($updateFound) {
                                 <div class="computer"></div>
                             </div>
                         </div>
+                        <!-- Details Column -->
                         <div class="col-md-5 levelBox">
                             <div>
                                 <h1><?php echo ucfirst($my_url_host); ?></h1>
@@ -126,38 +122,42 @@ if ($updateFound) {
                             <div class="timeBox">
                                 <?php echo $disDate; ?>
                             </div>
+                            <!-- Passed Progress -->
                             <div class="progressBox">
                                 <span class="scoreProgress-label passedBox">
                                     <?php trans('Passed', $lang['26']); ?>
                                 </span>
                                 <div class="scoreProgress scoreProgress-xs scoreProgress-success">
-                                    <div id="passScore" aria-valuemax="100" aria-valuenow="0" aria-valuemin="0" role="progressbar" class="scoreProgress-bar">
+                                    <div id="passScore" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" class="scoreProgress-bar">
                                         <span class="scoreProgress-value">0%</span>
                                     </div>
                                 </div>
                             </div>
+                            <!-- To Improve Progress -->
                             <div class="progressBox">
                                 <span class="scoreProgress-label improveBox">
                                     <?php trans('To Improve', $lang['25']); ?>
                                 </span>
                                 <div class="scoreProgress scoreProgress-xs scoreProgress-warning">
-                                    <div id="improveScore" aria-valuemax="100" aria-valuenow="0" aria-valuemin="0" role="progressbar" class="scoreProgress-bar">
+                                    <div id="improveScore" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" class="scoreProgress-bar">
                                         <span class="scoreProgress-value">0%</span>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Errors Progress -->
                             <div class="progressBox">
                                 <span class="scoreProgress-label errorBox">
                                     <?php trans('Errors', $lang['24']); ?>
                                 </span>
                                 <div class="scoreProgress scoreProgress-xs scoreProgress-danger">
-                                    <div id="errorScore" aria-valuemax="100" aria-valuenow="0" aria-valuemin="0" role="progressbar" class="scoreProgress-bar">
+                                    <div id="errorScore" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" class="scoreProgress-bar">
                                         <span class="scoreProgress-value">0%</span>
                                     </div>
                                 </div>
                             </div>
                             <br />
                         </div>
+                        <!-- Overall Score Column -->
                         <div class="col-md-2 circleBox">
                             <div class="second circle" data-size="130" data-thickness="5">
                                 <canvas width="130" height="130"></canvas>
@@ -169,29 +169,28 @@ if ($updateFound) {
                     </div>
                 </div>
 
-                <!-- Social Sharing and Download/Update Links -->
+                <!-- Social Sharing and Download/Update Links Section -->
                 <div class="row">
                     <div class="col-md-9">
                         <div class="top40">
                             <ul class="social-icons icon-circle icon-rotate list-unstyled list-inline text-center">
                                 <li><?php trans('SHARE', $lang['122']); ?></li>
-                                <li> <a target="_blank" rel="nofollow" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $shareLink; ?>"><i class="fa fa-facebook"></i></a></li>  
-                                <li><a target="_blank" rel="nofollow" href="https://twitter.com/home?status=<?php echo $shareLink; ?>"><i class="fa fa-twitter"></i></a> </li> 
-                                <li> <a target="_blank" rel="nofollow" href="https://pinterest.com/pin/create/button/?url=<?php echo $shareLink; ?>"><i class="fa fa-pinterest"></i></a> </li>
-                                <li> <a target="_blank" rel="nofollow" href="https://www.tumblr.com/share/link?url=<?php echo $shareLink; ?>"><i class="fa fa-tumblr"></i></a> </li> 
-                                <li> <a target="_blank" rel="nofollow" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo $shareLink; ?>"><i class="fa fa-linkedin"></i></a> </li> 
-                                <li> <a target="_blank" rel="nofollow" href="https://del.icio.us/post?url=<?php echo $shareLink; ?>"><i class="fa fa-delicious"></i></a> </li> 
-                                <li> <a target="_blank" rel="nofollow" href="https://www.stumbleupon.com/submit?url=<?php echo $shareLink; ?>"><i class="fa fa-stumbleupon"></i></a></li> 
-                                <li> <a target="_blank" rel="nofollow" href="https://www.reddit.com/login?dest=https://www.reddit.com/submit?url=<?php echo $shareLink; ?>&title=<?php echo ucfirst($my_url_host); ?>"><i class="fa fa-reddit"></i></a></li> 
-                                <li> <a target="_blank" rel="nofollow" href="https://digg.com/submit?phase=2&url=<?php echo $shareLink; ?>"><i class="fa fa-digg"></i></a></li> 
-                                <li> <a target="_blank" rel="nofollow" href="https://vk.com/share.php?url=<?php echo $shareLink; ?>"><i class="fa fa-vk"></i></a></li>   
-                                <!-- Additional social sharing links omitted for brevity -->
+                                <li><a target="_blank" rel="nofollow" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $shareLink; ?>"><i class="fa fa-facebook"></i></a></li>
+                                <li><a target="_blank" rel="nofollow" href="https://twitter.com/home?status=<?php echo $shareLink; ?>"><i class="fa fa-twitter"></i></a></li>
+                                <li><a target="_blank" rel="nofollow" href="https://pinterest.com/pin/create/button/?url=<?php echo $shareLink; ?>"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a target="_blank" rel="nofollow" href="https://www.tumblr.com/share/link?url=<?php echo $shareLink; ?>"><i class="fa fa-tumblr"></i></a></li>
+                                <li><a target="_blank" rel="nofollow" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo $shareLink; ?>"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a target="_blank" rel="nofollow" href="https://del.icio.us/post?url=<?php echo $shareLink; ?>"><i class="fa fa-delicious"></i></a></li>
+                                <li><a target="_blank" rel="nofollow" href="https://www.stumbleupon.com/submit?url=<?php echo $shareLink; ?>"><i class="fa fa-stumbleupon"></i></a></li>
+                                <li><a target="_blank" rel="nofollow" href="https://www.reddit.com/login?dest=https://www.reddit.com/submit?url=<?php echo $shareLink; ?>&title=<?php echo ucfirst($my_url_host); ?>"><i class="fa fa-reddit"></i></a></li>
+                                <li><a target="_blank" rel="nofollow" href="https://digg.com/submit?phase=2&url=<?php echo $shareLink; ?>"><i class="fa fa-digg"></i></a></li>
+                                <li><a target="_blank" rel="nofollow" href="https://vk.com/share.php?url=<?php echo $shareLink; ?>"><i class="fa fa-vk"></i></a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-3 align-items-center">
-                        <div class="pdfBox">
-                            <a href="<?php echo $pdfUrl; ?>" id="pdfLink" class="btn btn-lgreen btn-sm">
+                        <div class="pdfBox text-end">
+                            <a href="<?php echo $pdfUrl; ?>" id="pdfLink" class="btn btn-lgreen btn-sm me-2">
                                 <i class="fa fa-cloud-download"></i> <?php trans('Download as PDF', $lang['28']); ?>
                             </a>
                             <a href="<?php echo $updateUrl; ?>" class="btn btn-red btn-sm">
@@ -205,164 +204,159 @@ if ($updateFound) {
 
                 <!-- SEO Analysis Sections -->
 
+                <div id="seo1">
+                    <h2 class="seoBox-title"><?php trans('SEO', $lang['35']); ?></h2>
 
-        <div class="clearfix"></div>
-                 
-               <div id="seo1">   
-                <h2 class="seoBox-title">
-                    <?php trans('SEO',$lang['35']); ?>
-                </h2>
-
-<?php //////////////////////////////////////////// Title Tags Section ///////////////////////////////////////////////////////// ?>
-
-<div class="card shadow seo-card mb-4">
-    <div class="card-body">
-    <div class="d-flex">
-        <div class="me-3">
-          <i class="fa fa-check-circle text-success" style="font-size:2rem;"></i>
-        </div>
-        <div>
-          <h5 class="fw-bold">Meta Information</h5> 
-        </div>
-      </div> 
-      <hr>
-      <div class="row align-items-center">
-        <div class="col-md-3 d-flex align-items-center">
-          <div class="me-3 text-success">
-            <i class="fa fa-check-circle"></i>
-          </div>
-          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN1'],$solveMsg,1); ?></h5>
-        </div>
-        <div class="col-md-9" id="seoBox1">
-        <?php echo $seoBox1; ?>
-        </div>
-      </div>
-            <hr>
-
-      <div class="row align-items-center">
-        <div class="col-md-3 d-flex align-items-center">
-          <div class="me-3 text-success">
-            <i class="fa fa-check-circle"></i>
-          </div>
-          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN2'],$solveMsg,1); ?></h5>
-        </div>
-        <div class="col-md-9" id="seoBox2">
-                <?php echo $seoBox2; ?>
-        </div>
-      </div>
-
-        <hr> 
-
-        <div class="row align-items-center">
-        <div class="col-md-3 d-flex align-items-center">
-            <div class="me-3 text-success">
-            <i class="fa fa-check-circle"></i>
-            </div>
-            <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN3'],$solveMsg,1); ?></h5>
-        </div>
-        <div class="col-md-9" id="seoBox3">
-                <?php echo $seoBox3; ?>
-        </div>
-        </div>
-
-    </div>
-  </div> 
-
-  
-<?php //////////////////////////////////////////// Heading Tags [ H1 - H6 ] Section ///////////////////////////////////////////////////////// ?> 
-<div class="card shadow seo-card mb-4">
-    <div class="card-body">
-      <div class="row align-items-center">
-      <div class="d-flex">
-        <div class="me-3">
-          <i class="fa fa-check-circle text-success" style="font-size:2rem;"></i>
-        </div>
-        <div>
-          <h5 class="fw-bold"><?php outHeadBox($lang['AN16'],$solveMsg,2); ?></h5> 
-        </div>
-      </div> 
-      
-      <div class="contentBox" id="seoBox4">
-                    <?php echo $seoBox4; ?>
-                    </div>
-      </div>
-    </div>
-  </div>
-
- 
-               
-<?php //////////////////////////////////////////// Keywords Cloud Section ///////////////////////////////////////////////////////// ?> 
-
-<div class="card shadow seo-card mb-4">
-    <div class="card-body">
-      <div class="row align-items-center">
-        <div class="col-md-3 d-flex align-items-center">
-          <div class="me-3 text-success">
-            <i class="fa fa-check-circle"></i>
-          </div>
-          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN28'],$solveMsg,4); ?></h5>
-        </div>
-        <div class="col-md-9" id="seoBox7">
-                            <?php echo $seoBox7; ?> 
-        </div>
-        
-        <hr>
-        
-        <div class="d-flex">
-        <div class="me-3">
-          <i class="fa fa-check-circle text-success" style="font-size:2rem;"></i>
-        </div>
-        <div>
-          <h5 class="fw-bold"><?php outHeadBox($lang['AN30'],$solveMsg,1); ?></h5> 
-        </div>
-      </div>  
-                    <div class="contentBox" id="seoBox8">
-                        <?php echo $seoBox8; ?>
+                    <!-- Meta Information Section (Title, Description, Keywords) -->
+                    <div class="card shadow seo-card mb-4">
+                        <div class="card-header border-bottom">
+                            <h5 class="card-title mb-0">Meta Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Title Section -->
+                            <div class="row mb-3 align-items-center">
+                                <div class="col-md-3">
+                                    <h6><?php outHeadBox($lang['AN1'], $solveMsg, 1); ?></h6>
+                                </div>
+                                <div class="col-md-9" id="seoBox1">
+                                    <?php echo $seoBox1; ?>
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- Description Section -->
+                            <div class="row mb-3 align-items-center">
+                                <div class="col-md-3">
+                                    <h6><?php outHeadBox($lang['AN2'], $solveMsg, 1); ?></h6>
+                                </div>
+                                <div class="col-md-9" id="seoBox2">
+                                    <?php echo $seoBox2; ?>
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- Keywords Section -->
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <h6><?php outHeadBox($lang['AN3'], $solveMsg, 1); ?></h6>
+                                </div>
+                                <div class="col-md-9" id="seoBox3">
+                                    <?php echo $seoBox3; ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-      </div>
-    </div>
-  </div>
-                  
-<?php //////////////////////////////////////////// Keyword Consistency Section ///////////////////////////////////////////////////////// ?>                  
-                <div class="seoBox keyConsResult">
-                    
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>  
-<?php //////////////////////////////////////////// Text/HTML Ratio Section ///////////////////////////////////////////////////////// ?>               
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN35'],$solveMsg,2); ?>
-                    <div class="contentBox" id="seoBox9">
-                        <?php echo $seoBox9; ?>
+                    <!-- Heading Tags Section -->
+                    <div class="card shadow seo-card mb-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="me-3">
+                                    <i class="fa fa-check-circle text-success" style="font-size:2rem;"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold"><?php outHeadBox($lang['AN16'], $solveMsg, 2); ?></h5>
+                                </div>
+                            </div>
+                            <div class="contentBox" id="seoBox4">
+                                <?php echo $seoBox4; ?>
+                            </div>
+                        </div>
                     </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div> 
-<?php //////////////////////////////////////////// Alt Attribute Section ///////////////////////////////////////////////////////// ?>                 
-                <div class="seoBox altImgResult">
-                    <?php outHeadBox($lang['AN20'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox6">
-                        <?php echo $seoBox6; ?>
+
+                    <!-- Keywords Cloud Section -->
+                    <div class="card shadow seo-card mb-4">
+                        <div class="card-body">
+                            <div class="row align-items-center mb-3">
+                                <div class="col-md-3">
+                                    <h5 class="fw-bold"><?php outHeadBox($lang['AN28'], $solveMsg, 4); ?></h5>
+                                </div>
+                                <div class="col-md-9" id="seoBox7">
+                                    <?php echo $seoBox7; ?>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="me-3">
+                                    <i class="fa fa-check-circle text-success" style="font-size:2rem;"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold"><?php outHeadBox($lang['AN30'], $solveMsg, 1); ?></h5>
+                                </div>
+                            </div>
+                            <div class="contentBox" id="seoBox8">
+                                <?php echo $seoBox8; ?>
+                            </div>
+                        </div>
                     </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>  
+
+                    <!-- Link Analysis Section -->
+                    <div id="link-analysis" class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0"><?php trans('Link Analysis', $lang['21']); ?></h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="contentBox" id="seoBox13">
+                                    <?php echo $seoBox13; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text/HTML Ratio Section -->
+                    <div id="text-analysis" class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0"><?php outHeadBox($lang['AN35'], $solveMsg, 2); ?></h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="contentBox" id="seoBox9">
+                                    <?php echo $seoBox9; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alt Attribute Section -->
+                    <div id="image-analysis" class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0"><?php outHeadBox($lang['AN20'], $solveMsg, 1); ?></h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="contentBox" id="seoBox6">
+                                    <?php echo $seoBox6; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+              
 <?php //////////////////////////////////////////// SEO Section ///////////////////////////////////////////////////////// ?>  
 
 <?php //////////////////////////////////////////// Page Load Section ///////////////////////////////////////////////////////// ?>  
 <div class="card shadow seo-card mb-4">
-    <div class="card-body">
-      <div class="row align-items-center">
-        <div class="col-md-3 d-flex align-items-center">
-          <div class="me-3 text-success">
-            <i class="fa fa-check-circle"></i>
-          </div>
-          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN28'],$solveMsg,4); ?></h5>
-        </div>
-        <div class="col-md-9" id="seoBox30">
-        <?php echo $seoBox30; ?>
-        </div>
-      </div>
-    </div>
-  </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-3 d-flex align-items-center">
+                                    <div class="me-3 text-success">
+                                        <i class="fa fa-check-circle"></i>
+                                    </div>
+                                    <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN28'], $solveMsg, 4); ?></h5>
+                                </div>
+                                <div class="col-md-9" id="seoBox30">
+                                    <?php echo $seoBox30; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
   <?php //////////////////////////////////////////// GZIP compression Ratio Section ///////////////////////////////////////////////////////// ?>  
   <div class="card shadow seo-card mb-4">
     <div class="card-body">
@@ -529,7 +523,7 @@ if ($updateFound) {
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
 <?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
+                <div class="seoBox">ssssssssssssssssssssssssssssssssssssssss
                     <?php outHeadBox($lang['AN97'],$solveMsg,2); ?>
                     <div class="contentBox" id="seoBox29">
                         <?php echo $seoBox29; ?>
@@ -547,7 +541,7 @@ if ($updateFound) {
 	            </div> 
 <?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
                 <div class="seoBox">
-                    <?php outHeadBox($lang['AN99'],$solveMsg,1); ?> 
+                    <?php outHeadBox($lang['AN99'],$solveMsg,1); ?> ffffffffffffff
                     <div class="contentBox" id="seoBox31">
                         <?php echo $seoBox31; ?> 
                     </div>
@@ -729,54 +723,25 @@ if ($updateFound) {
 	            </div>
                 </div>
                 
-                <div id="link-analysis">
-                    <div class="clearSep"></div>
-                    <h2 class="seoBox-title">
-                        <?php trans('Link Analysis',$lang['21']); ?>
-                    </h2>
-                    <div class="seoBox inPage">
-                        <?php outHeadBox($lang['AN51'],$solveMsg,1); ?>
-                        <div class="contentBox" id="seoBox13">
-                            <?php echo $seoBox13; ?>
-                        </div>
-                        <?php outQuestionBox($lang['AN4']); ?>
-    	            </div> 
-                    
-                    <div class="seoBox brokenLinks">
-                        <?php outHeadBox($lang['AN58'],$solveMsg,1); ?>
-                        <div class="contentBox" id="seoBox14">
-                            <?php echo $seoBox14; ?>
-                        </div>
-                        <?php outQuestionBox($lang['AN4']); ?>
-    	            </div> 
-
-               </div>  
+               
                   
                            <!-- New Site Analysis Form -->
-                           <div class="text-center">
-                    <br /> &nbsp; <br />
-                    <h4 style="color: #989ea8;">
-                        <?php trans('Try New Site', $lang['38']); ?>
-                    </h4>
+                <div class="text-center my-4">
+                    <h4 style="color: #989ea8;"><?php trans('Try New Site', $lang['38']); ?></h4>
                     <form method="POST" action="<?php createLink('domain'); ?>" onsubmit="return fixURL();">
                         <div class="input-group reviewBox">
-                            <div class="input-container">
-                                <input type="text" tabindex="1" placeholder="<?php trans('Website URL to review', $lang['37']); ?>" id="url" name="url" class="form-control reviewIn"/>
-                            </div>
-                            <div class="input-group-btn">
-                                <button tabindex="2" type="submit" name="generate" class="btn btn-info url-lg">
-                                    <span class="ready"><?php trans('Analyze', $lang['36']); ?></span>
-                                </button>
-                            </div>
+                            <input type="text" tabindex="1" placeholder="<?php trans('Website URL to review', $lang['37']); ?>" id="url" name="url" class="form-control reviewIn"/>
+                            <button tabindex="2" type="submit" name="generate" class="btn btn-info">
+                                <span class="ready"><?php trans('Analyze', $lang['36']); ?></span>
+                            </button>
                         </div>
                     </form>
-                    <br />
                 </div>
             <?php } ?>
-            <br />
+            <br /> 
 
-            <!-- Advertisement Section -->
-            <div class="xd_top_box bottom40 text-center">
+           <!-- Advertisement Section -->
+           <div class="xd_top_box bottom40 text-center">
                 <?php echo $ads_720x90; ?>
             </div>
         </div>

@@ -25,6 +25,13 @@ a:focus {
   background-color: #3674B5;
 
 }
+.progress-bar-primary {
+  background-color: #3498DC;
+}
+.progress {
+  margin-top: 20px;
+  background-color: #d2d2d2;
+}
 .form-control:focus {
   border-color: #66afe9;
   outline: 0;

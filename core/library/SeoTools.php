@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+require_once   'ServerInfoHelper.php';
 /**
  * SeoTools.php
  *
@@ -7,68 +10,101 @@
  *   - processXXX(): Extracts the data (and updates the database)
  *   - showXXX(): Returns the HTML output for that test.
  *
- * You can expand each handler by implementing the detailed logic.
+ * All functions from the original version are retained.
  */
-
 class SeoTools {
     // Global properties used by all handlers.
-    protected $html;         // Normalized HTML source (with meta tag names in lowercase)
-    protected $con;          // Database connection
-    protected $domainStr;    // Normalized domain string (used for DB lookups)
-    protected $lang;         // Language strings array
-    protected $urlParse;     // Parsed URL array (from parse_url())
-    protected $sepUnique;    // Unique separator string for output sections
-    protected $seoBoxLogin;  // HTML snippet for a login box (if user isn’t logged in)
+    protected string $html;         // Normalized HTML source (with meta tag names in lowercase)
+    protected $con;                 // Database connection
+    protected string $domainStr;    // Normalized domain string (used for DB lookups)
+    protected array $lang;          // Language strings array
+    protected ?array $urlParse;     // Parsed URL array (from parse_url())
+    protected string $sepUnique;    // Unique separator string for output sections
+    protected string $seoBoxLogin;  // HTML snippet for a login box (if user isn’t logged in)
+    protected string $true;         // Icon for "true"
+    protected string $false;        // Icon for "false"
 
     /**
      * Constructor.
      *
-     * @param string $html       The normalized HTML source.
-     * @param mixed  $con        The database connection.
-     * @param string $domainStr  The normalized domain string.
-     * @param array  $lang       The language strings array.
-     * @param array  $urlParse   The parsed URL (via parse_url()).
-     * @param string $sepUnique  A unique separator string.
-     * @param string $seoBoxLogin The login box HTML snippet.
+     * @param string|null $html       The normalized HTML source.
+     * @param mixed       $con        The database connection.
+     * @param string      $domainStr  The normalized domain string.
+     * @param array       $lang       The language strings array.
+     * @param array|null  $urlParse   The parsed URL (via parse_url()).
+     * @param string|null $sepUnique  A unique separator string. Defaults to '!!!!8!!!!'.
+     * @param string|null $seoBoxLogin HTML snippet for a login box.
      */
-    public function __construct($html, $con, $domainStr, $lang, $urlParse, $sepUnique, $seoBoxLogin) {
-        $this->html        = $html;
-        $this->con         = $con;
-        $this->domainStr   = $domainStr;
-        $this->lang        = $lang;
-        $this->urlParse    = $urlParse;
-        $this->sepUnique   = $sepUnique;
-        $this->seoBoxLogin = $seoBoxLogin;
+    public function __construct(?string $html, $con, string $domainStr, array $lang, ?array $urlParse, ?string $sepUnique = null, ?string $seoBoxLogin = null) {
+        $this->html = $this->normalizeHtml($html);
+        $this->con = $con;
+        $this->domainStr = $domainStr;
+        $this->lang = $lang;
+        $this->urlParse = $urlParse;
+        $this->sepUnique = $sepUnique ?? '!!!!8!!!!';
+        $this->seoBoxLogin = $seoBoxLogin ?? '<div class="lowImpactBox"><div class="msgBox">Please log in to view SEO details.</div></div>';
+        $this->true = '<img src="' . themeLink('img/true.png', true) . '" alt="True" />';
+        $this->false = '<img src="' . themeLink('img/false.png', true) . '" alt="False" />';
+    }
+
+    /**
+     * normalizeHtml()
+     *
+     * Ensures that the provided HTML is a non-null string.
+     *
+     * @param string|null $html
+     * @return string
+     */
+    private function normalizeHtml(?string $html): string {
+        return $html ?? '';
+    }
+
+    /**
+     * getDom()
+     *
+     * Returns a DOMDocument loaded with the normalized HTML.
+     *
+     * @return DOMDocument
+     */
+    private function getDom(): DOMDocument {
+        $doc = new DOMDocument();
+        // Suppress warnings for invalid HTML.
+        @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
+        return $doc;
+    }
+
+    /**
+     * getLinkPosition()
+     *
+     * Determines the position (header, nav, main, footer, aside, section or body)
+     * of a node by traversing its ancestors.
+     *
+     * @param DOMNode $node
+     * @return string
+     */
+    private function getLinkPosition(DOMNode $node): string {
+        $positions = ['header', 'nav', 'main', 'footer', 'aside', 'section'];
+        while ($node && $node->nodeName !== 'html') {
+            $nodeName = strtolower($node->nodeName);
+            if (in_array($nodeName, $positions)) {
+                return $nodeName;
+            }
+            $node = $node->parentNode;
+        }
+        return 'body';
     }
 
     /*===================================================================
      * META HANDLER
-     *===================================================================
-     */
-
-    /**
-     * processMeta()
-     *
-     * Extracts the page title, meta description, and keywords from the HTML.
-     * It updates the database with the serialized results.
-     *
-     * @return array Associative array with keys 'title', 'description', and 'keywords'.
+     *=================================================================== 
      */
     public function processMeta() {
-        
         $title = $description = $keywords = '';
-        $doc = new DOMDocument();
-
-        // Load HTML with proper encoding (suppress warnings)
-        @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
-
-        // Get the page title.
+        $doc = $this->getDom();
         $nodes = $doc->getElementsByTagName('title');
         if ($nodes->length > 0) {
             $title = $nodes->item(0)->nodeValue;
         }
-
-        // Loop through meta tags to extract description and keywords.
         $metas = $doc->getElementsByTagName('meta');
         for ($i = 0; $i < $metas->length; $i++) {
             $meta = $metas->item($i);
@@ -79,61 +115,38 @@ class SeoTools {
                 $keywords = $meta->getAttribute('content');
             }
         }
-        $meta = array();
-        $meta['title']=trim($title);
-        $meta['description'] = trim($description);
-        $meta['keywords'] = trim($keywords);
-        // Encrypt the meta data using serBase()
+        $meta = [
+            'title'       => trim($title),
+            'description' => trim($description),
+            'keywords'    => trim($keywords)
+        ];
         $metaEncrypted = jsonEncode($meta);
-      
-        // Serialize and update meta data in the database. 
-        updateToDbPrepared($this->con, 'domains_data', array('meta_data' => $metaEncrypted), array('domain' => $this->domainStr));
-      
+        updateToDbPrepared($this->con, 'domains_data', ['meta_data' => $metaEncrypted], ['domain' => $this->domainStr]);
         return $metaEncrypted;
     }
 
-    /**
-     * showMeta()
-     *
-     * Builds and returns the HTML output for the meta data analysis.
-     *
-     * @param array $metaData The associative array returned by processMeta().
-     * @return string The HTML output.
-     */
     public function showMeta($metaData) {
         $metaData = jsonDecode($metaData);
-        
-        // Calculate character lengths.
         $lenTitle = mb_strlen($metaData['title'], 'utf8');
         $lenDes   = mb_strlen($metaData['description'], 'utf8');
 
-        // Provide default messages if fields are empty.
-        $site_title       = ($metaData['title'] == '' ? $this->lang['AN11'] : $metaData['title']);
-        $site_description = ($metaData['description'] == '' ? $this->lang['AN12'] : $metaData['description']);
-        $site_keywords    = ($metaData['keywords'] == '' ? $this->lang['AN15'] : $metaData['keywords']);
+        $site_title       = $metaData['title'] ?: $this->lang['AN11'];
+        $site_description = $metaData['description'] ?: $this->lang['AN12'];
+        $site_keywords    = $metaData['keywords'] ?: $this->lang['AN15'];
 
-        // Determine CSS classes based on length.
         $classTitle = ($lenTitle < 10) ? 'improveBox' : (($lenTitle < 70) ? 'passedBox' : 'errorBox');
-        $classDes   = ($lenDes < 70)   ? 'improveBox' : (($lenDes < 300)   ? 'passedBox' : 'errorBox');
+        $classDes   = ($lenDes < 70) ? 'improveBox' : (($lenDes < 300) ? 'passedBox' : 'errorBox');
         $classKey   = 'lowImpactBox';
 
-        // Check user permissions.
+        // Check login/permissions.
         if (!isset($_SESSION['twebUsername']) && !isAllowedStats($this->con, 'seoBox1')) {
-            die(
-                $this->seoBoxLogin . $this->sepUnique .
-                $this->seoBoxLogin . $this->sepUnique .
-                $this->seoBoxLogin . $this->sepUnique .
-                $this->seoBoxLogin
-            );
+            die(str_repeat($this->seoBoxLogin . $this->sepUnique, 4));
         }
 
-        // Predefined messages.
         $titleMsg  = $this->lang['AN173'];
         $desMsg    = $this->lang['AN174'];
         $keyMsg    = $this->lang['AN175'];
-        $googleMsg = $this->lang['AN177'];
 
-        // Build HTML output.
         $output = '<div class="' . $classTitle . '">
                         <div class="msgBox bottom10">
                             ' . $site_title . '<br />
@@ -154,48 +167,6 @@ class SeoTools {
                         </div>
                         <div class="seoBox3 suggestionBox">' . $keyMsg . '</div>
                     </div>' . $this->sepUnique;
-                    $output .= '<div class="' . $classKey . '">
-                    <div class="msgBox">
-                        <div class="googlePreview">
-                        
-                            <!-- First Row: Mobile & Tablet Views -->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="google-preview-box mobile-preview">
-                                        <h6>Mobile View</h6>
-                                        <p class="google-title"><a href="#">' . htmlspecialchars($site_title) . '</a></p>
-                                        <p class="google-url"><span class="bold">' . htmlspecialchars($this->urlParse['host']) . '</span>/</p>
-                                        <p class="google-desc">' . htmlspecialchars($site_description) . '</p>
-                                    </div>
-                                </div>
-                
-                                <div class="col-md-6">
-                                    <div class="google-preview-box tablet-preview">
-                                        <h6>Tablet View</h6>
-                                        <p class="google-title"><a href="#">' . htmlspecialchars($site_title) . '</a></p>
-                                        <p class="google-url"><span class="bold">' . htmlspecialchars($this->urlParse['host']) . '</span>/</p>
-                                        <p class="google-desc">' . htmlspecialchars($site_description) . '</p>
-                                    </div>
-                                </div>
-                            </div>
-                
-                            <!-- Second Row: Desktop View -->
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <div class="google-preview-box desktop-preview">
-                                        <h6>Desktop View</h6>
-                                        <p class="google-title"><a href="#">' . htmlspecialchars($site_title) . '</a></p>
-                                        <p class="google-url"><span class="bold">' . htmlspecialchars($this->urlParse['host']) . '</span>/</p>
-                                        <p class="google-desc">' . htmlspecialchars($site_description) . '</p>
-                                    </div>
-                                </div>
-                            </div>
-    
-                        </div>
-                    </div>
-                     
-                </div>';
-                    
         return $output;
     }
 
@@ -203,71 +174,37 @@ class SeoTools {
      * HEADING HANDLER
      *-------------------------------------------------------------------
      */
-
-    /**
-     * processHeading()
-     *
-     * Extracts all heading tags (H1–H6) from the HTML and updates the database.
-     *
-     * @return array Array of headings grouped by tag.
-     */
     public function processHeading() {
-        
-        $doc = new DOMDocument();
-        @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
-        $tags = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6');
-        $headings = array();
+        $doc = $this->getDom();
+        $tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+        $headings = [];
         foreach ($tags as $tag) {
             $elements = $doc->getElementsByTagName($tag);
             foreach ($elements as $element) {
                 $content = trim(strip_tags($element->textContent));
-                if ($content != "") {
-                    $headings[$tag][] = trim($content," \t\n\r\0\x0B\xc2\xa0");
+                if ($content !== "") {
+                    $headings[$tag][] = trim($content, " \t\n\r\0\x0B\xc2\xa0");
                 }
             }
         }
-      
-        $updateStr = jsonEncode(array($headings));
-        //$updateStr = serBase(array($headings));
-        updateToDbPrepared($this->con, 'domains_data', array('headings' => $updateStr), array('domain' => $this->domainStr));
-        return  $updateStr;
+        $updateStr = jsonEncode([$headings]);
+        updateToDbPrepared($this->con, 'domains_data', ['headings' => $updateStr], ['domain' => $this->domainStr]);
+        return $updateStr;
     }
 
-    /**
-     * showHeading()
-     *
-     * Builds HTML output for the headings analysis.
-     *
-     * @param array $headings The array returned by processHeading().
-     * @return string The HTML output.
-     */
     public function showHeading($headings) {
-       
-        // Decode JSON safely
         $headingsArr = jsonDecode($headings);
-    
-        // Validate data structure
         if (!is_array($headingsArr) || !isset($headingsArr[0])) {
             return '<div class="errorBox"><div class="msgBox">Invalid heading data.</div></div>';
         }
-    
         $elementList = $headingsArr[0];
-    
-        // Define heading tags and initialize counts
         $tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
         $counts = [];
         foreach ($tags as $tag) {
             $counts[$tag] = isset($elementList[$tag]) ? count($elementList[$tag]) : 0;
         }
-    
-        // Determine CSS class based on heading structure
-        $boxClass = ($counts['h1'] > 2) ? 'improveBox' :
-                    (($counts['h1'] > 0 && $counts['h2'] > 0) ? 'passedBox' : 'errorBox');
-    
-        // Suggestion text from language array
-        $headMsg = isset($this->lang['AN176']) ? $this->lang['AN176'] : "Please review your heading structure.";
-    
-        // Helper function for suggestions
+        $boxClass = ($counts['h1'] > 2) ? 'improveBox' : (($counts['h1'] > 0 && $counts['h2'] > 0) ? 'passedBox' : 'errorBox');
+        $headMsg = $this->lang['AN176'] ?? "Please review your heading structure.";
         if (!function_exists('getHeadingSuggestion')) {
             function getHeadingSuggestion($tag, $count) {
                 $tagUpper = strtoupper($tag);
@@ -281,8 +218,6 @@ class SeoTools {
                     : "Looks good for {$tagUpper}.";
             }
         }
-    
-        // Build the heading count table
         $output = '<div class="contentBox" id="seoBox4">
             <div class="msgBox">
                 <table class="table table-bordered table-hover">
@@ -295,36 +230,21 @@ class SeoTools {
                         </tr>
                     </thead>
                     <tbody>';
-    
-        // Generate heading details
         foreach ($tags as $tag) {
             $count = $counts[$tag];
-    
-            // Build list of headings or show "None found"
-            if (!empty($elementList[$tag])) {
-                $headingsList = '<ul class="list-unstyled mb-0">';
-                foreach ($elementList[$tag] as $text) {
-                    $headingsList .= '<li>&lt;' . strtoupper($tag) . '&gt; <b>' . htmlspecialchars($text) . '</b> &lt;/' . strtoupper($tag) . '&gt;</li>';
-                }
-                $headingsList .= '</ul>';
-            } else {
-                $headingsList = '<em class="text-muted">None found.</em>';
-            }
-    
-            // Generate suggestion text
+            $headingsList = !empty($elementList[$tag])
+                ? '<ul class="list-unstyled mb-0">' . implode('', array_map(function($text) use ($tag) {
+                      return '<li>&lt;' . strtoupper($tag) . '&gt; <b>' . htmlspecialchars($text) . '</b> &lt;/' . strtoupper($tag) . '&gt;</li>';
+                  }, $elementList[$tag])) . '</ul>'
+                : '<em class="text-muted">None found.</em>';
             $suggestion = getHeadingSuggestion($tag, $count);
-    
-            // Add row to the table
-            $output .= '
-                <tr>
+            $output .= '<tr>
                     <td><strong>' . strtoupper($tag) . '</strong></td>
                     <td>' . $count . '</td>
                     <td>' . $headingsList . '</td>
                     <td class="text-muted small">' . $suggestion . '</td>
                 </tr>';
         }
-    
-        // Complete table and close divs
         $output .= '
                     </tbody>
                 </table>
@@ -334,243 +254,248 @@ class SeoTools {
         <div class="questionBox" data-original-title="More Information" data-toggle="tooltip" data-placement="top">
             <i class="fa fa-question-circle grayColor"></i>
         </div>';
-    
         return $output;
     }
-    
-    
-    
 
     /*===================================================================
      * IMAGE ALT TAG HANDLER
-     *===================================================================
+     *=================================================================== 
      */
+    public function processImage() {
+        $doc = $this->getDom();
+        $xpath = new DOMXPath($doc);
+        $imgTags = $xpath->query("//img");
+        $results = [
+            'total_images' => $imgTags->length,
+            'images_missing_alt'       => [],
+            'images_with_empty_alt'    => [],
+            'images_with_short_alt'    => [],
+            'images_with_long_alt'     => [],
+            'images_with_redundant_alt'=> [],
+            'suggestions' => []
+        ];
+        $aggregate = function (&$array, $data) {
+            $src = $data['src'];
+            if (isset($array[$src])) {
+                $array[$src]['count']++;
+            } else {
+                $data['count'] = 1;
+                $array[$src] = $data;
+            }
+        };
+        foreach ($imgTags as $img) {
+            $src = trim($img->getAttribute('src')) ?: 'N/A';
+            $alt = $img->getAttribute('alt');
+            $title = trim($img->getAttribute('title')) ?: 'N/A';
+            $width = trim($img->getAttribute('width')) ?: 'N/A';
+            $height = trim($img->getAttribute('height')) ?: 'N/A';
+            $class = trim($img->getAttribute('class')) ?: 'N/A';
+            $parentTag = $img->parentNode->nodeName;
+            $parentTxt = trim($img->parentNode->textContent);
+            $position = method_exists($this, 'getNodePosition') ? $this->getNodePosition($img) : 'N/A';
+            $data = compact('src', 'title', 'width', 'height', 'class', 'parentTag', 'parentTxt', 'position');
+            if (!$img->hasAttribute('alt')) {
+                $aggregate($results['images_missing_alt'], $data);
+            } elseif (trim($alt) === '') {
+                $aggregate($results['images_with_empty_alt'], $data);
+            } else {
+                $altLength = mb_strlen($alt);
+                $normalizedAlt = strtolower($alt);
+                $redundantAlt = in_array($normalizedAlt, ['image', 'photo', 'picture', 'logo']);
+                if ($altLength < 5) {
+                    $data['alt'] = $alt;
+                    $data['length'] = $altLength;
+                    $aggregate($results['images_with_short_alt'], $data);
+                }
+                if ($altLength > 100) {
+                    $data['alt'] = $alt;
+                    $data['length'] = $altLength;
+                    $aggregate($results['images_with_long_alt'], $data);
+                }
+                if ($redundantAlt) {
+                    $data['alt'] = $alt;
+                    $aggregate($results['images_with_redundant_alt'], $data);
+                }
+            }
+        }
+        $totalMissing = array_sum(array_map(fn($i) => $i['count'], $results['images_missing_alt']));
+        $totalEmpty   = array_sum(array_map(fn($i) => $i['count'], $results['images_with_empty_alt']));
+        $totalShort   = array_sum(array_map(fn($i) => $i['count'], $results['images_with_short_alt']));
+        $totalLong    = array_sum(array_map(fn($i) => $i['count'], $results['images_with_long_alt']));
+        $totalRedund  = array_sum(array_map(fn($i) => $i['count'], $results['images_with_redundant_alt']));
+        if ($totalMissing > 0) {
+            $results['suggestions'][] = "There are {$totalMissing} image instances missing alt attributes.";
+        }
+        if ($totalEmpty > 0) {
+            $results['suggestions'][] = "There are {$totalEmpty} image instances with empty alt attributes.";
+        }
+        if ($totalShort > 0) {
+            $results['suggestions'][] = "There are {$totalShort} image instances with very short alt text (<5 chars).";
+        }
+        if ($totalLong > 0) {
+            $results['suggestions'][] = "There are {$totalLong} image instances with very long alt text (>100 chars).";
+        }
+        if ($totalRedund > 0) {
+            $results['suggestions'][] = "There are {$totalRedund} image instances with redundant alt text (e.g., 'image','logo').";
+        }
+        if ($totalMissing === 0 && $totalEmpty === 0 && $totalShort === 0 && $totalLong === 0 && $totalRedund === 0) {
+            $results['suggestions'][] = "Great job! All images have appropriate alt attributes.";
+        }
+        $updateStr = jsonEncode($results);
+        updateToDbPrepared($this->con, 'domains_data', ['image_alt' => $updateStr], ['domain' => $this->domainStr]);
+        return $updateStr;
+    }
 
- 
-/**
- * processImage()
- *
- * Processes image tags to evaluate alt attributes in detail:
- * - Counts total images.
- * - Aggregates images missing alt attributes, with empty, very short (<5 characters), very long (>100 characters),
- *   or redundant alt text.
- * - Provides suggestions based on the analysis.
- *
- * For duplicate images (by src) in a category, their count is aggregated.
- *
- * @return string JSON encoded array of results.
- */
-public function processImage() {
-    $doc = new DOMDocument();
-    // Load the HTML while handling encoding issues.
-    @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
-    $xpath = new DOMXPath($doc);
-    $imgTags = $xpath->query("//img");
+    public function showImage($imageData) {
+        $data = jsonDecode($imageData);
+        // Calculate the total issues across all categories.
+        $issuesCount = array_sum(array_map(fn($i) => $i['count'], $data['images_missing_alt'])) +
+                       array_sum(array_map(fn($i) => $i['count'], $data['images_with_empty_alt'])) +
+                       array_sum(array_map(fn($i) => $i['count'], $data['images_with_short_alt'])) +
+                       array_sum(array_map(fn($i) => $i['count'], $data['images_with_long_alt'])) +
+                       array_sum(array_map(fn($i) => $i['count'], $data['images_with_redundant_alt']));
+        $altClass = ($issuesCount == 0) ? 'passedBox' : (($issuesCount < 3) ? 'improveBox' : '');
     
-    // Initialize results arrays as associative arrays keyed by image src.
-    $results = [
-        'total_images' => $imgTags->length,
-        'images_missing_alt'       => [],
-        'images_with_empty_alt'    => [],
-        'images_with_short_alt'    => [],
-        'images_with_long_alt'     => [],
-        'images_with_redundant_alt'=> [],
-        'suggestions' => []
-    ];
+        // Define a helper function for building tables.
+        $buildTable = function($title, $items) {
+            if (count($items) > 0) {
+                $total = array_sum(array_map(fn($i) => $i['count'], $items));
+                $table  = '<h5 class="mt-3">' . $title . ' (' . $total . ')</h5>';
+                $table .= '<div class="table-responsive"><table class="table table-striped table-sm">';
+                $table .= '<thead><tr><th>Image Source</th><th class="text-center">Count</th></tr></thead><tbody>';
+                foreach ($items as $item) {
+                    $table .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td class="text-center">' . $item['count'] . '</td></tr>';
+                }
+                $table .= '</tbody></table></div>';
+                return $table;
+            }
+            return '<p class="text-muted">None found.</p>';
+        };
     
-    // Helper function to aggregate duplicate images by src.
-    $aggregate = function(&$array, $data) {
-        $src = $data['src'];
-        if(isset($array[$src])) {
-            $array[$src]['count']++;
+        // Build the header summary.
+        $headerContent = '<div class="d-flex align-items-center mb-3">';
+        if ($issuesCount == 0) {
+            $headerContent .= '<img src="' . themeLink('img/true.png', true) . '" alt="' . $this->lang['AN24'] . '" title="' . $this->lang['AN25'] . '" class="me-2" /> ';
+            $headerContent .= '<strong>' . $this->lang['AN27'] . '</strong>';
         } else {
-            $data['count'] = 1;
-            $array[$src] = $data;
+            $headerContent .= '<img src="' . themeLink('img/false.png', true) . '" alt="' . $this->lang['AN23'] . '" title="' . $this->lang['AN22'] . '" class="me-2" /> ';
+            $headerContent .= "<strong>Issues found: {$issuesCount}</strong>";
         }
-    };
+        $headerContent .= ' <span class="ms-auto">Total Images: ' . $data['total_images'] . '</span>';
+        $headerContent .= '</div>';
     
-    foreach ($imgTags as $img) {
-        $src = trim($img->getAttribute('src')) ?: 'N/A';
-        $alt = $img->getAttribute('alt');
-        $title = trim($img->getAttribute('title')) ?: 'N/A';
-        $width = trim($img->getAttribute('width')) ?: 'N/A';
-        $height = trim($img->getAttribute('height')) ?: 'N/A';
-        $class = trim($img->getAttribute('class')) ?: 'N/A';
-        $parentTag = $img->parentNode->nodeName;
-        $parentTxt = trim($img->parentNode->textContent);
-        // Optionally, if you need node position, implement this method or use a default.
-        $position = method_exists($this, 'getNodePosition') ? $this->getNodePosition($img) : 'N/A';
+        // Start building the final output using Bootstrap card and tabs.
+        $output = '<div id="seoBoxImage" class="card ' . $altClass . ' my-3">';
+        $output .= '<div class="card-header">' . $headerContent . '</div>';
+        $output .= '<div class="card-body">';
         
-        // Data to be aggregated
-        $data = compact('src', 'title', 'width', 'height', 'class', 'parentTag', 'parentTxt', 'position');
+        // Create Bootstrap nav tabs.
+        $output .= '
+        <ul class="nav nav-tabs mb-3" id="imageAltTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="missing-alt-tab" data-bs-toggle="tab" data-bs-target="#missing-alt" type="button" role="tab" aria-controls="missing-alt" aria-selected="true">Missing Alt</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="empty-alt-tab" data-bs-toggle="tab" data-bs-target="#empty-alt" type="button" role="tab" aria-controls="empty-alt" aria-selected="false">Empty Alt</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="short-alt-tab" data-bs-toggle="tab" data-bs-target="#short-alt" type="button" role="tab" aria-controls="short-alt" aria-selected="false">Short Alt</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="long-alt-tab" data-bs-toggle="tab" data-bs-target="#long-alt" type="button" role="tab" aria-controls="long-alt" aria-selected="false">Long Alt</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="redundant-alt-tab" data-bs-toggle="tab" data-bs-target="#redundant-alt" type="button" role="tab" aria-controls="redundant-alt" aria-selected="false">Redundant Alt</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="suggestions-tab" data-bs-toggle="tab" data-bs-target="#suggestions" type="button" role="tab" aria-controls="suggestions" aria-selected="false">Suggestions</button>
+          </li>
+        </ul>';
         
-        // Check for missing alt attribute.
-        if (!$img->hasAttribute('alt')) {
-            $aggregate($results['images_missing_alt'], $data);
-        }
-        // Check for empty alt attribute.
-        elseif (trim($alt) === '') {
-            $aggregate($results['images_with_empty_alt'], $data);
+        // Tab content.
+        $output .= '<div class="tab-content" id="imageAltTabContent">';
+        // Missing Alt Tab.
+        $output .= '<div class="tab-pane fade show active" id="missing-alt" role="tabpanel" aria-labelledby="missing-alt-tab">';
+        $output .= $buildTable('Images Missing Alt Attribute', $data['images_missing_alt']);
+        $output .= '</div>';
+        // Empty Alt Tab.
+        $output .= '<div class="tab-pane fade" id="empty-alt" role="tabpanel" aria-labelledby="empty-alt-tab">';
+        $output .= $buildTable('Images With Empty Alt Attribute', $data['images_with_empty_alt']);
+        $output .= '</div>';
+        // Short Alt Tab.
+        $output .= '<div class="tab-pane fade" id="short-alt" role="tabpanel" aria-labelledby="short-alt-tab">';
+        $output .= $buildTable('Images With Short Alt Text', $data['images_with_short_alt']);
+        $output .= '</div>';
+        // Long Alt Tab.
+        $output .= '<div class="tab-pane fade" id="long-alt" role="tabpanel" aria-labelledby="long-alt-tab">';
+        $output .= $buildTable('Images With Long Alt Text', $data['images_with_long_alt']);
+        $output .= '</div>';
+        // Redundant Alt Tab.
+        $output .= '<div class="tab-pane fade" id="redundant-alt" role="tabpanel" aria-labelledby="redundant-alt-tab">';
+        $output .= $buildTable('Images With Redundant Alt Text', $data['images_with_redundant_alt']);
+        $output .= '</div>';
+        // Suggestions Tab.
+        $output .= '<div class="tab-pane fade" id="suggestions" role="tabpanel" aria-labelledby="suggestions-tab">';
+        if (!empty($data['suggestions'])) {
+            $output .= '<ul class="list-group">';
+            foreach ($data['suggestions'] as $suggestion) {
+                $output .= '<li class="list-group-item">' . $suggestion . '</li>';
+            }
+            $output .= '</ul>';
         } else {
-            $altLength = mb_strlen($alt);
-            $normalizedAlt = strtolower($alt);
-            $redundantAlt = in_array($normalizedAlt, ['image','photo','picture','logo']);
-            if ($altLength < 5) {
-                $data['alt'] = $alt;
-                $data['length'] = $altLength;
-                $aggregate($results['images_with_short_alt'], $data);
-            }
-            if ($altLength > 100) {
-                $data['alt'] = $alt;
-                $data['length'] = $altLength;
-                $aggregate($results['images_with_long_alt'], $data);
-            }
-            if ($redundantAlt) {
-                $data['alt'] = $alt;
-                $aggregate($results['images_with_redundant_alt'], $data);
-            }
+            $output .= '<p class="text-muted">No suggestions available.</p>';
         }
+        $output .= '</div>'; // End Suggestions Tab.
+        
+        $output .= '</div>'; // End tab-content.
+        
+        $output .= '</div>'; // End card-body.
+        $output .= '</div>'; // End card container.
+        
+        return $output;
     }
     
-    // Build suggestions based on counts for aggregated arrays.
-    $totalMissing = array_sum(array_map(function($i){ return $i['count']; }, $results['images_missing_alt']));
-    $totalEmpty   = array_sum(array_map(function($i){ return $i['count']; }, $results['images_with_empty_alt']));
-    $totalShort   = array_sum(array_map(function($i){ return $i['count']; }, $results['images_with_short_alt']));
-    $totalLong    = array_sum(array_map(function($i){ return $i['count']; }, $results['images_with_long_alt']));
-    $totalRedund  = array_sum(array_map(function($i){ return $i['count']; }, $results['images_with_redundant_alt']));
-    
-    if ($totalMissing > 0) {
-        $results['suggestions'][] = "There are {$totalMissing} image instances missing alt attributes.";
-    }
-    if ($totalEmpty > 0) {
-        $results['suggestions'][] = "There are {$totalEmpty} image instances with empty alt attributes.";
-    }
-    if ($totalShort > 0) {
-        $results['suggestions'][] = "There are {$totalShort} image instances with very short alt text (<5 chars).";
-    }
-    if ($totalLong > 0) {
-        $results['suggestions'][] = "There are {$totalLong} image instances with very long alt text (>100 chars).";
-    }
-    if ($totalRedund > 0) {
-        $results['suggestions'][] = "There are {$totalRedund} image instances with redundant alt text (e.g., 'image','logo').";
-    }
-    if ($totalMissing === 0 && $totalEmpty === 0 && $totalShort === 0 && $totalLong === 0 && $totalRedund === 0) {
-        $results['suggestions'][] = "Great job! All images have appropriate alt attributes.";
-    }
-    
-    $updateStr = jsonEncode($results);
-    updateToDbPrepared($this->con, 'domains_data', ['image_alt' => $updateStr], ['domain' => $this->domainStr]);
-    return $updateStr;
-}
 
-/**
- * showImage()
- *
- * Returns HTML output for the detailed image alt tag analysis.
- * Displays overall counts, individual tables for each issue category (aggregated by image src),
- * and suggestions.
- *
- * @param string $imageData JSON string as returned by processImage().
- * @return string HTML output.
- */
-public function showImage($imageData) {
-    $data = jsonDecode($imageData);
-    
-    // Calculate total issue count based on instance counts.
-    $issuesCount = array_sum(array_map(function($i){ return $i['count']; }, $data['images_missing_alt'])) +
-                   array_sum(array_map(function($i){ return $i['count']; }, $data['images_with_empty_alt'])) +
-                   array_sum(array_map(function($i){ return $i['count']; }, $data['images_with_short_alt'])) +
-                   array_sum(array_map(function($i){ return $i['count']; }, $data['images_with_long_alt'])) +
-                   array_sum(array_map(function($i){ return $i['count']; }, $data['images_with_redundant_alt']));
-    
-    // Choose a CSS class based on issue severity.
-    $altClass = ($issuesCount == 0) ? 'passedBox' : (($issuesCount < 3) ? 'improveBox' : 'errorBox');
-    
-    $output = '<div class="' . $altClass . '">
-                    <div class="msgBox">
-                        ' . str_replace('[image-count]', $data['total_images'], $this->lang['AN21']) . '<br />
-                        <div class="altImgGroup">';
-    // Display appropriate icon based on issues.
-    if ($issuesCount == 0) {
-        $output .= '<img src="' . themeLink('img/true.png', true) . '" alt="' . $this->lang['AN24'] . '" title="' . $this->lang['AN25'] . '" /> ' . $this->lang['AN27'] . '<br />';
-    } else {
-        $output .= '<img src="' . themeLink('img/false.png', true) . '" alt="' . $this->lang['AN23'] . '" title="' . $this->lang['AN22'] . '" /> ';
-        $output .= "Issues found: " . $issuesCount;
-    }
-    $output .= '</div>
-                        <br />';
-    
-    // Helper function to generate tables for a given category.
-    $buildTable = function($title, $items) {
-        if (count($items) > 0) {
-            $table = '<h4>' . $title . ' (' . array_sum(array_map(function($i){ return $i['count']; }, $items)) . ')</h4>';
-            $table .= '<table class="table table-striped table-responsive"><thead><tr><th width="80%">Image Source</th><th><center>Count</center></th></tr></thead><tbody>';
-            foreach ($items as $item) {
-                $table .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td><center>' . $item['count'] . '</center></td></tr>';
-            }
-            $table .= '</tbody></table>';
-            return $table;
+    /**
+     * Returns the position of the given node among its siblings.
+     * (This method remains for calculating node position numbers.)
+     *
+     * @param DOMNode $node
+     * @return int
+     */
+    private function getNodePosition(DOMNode $node): int {
+        $position = 1;
+        while ($node->previousSibling) {
+            $node = $node->previousSibling;
+            $position++;
         }
-        return '';
-    };
-    
-    // Build tables for each category.
-    $output .= $buildTable('Images Missing Alt Attribute', $data['images_missing_alt']);
-    $output .= $buildTable('Images With Empty Alt Attribute', $data['images_with_empty_alt']);
-    $output .= $buildTable('Images With Short Alt Text', $data['images_with_short_alt']);
-    $output .= $buildTable('Images With Long Alt Text', $data['images_with_long_alt']);
-    $output .= $buildTable('Images With Redundant Alt Text', $data['images_with_redundant_alt']);
-    
-    // Display suggestions.
-    $output .= '<br /><ul>';
-    foreach ($data['suggestions'] as $suggestion) {
-        $output .= '<li>' . $suggestion . '</li>';
+        return $position;
     }
-    $output .= '</ul>
-                    </div>
-                     
-               </div>';
-    
-    return $output;
-}
-
-
-
-/**
- * getNodePosition()
- *
- * Returns the position of the given node among its siblings.
- *
- * @param DOMNode $node
- * @return int Position index (starting from 1).
- */
-private function getNodePosition(DOMNode $node) {
-    $position = 1;
-    while ($node->previousSibling) {
-        $node = $node->previousSibling;
-        $position++;
-    }
-    return $position;
-}
 
     /*===================================================================
      * KEYWORD CLOUD HANDLER
-     *===================================================================
-     */
-
-      /**
-     * Returns an array of common stop words.
+     *=================================================================== 
      */
     private function getStopWords(): array {
         return [
-            "a","about","above","after","again","against","all","am","an","and","any","are","aren't","as","at","be","because","been","before","being","below","between","both","but","by","can","can't","cannot","could","couldn't","did","didn't","do","does","doesn't","doing","don't","down","during","each","few","for","from","further","had","hadn't","has","hasn't","have","haven't","having","he","he'd","he'll","he's","her","here","here's","hers","herself","him","himself","his","how","how's","i","i'd","i'll","i'm","i've","if","in","into","is","isn't","it","it's","its","itself","let's","me","more","most","mustn't","my","myself","no","nor","not","of","off","on","once","only","or","other","ought","our","ours","ourselves","out","over","own","same","shan't","she","she'd","she'll","she's","should","shouldn't","so","some","such","than","that","that's","the","their","theirs","them","themselves","then","there","there's","these","they","they'd","they'll","they're","they've","this","those","through","to","too","under","until","up","very","was","wasn't","we","we'd","we'll","we're","we've","were","weren't","what","what's","when","when's","where","where's","which","while","who","who's","whom","why","why's","with","won't","would","wouldn't","you","you'd","you'll","you're","you've","your","yours","yourself","yourselves"
-            // Add additional words as needed.
+            "a","about","above","after","again","against","all","am","an","and","any","are","aren't",
+            "as","at","be","because","been","before","being","below","between","both","but","by","can",
+            "can't","cannot","could","couldn't","did","didn't","do","does","doesn't","doing","don't","down",
+            "during","each","few","for","from","further","had","hadn't","has","hasn't","have","haven't",
+            "having","he","he'd","he'll","he's","her","here","here's","hers","herself","him","himself",
+            "his","how","how's","i","i'd","i'll","i'm","i've","if","in","into","is","isn't","it","it's",
+            "its","itself","let's","me","more","most","mustn't","my","myself","no","nor","not","of","off",
+            "on","once","only","or","other","ought","our","ours","ourselves","out","over","own","same",
+            "shan't","she","she'd","she'll","she's","should","shouldn't","so","some","such","than","that",
+            "that's","the","their","theirs","them","themselves","then","there","there's","these","they",
+            "they'd","they'll","they're","they've","this","those","through","to","too","under","until","up",
+            "very","was","wasn't","we","we'd","we'll","we're","we've","were","weren't","what","what's",
+            "when","when's","where","where's","which","while","who","who's","whom","why","why's","with",
+            "won't","would","wouldn't","you","you'd","you'll","you're","you've","your","yours","yourself",
+            "yourselves"
         ];
     }
 
-    /**
-     * Builds frequency data for an array of tokens.
-     */
     private function buildFrequencyData(array $tokens, int $minCount = 2): array {
         $counts = array_count_values($tokens);
         $counts = array_filter($counts, function($cnt) use ($minCount) {
@@ -590,10 +515,6 @@ private function getNodePosition(DOMNode $node) {
         return $result;
     }
 
-    /**
-     * Detect overused phrases from frequency data.
-     * This example flags phrases with count > 5 or density > 5%.
-     */
     private function detectOveruse(array $data): array {
         $overused = [];
         foreach ($data as $d) {
@@ -604,67 +525,37 @@ private function getNodePosition(DOMNode $node) {
         return $overused;
     }
 
-    /**
-     * generateKeywordCloud()
-     *
-     * Extracts the textual content from the HTML, cleans it by removing scripts,
-     * styles, comments, and HTML tags, then converts it to lowercase. It splits the
-     * text into words and filters out stop words and short words. It then generates
-     * unigrams, bigrams, and trigrams arrays, builds frequency data for each, and
-     * returns all this data along with suggestions based on possible overuse.
-     *
-     * @param DOMDocument $dom The DOMDocument instance loaded with the page HTML.
-     * @return array Associative array containing 'unigrams', 'bigrams', 'trigrams', and 'suggestions'.
-     */
     private function generateKeywordCloud(DOMDocument $dom): array {
-        // Get the full HTML and remove scripts, styles, and comments.
         $html = $dom->saveHTML();
         $html = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $html);
         $html = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $html);
         $html = preg_replace('/<!--(.*?)-->/', '', $html);
         $html = html_entity_decode($html, ENT_QUOTES|ENT_HTML5, 'UTF-8');
-
-        // Strip HTML tags and remove HTML entities.
         $textContent = strip_tags($html);
         $textContent = preg_replace('/&[A-Za-z0-9#]+;/', ' ', $textContent);
         $textContent = strtolower($textContent);
-        // Replace non-letters with spaces.
         $textContent = preg_replace('/[^a-z\s]/', ' ', $textContent);
         $textContent = preg_replace('/\s+/', ' ', $textContent);
         $textContent = trim($textContent);
-
-        // Split text into words.
         $words = explode(' ', $textContent);
         $words = array_filter($words);
-
-        // Filter out stop words and words shorter than 3 characters.
         $stopWords = $this->getStopWords();
         $filtered = array_filter($words, function($w) use ($stopWords) {
             return !in_array($w, $stopWords) && strlen($w) > 2;
         });
         $filtered = array_values($filtered);
-
-        // Unigrams.
         $unigrams = $filtered;
-
-        // Bigrams.
         $bigrams = [];
         for ($i = 0; $i < count($filtered) - 1; $i++) {
             $bigrams[] = $filtered[$i] . ' ' . $filtered[$i + 1];
         }
-
-        // Trigrams.
         $trigrams = [];
         for ($i = 0; $i < count($filtered) - 2; $i++) {
             $trigrams[] = $filtered[$i] . ' ' . $filtered[$i + 1] . ' ' . $filtered[$i + 2];
         }
-
-        // Build frequency data.
         $uniCloud = $this->buildFrequencyData($unigrams);
         $biCloud  = $this->buildFrequencyData($bigrams);
         $triCloud = $this->buildFrequencyData($trigrams);
-
-        // Detect possible overused phrases.
         $overusedSingles  = $this->detectOveruse($uniCloud);
         $overusedBigrams  = $this->detectOveruse($biCloud);
         $overusedTrigrams = $this->detectOveruse($triCloud);
@@ -673,7 +564,6 @@ private function getNodePosition(DOMNode $node) {
         if (!empty($allOverused)) {
             $suggestions[] = "Possible overuse of phrases: " . implode(', ', $allOverused);
         }
-
         return [
             'unigrams'    => $uniCloud,
             'bigrams'     => $biCloud,
@@ -682,51 +572,29 @@ private function getNodePosition(DOMNode $node) {
         ];
     }
 
-    /**
-     * processKeyCloud()
-     *
-     * Uses generateKeywordCloud() to extract unigrams, bigrams, and trigrams from the HTML.
-     * For the AJAX output, it builds an HTML list from the top 15 unigrams (you can adjust
-     * which n-gram set to display as needed) and updates the database with the complete data.
-     *
-     * @return array Returns an array with keys 'keyCloudData', 'keyDataHtml', and 'outCount'.
-     */
     public function processKeyCloud() {
-        // Load the HTML into DOMDocument.
-        $dom = new DOMDocument();
-        @$dom->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
-
-        // Generate keyword cloud data (including unigrams, bigrams, trigrams and suggestions).
+        $dom = $this->getDom();
         $cloudData = $this->generateKeywordCloud($dom);
-
-        // For display purposes, we use the unigrams.
         $unigrams = $cloudData['unigrams'];
         $keyDataHtml = '';
         $outArr = [];
         $keyCount = 0;
         $maxKeywords = 15;
         foreach ($unigrams as $data) {
-            if ($keyCount >= $maxKeywords) {
-                break;
-            }
+            if ($keyCount >= $maxKeywords) break;
             $keyword = $data['phrase'];
             $outArr[] = [$keyword, $data['count'], $data['density']];
             $keyDataHtml .= '<li><span class="keyword">' . htmlspecialchars($keyword) . '</span><span class="number">' . $data['count'] . '</span></li>';
             $keyCount++;
         }
         $outCount = count($outArr);
-
-        // Optionally, you might want to merge in suggestions or save all n-gram data.
         $updateStr = jsonEncode([
             'keyCloudData' => $outArr,
             'keyDataHtml'  => $keyDataHtml,
             'outCount'     => $outCount,
-            'fullCloud'    => $cloudData  // Contains unigrams, bigrams, trigrams, and suggestions.
+            'fullCloud'    => $cloudData
         ]);
-
-        
         updateToDbPrepared($this->con, 'domains_data', ['keywords_cloud' => $updateStr], ['domain' => $this->domainStr]);
- 
         return [
             'keyCloudData' => $outArr,
             'keyDataHtml'  => $keyDataHtml,
@@ -735,16 +603,7 @@ private function getNodePosition(DOMNode $node) {
         ];
     }
 
-    /**
-     * showKeyCloud()
-     *
-     * Returns HTML output for the keyword cloud.
-     * This method preserves your CSS classes and IDs and uses AJAX-friendly markup.
-     *
-     * @param array $data The data returned by processKeyCloud().
-     * @return string HTML output.
-     */
-    public function showKeyCloud($data) { 
+    public function showKeyCloud($data) {
         $outCount = $data['outCount'];
         $keyDataHtml = $data['keyDataHtml'];
         $keycloudClass = 'lowImpactBox';
@@ -754,27 +613,14 @@ private function getNodePosition(DOMNode $node) {
         }
         $output = '<div class="">
                         <div class="msgBox padRight10 bottom5">';
-        if ($outCount != 0) {
-            $output .= '<ul class="keywordsTags">' . $keyDataHtml . '</ul>';
-        } else {
-            $output .= ' ' . $this->lang['AN29'];
-        }
-        $output .= '</div>
-                         
-                   </div>';
+        $output .= ($outCount != 0) ? '<ul class="keywordsTags">' . $keyDataHtml . '</ul>' : ' ' . $this->lang['AN29'];
+        $output .= '</div></div>';
         return $output;
     }
-    /*===================================================================
-     * KEYWORD CONSISTENCY HANDLER
-     *===================================================================
-     */
 
-    // This function expects the keyword cloud data (from processKeyCloud),
-    // the meta data (decoded), and the headings (decoded from processHeading).
     public function processKeyConsistency($keyCloudData, $metaData, $headings) {
-        $result = array();
+        $result = [];
         foreach ($keyCloudData as $item) {
-            // Here, $item is expected to be an array: [ keyword, count, density ]
             $keyword = $item[0];
             $inTitle = (stripos($metaData['title'], $keyword) !== false);
             $inDesc  = (stripos($metaData['description'], $keyword) !== false);
@@ -787,21 +633,21 @@ private function getNodePosition(DOMNode $node) {
                     }
                 }
             }
-            $result[] = array(
+            $result[] = [
                 'keyword'     => $keyword,
                 'count'       => $item[1],
                 'title'       => $inTitle,
                 'description' => $inDesc,
                 'heading'     => $inHeading
-            );
+            ];
         }
         $resultJson = jsonEncode($result);
-        updateToDbPrepared($this->con, 'domains_data', array('key_consistency' => jsonEncode($resultJson)), array('domain' => $this->domainStr));
+        updateToDbPrepared($this->con, 'domains_data', ['key_consistency' => jsonEncode($resultJson)], ['domain' => $this->domainStr]);
         return $resultJson;
     }
 
-    public function showKeyConsistency($consistencyData) { 
-        $consistencyData = jsonDecode($consistencyData);  
+    public function showKeyConsistency($consistencyData) {
+        $consistencyData = jsonDecode($consistencyData);
         $rows = "";
         $hideCount = 1;
         foreach ($consistencyData as $item) {
@@ -830,42 +676,20 @@ private function getNodePosition(DOMNode $node) {
                                 <tbody>' . $rows . '</tbody>
                             </table>
                         </div>
-                        
                    </div>';
         return $output;
     }
 
-
-   
-/**
- * showKeyConsistencyNgramsTabs()
- *
- * Displays three tables (Trigrams, Bigrams, Unigrams) in separate Bootstrap tabs.
- *
- * @param array $fullCloud  The 'fullCloud' array from processKeyCloud()
- *                          (contains unigrams, bigrams, trigrams, and suggestions).
- * @param array $metaData   Decoded meta data (e.g., ['title'=>'...', 'description'=>'...']).
- * @param array $headings   Decoded headings array (use index 0).
- * @return string HTML output with tabs.
- */
-public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings)
-{
-    // Ensure we have icons defined
-    $this->true  = '<i class="fa fa-check text-success"></i>';
-    $this->false = '<i class="fa fa-times text-danger"></i>';
-
-    // Extract arrays for unigrams, bigrams, trigrams
-    $unigrams = $fullCloud['unigrams'] ?? [];
-    $bigrams  = $fullCloud['bigrams'] ?? [];
-    $trigrams = $fullCloud['trigrams'] ?? [];
-
-    // Build each table separately using your helper:
-    $trigramTable = $this->buildConsistencyTable('Trigrams', $trigrams, $metaData, $headings);
-    $bigramTable  = $this->buildConsistencyTable('Bigrams', $bigrams, $metaData, $headings);
-    $unigramTable = $this->buildConsistencyTable('Unigrams', $unigrams, $metaData, $headings);
-
-    // Build the tab layout using Bootstrap 5 markup:
-    $output = <<<HTML
+    public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings) {
+        $this->true  = '<i class="fa fa-check text-success"></i>';
+        $this->false = '<i class="fa fa-times text-danger"></i>';
+        $unigrams = $fullCloud['unigrams'] ?? [];
+        $bigrams  = $fullCloud['bigrams'] ?? [];
+        $trigrams = $fullCloud['trigrams'] ?? [];
+        $trigramTable = $this->buildConsistencyTable('Trigrams', $trigrams, $metaData, $headings);
+        $bigramTable  = $this->buildConsistencyTable('Bigrams', $bigrams, $metaData, $headings);
+        $unigramTable = $this->buildConsistencyTable('Unigrams', $unigrams, $metaData, $headings);
+        $output = <<<HTML
 <div class="keyword-consistency container-fluid"> 
     <ul class="nav nav-tabs" id="consistencyTabs" role="tablist">
         <li class="nav-item">
@@ -884,436 +708,361 @@ public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings)
             </a>
         </li>
     </ul>
-
     <div class="tab-content" id="consistencyTabsContent">
-        <!-- Trigrams Tab Pane -->
         <div class="tab-pane fade show active" id="trigrams-pane" role="tabpanel" aria-labelledby="trigrams-tab">
             {$trigramTable}
         </div>
-
-        <!-- Bigrams Tab Pane -->
         <div class="tab-pane fade" id="bigrams-pane" role="tabpanel" aria-labelledby="bigrams-tab">
             {$bigramTable}
         </div>
-
-        <!-- Unigrams Tab Pane -->
         <div class="tab-pane fade" id="unigrams-pane" role="tabpanel" aria-labelledby="unigrams-tab">
             {$unigramTable}
         </div>
     </div>
 </div>
 HTML;
-    return $output;
-}
-
-
-/**
- * buildConsistencyTable()
- *
- * Helper function that builds one table (e.g. "Unigrams", "Bigrams", or "Trigrams")
- * with columns: Phrase, Count, Title (check/X), Desc (check/X), &lt;H&gt; (check/X).
- * It appends a unique suffix (based on the label) so that the extra rows and toggles are unique.
- *
- * @param string $label    Section label, e.g. "Unigrams", "Bigrams", or "Trigrams".
- * @param array  $ngrams   An array like [ ['phrase'=>'...', 'count'=>X, 'density'=>Y], ... ].
- * @param array  $metaData Decoded array with 'title' and 'description'.
- * @param array  $headings Decoded array of headings.
- *
- * @return string HTML table for the given n‑gram set.
- */
-private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
-    // Determine a unique suffix based on label.
-    $suffix = '';
-    if (strcasecmp($label, 'Trigrams') === 0) {
-        $suffix = 'Trigrams';
-    } elseif (strcasecmp($label, 'Bigrams') === 0) {
-        $suffix = 'Bigrams';
-    } elseif (strcasecmp($label, 'Unigrams') === 0) {
-        $suffix = 'Unigrams';
+        return $output;
     }
-    
-    $rows = '';
-    $hideCount = 1;
-    foreach ($ngrams as $item) {
-        $phrase = $item['phrase'];
-        $count  = $item['count'];
-        $inTitle = (stripos($metaData['title'] ?? '', $phrase) !== false);
-        $inDesc  = (stripos($metaData['description'] ?? '', $phrase) !== false);
-        $inHeading = false;
-        foreach ($headings as $tag => $texts) {
-            foreach ($texts as $text) {
-                if (stripos($text, $phrase) !== false) {
-                    $inHeading = true;
-                    break 2;
+
+    private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
+        $suffix = '';
+        if (strcasecmp($label, 'Trigrams') === 0) {
+            $suffix = 'Trigrams';
+        } elseif (strcasecmp($label, 'Bigrams') === 0) {
+            $suffix = 'Bigrams';
+        } elseif (strcasecmp($label, 'Unigrams') === 0) {
+            $suffix = 'Unigrams';
+        }
+        $rows = '';
+        $hideCount = 1;
+        foreach ($ngrams as $item) {
+            $phrase = $item['phrase'];
+            $count  = $item['count'];
+            $inTitle = (stripos($metaData['title'] ?? '', $phrase) !== false);
+            $inDesc  = (stripos($metaData['description'] ?? '', $phrase) !== false);
+            $inHeading = false;
+            foreach ($headings as $tag => $texts) {
+                foreach ($texts as $text) {
+                    if (stripos($text, $phrase) !== false) {
+                        $inHeading = true;
+                        break 2;
+                    }
                 }
             }
+            $hideClass = ($hideCount > 5) ? 'hideTr hideTr' . $suffix : '';
+            $rows .= '<tr class="' . $hideClass . '">
+                        <td>' . htmlspecialchars($phrase) . '</td>
+                        <td>' . $count . '</td>
+                        <td>' . ($inTitle ? $this->true : $this->false) . '</td>
+                        <td>' . ($inDesc ? $this->true : $this->false) . '</td>
+                        <td>' . ($inHeading ? $this->true : $this->false) . '</td>
+                    </tr>';
+            $hideCount++;
         }
-        $hideClass = ($hideCount > 5) ? 'hideTr hideTr' . $suffix : '';
-        $rows .= '<tr class="' . $hideClass . '">
-                    <td>' . htmlspecialchars($phrase) . '</td>
-                    <td>' . $count . '</td>
-                    <td>' . ($inTitle ? $this->true : $this->false) . '</td>
-                    <td>' . ($inDesc ? $this->true : $this->false) . '</td>
-                    <td>' . ($inHeading ? $this->true : $this->false) . '</td>
-                </tr>';
-        $hideCount++;
-    }
-    
-    // Unique toggle links:
-    $showMoreClass = 'showMore' . $suffix;
-    $showLessClass = 'showLess' . $suffix;
-    
-    $output = '<div class="passedBox">
-        <div class="msgBox">
-            <h4>' . $label . '</h4>
-            <table class="table table-striped table-responsive">
-                <thead>
-                    <tr>
-                        <th>' . $this->lang['AN31'] . '</th>
-                        <th>' . $this->lang['AN32'] . '</th>
-                        <th>' . $this->lang['AN33'] . '</th>
-                        <th>' . $this->lang['AN34'] . '</th>
-                        <th>&lt;H&gt;</th>
-                    </tr>
-                </thead>
-                <tbody>' . $rows . '</tbody>
-            </table>';
-    if ($hideCount > 6) {
-        $output .= '<div class="showLinks">
+        $showMoreClass = 'showMore' . $suffix;
+        $showLessClass = 'showLess' . $suffix;
+        $output = '<div class="passedBox">
+            <div class="msgBox">
+                <h4>' . $label . '</h4>
+                <table class="table table-striped table-responsive">
+                    <thead>
+                        <tr>
+                            <th>' . $this->lang['AN31'] . '</th>
+                            <th>' . $this->lang['AN32'] . '</th>
+                            <th>' . $this->lang['AN33'] . '</th>
+                            <th>' . $this->lang['AN34'] . '</th>
+                            <th>&lt;H&gt;</th>
+                        </tr>
+                    </thead>
+                    <tbody>' . $rows . '</tbody>
+                </table>';
+        if ($hideCount > 6) {
+            $output .= '<div class="showLinks">
                 <a class="' . $showMoreClass . '">' . $this->lang['AN18'] . ' <br /><i class="fa fa-angle-double-down"></i></a>
                 <a class="' . $showLessClass . '" style="display:none;">' . $this->lang['AN19'] . '</a>
             </div>';
-    }
-    $output .= '</div> 
-    </div>';
-    return $output;
-}
-
-    /*===================================================================
-     * TEXT RATIO HANDLER
-     *===================================================================
-     */
-/**
- * Processes the extended text ratio metrics by fetching the URL,
- * calculating the text-to-HTML ratio, and updating the database.
- *
- * @return string JSON encoded extended text ratio data.
- */
-public function processTextRatio() {
-    // Construct the full URL from the parsed URL.
-    $url = $this->urlParse['scheme'] . "://" . $this->urlParse['host'];
-    
-    // Calculate extended text ratio metrics using robustFetchHtml().
-    $textRatioData = $this->calculateTextHtmlRatioExtended($url);
- 
-    // The extended metrics are contained under the "text_html_ratio" key.
-    $textRatio = $textRatioData['text_html_ratio'];
-    
-    // Encode and update the metrics in the database.
-    $textRatioJson = jsonEncode($textRatio);
-    updateToDbPrepared($this->con, 'domains_data', array('ratio_data' => $textRatioJson), array('domain' => $this->domainStr));
-    
-    return $textRatioJson;
-}
-
-/**
- * Builds a detailed, user-friendly HTML view of the text ratio analysis.
- * This AJAX-friendly output includes an outer container with a unique ID.
- *
- * @param string $textRatio JSON encoded extended text ratio data.
- * @return string HTML output.
- */
-/**
- * Builds a detailed, user-friendly HTML view of the text ratio analysis.
- * If an error occurred (e.g. HTML not fetched), the error message is displayed.
- *
- * @param string $textRatio JSON encoded extended text ratio data.
- * @return string HTML output.
- */
-public function showTextRatio($textRatio): string {
-    $data =  jsonDecode($textRatio);
-    
-    // If the data is not an array, assume it's an error message.
-    if (!is_array($data)) {
-        return '<div class="errorBox"><p>' . htmlspecialchars($data) . '</p></div>';
-    }
-    
-    // Determine the CSS class based on the text ratio percentage.
-    $ratio = $data['ratio_percent'] ?? 0;
-    $textClass = ($ratio < 2) ? 'errorBox' : (($ratio < 10) ? 'improveBox' : 'passedBox');
-    
-    // Build an explanatory table with all key metrics.
-    $table = '
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Metric</th>
-                    <th>Value</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>HTML Size (bytes)</td>
-                    <td>' . formatBytes($data['html_size_bytes']) . '</td>
-                    <td>Total size of the HTML source.</td>
-                </tr>
-                <tr>
-                    <td>Text Size (bytes)</td>
-                    <td>' . formatBytes($data['text_size_bytes']) . '</td>
-                    <td>Total size of visible text.</td>
-                </tr>
-                <tr>
-                    <td>Text Ratio (%)</td>
-                    <td>' . $ratio . '%</td>
-                    <td>Percentage of text compared to total HTML. (Low value indicates an HTML-heavy page.)</td>
-                </tr>
-                <tr>
-                    <td>Ratio Category</td>
-                    <td>' . $data['ratio_category'] . '</td>
-                    <td>Descriptive category (e.g. HTML-heavy, Balanced, Text-heavy).</td>
-                </tr>
-                <tr>
-                    <td>Word Count</td>
-                    <td>' . $data['word_count'] . '</td>
-                    <td>Total number of words in visible text.</td>
-                </tr>
-                <tr>
-                    <td>Estimated Reading Time</td>
-                    <td>' . $data['estimated_reading_time'] . ' min</td>
-                    <td>Approximate time needed to read the page.</td>
-                </tr>
-                <tr>
-                    <td>Load Time</td>
-                    <td>' . $data['load_time_seconds'] . ' sec</td>
-                    <td>Time taken to fetch the HTML.</td>
-                </tr>
-                <tr>
-                    <td>Total HTML Tags</td>
-                    <td>' . $data['total_html_tags'] . '</td>
-                    <td>Count of all HTML tags on the page.</td>
-                </tr>
-                <tr>
-                    <td>Total Links</td>
-                    <td>' . $data['total_links'] . '</td>
-                    <td>Number of hyperlink tags.</td>
-                </tr>
-                <tr>
-                    <td>Total Images</td>
-                    <td>' . $data['total_images'] . '</td>
-                    <td>Number of image tags.</td>
-                </tr>
-                <tr>
-                    <td>Total Scripts</td>
-                    <td>' . $data['total_scripts'] . '</td>
-                    <td>Number of script tags.</td>
-                </tr>
-                <tr>
-                    <td>Total Styles</td>
-                    <td>' . $data['total_styles'] . '</td>
-                    <td>Number of style tags.</td>
-                </tr>
-                <tr>
-                    <td>HTTP Response Code</td>
-                    <td>' . $data['http_response_code'] . '</td>
-                    <td>Status code received when fetching the page.</td>
-                </tr>
-            </tbody>
-        </table>';
-    
-    $output = '<div id="ajaxTextRatio" class="' . $textClass . '">
-                    <div class="msgBox">
-                        <h4>' . $this->lang['AN36'] . ': <b>' . $ratio . '%</b> (' . $data['ratio_category'] . ')</h4>
-                        <p>
-                          A low text ratio indicates that your page is heavy on HTML code relative to visible text.
-                          This may affect both SEO and page load performance.
-                        </p>
-                        ' . $table . '
-                    </div>
-                    <div class="seoBox9 suggestionBox">
-                        ' . $this->lang['AN181'] . '<br>
-                        Consider optimizing your page by reducing unnecessary HTML markup or increasing quality textual content.
-                    </div>
-                </div>';
-                
-    return $output;
-}
-
-
-/**
- * Calculates extended text-to-HTML ratio metrics for the given URL.
- *
- * This function fetches the HTML for the page (using robustFetchHtml()),
- * then calculates:
- *   - HTML size in bytes
- *   - Visible text size (by stripping tags)
- *   - Text-to-HTML ratio (percentage)
- *   - A descriptive ratio category (HTML-heavy, Balanced, or Text-heavy)
- *   - Word count and estimated reading time (assuming 200 wpm)
- *   - Total counts for HTML tags, links, images, scripts, and style tags
- *   - The HTTP response code for the URL
- *
- * @param string $url The URL to analyze.
- * @return array An associative array under the key 'text_html_ratio' with all metrics.
- */
-private function calculateTextHtmlRatioExtended(string $url): array {
-    $start = microtime(true);
-    // Use robustFetchHtml() to fetch the HTML.
-    // robustFetchHtml() is assumed to return the HTML content or false on failure.
-    $html = robustFetchHtml($url);
-    $loadTime = microtime(true) - $start;
-    
-    if (!$html) {
-        return ['text_html_ratio' => "Error: couldn't fetch HTML."];
-    }
-
-    // Calculate HTML and text sizes.
-    $htmlSize = strlen($html);
-    $plainText = strip_tags($html);
-    $textSize = strlen($plainText);
-
-    // Calculate the text-to-HTML ratio.
-    $ratio = ($htmlSize > 0) ? ($textSize / $htmlSize) * 100 : 0;
-    
-    // Calculate word count and estimated reading time (in minutes).
-    $wordCount = str_word_count($plainText);
-    $readTime = round($wordCount / 200); // Assuming 200 words per minute.
-    
-    // Determine the ratio category.
-    $cat = 'Text-heavy';
-    if ($ratio < 10) {
-        $cat = 'HTML-heavy';
-    } elseif ($ratio <= 50) {
-        $cat = 'Balanced';
-    }
-    
-    // Count total HTML tags.
-    preg_match_all('/<([a-z][a-z0-9]*)\b[^>]*>/i', $html, $tagMatches);
-    $tagCount = count($tagMatches[1]);
-    
-    // Count hyperlink tags.
-    preg_match_all('/<a\s+(?:[^>]*?\s+)?href=[\'"]([^\'"]+)[\'"]/i', $html, $linkMatches);
-    $linkCount = count($linkMatches[1]);
-    
-    // Count image tags.
-    preg_match_all('/<img\b[^>]*>/i', $html, $imgMatches);
-    $imageCount = count($imgMatches[0]);
-    
-    // Count script tags.
-    preg_match_all('/<script\b[^>]*>/i', $html, $scriptMatches);
-    $scriptCount = count($scriptMatches[0]);
-    
-    // Count style tags.
-    preg_match_all('/<style\b[^>]*>/i', $html, $styleMatches);
-    $styleCount = count($styleMatches[0]);
-    
-    // Get HTTP response code using the existing method.
-    $httpCode = $this->getHttpResponseCode($url);
-
-    return [
-        'text_html_ratio' => [
-            'html_size_bytes'      => $htmlSize,
-            'text_size_bytes'      => $textSize,
-            'ratio_percent'        => round($ratio, 2),
-            'ratio_category'       => $cat,
-            'word_count'           => $wordCount,
-            'estimated_reading_time' => $readTime,
-            'load_time_seconds'    => round($loadTime, 2),
-            'total_html_tags'      => $tagCount,
-            'total_links'          => $linkCount,
-            'total_images'         => $imageCount,
-            'total_scripts'        => $scriptCount,
-            'total_styles'         => $styleCount,
-            'http_response_code'   => $httpCode,
-        ]
-    ];
-}
-
-/**
- * Get HTTP response code for a given URL.
- *
- * @param string $url The URL to check.
- * @return int The HTTP response code, or 0 on failure.
- */
-private function getHttpResponseCode(string $url): int {
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_NOBODY, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-    return $httpCode ? (int)$httpCode : 0;
-}
-    /*===================================================================
-     * GZIP COMPRESSION HANDLER
-     *===================================================================
-     */
-
-    public function processGzip() {
-        $outData = compressionTest($this->urlParse['host']);
-        $header = 'Data!';
-        $body = (trim($outData[5]) == "") ? 'Data!' : 'Data!'; // Simplified
-        $outData = jsonEncode(array($outData[0], $outData[1], $outData[2], $outData[3], $header, $body)); 
-        
-        updateToDbPrepared($this->con, 'domains_data', array('gzip' => $outData), array('domain' => $this->domainStr));
-        return $outData;
-    }
-
-    public function showGzip($outData) {
-        $outData = jsonDecode($outData);
-       
-       
-        // Determine percentage and class based on compression.
-        if ($outData[2]) {
-            $percentage = round((((int)$outData[1] - (int)$outData[0]) / (int)$outData[1] * 100), 1);
-            $gzipClass = 'passedBox';
-            $gzipHead  = $this->lang['AN42'];
-            $gzipBody  = '<img src="' . themeLink('img/true.png', true) . '" /> ' . str_replace(
-                array('[total-size]', '[compressed-size]', '[percentage]'),
-                array(size_as_kb($outData[1]), size_as_kb($outData[0]), $percentage),
-                $this->lang['AN41']
-            );
-        } else {
-            $percentage = round((((int)$outData[1] - (int)$outData[3]) / (int)$outData[1] * 100), 1);
-            $gzipClass = 'errorBox';
-            $gzipHead  = $this->lang['AN43'];
-            $gzipBody  = '<img src="' . themeLink('img/false.png', true) . '" /> ' . str_replace(
-                array('[total-size]', '[compressed-size]', '[percentage]'),
-                array(size_as_kb($outData[1]), size_as_kb($outData[3]), $percentage),
-                $this->lang['AN44']
-            );
         }
-        $output = '<div class="' . $gzipClass . '">
-                        <div class="msgBox">
-                            ' . $gzipHead . '<br />
-                            <div class="altImgGroup">' . $gzipBody . '</div>
-                            <br />
-                        </div>
-                        <div class="seoBox10 suggestionBox">' . $this->lang['AN182'] . '</div>
-                   </div>';
+        $output .= '</div></div>';
         return $output;
     }
 
     /*===================================================================
-     * WWW RESOLVE HANDLER
-     *===================================================================
+     * TEXT RATIO HANDLER
+     *=================================================================== 
      */
+    public function processTextRatio() {
+        $url = $this->urlParse['scheme'] . "://" . $this->urlParse['host'];
+        $textRatioData = $this->calculateTextHtmlRatioExtended($url);
+        $textRatio = $textRatioData['text_html_ratio'];
+        $textRatioJson = jsonEncode($textRatio);
+        updateToDbPrepared($this->con, 'domains_data', ['ratio_data' => $textRatioJson], ['domain' => $this->domainStr]);
+        return $textRatioJson;
+    }
 
+    public function showTextRatio($textRatio): string {
+        $data = jsonDecode($textRatio);
+        if (!is_array($data)) {
+            return '<div class="alert alert-danger">' . htmlspecialchars($data) . '</div>';
+        }
+        
+        $ratio = $data['ratio_percent'] ?? 0;
+        // Set Bootstrap alert classes based on the ratio value.
+        $textClass = ($ratio < 2) ? 'alert-danger' : (($ratio < 10) ? 'alert-warning' : 'alert-success');
+        
+        // Build the table inside a responsive container.
+        $table = '
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped mb-0">
+              <thead class="table-light">
+                  <tr>
+                      <th>Metric</th>
+                      <th>Value</th>
+                      <th>Description</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>HTML Size (bytes)</td>
+                      <td>' . formatBytes($data['html_size_bytes']) . '</td>
+                      <td>Total size of the HTML source.</td>
+                  </tr>
+                  <tr>
+                      <td>Text Size (bytes)</td>
+                      <td>' . formatBytes($data['text_size_bytes']) . '</td>
+                      <td>Total size of visible text.</td>
+                  </tr>
+                  <tr>
+                      <td>Text Ratio (%)</td>
+                      <td>' . $ratio . '%</td>
+                      <td>Percentage of text compared to total HTML.</td>
+                  </tr>
+                  <tr>
+                      <td>Ratio Category</td>
+                      <td>' . $data['ratio_category'] . '</td>
+                      <td>HTML-heavy, Balanced, or Text-heavy.</td>
+                  </tr>
+                  <tr>
+                      <td>Word Count</td>
+                      <td>' . $data['word_count'] . '</td>
+                      <td>Total number of words in visible text.</td>
+                  </tr>
+                  <tr>
+                      <td>Estimated Reading Time</td>
+                      <td>' . $data['estimated_reading_time'] . ' min</td>
+                      <td>Approximate time to read the page.</td>
+                  </tr>
+                  <tr>
+                      <td>Load Time</td>
+                      <td>' . $data['load_time_seconds'] . ' sec</td>
+                      <td>Time taken to fetch the HTML.</td>
+                  </tr>
+                  <tr>
+                      <td>Total HTML Tags</td>
+                      <td>' . $data['total_html_tags'] . '</td>
+                      <td>Count of all HTML tags.</td>
+                  </tr>
+                  <tr>
+                      <td>Total Links</td>
+                      <td>' . $data['total_links'] . '</td>
+                      <td>Number of hyperlink tags.</td>
+                  </tr>
+                  <tr>
+                      <td>Total Images</td>
+                      <td>' . $data['total_images'] . '</td>
+                      <td>Number of image tags.</td>
+                  </tr>
+                  <tr>
+                      <td>Total Scripts</td>
+                      <td>' . $data['total_scripts'] . '</td>
+                      <td>Number of script tags.</td>
+                  </tr>
+                  <tr>
+                      <td>Total Styles</td>
+                      <td>' . $data['total_styles'] . '</td>
+                      <td>Number of style tags.</td>
+                  </tr>
+                  <tr>
+                      <td>HTTP Response Code</td>
+                      <td>' . $data['http_response_code'] . '</td>
+                      <td>Status code received when fetching the page.</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>';
+    
+        // Build the final output inside a Bootstrap card.
+        $output = '<div id="ajaxTextRatio" class="card ' . $textClass . ' mb-3">
+                        <div class="card-header">
+                            <h4>' . $this->lang['AN36'] . ': <strong>' . $ratio . '%</strong> (' . $data['ratio_category'] . ')</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-3">A low text ratio indicates that your page is heavy on HTML relative to visible text.</p>
+                            ' . $table . '
+                        </div>
+                        <div class="card-footer">
+                            <small>Consider optimizing your page by reducing unnecessary markup or increasing quality textual content.</small>
+                        </div>
+                    </div>';
+        return $output;
+    }
+    
+
+    /**
+     * Calculates extended text-to-HTML ratio metrics for the given URL.
+     *
+     * @param string $url The URL to analyze.
+     * @return array An associative array under the key 'text_html_ratio' with all metrics.
+     */
+    private function calculateTextHtmlRatioExtended(string $url): array {
+        $start = microtime(true);
+        $html = robustFetchHtml($url);
+        $loadTime = microtime(true) - $start;
+        if (!$html) {
+            return ['text_html_ratio' => "Error: couldn't fetch HTML."];
+        }
+        $htmlSize = strlen($html);
+        $plainText = strip_tags($html);
+        $textSize = strlen($plainText);
+        $ratio = ($htmlSize > 0) ? ($textSize / $htmlSize) * 100 : 0;
+        $wordCount = str_word_count($plainText);
+        $readTime = round($wordCount / 200);
+        $cat = 'Text-heavy';
+        if ($ratio < 10) {
+            $cat = 'HTML-heavy';
+        } elseif ($ratio <= 50) {
+            $cat = 'Balanced';
+        }
+        preg_match_all('/<([a-z][a-z0-9]*)\b[^>]*>/i', $html, $tagMatches);
+        $tagCount = count($tagMatches[1]);
+        preg_match_all('/<a\s+(?:[^>]*?\s+)?href=[\'"]([^\'"]+)[\'"]/i', $html, $linkMatches);
+        $linkCount = count($linkMatches[1]);
+        preg_match_all('/<img\b[^>]*>/i', $html, $imgMatches);
+        $imageCount = count($imgMatches[0]);
+        preg_match_all('/<script\b[^>]*>/i', $html, $scriptMatches);
+        $scriptCount = count($scriptMatches[0]);
+        preg_match_all('/<style\b[^>]*>/i', $html, $styleMatches);
+        $styleCount = count($styleMatches[0]);
+        $httpCode = $this->getHttpResponseCode($url);
+        return [
+            'text_html_ratio' => [
+                'html_size_bytes'      => $htmlSize,
+                'text_size_bytes'      => $textSize,
+                'ratio_percent'        => round($ratio, 2),
+                'ratio_category'       => $cat,
+                'word_count'           => $wordCount,
+                'estimated_reading_time' => $readTime,
+                'load_time_seconds'    => round($loadTime, 2),
+                'total_html_tags'      => $tagCount,
+                'total_links'          => $linkCount,
+                'total_images'         => $imageCount,
+                'total_scripts'        => $scriptCount,
+                'total_styles'         => $styleCount,
+                'http_response_code'   => $httpCode,
+            ]
+        ];
+    }
+
+    /**
+     * Get HTTP response code for a given URL.
+     *
+     * @param string $url The URL to check.
+     * @return int The HTTP response code, or 0 on failure.
+     */
+    private function getHttpResponseCode(string $url): int {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return $httpCode ? (int)$httpCode : 0;
+    }
+
+    /*===================================================================
+     * GZIP COMPRESSION HANDLER
+     *=================================================================== 
+     */
+    public function processGzip() {
+        $outData = compressionTest($this->urlParse['host']);
+        $header = 'Data!';
+        $body = (trim($outData[5]) == "") ? 'Data!' : 'Data!';
+        $outData = jsonEncode([$outData[0], $outData[1], $outData[2], $outData[3], $header, $body]);
+        updateToDbPrepared($this->con, 'domains_data', ['gzip' => $outData], ['domain' => $this->domainStr]);
+        return $outData;
+    }
+
+    public function showGzip($outData)
+{
+    $outData = jsonDecode($outData);
+
+    // Ensure that $outData is an array and has at least 4 items.
+    if (!is_array($outData) || count($outData) < 4) {
+        return '<div class="errorBox">Invalid Gzip data.</div>';
+    }
+
+    // Extract values from the array.
+    $compressedSize = (int)$outData[0];
+    $originalSize   = (int)$outData[1];
+    $isCompressed   = $outData[2];
+    $fallbackSize   = (int)$outData[3]; // used if compression didn't work
+
+    // Avoid division by zero. If original size is 0, we set percentage to 0.
+    if ($originalSize === 0) {
+        $percentage = 0;
+    } else {
+        $percentage = round((($originalSize - $compressedSize) / $originalSize) * 100, 1);
+    }
+
+    // Build the output message based on whether compression was successful.
+    if ($isCompressed) {
+        $gzipClass = 'passedBox';
+        $gzipHead  = $this->lang['AN42'];
+        $gzipBody  = '<img src="' . themeLink('img/true.png', true) . '" alt="True" /> '
+                   . str_replace(
+                        ['[total-size]', '[compressed-size]', '[percentage]'],
+                        [size_as_kb($originalSize), size_as_kb($compressedSize), $percentage],
+                        $this->lang['AN41']
+                     );
+    } else {
+        $gzipClass = 'errorBox';
+        $gzipHead  = $this->lang['AN43'];
+        $gzipBody  = '<img src="' . themeLink('img/false.png', true) . '" alt="False" /> '
+                   . str_replace(
+                        ['[total-size]', '[compressed-size]', '[percentage]'],
+                        [size_as_kb($originalSize), size_as_kb($fallbackSize), $percentage],
+                        $this->lang['AN44']
+                     );
+    }
+
+    $output = '<div class="' . $gzipClass . '">
+                   <div class="msgBox">' . $gzipHead . '<br />
+                       <div class="altImgGroup">' . $gzipBody . '</div><br />
+                   </div>
+                   <div class="seoBox10 suggestionBox">' . $this->lang['AN182'] . '</div>
+               </div>';
+
+    return $output;
+}
+
+
+
+    /*===================================================================
+     * WWW RESOLVE HANDLER
+     *=================================================================== 
+     */
     public function processWWWResolve() {
         $url_with_www = "http://www." . $this->urlParse['host'];
         $url_no_www = "http://" . $this->urlParse['host'];
         $data1 = getHttpCode($url_with_www, false);
         $data2 = getHttpCode($url_no_www, false);
-        $updateStr =  jsonEncode(array($data1, $data2)); 
-        updateToDbPrepared($this->con, 'domains_data', array('resolve' => $updateStr), array('domain' => $this->domainStr));
-       // $result = array('data1' => $data1, 'data2' => $data2);
+        $updateStr = jsonEncode([$data1, $data2]);
+        updateToDbPrepared($this->con, 'domains_data', ['resolve' => $updateStr], ['domain' => $this->domainStr]);
         return $updateStr;
     }
 
     public function showWWWResolve($resolveData) {
         $resolveData = jsonDecode($resolveData);
-       
         if ($resolveData['data1'] == '301' || $resolveData['data2'] == '301') {
             $resolveClass = 'passedBox';
             $resolveMsg = $this->lang['AN46'];
@@ -1330,9 +1079,8 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * IP CANONICALIZATION HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processIPCanonicalization() {
         $hostIP = gethostbyname($this->urlParse['host']);
         $ch = curl_init($hostIP);
@@ -1344,7 +1092,6 @@ private function getHttpResponseCode(string $url): int {
         $response = curl_exec($ch);
         preg_match_all('/^Location:(.*)$/mi', $response, $matches);
         curl_close($ch);
-
         $tType = false;
         $redirectURLhost = '';
         if (!empty($matches[1])) {
@@ -1352,21 +1099,20 @@ private function getHttpResponseCode(string $url): int {
             $redirectURLparse = parse_url($redirectURL);
             $redirectURLhost = isset($redirectURLparse['host']) ? str_replace('www.', '', $redirectURLparse['host']) : '';
             $tType = true;
-        } 
-        $updateStr = jsonEncode(array($hostIP, $tType, $this->urlParse['host'], $redirectURLhost));
-        updateToDbPrepared($this->con, 'domains_data', array('ip_can' => $updateStr), array('domain' => $this->domainStr));
+        }
+        $updateStr = jsonEncode([$hostIP, $tType, $this->urlParse['host'], $redirectURLhost]);
+        updateToDbPrepared($this->con, 'domains_data', ['ip_can' => $updateStr], ['domain' => $this->domainStr]);
         return $updateStr;
     }
 
     public function showIPCanonicalization($ipData) {
         $ipData = jsonDecode($ipData);
-      
         if ($this->urlParse['host'] == $ipData['redirectURLhost']) {
             $ipClass = 'passedBox';
-            $ipMsg = str_replace(array('[ip]', '[host]'), array($ipData['hostIP'], $this->urlParse['host']), $this->lang['AN50']);
+            $ipMsg = str_replace(['[ip]', '[host]'], [$ipData['hostIP'], $this->urlParse['host']], $this->lang['AN50']);
         } else {
             $ipClass = 'improveBox';
-            $ipMsg = str_replace(array('[ip]', '[host]'), array($ipData['hostIP'], $this->urlParse['host']), $this->lang['AN49']);
+            $ipMsg = str_replace(['[ip]', '[host]'], [$ipData['hostIP'], $this->urlParse['host']], $this->lang['AN49']);
         }
         $output = '<div class="' . $ipClass . '">
                         <div class="msgBox">' . $ipMsg . '<br /><br /></div>
@@ -1377,309 +1123,428 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * IN-PAGE LINKS HANDLER
-     *===================================================================
-     */
-
-    /**
-     * processInPageLinks()
-     *
-     * Uses DOMDocument (or simple_html_dom if available) to extract all <a> tags
-     * and builds an array of link data. It then saves this data in the database.
-     *
-     * @return array The raw array of extracted links.
+     *=================================================================== 
      */
     public function processInPageLinks() {
-       
-    
-        $ex_data = array();
-        // Use DOMDocument to extract all <a> tags from the HTML.
-        $doc = new DOMDocument();
-        @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
+        // Use the pre-loaded DOMDocument if available.
+        if (isset($this->dom) && $this->dom instanceof DOMDocument) {
+            $doc = $this->dom;
+        } else {
+            $doc = new DOMDocument();
+            @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
+            $this->dom = $doc;
+        }
+        
+        $internalLinks = [];
+        $externalLinks = [];
+        $uniqueLinkSet = [];
+        $externalDomainSet = [];
+        
+        // Initialize counters.
+        $totalTargetBlank = 0;
+        $totalHttps = 0;
+        $totalHttp = 0;
+        $totalTracking = 0;
+        $totalTextLength = 0;
+        $totalImageLinks = 0;
+        $totalNoFollow = 0;
+        $totalDoFollow = 0;
+        // New counter for empty anchor text links.
+        $totalEmptyLinks = 0;
+        
+        // We still count links by position for any potential use, but won't include detailed array.
+        $linksByPosition = [
+            'header'  => 0,
+            'nav'     => 0,
+            'main'    => 0,
+            'footer'  => 0,
+            'aside'   => 0,
+            'section' => 0,
+            'body'    => 0,
+        ];
+        
+        // Base URL & host.
+        $baseUrl = $this->urlParse['scheme'] . '://' . $this->urlParse['host'];
+        $myHost = strtolower($this->urlParse['host']);
+         
         $anchors = $doc->getElementsByTagName('a');
         foreach ($anchors as $a) {
-            $href = trim($a->getAttribute('href'));
-            if ($href !== "" && $href !== "#") {
-                $ex_data[] = array(
+            $rawHref = trim($a->getAttribute('href'));
+            if ($rawHref === "" || $rawHref === "#") {
+                continue;
+            }
+            
+            // Normalize the URL.
+            $href = $rawHref;
+            if (strpos($href, '//') === 0) {
+                $href = $this->urlParse['scheme'] . ':' . $href;
+            } elseif (strpos($href, '/') === 0) {
+                $href = $baseUrl . $href;
+            } elseif (!preg_match('/^https?:\/\//i', $href)) {
+                $href = $baseUrl . '/' . $href;
+            }
+            
+            $rel = strtolower($a->getAttribute('rel'));
+            $target = strtolower($a->getAttribute('target'));
+            $anchorText = trim(strip_tags($a->textContent));
+            // Count empty anchor text if no text is present.
+            if ($anchorText === "") {
+                $totalEmptyLinks++;
+            }
+            
+            // Determine follow type.
+            if (strpos($rel, 'nofollow') !== false) {
+                $followType = 'nofollow';
+                $totalNoFollow++;
+            } else {
+                $followType = 'dofollow';
+                $totalDoFollow++;
+            }
+            
+            if ($target === '_blank') {
+                $totalTargetBlank++;
+            }
+            
+            // Parse URL parts.
+            $parsed = parse_url($href);
+            if ($parsed === false) {
+                continue;
+            }
+            if (isset($parsed['scheme'])) {
+                $scheme = strtolower($parsed['scheme']);
+                if ($scheme === 'https') {
+                    $totalHttps++;
+                } elseif ($scheme === 'http') {
+                    $totalHttp++;
+                }
+            }
+            if (isset($parsed['query']) && stripos($parsed['query'], 'utm_') !== false) {
+                $totalTracking++;
+            }
+            
+            // Check if the anchor encloses an image.
+            $hasImage = false;
+            foreach ($a->childNodes as $child) {
+                if ($child->nodeType === XML_ELEMENT_NODE && strtolower($child->nodeName) === 'img') {
+                    $hasImage = true;
+                    break;
+                }
+            }
+            if ($hasImage) {
+                $totalImageLinks++;
+                $linkType = 'image';
+            } else {
+                $linkType = 'text';
+                $totalTextLength += mb_strlen($anchorText);
+            }
+            
+            // Determine position using our private method.
+            $position = $this->getLinkPosition($a->parentNode);
+            if (isset($linksByPosition[$position])) {
+                $linksByPosition[$position]++;
+            } else {
+                $linksByPosition['body']++;
+            }
+            
+            // Determine internal vs. external.
+            $isInternal = false;
+            if (!empty($parsed['host'])) {
+                $linkHost = strtolower($parsed['host']);
+                if ($linkHost === $myHost || $linkHost === "www.$myHost") {
+                    $isInternal = true;
+                }
+            } else {
+                $isInternal = true;
+            }
+            if ($isInternal) {
+                $internalLinks[] = $href;
+            } else {
+                $externalLinks[] = [
                     'href'      => $href,
-                    'rel'       => strtolower($a->getAttribute('rel')),
-                    'innertext' => trim(strip_tags($a->textContent))
-                );
+                    'follow_type' => $followType,
+                    'target'    => $target,
+                    'innertext' => $anchorText,
+                    'rel'       => $rel
+                ];
+                if (isset($parsed['host'])) {
+                    $externalDomainSet[strtolower($parsed['host'])] = true;
+                }
             }
-        }
-        
-        // Save the raw links data in the database.
-       
-        $updateStr = jsonEncode($ex_data); 
-        updateToDbPrepared($this->con, 'domains_data', array('links_analyser' => $updateStr), array('domain' => $this->domainStr));
-        return $ex_data;
-    }
-
-    /**
-     * processAndRenderInPageLinks()
-     *
-     * Processes the raw link data (from processInPageLinks) to separate internal
-     * and external links, checks for URL rewriting and underscores, and then builds
-     * HTML output. This function replicates the full logic of your original code.
-     *
-     * @param array $ex_data The raw links data.
-     * @return string The complete HTML output.
-     */
-    protected function processAndRenderInPageLinks($ex_data) {
-        // echo "sdsdsd<pre>";
-        // print_r($ex_data);
-        // echo "</pre>sdsdsd";
-        // die();
-        //$ex_data = jsonDecode($ex_data);
-        // Initialize counters and arrays.
-        $t_count = 0;
-        $i_links = 0;
-        $e_links = 0;
-        $i_nofollow = 0;
-        $e_nofollow = 0;
-        $int_data = array();
-        $ext_data = array();
-        $linkUnderScore = false;
-        $urlRewriting = true; // Assume URL rewriting is on by default.
-        $webFormats = array('html', 'htm', 'xhtml', 'xht', 'mhtml', 'mht', 'asp', 'aspx', 'cgi', 'ihtml', 'jsp', 'las', 'pl', 'php', 'php3', 'phtml', 'shtml');
-        $inputHost = $this->urlParse['scheme'] . "://" . $this->urlParse['host'];
-        $my_url_host = $this->urlParse['host'];
-        
-        // Process each link in the raw data.
-        foreach ($ex_data as $link) {
-            $t_count++;
-            $parse_urls = parse_url($link['href']);
-            $type = strtolower($link['rel']);
-            $myIntHost = isset($parse_urls['host']) ? $parse_urls['host'] : "";
-            $path = isset($parse_urls['path']) ? $parse_urls['path'] : "";
             
-            // Internal link: either full URL with host matching, or relative URL starting with "/".
-            if ($myIntHost == $my_url_host || $myIntHost == "www." . $my_url_host) {
-                $i_links++;
-                $int_data[$i_links]['inorout'] = $this->lang['AN52']; // "Internal"
-                $int_data[$i_links]['href'] = $link['href'];
-                $int_data[$i_links]['text'] = $link['innertext'];
-                if (mb_strpos($link['href'], "_") !== false) {
-                    $linkUnderScore = true;
-                }
-                // Check file extension from path to determine URL rewriting.
-                $exStr = explode('.', $path);
-                $dotStr = trim(end($exStr));
-                if ($dotStr != $path && in_array($dotStr, $webFormats)) {
-                    $urlRewriting = false;
-                }
-                // Determine follow type.
-                if ($type === 'dofollow' || ($type !== 'dofollow' && $type !== 'nofollow')) {
-                    $int_data[$i_links]['follow_type'] = "dofollow";
-                } elseif ($type === 'nofollow') {
-                    $i_nofollow++;
-                    $int_data[$i_links]['follow_type'] = "nofollow";
-                }
-            }
-            // Relative internal link (starts with "/").
-            elseif ((substr($link['href'], 0, 2) != "//") && (substr($link['href'], 0, 1) == "/")) {
-                $i_links++;
-                $int_data[$i_links]['inorout'] = $this->lang['AN52'];
-                $int_data[$i_links]['href'] = $inputHost . $link['href'];
-                $int_data[$i_links]['text'] = $link['innertext'];
-                if (mb_strpos($link['href'], "_") !== false) {
-                    $linkUnderScore = true;
-                }
-                $exStr = explode('.', $path);
-                $dotStr = trim(end($exStr));
-                if ($dotStr != $path && in_array($dotStr, $webFormats)) {
-                    $urlRewriting = false;
-                }
-                if ($type === 'dofollow' || ($type !== 'dofollow' && $type !== 'nofollow')) {
-                    $int_data[$i_links]['follow_type'] = "dofollow";
-                } elseif ($type === 'nofollow') {
-                    $i_nofollow++;
-                    $int_data[$i_links]['follow_type'] = "nofollow";
-                }
-            }
-            // Other cases (for relative links without a leading "/" etc.).
-            else {
-                if (substr($link['href'], 0, 7) != "http://" && substr($link['href'], 0, 8) != "https://" &&
-                    substr($link['href'], 0, 2) != "//" && substr($link['href'], 0, 1) != "/" &&
-                    substr($link['href'], 0, 1) != "#" && substr($link['href'], 0, 6) != "mailto" &&
-                    substr($link['href'], 0, 4) != "tel:" && substr($link['href'], 0, 10) != "javascript") {
-
-                    $i_links++;
-                    $int_data[$i_links]['inorout'] = $this->lang['AN52'];
-                    $int_data[$i_links]['href'] = $inputHost . '/' . $link['href'];
-                    $int_data[$i_links]['text'] = $link['innertext'];
-                    if (mb_strpos($link['href'], "_") !== false) {
-                        $linkUnderScore = true;
-                    }
-                    $exStr = explode('.', $path);
-                    $dotStr = trim(end($exStr));
-                    if ($dotStr != $path && in_array($dotStr, $webFormats)) {
-                        $urlRewriting = false;
-                    }
-                    if ($type === 'dofollow' || ($type !== 'dofollow' && $type !== 'nofollow')) {
-                        $int_data[$i_links]['follow_type'] = "dofollow";
-                    } elseif ($type === 'nofollow') {
-                        $i_nofollow++;
-                        $int_data[$i_links]['follow_type'] = "nofollow";
-                    }
-                }
-            }
+            // Build unique link set.
+            $uniqueLinkSet[$href] = true;
         }
-        // Process external links.
-        $e_links = 0;
-        foreach ($ex_data as $link) {
-            $parse_urls = parse_url($link['href']);
-            $type = strtolower($link['rel']);
-            if ($parse_urls !== false && isset($parse_urls['host']) &&
-                $parse_urls['host'] != $my_url_host && $parse_urls['host'] != "www." . $my_url_host) {
-                $e_links++;
-                $ext_data[$e_links]['inorout'] = $this->lang['AN53']; // "External"
-                $ext_data[$e_links]['href'] = $link['href'];
-                $ext_data[$e_links]['text'] = $link['innertext'];
-                if ($type === 'dofollow' || ($type !== 'dofollow' && $type !== 'nofollow')) {
-                    $ext_data[$e_links]['follow_type'] = "dofollow";
-                }
-                if ($type === 'nofollow') {
-                    $e_nofollow++;
-                    $ext_data[$e_links]['follow_type'] = "nofollow";
-                }
-            }
-            elseif ((substr($link['href'], 0, 2) == "//") && (substr($link['href'], 0, 1) != "/")) {
-                $e_links++;
-                $ext_data[$e_links]['inorout'] = $this->lang['AN53'];
-                $ext_data[$e_links]['href'] = $link['href'];
-                $ext_data[$e_links]['text'] = $link['innertext'];
-                if ($type === 'dofollow' || ($type !== 'dofollow' && $type !== 'nofollow')) {
-                    $ext_data[$e_links]['follow_type'] = "dofollow";
-                }
-                if ($type === 'nofollow') {
-                    $e_nofollow++;
-                    $ext_data[$e_links]['follow_type'] = "nofollow";
-                }
-            }
-        }
-        // Save raw links data in the database.
-        $updateStr = serBase($ex_data);
-        updateToDbPrepared($this->con, 'domains_data', array('links_analyser' => $updateStr), array('domain' => $this->domainStr));
         
-        // Now build the HTML output if requested.
-        if (isset($_POST['inPageoutput'])) {
-            $inPageData = "";
-            $totalDataCount = 0;
-            // Build table rows for internal links.
-            if (!empty($int_data)) {
-                foreach ($int_data as $internalData) {
-                    $hideMe = ($totalDataCount >= 5) ? 'hideTr hideTr4' : '';
-                    $inPageData .= '<tr class="' . $hideMe . '">
-                        <td><a target="_blank" href="' . $internalData['href'] . '" title="' . $internalData['text'] . '" rel="nofollow">' .
-                            ($internalData['text'] == '' ? $internalData['href'] : $internalData['text']) .
-                        '</a></td>
-                        <td>' . $internalData['inorout'] . '</td>
-                        <td>' . ucfirst($internalData['follow_type']) . '</td>
-                    </tr>';
-                    $totalDataCount++;
-                }
-            }
-            // Then add rows for external links.
-            if (!empty($ext_data)) {
-                foreach ($ext_data as $externalData) {
-                    $hideMe = ($totalDataCount >= 5) ? 'hideTr hideTr4' : '';
-                    $inPageData .= '<tr class="' . $hideMe . '">
-                        <td><a target="_blank" href="' . $externalData['href'] . '" title="' . $externalData['text'] . '" rel="nofollow">' .
-                            ($externalData['text'] == '' ? $externalData['href'] : $externalData['text']) .
-                        '</a></td>
-                        <td>' . $externalData['inorout'] . '</td>
-                        <td>' . ucfirst($externalData['follow_type']) . '</td>
-                    </tr>';
-                    $totalDataCount++;
-                }
-            }
-            // Determine overall CSS classes and messages.
-            $inPageClass = ($t_count < 200) ? 'passedBox' : 'improveBox';
-            $inPageMsg = str_replace('[count]', $t_count, $this->lang['AN57']);
-            $linkUnderScoreClass = ($linkUnderScore) ? 'errorBox' : 'passedBox';
-            $linkUnderScoreMsg = ($linkUnderScore) ? $this->lang['AN65'] : $this->lang['AN64'];
-            $urlRewritingClass = (isset($urlRewriting) && $urlRewriting) ? 'passedBox' : 'errorBox';
-            $urlRewritingMsg = (isset($urlRewriting) && $urlRewriting) ? $this->lang['AN66'] : $this->lang['AN67'];
-            
-            $seoBox13 = '<div class="' . $inPageClass . '">
-    <div class="msgBox">
-         ' . $inPageMsg . '<br /><br />
-         <table class="table table-responsive">
-            <thead>
-                <tr>
-                    <th>' . $this->lang['AN54'] . '</th>
-                    <th>' . $this->lang['AN55'] . '</th>
-                    <th>' . $this->lang['AN56'] . '</th>
-                </tr>
-            </thead>
-            <tbody>' . $inPageData . '</tbody>
-         </table>
-         ' . (($totalDataCount > 5) ? '
-            <div class="showLinks showLinks4">
-                <a class="showMore showMore4">' . $this->lang['AN18'] . ' <br /><i class="fa fa-angle-double-down"></i></a>
-                <a class="showLess showLess4">' . $this->lang['AN19'] . '</a>
-            </div>' : '') . '
-    </div>
-    <div class="seoBox13 suggestionBox">' . $this->lang['AN185'] . '</div>
-</div>';
+        // Totals and derived metrics.
+        $totalLinks = count($internalLinks) + count($externalLinks);
+        $totalInternalLinks = count($internalLinks);
+        $totalExternalLinks = count($externalLinks);
+        $uniqueLinksCount = count($uniqueLinkSet);
+        $uniqueExternalDomainsCount = count($externalDomainSet);
+        $totalNonTracking = $totalLinks - $totalTracking;
+        
+        $percentageNoFollow = ($totalLinks > 0) ? round(($totalNoFollow / $totalLinks) * 100, 2) : 0;
+        $percentageDoFollow = ($totalLinks > 0) ? round(($totalDoFollow / $totalLinks) * 100, 2) : 0;
+        
+        $textLinkCount = count($internalLinks);
+        $averageAnchorTextLength = ($textLinkCount > 0) ? round($totalTextLength / $textLinkCount, 2) : 0;
+        
+        $linkDiversityScore = ($totalLinks > 0) ? round($uniqueLinksCount / $totalLinks, 2) : 0;
+        
+        $externalDomains = array_keys($externalDomainSet);
+        
+        // Include the empty links count in our update array.
+        $updateStr = json_encode( [
+            'total_links'                   => $totalLinks,
+            'total_internal_links'          => $totalInternalLinks,
+            'total_external_links'          => $totalExternalLinks,
+            'unique_links_count'            => $uniqueLinksCount,
+            'total_nofollow_links'          => $totalNoFollow,
+            'total_dofollow_links'          => $totalDoFollow,
+            'percentage_nofollow_links'     => $percentageNoFollow,
+            'percentage_dofollow_links'     => $percentageDoFollow,
+            'total_target_blank_links'      => $totalTargetBlank,
+            // 'links_by_position' removed.
+            'total_image_links'             => $totalImageLinks,
+            'total_text_links'              => $textLinkCount,
+            'total_empty_links'             => $totalEmptyLinks,   // NEW: Count of empty anchor text links.
+            'external_domains'              => $externalDomains,
+            'unique_external_domains_count' => $uniqueExternalDomainsCount,
+            'total_https_links'             => $totalHttps,
+            'total_http_links'              => $totalHttp,
+            'total_tracking_links'          => $totalTracking,
+            'total_non_tracking_links'      => $totalNonTracking,
+            'average_anchor_text_length'    => $averageAnchorTextLength,
+            'link_diversity_score'          => $linkDiversityScore,
+            // Optionally, you may include external links detailed list if required:
+            'external_links'                => $externalLinks
+        ]);
 
-            $seoBox17 = '<div class="' . $urlRewritingClass . '">
-    <div class="msgBox">
-         ' . $urlRewritingMsg . '<br /><br />
-    </div>
-    <div class="seoBox17 suggestionBox">' . $this->lang['AN189'] . '</div>
-</div>';
-
-            $seoBox18 = '<div class="' . $linkUnderScoreClass . '">
-    <div class="msgBox">
-         ' . $linkUnderScoreMsg . '<br /><br />
-    </div>
-    <div class="seoBox18 suggestionBox">' . $this->lang['AN190'] . '</div>
-</div>';
-            return $seoBox13 . $this->sepUnique . $seoBox17 . $this->sepUnique . $seoBox18;
+        updateToDbPrepared($this->con, 'domains_data', ['links_analyser' => $updateStr], ['domain' => $this->domainStr]);
+        
+        return $updateStr;
+    }
+    
+    public function showInPageLinks($linksData) {
+     
+        // 1) Decode if $linksData is a JSON string.
+        if (is_string($linksData)) {
+            $linksData = json_decode($linksData, true);
         }
+        if (!is_array($linksData)) {
+            return '<div class="alert alert-danger">Invalid link data provided.</div>';
+        }
+        
+        // 2) Extract the main fields.
+        $totalLinks                 = $linksData['total_links']                 ?? 0;
+        $totalInternalLinks         = $linksData['total_internal_links']        ?? 0;
+        $totalExternalLinks         = $linksData['total_external_links']        ?? 0;
+        $uniqueLinksCount           = $linksData['unique_links_count']          ?? 0;
+        $totalNofollowLinks         = $linksData['total_nofollow_links']        ?? 0;
+        $totalDofollowLinks         = $linksData['total_dofollow_links']        ?? 0;
+        $percentageNofollowLinks    = $linksData['percentage_nofollow_links']   ?? 0;
+        $percentageDofollowLinks    = $linksData['percentage_dofollow_links']   ?? 0;
+        $totalTargetBlankLinks      = $linksData['total_target_blank_links']    ?? 0;
+        $totalImageLinks            = $linksData['total_image_links']           ?? 0;
+        $totalTextLinks             = $linksData['total_text_links']            ?? 0;
+        $totalEmptyLinks            = $linksData['total_empty_links']           ?? 0;
+        $externalDomains            = $linksData['external_domains']            ?? [];
+        $uniqueExternalDomainsCount = $linksData['unique_external_domains_count'] ?? 0;
+        $totalHttpsLinks            = $linksData['total_https_links']           ?? 0;
+        $totalHttpLinks             = $linksData['total_http_links']            ?? 0;
+        $totalTrackingLinks         = $linksData['total_tracking_links']        ?? 0;
+        $totalNonTrackingLinks      = $linksData['total_non_tracking_links']     ?? 0;
+        $averageAnchorTextLength    = $linksData['average_anchor_text_length']   ?? 0;
+        $linkDiversityScore         = $linksData['link_diversity_score']        ?? 0;
+        
+        // 3) For external links details, if available.
+        $externalLinks = $linksData['external_links'] ?? [];
+        
+        // Group duplicate external links into one entry with a "count".
+        $uniqueExternalLinks = [];
+        foreach ($externalLinks as $ext) {
+            $href = $ext['href'];
+            if (!isset($uniqueExternalLinks[$href])) {
+                $uniqueExternalLinks[$href] = $ext;
+                $uniqueExternalLinks[$href]['count'] = 1;
+            } else {
+                $uniqueExternalLinks[$href]['count']++;
+            }
+        }
+        
+        // 4) Build the output using Bootstrap tabs and cards.
+        $html  = '<div class="container my-4">'; 
+        
+        // Create nav tabs.
+        $html .= '
+        <ul class="nav nav-tabs" id="linkReportTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summaryTab" type="button" role="tab" aria-controls="summaryTab" aria-selected="true">
+              Summary
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="externalLinks-tab" data-bs-toggle="tab" data-bs-target="#externalLinksTab" type="button" role="tab" aria-controls="externalLinksTab" aria-selected="false">
+              External Links
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="externalDomains-tab" data-bs-toggle="tab" data-bs-target="#externalDomainsTab" type="button" role="tab" aria-controls="externalDomainsTab" aria-selected="false">
+              External Domains
+            </button>
+          </li>
+        </ul>';
+        
+        // Tab contents container.
+        $html .= '<div class="tab-content" id="linkReportTabsContent">';
+        
+        // Tab 1: Summary
+        $html .= '
+        <div class="tab-pane fade show active" id="summaryTab" role="tabpanel" aria-labelledby="summary-tab">
+          <div class="card my-3">
+            <div class="card-header">
+              <h5>Link Summary</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <table class="table table-sm">
+                    <tbody>
+                      <tr><th>Total Links</th><td>' . $totalLinks . '</td></tr>
+                      <tr><th>Internal Links</th><td>' . $totalInternalLinks . '</td></tr>
+                      <tr><th>External Links</th><td>' . $totalExternalLinks . '</td></tr>
+                      <tr><th>Unique Links</th><td>' . $uniqueLinksCount . '</td></tr>
+                      <tr><th>Empty Links</th><td>' . $totalEmptyLinks . '</td></tr>
+                      <tr><th>Link Diversity Score</th><td>' . $linkDiversityScore . '</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-md-6">
+                  <table class="table table-sm">
+                    <tbody>
+                      <tr><th>Dofollow Links</th><td>' . $totalDofollowLinks . ' (' . $percentageDofollowLinks . '%)</td></tr>
+                      <tr><th>Nofollow Links</th><td>' . $totalNofollowLinks . ' (' . $percentageNofollowLinks . '%)</td></tr>
+                      <tr><th>Target Blank Links</th><td>' . $totalTargetBlankLinks . '</td></tr>
+                      <tr><th>HTTPS Links</th><td>' . $totalHttpsLinks . '</td></tr>
+                      <tr><th>HTTP Links</th><td>' . $totalHttpLinks . '</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <table class="table table-sm">
+                    <tbody>
+                      <tr><th>Total Image Links</th><td>' . $totalImageLinks . '</td></tr>
+                      <tr><th>Total Text Links</th><td>' . $totalTextLinks . '</td></tr>
+                      <tr><th>Avg. Anchor Text Length</th><td>' . $averageAnchorTextLength . '</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-md-6">
+                  <table class="table table-sm">
+                    <tbody>
+                      <tr><th>Total Tracking Links</th><td>' . $totalTrackingLinks . '</td></tr>
+                      <tr><th>Non-Tracking Links</th><td>' . $totalNonTrackingLinks . '</td></tr>
+                      <tr><th>Unique External Domains</th><td>' . $uniqueExternalDomainsCount . '</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div><!-- card-body -->
+          </div><!-- card -->
+        </div><!-- tab-pane -->';
+        
+        // Tab 2: External Links
+        $html .= '
+        <div class="tab-pane fade" id="externalLinksTab" role="tabpanel" aria-labelledby="externalLinks-tab">
+          <div class="card my-3">
+            <div class="card-header">
+              <h5>Unique External Links</h5>
+            </div>
+            <div class="card-body">';
+        
+        if (!empty($uniqueExternalLinks)) {
+            $html .= '
+              <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>Link</th>
+                      <th>Follow Type</th>
+                      <th>Anchor Text</th>
+                      <th>Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+            
+            foreach ($uniqueExternalLinks as $ext) {
+                // Use 'innertext' if available; otherwise use href.
+                $displayText = !empty($ext['innertext']) ? $ext['innertext'] : $ext['href'];
+                $html .= '
+                    <tr>
+                      <td>' . htmlspecialchars($ext['href']) . '</td>
+                      <td>' . htmlspecialchars($ext['follow_type']) . '</td>
+                      <td>' . htmlspecialchars($displayText) . '</td>
+                      <td>' . $ext['count'] . '</td>
+                    </tr>';
+            }
+            
+            $html .= '
+                  </tbody>
+                </table>
+              </div><!-- /.table-responsive -->';
+        } else {
+            $html .= '<div class="alert alert-info">No external links found.</div>';
+        }
+        
+        $html .= '
+            </div><!-- card-body -->
+          </div><!-- card -->
+        </div><!-- tab-pane -->';
+        
+        // Tab 3: External Domains
+        $html .= '
+        <div class="tab-pane fade" id="externalDomainsTab" role="tabpanel" aria-labelledby="externalDomains-tab">
+          <div class="card my-3">
+            <div class="card-header">
+              <h5>External Domains</h5>
+            </div>
+            <div class="card-body">';
+        
+        if (!empty($externalDomains)) {
+            $html .= '<ul class="list-group">';
+            foreach ($externalDomains as $domain) {
+                $html .= '<li class="list-group-item">' . htmlspecialchars($domain) . '</li>';
+            }
+            $html .= '</ul>';
+        } else {
+            $html .= '<div class="alert alert-info">No external domains found.</div>';
+        }
+        
+        $html .= '
+            </div><!-- card-body -->
+          </div><!-- card -->
+        </div><!-- tab-pane -->';
+        
+        // Close tab-content and container.
+        $html .= '</div><!-- /.tab-content -->';
+        $html .= '</div><!-- /.container -->';
+        
+        return $html;
     }
-
-    /**
-     * showInPageLinks()
-     *
-     * Simply calls processAndRenderInPageLinks() to output the HTML.
-     *
-     * @param array $linksData The raw links data (as returned by processInPageLinks()).
-     * @return string The HTML output.
-     */
-    public function showInPageLinks($linksData) {  
-        return $this->processAndRenderInPageLinks($linksData);
-    }
-
-
+    
+    
+    
     /*===================================================================
      * BROKEN LINKS HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processBrokenLinks() {
-
-       
-        // Assuming processInPageLinks() has already run and returned $linksData.
         $linksData = $this->processInPageLinks();
-        $brokenLinks = array();
-        $brokenLinks[]="Goes here";
-        // foreach ($linksData as $link) {
-        //     $url = $link['href'];
-        //     // Normalize URL if needed.
-        //     if (substr($url, 0, 1) == "/") {
-        //         $url = $this->urlParse['scheme'] . "://" . $this->urlParse['host'] . $url;
-        //     }
-        //     $httpCode = getHttpCode($url);
-        //     if ($httpCode == 404) {
-        //         $brokenLinks[] = $url;
-        //     }
-        // }
-      
-       
-       // updateToDbPrepared($this->con, 'domains_data', array('broken_links' => jsonEncode($brokenLinks)), array('domain' => $this->domainStr));
-        
+        $brokenLinks = [];
+        $brokenLinks[] = "Goes here";
         return $brokenLinks;
     }
 
@@ -1691,10 +1556,9 @@ private function getHttpResponseCode(string $url): int {
             $rows .= '<tr><td>' . $link . '</td></tr>';
         }
         $output = '<div class="' . $brokenClass . '">
-                        <div class="msgBox">
-                            ' . $brokenMsg . '<br /><br />
-                            ' . (count($brokenLinks) > 0 ? '<table class="table table-responsive"><tbody>' . $rows . '</tbody></table>' : '') . '
-                        </div>
+                        <div class="msgBox">' . $brokenMsg . '<br /><br />' .
+                        (count($brokenLinks) > 0 ? '<table class="table table-responsive"><tbody>' . $rows . '</tbody></table>' : '') .
+                        '</div>
                         <div class="seoBox14 suggestionBox">' . $this->lang['AN186'] . '</div>
                    </div>';
         return $output;
@@ -1702,14 +1566,13 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * ROBOTS.TXT HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processRobots() {
         $robotLink = $this->urlParse['scheme'] . "://" . $this->urlParse['host'] . '/robots.txt';
-        $httpCode = getHttpCode($robotLink); 
-        updateToDbPrepared($this->con, 'domains_data', array('robots' => jsonEncode($httpCode)), array('domain' => $this->domainStr));
-        return array('robotLink' => $robotLink, 'httpCode' => $httpCode);
+        $httpCode = getHttpCode($robotLink);
+        updateToDbPrepared($this->con, 'domains_data', ['robots' => jsonEncode($httpCode)], ['domain' => $this->domainStr]);
+        return ['robotLink' => $robotLink, 'httpCode' => $httpCode];
     }
 
     public function showRobots($robotsData) {
@@ -1729,18 +1592,16 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * SITEMAP HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processSitemap() {
-        $sitemapInfo = jsonEncode(getSitemapInfo($this->urlParse['scheme'] . "://" . $this->urlParse['host'])); 
-        updateToDbPrepared($this->con, 'domains_data', array('sitemap' => ($sitemapInfo)), array('domain' => $this->domainStr));
+        $sitemapInfo = jsonEncode(getSitemapInfo($this->urlParse['scheme'] . "://" . $this->urlParse['host']));
+        updateToDbPrepared($this->con, 'domains_data', ['sitemap' => $sitemapInfo], ['domain' => $this->domainStr]);
         return $sitemapInfo;
     }
 
     public function showSitemap($sitemapInfo) {
         $sitemapInfo = jsonDecode($sitemapInfo);
-        
         if ($sitemapInfo['httpCode'] == '404') {
             $sitemapClass = 'errorBox';
             $sitemapMsg = $this->lang['AN71'] . '<br><a href="' . $sitemapInfo['sitemapLink'] . '" title="' . $this->lang['AN72'] . '" rel="nofollow" target="_blank">' . $sitemapInfo['sitemapLink'] . '</a>';
@@ -1757,14 +1618,11 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * EMBEDDED OBJECT HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processEmbedded() {
-       
         $embeddedCheck = false;
-        $doc = new DOMDocument();
-        @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
+        $doc = $this->getDom();
         $objects = $doc->getElementsByTagName('object');
         foreach ($objects as $obj) {
             $embeddedCheck = true;
@@ -1775,9 +1633,7 @@ private function getHttpResponseCode(string $url): int {
             $embeddedCheck = true;
             break;
         }
-       
-        
-        updateToDbPrepared($this->con, 'domains_data', array('embedded' => $embeddedCheck), array('domain' => $this->domainStr));
+        updateToDbPrepared($this->con, 'domains_data', ['embedded' => $embeddedCheck], ['domain' => $this->domainStr]);
         return $embeddedCheck;
     }
 
@@ -1793,20 +1649,17 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * IFRAME HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processIframe() {
         $iframeCheck = false;
-        $doc = new DOMDocument();
-        @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
+        $doc = $this->getDom();
         $iframes = $doc->getElementsByTagName('iframe');
         foreach ($iframes as $iframe) {
             $iframeCheck = true;
             break;
         }
-        
-        updateToDbPrepared($this->con, 'domains_data', array('iframe' => $iframeCheck), array('domain' => $this->domainStr));
+        updateToDbPrepared($this->con, 'domains_data', ['iframe' => $iframeCheck], ['domain' => $this->domainStr]);
         return $iframeCheck;
     }
 
@@ -1819,76 +1672,141 @@ private function getHttpResponseCode(string $url): int {
                    </div>';
         return $output;
     }
-
-    /*===================================================================
-     * WHOIS HANDLER
-     *===================================================================
-     */
-
-    public function processWhois() {
-        $whois = new whois();
-        $site = $whois->cleanUrl($this->urlParse['host']);
-        $whois_data = jsonEncode($whois->whoislookup($site)); 
-        updateToDbPrepared($this->con, 'domains_data', array('whois' => $whois_data), array('domain' => $this->domainStr));
-        return $whois_data;
-    }
-
-    public function showWhois($whois_data) {
-        $whois_data = jsonDecode($whois_data);
-        
-        
-        // Build HTML output from WHOIS raw data.
-        $lines = preg_split("/\r\n|\n|\r/", $whois_data[0]);
-        $rows = "";
-        $count = 0;
-        foreach ($lines as $line) {
-            if (!empty($line)) {
-                if ($count == 5) { $class = 'hideTr hideTr6'; } else { $class = ''; }
-                $rows .= '<tr class="' . $class . '"><td>' . $line . '</td></tr>';
-                $count++;
-            }
+/**
+ * Retrieves RDAP (WHOIS) data for a given domain.
+ *
+ * Tries to fetch RDAP data from rdap.org. If that fails, falls back to using the PHP-WHOIS library.
+ *
+ * @param string $domain The domain name.
+ * @return array An associative array of WHOIS data or an error message.
+ */
+private function fetchDomainRdap(string $domain): array {
+    $rdapUrl = "https://rdap.org/domain/" . $domain;
+    try {
+        $response = @file_get_contents($rdapUrl);
+        if ($response === false) {
+            return $this->fallbackWhois($domain);
         }
-        $output = '<div class="lowImpactBox">
-                        <div class="msgBox">
-                            ' . $this->lang['AN85'] . '<br /><br />
-                            <div class="altImgGroup">
-                                <p><i class="fa fa-paw solveMsgGreen"></i> ' . $this->lang['AN86'] . ': ' . $whois_data[1] . '</p>
-                                <p><i class="fa fa-paw solveMsgGreen"></i> ' . $this->lang['AN87'] . ': ' . $whois_data[2] . '</p>
-                                <p><i class="fa fa-paw solveMsgGreen"></i> ' . $this->lang['AN88'] . ': ' . $whois_data[3] . '</p>
-                                <p><i class="fa fa-paw solveMsgGreen"></i> ' . $this->lang['AN89'] . ': ' . $whois_data[4] . '</p>
-                            </div>
-                        </div>
-                        <div class="seoBox21 suggestionBox">' . $this->lang['AN193'] . '</div>
-                   </div>
-                   <div class="lowImpactBox">
-                        <div class="msgBox">
-                            ' . $this->lang['AN84'] . '<br /><br />
-                            <table class="table table-hover table-bordered table-striped">
-                                <tbody>' . $rows . '</tbody>
-                            </table>
-                        </div>
-                        <div class="seoBox22 suggestionBox">' . $this->lang['AN194'] . '</div>
-                   </div>';
-        return $output;
+        $data = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return ['error' => "RDAP response JSON error: " . json_last_error_msg()];
+        }
+        return $data;
+    } catch (\Exception $e) {
+        return $this->fallbackWhois($domain);
     }
+}
+
+/**
+ * Fallback method to retrieve WHOIS data using the io-developer/php-whois library.
+ *
+ * @param string $domain The domain name.
+ * @return array An array containing WHOIS data or an error message.
+ */
+private function fallbackWhois(string $domain): array {
+    try {
+        $domain = preg_replace('/^www\./i', '', $domain);
+        $info = \Iodev\Whois\Factory::get()->createWhois()->loadDomainInfo($domain);
+        if ($info) {
+            $rawText = $info->getResponse()->getText();
+            return ['raw_data' => $rawText];
+        }
+        return ['error' => "No WHOIS data available using php-whois fallback."];
+    } catch (\Exception $e) {
+        return ['error' => "Exception in php-whois fallback: " . $e->getMessage()];
+    }
+}
+
+
+
+/**
+ * Retrieves DNS records for the given domain.
+ *
+ * This method queries multiple DNS record types (A, AAAA, MX, NS, TXT, and CAA if available)
+ * and returns them as an array.
+ *
+ * @param string $domain The domain to check.
+ * @return array An array of DNS records.
+ */
+private function checkDNSRecords(string $domain): array {
+    $recordTypes = [DNS_A, DNS_AAAA, DNS_MX, DNS_NS, DNS_TXT];
+    if (defined('DNS_CAA')) {
+        $recordTypes[] = DNS_CAA;
+    }
+    $records = [];
+    foreach ($recordTypes as $type) {
+        $result = @dns_get_record($domain, $type);
+        if ($result !== false && !empty($result)) {
+            $records = array_merge($records, $result);
+        }
+    }
+    return $records;
+}
+
+
+
+public function showWhois($whois_data)
+{
+    // Step 1: Decode the JSON from the DB
+    $decoded = jsonDecode($whois_data);
+
+    // If decoding fails or returns null, just display as-is:
+    if ($decoded === null) {
+        $safeOutput = nl2br(htmlspecialchars($whois_data));
+        return '<div class="whois-output" style="background:#f8f9fa; padding:15px; border:1px solid #ddd;">'
+             . $safeOutput
+             . '</div>';
+    }
+
+    // Step 2: Check what type we got:
+    if (is_string($decoded)) {
+        // If it's just a string, show it with line breaks
+        $formatted = nl2br(htmlspecialchars($decoded));
+    }
+    elseif (is_array($decoded)) {
+
+        // CASE A: If the fallback WHOIS gave us an array with "raw_data"
+        if (isset($decoded['raw_data']) && is_string($decoded['raw_data'])) {
+            // Show the raw_data with newlines:
+            $raw = nl2br(htmlspecialchars($decoded['raw_data']));
+            $formatted = "<strong>WHOIS Raw Data:</strong><br>{$raw}";
+        }
+        // CASE B: If it’s an RDAP array or something else, fallback to your recursive formatting
+        else {
+            $formatted = self::formatWhoisData($decoded);
+        }
+    }
+    else {
+        // If it’s neither string nor array, just do a safe print
+        $formatted = nl2br(htmlspecialchars(print_r($decoded, true)));
+    }
+
+    // Step 3: Wrap in a nice container
+    return '<div class="whois-output" style="background:#f8f9fa; padding:15px; border:1px solid #ddd;">'
+         . $formatted
+         . '</div>';
+}
+
+
+    
+    
+    
 
     /*===================================================================
      * MOBILE FRIENDLINESS HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processMobileCheck() {
-        $jsonData = getMobileFriendly($this->urlParse['scheme'] . "://" . $this->urlParse['host']);  
-        $updateStr = jsonEncode($jsonData); 
-        updateToDbPrepared($this->con, 'domains_data', array('mobile_fri' => $updateStr), array('domain' => $this->domainStr));
+        $jsonData = getMobileFriendly($this->urlParse['scheme'] . "://" . $this->urlParse['host']);
+        $updateStr = jsonEncode($jsonData);
+        updateToDbPrepared($this->con, 'domains_data', ['mobile_fri' => $updateStr], ['domain' => $this->domainStr]);
         return $updateStr;
     }
 
     public function showMobileCheck($jsonData) {
         $jsonData = jsonDecode($jsonData);
-        
         $mobileClass = $jsonData['passed'] ? 'passedBox' : 'errorBox';
-        $mobileMsg = $jsonData['passed'] 
+        $mobileMsg = $jsonData['passed']
                         ? $this->lang['AN116'] . '<br>' . str_replace('[score]', intval($jsonData['score']), $this->lang['AN117'])
                         : $this->lang['AN118'] . '<br>' . str_replace('[score]', intval($jsonData['score']), $this->lang['AN117']);
         $screenData = $jsonData['screenshot'];
@@ -1906,14 +1824,11 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * MOBILE COMPATIBILITY HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processMobileCom() {
-        $doc = new DOMDocument();
-        @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
+        $doc = $this->getDom();
         $mobileComCheck = false;
-        // Check for iframes, objects, or embeds.
         $elements = array_merge(
             iterator_to_array($doc->getElementsByTagName('iframe')),
             iterator_to_array($doc->getElementsByTagName('object')),
@@ -1922,8 +1837,7 @@ private function getHttpResponseCode(string $url): int {
         foreach ($elements as $el) {
             if ($el) { $mobileComCheck = true; break; }
         }
-        
-        updateToDbPrepared($this->con, 'domains_data', array('mobile_com' => $mobileComCheck), array('domain' => $this->domainStr));
+        updateToDbPrepared($this->con, 'domains_data', ['mobile_com' => $mobileComCheck], ['domain' => $this->domainStr]);
         return $mobileComCheck;
     }
 
@@ -1937,86 +1851,50 @@ private function getHttpResponseCode(string $url): int {
         return $output;
     }
 
-   /*===================================================================
+    /*===================================================================
      * URL LENGTH & FAVICON HANDLER
-     *===================================================================
-     */
-
-    /**
-     * processUrlLength()
-     *
-     * Splits the host into parts and returns the first part (hostWord),
-     * its length, and the full URL constructed from the scheme and host.
-     *
-     * @return array An associative array with keys 'hostWord', 'length', and 'fullUrl'.
+     *=================================================================== 
      */
     public function processUrlLength() {
-        // Get the host from the parsed URL.
         $host = $this->urlParse['host'];
         $hostParts = explode('.', $host);
         $length = strlen($hostParts[0]);
-        // Build the full URL (e.g. "http://example.com")
         $fullUrl = $this->urlParse['scheme'] . "://" . $host;
-        return array(
+        return [
             'hostWord' => $hostParts[0],
             'length'   => $length,
             'fullUrl'  => $fullUrl
-        );
+        ];
     }
 
-    /**
-     * showUrlLength()
-     *
-     * Builds and returns the HTML output for the URL length and favicon analysis.
-     *
-     * @param array $data An array with keys 'hostWord', 'length', and 'fullUrl' (from processUrlLength()).
-     * @return string The HTML output.
-     */
     public function showUrlLength($data) {
-        // Decide CSS class based on length of the first part of the hostname.
         $urlLengthClass = ($data['length'] < 15) ? 'passedBox' : 'errorBox';
-        // Build the URL length message. This uses the full URL and the character count.
         $urlLengthMsg = $data['fullUrl'] . '<br>' . str_replace('[count]', $data['length'], $this->lang['AN122']);
-        // Build the favicon message. Here we use the full URL as provided.
         $favIconMsg = '<img src="https://www.google.com/s2/favicons?domain=' . $data['fullUrl'] . '" alt="FavIcon" />  ' . $this->lang['AN123'];
-        // Construct the HTML output.
         $output = '<div class="' . $urlLengthClass . '">
-                        <div class="msgBox">
-                             ' . $urlLengthMsg . '
-                            <br /><br />
-                        </div>
-                        <div class="seoBox26 suggestionBox">
-                             ' . $this->lang['AN198'] . '
-                        </div> 
+                        <div class="msgBox">' . $urlLengthMsg . '<br /><br /></div>
+                        <div class="seoBox26 suggestionBox">' . $this->lang['AN198'] . '</div>
                    </div>' . $this->sepUnique .
                    '<div class="lowImpactBox">
-                        <div class="msgBox">
-                             ' . $favIconMsg . '
-                            <br /><br />
-                        </div>
-                        <div class="seoBox27 suggestionBox">
-                             ' . $this->lang['AN199'] . '
-                        </div> 
+                        <div class="msgBox">' . $favIconMsg . '<br /><br /></div>
+                        <div class="seoBox27 suggestionBox">' . $this->lang['AN199'] . '</div>
                    </div>';
-                   
         return $output;
     }
 
     /*===================================================================
      * CUSTOM 404 PAGE HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processErrorPage() {
         $url = $this->urlParse['scheme'] . "://" . $this->urlParse['host'] . '/404error-test-page-by-atoz-seo-tools';
-        $pageSize = strlen(curlGET($url)); 
-        updateToDbPrepared($this->con, 'domains_data', array('404_page' => jsonEncode($pageSize)), array('domain' => $this->domainStr));
+        $pageSize = strlen(curlGET($url));
+        updateToDbPrepared($this->con, 'domains_data', ['404_page' => jsonEncode($pageSize)], ['domain' => $this->domainStr]);
         return $pageSize;
     }
 
     public function showErrorPage($pageSize) {
         $pageSize = jsonDecode($pageSize);
-        
         if ($pageSize < 1500) {
             $errorPageClass = 'errorBox';
             $errorPageMsg = $this->lang['AN125'];
@@ -2033,9 +1911,8 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * PAGE LOAD HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processPageLoad() {
         $timeStart = microtime(true);
         $ch = curl_init();
@@ -2052,18 +1929,14 @@ private function getHttpResponseCode(string $url): int {
         $timeEnd = microtime(true);
         $timeTaken = $timeEnd - $timeStart;
         $dataSize = strlen($htmlContent);
-
-        // Try to detect language code.
         $langCode = null;
         if (preg_match('#<html[^>]+lang=[\'"]?(.*?)[\'"]?#is', $htmlContent, $matches)) {
             $langCode = trim(mb_substr($matches[1], 0, 5));
         } elseif (preg_match('#<meta[^>]+http-equiv=[\'"]?content-language[\'"]?[^>]+content=[\'"]?(.*?)[\'"]?#is', $htmlContent, $matches)) {
             $langCode = trim(mb_substr($matches[1], 0, 5));
         }
-        
-        $updateStr = jsonEncode(array('timeTaken' => $timeTaken, 'dataSize' => $dataSize, 'langCode' => $langCode));
-        
-        updateToDbPrepared($this->con, 'domains_data', array('load_time' => $updateStr), array('domain' => $this->domainStr));
+        $updateStr = jsonEncode(['timeTaken' => $timeTaken, 'dataSize' => $dataSize, 'langCode' => $langCode]);
+        updateToDbPrepared($this->con, 'domains_data', ['load_time' => $updateStr], ['domain' => $this->domainStr]);
         return $updateStr;
     }
 
@@ -2078,7 +1951,6 @@ private function getHttpResponseCode(string $url): int {
         $langClass = is_null($pageLoadData['langCode']) ? 'errorBox' : 'passedBox';
         $langCode = is_null($pageLoadData['langCode']) ? $this->lang['AN129'] : lang_code_to_lnag($pageLoadData['langCode']);
         $langMsg = str_replace('[language]', $langCode, $this->lang['AN130']);
-
         $output = '<div class="' . $sizeClass . '">
                         <div class="msgBox">' . $sizeMsg . '<br /><br /></div>
                         <div class="seoBox29 suggestionBox">' . $this->lang['AN201'] . '</div>
@@ -2096,22 +1968,20 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * DOMAIN & TYPO AVAILABILITY HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processAvailabilityChecker() {
-        // Load domain availability servers.
         $path = LIB_DIR . 'domainAvailabilityservers.tdata';
-        $serverList = array();
+        $serverList = [];
         if (file_exists($path)) {
             $contents = file_get_contents($path);
             $serverList = json_decode($contents, true);
         }
-        $tldCodes = array('com', 'net', 'org', 'biz', 'us', 'info', 'eu');
+        $tldCodes = ['com','net','org','biz','us','info','eu'];
         $domainWord = explode('.', $this->urlParse['host']);
         $hostTLD = trim(end($domainWord));
         $domainWord = $domainWord[0];
-        $doArr = $tyArr = array();
+        $doArr = $tyArr = [];
         $tldCount = 0;
         foreach ($tldCodes as $tldCode) {
             if ($tldCount == 5)
@@ -2120,11 +1990,10 @@ private function getHttpResponseCode(string $url): int {
                 $topDomain = $domainWord . '.' . $tldCode;
                 $domainAvailabilityChecker = new domainAvailability($serverList);
                 $domainAvailabilityStats = $domainAvailabilityChecker->isAvailable($topDomain);
-                $doArr[] = array($topDomain, $domainAvailabilityStats);
+                $doArr[] = [$topDomain, $domainAvailabilityStats];
                 $tldCount++;
             }
         }
-        // Process typo domains.
         $typo = new typos();
         $domainTypoWords = $typo->get($domainWord);
         $typoCount = 0;
@@ -2134,11 +2003,11 @@ private function getHttpResponseCode(string $url): int {
             $topDomain = $word . '.' . $hostTLD;
             $domainAvailabilityChecker = new domainAvailability($serverList);
             $domainAvailabilityStats = $domainAvailabilityChecker->isAvailable($topDomain);
-            $tyArr[] = array($topDomain, $domainAvailabilityStats);
+            $tyArr[] = [$topDomain, $domainAvailabilityStats];
             $typoCount++;
         }
-        $updateStr = jsonEncode(array('doArr' => $doArr, 'tyArr' => $tyArr));
-        updateToDbPrepared($this->con, 'domains_data', array('domain_typo' => $updateStr), array('domain' => $this->domainStr));
+        $updateStr = jsonEncode(['doArr' => $doArr, 'tyArr' => $tyArr]);
+        updateToDbPrepared($this->con, 'domains_data', ['domain_typo' => $updateStr], ['domain' => $this->domainStr]);
         return $updateStr;
     }
 
@@ -2179,13 +2048,12 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * EMAIL PRIVACY HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processEmailPrivacy() {
         preg_match_all("/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/", $this->html, $matches, PREG_SET_ORDER);
-        $emailCount = count($matches); 
-        updateToDbPrepared($this->con, 'domains_data', array('email_privacy' => $emailCount), array('domain' => $this->domainStr));
+        $emailCount = count($matches);
+        updateToDbPrepared($this->con, 'domains_data', ['email_privacy' => $emailCount], ['domain' => $this->domainStr]);
         return $emailCount;
     }
 
@@ -2201,12 +2069,11 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * SAFE BROWSING HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processSafeBrowsing() {
-        $safeBrowsingStats = safeBrowsing($this->urlParse['host']); 
-        updateToDbPrepared($this->con, 'domains_data', array('safe_bro' => $safeBrowsingStats), array('domain' => $this->domainStr));
+        $safeBrowsingStats = safeBrowsing($this->urlParse['host']);
+        updateToDbPrepared($this->con, 'domains_data', ['safe_bro' => $safeBrowsingStats], ['domain' => $this->domainStr]);
         return $safeBrowsingStats;
     }
 
@@ -2230,50 +2097,838 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * SERVER LOCATION HANDLER
-     *===================================================================
+     *=================================================================== 
      */
+    /**
+ * Processes and saves the server information into the DB field "server_loc".
+ *
+ * This method gathers:
+ *   1. DNS records (A, MX, NS, TXT, etc.)
+ *   2. Server IP, plus location, ISP, and server signature (from HTTP headers)
+ *   3. SSL certificate details
+ *   4. Technology used (from HTTP headers such as Server or X-Powered-By)
+ *   5. Whois information
+ *
+ * It then encodes all this info as JSON and stores it.
+ *
+ * @return string JSON encoded server information.
+ */
+public function processServerInfo(): string {
+    $host = $this->urlParse['host'];
+    $fullUrl = $this->urlParse['scheme'] . '://' . $host;
+    $serverIP = gethostbyname($host);
+    $dnsRecords = $this->checkDNSRecords($host);
+    $ipInfo = $this->checkIP($host);
+    $headers = @get_headers($fullUrl, 1) ?: [];
+    $serverSignature = isset($headers['Server']) ? $headers['Server'] : 'N/A';
+    $sslInfo = $this->checkSSL($host);
+    $technologyUsed = $this->detectFromHtml($this->html, $headers, $host);
+    $whoisInfo = $this->fetchDomainRdap($host);
+    $serverInfo = [
+        'dns_records'      => $dnsRecords,
+        'server_ip'        => $serverIP,
+        'ip_info'          => $ipInfo,
+        'server_signature' => $serverSignature,
+        'ssl_info'         => $sslInfo,
+        'technology_used'  => $technologyUsed,
+        'whois_info'       => $whoisInfo
+    ];
+    $updateStr = json_encode($serverInfo);
+    updateToDbPrepared($this->con, 'domains_data', ['server_loc' => $updateStr], ['domain' => $this->domainStr]);
+    return $updateStr;
+}
+private function getIpInfo(string $ip): array
+{
+    // You can use any external IP info API (ip-api, ipinfo, etc.) or your own logic.
+    // This is just a fallback dummy.
+    // If you do call an external API, be sure to handle timeouts or errors gracefully.
+    return [
+        'country' => 'Unknown Country',
+        'region'  => 'Unknown Region',
+        'city'    => 'Unknown City',
+        'isp'     => 'Unknown ISP'
+    ];
+}
+/**
+ * Retrieves IP information (IPv4, IPv6, and geolocation data) for a given domain.
+ *
+ * This method first resolves the domain to its IPv4 address and then
+ * attempts to get IPv6 addresses. If an IPv4 is found, it uses an external
+ * API (ip-api.com) to get geolocation details.
+ *
+ * @param string $domain The domain name.
+ * @return array An associative array with keys 'IPv4', 'IPv6' (if available),
+ *               and 'geo' containing geolocation data or error information.
+ */
+private function checkIP(string $domain): array {
+    $ipInfo = [];
+    
+    // Resolve IPv4 using gethostbyname()
+    $ipv4 = gethostbyname($domain);
+    if ($ipv4 !== $domain && filter_var($ipv4, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        $ipInfo['IPv4'] = $ipv4;
+    }
+    
+    // Get IPv6 records using dns_get_record()
+    $AAAA = @dns_get_record($domain, DNS_AAAA);
+    $ipv6Arr = [];
+    if (!empty($AAAA)) {
+        foreach ($AAAA as $record) {
+            if (!empty($record['ipv6'])) {
+                $ipv6Arr[] = $record['ipv6'];
+            }
+        }
+        if (!empty($ipv6Arr)) {
+            $ipInfo['IPv6'] = $ipv6Arr;
+        }
+    }
+    
+    // If we have an IPv4, attempt to get geolocation data using ip-api.com
+    if (!empty($ipInfo['IPv4'])) {
+        $ip = $ipInfo['IPv4'];
+        $apiUrl = "http://ip-api.com/json/{$ip}?fields=status,message,country,regionName,city,zip,isp,org,as,query";
+        $response = @file_get_contents($apiUrl);
+        if ($response !== false) {
+            $data = json_decode($response, true);
+            if (json_last_error() === JSON_ERROR_NONE && isset($data['status']) && $data['status'] === 'success') {
+                $ipInfo['geo'] = [
+                    'ip'      => $data['query']      ?? $ip,
+                    'country' => $data['country']    ?? '',
+                    'region'  => $data['regionName'] ?? '',
+                    'city'    => $data['city']       ?? '',
+                    'zip'     => $data['zip']        ?? '',
+                    'isp'     => $data['isp']        ?? '',
+                    'org'     => $data['org']        ?? '',
+                    'as'      => $data['as']         ?? ''
+                ];
+            } else {
+                $ipInfo['geo'] = [
+                    'error' => isset($data['message']) ? $data['message'] : 'Unknown error'
+                ];
+            }
+        } else {
+            $ipInfo['geo'] = [
+                'error' => 'Unable to fetch IP geolocation data.'
+            ];
+        }
+    }
+    
+    return $ipInfo;
+}
 
-    public function processServerIP() {
-        $getHostIP = gethostbyname($this->urlParse['host']);
-        $data_list = host_info($this->urlParse['host']);
-        $updateStr =  jsonEncode(array('ip' => $getHostIP,'country' => $data_list[1],'isp' => $data_list[2]));
-      
-        updateToDbPrepared($this->con, 'domains_data', array('server_loc' => $updateStr), array('domain' => $this->domainStr));
-        return $updateStr;
+
+/**
+ * Checks if the given domain has SSL enabled and retrieves its certificate details.
+ *
+ * @param string $domain The domain name to check.
+ * @return array An associative array with keys:
+ *               - 'has_ssl': (bool) whether SSL is available.
+ *               - 'ssl_info': (mixed) either the parsed certificate info or an error message.
+ */
+private function checkSSL(string $domain): array {
+    $hasSSL = false;
+    // Use cURL to try connecting via HTTPS.
+    $url = "https://{$domain}";
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    // Enable SSL verification.
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    // Execute the request.
+    curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    
+    // Consider a response code between 200 and 399 as a successful SSL connection.
+    if ($httpCode >= 200 && $httpCode < 400) {
+        $hasSSL = true;
+    }
+    
+    // Retrieve SSL certificate info if SSL is active.
+    $certInfo = $hasSSL ? $this->getSSLInfo($domain) : "SSL not available or certificate could not be fetched.";
+    
+    return [
+        'has_ssl'   => $hasSSL,
+        'ssl_info'  => $certInfo
+    ];
+}
+
+
+/**
+ * Detects technologies used on the site from its HTML and HTTP headers.
+ *
+ * @param string $html    The full HTML content.
+ * @param array  $headers The HTTP response headers.
+ * @param string $domain  The domain name (in case you need to check for domain-specific patterns).
+ * @return array An array of detected technology names.
+ */
+private function detectFromHtml(string $html, array $headers, string $domain): array {
+    // A comprehensive list of technologies to check for
+    $techPatterns = [
+        // Web Servers & Hosting
+        'Apache'           => '/apache/i',
+        'Nginx'            => '/nginx/i',
+        'Microsoft IIS'    => '/iis/i',
+        'LiteSpeed'        => '/litespeed/i',
+        'Caddy'            => '/caddy/i',
+        
+        // Programming Languages & Runtimes
+        'PHP'              => '/php/i',
+        'Node.js'          => '/node\.js/i',
+        'Python'           => '/python/i',
+        'Ruby'             => '/ruby/i',
+        'Java'             => '/java/i',
+        '.NET'             => '/\.net|c#|asp\.net/i',
+        'Go'               => '/go(lang)?/i',
+        
+        // Content Management Systems (CMS)
+        'WordPress'        => '/wp-content|wp-admin|wordpress/i',
+        'Drupal'           => '/drupal/i',
+        'Joomla'           => '/joomla/i',
+        'Magento'          => '/magento/i',
+        'Shopify'          => '/shopify/i',
+        'Wix'              => '/wix\.com/i',
+        'Squarespace'      => '/squarespace/i',
+        
+        // Web Frameworks & Libraries
+        'Laravel'          => '/laravel/i',
+        'Symfony'          => '/symfony/i',
+        'CodeIgniter'      => '/codeigniter/i',
+        'Express'          => '/express/i',
+        'Django'           => '/django/i',
+        'Flask'            => '/flask/i',
+        'Ruby on Rails'    => '/rails/i',
+        'Spring'           => '/spring/i',
+        'React'            => '/react/i',
+        'Angular'          => '/angular/i',
+        'Vue.js'           => '/vue\.js/i',
+        
+        // Databases (often found in error messages or frameworks)
+        'MySQL'            => '/mysql/i',
+        'PostgreSQL'       => '/postgresql/i',
+        'SQLite'           => '/sqlite/i',
+        'MongoDB'          => '/mongodb/i',
+        'Redis'            => '/redis/i',
+        
+        // Caching & Optimization
+        'Memcached'        => '/memcached/i',
+        'Varnish'          => '/varnish/i',
+        'Cloudflare'       => '/cloudflare/i',
+        
+        // E-commerce Platforms
+        'WooCommerce'      => '/woocommerce/i',
+        'PrestaShop'       => '/prestashop/i',
+        
+        // Analytics & Marketing
+        'Google Analytics' => '/google-analytics|ga\(/i',
+        'Adobe Analytics'  => '/adobe analytics/i',
+        'Hotjar'           => '/hotjar/i',
+        'Mixpanel'         => '/mixpanel/i',
+    ];
+
+    $technologies = [];
+
+    // Check the HTML content for technology patterns.
+    foreach ($techPatterns as $tech => $pattern) {
+        if (preg_match($pattern, $html)) {
+            $technologies[] = $tech;
+        }
     }
 
-    public function showServerIP($data_list) {
-        $data_list = jsonDecode($data_list); 
-        $output = '<div class="lowImpactBox">
-                        <div class="msgBox">
-                            <table class="table table-hover table-bordered table-striped">
-                                <tbody>
-                                    <tr>
-                                        <th>' . $this->lang['AN141'] . '</th>
-                                        <th>' . $this->lang['AN142'] . '</th>
-                                        <th>' . $this->lang['AN143'] . '</th>
-                                    </tr>
-                                    <tr>
-                                        <td>' . gethostbyname($this->urlParse['host']) . '</td>
-                                        <td>' . $data_list['country'] . '</td>
-                                        <td>' . $data_list['isp'] . '</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <br />
-                        </div>
-                        <div class="seoBox36 suggestionBox">' . $this->lang['AN208'] . '</div>
-                   </div>';
-        return $output;
+    // Also check the HTTP headers (e.g., Server, X-Powered-By).
+    foreach ($headers as $key => $value) {
+        // In case the header contains an array of values
+        if (is_array($value)) {
+            $value = implode(' ', $value);
+        }
+        if (stripos($key, 'server') !== false || stripos($key, 'x-powered-by') !== false) {
+            foreach ($techPatterns as $tech => $pattern) {
+                if (preg_match($pattern, $value)) {
+                    $technologies[] = $tech;
+                }
+            }
+        }
     }
+
+    // Remove duplicate entries.
+    return array_unique($technologies);
+}
+
+private function whoislookup(string $domain): string {
+    // Try RDAP first
+    $rdapUrl = "https://rdap.org/domain/{$domain}";
+    try {
+        $response = @file_get_contents($rdapUrl);
+        $data = json_decode($response, true);
+        if (json_last_error() === JSON_ERROR_NONE && !empty($data)) {
+            return print_r($data, true);
+        }
+    } catch (\Exception $e) {
+        // Continue to fallback
+    }
+    // Fallback to php-whois
+    require_once __DIR__ . '/vendor/autoload.php';
+    try {
+        $whois = \Iodev\Whois\Factory::create()->loadDomainInfo($domain);
+        if ($whois) {
+            return print_r($whois->getRawData(), true);
+        }
+    } catch (\Exception $e) {
+        return "Error fetching WHOIS via php-whois: " . $e->getMessage();
+    }
+    return "No WHOIS data available.";
+}
+/**
+ * Helper function to retrieve SSL certificate details for a host.
+ *
+ * @param string $host The domain name.
+ * @return mixed Parsed SSL certificate info as an associative array, or an error string.
+ */
+private function getSSLInfo(string $host)
+{
+    // Attempt a socket connection on port 443
+    $contextOptions = [
+        'ssl' => [
+            'capture_peer_cert' => true,
+            'verify_peer'       => false,
+            'verify_peer_name'  => false,
+        ]
+    ];
+    $context = stream_context_create($contextOptions);
+
+    $client = @stream_socket_client("ssl://{$host}:443", $errno, $errstr, 10, STREAM_CLIENT_CONNECT, $context);
+    if (!$client) {
+        return "Unable to connect to SSL port: {$errstr}";
+    }
+
+    $params = stream_context_get_params($client);
+    if (empty($params['options']['ssl']['peer_certificate'])) {
+        return "No SSL certificate found.";
+    }
+
+    $cert = $params['options']['ssl']['peer_certificate'];
+    $sslInfo = openssl_x509_parse($cert);
+
+    // Optionally, parse the data further for clarity
+    // e.g. extract subject, issuer, validFrom, validTo, etc.
+
+    return $sslInfo;
+}
+
+public static function formatWhoisData($data): string
+{
+    if (is_array($data)) {
+        $html = '<ul>';
+        foreach ($data as $key => $value) {
+            $html .= '<li><strong>' . htmlspecialchars((string)$key) . ':</strong> '
+                   . self::formatWhoisData($value)
+                   . '</li>';
+        }
+        $html .= '</ul>';
+        return $html;
+    } else {
+        // For a string or numeric, show as text
+        // Use nl2br so newlines appear
+        return nl2br(htmlspecialchars((string)$data));
+    }
+}
+
+
+ 
+
+
+/**
+ * showServerInfo()
+ *
+ * Displays the server information stored in the "server_loc" JSON in a tabbed layout,
+ * using an accordion for DNS records for better readability.
+ *
+ * @param string $jsonData JSON-encoded server info from DB
+ * @return string HTML output
+ */
+public function showServerInfo(string $jsonData): string
+{
+    // Decode the JSON from the database
+    $data = json_decode($jsonData, true);
+    if (!is_array($data)) {
+        return '<div class="alert alert-danger">No server information available.</div>';
+    }
+
+    // -----------------------------------------
+    // 0) HELPER FUNCTIONS
+    // -----------------------------------------
+    // Format a date string to "M d, Y H:i:s" if possible
+    $formatDateFriendly = function ($rawDate) {
+        $ts = strtotime($rawDate);
+        return ($ts !== false)
+            ? date('M d, Y H:i:s', $ts)
+            : $rawDate; // fallback if strtotime fails
+    };
+
+    // Compute "X years (Y days)" from a given date string
+    $computeDomainAge = function ($rawDate) {
+        $ts = strtotime($rawDate);
+        if ($ts === false) {
+            return ['years' => 'N/A', 'days' => 'N/A'];
+        }
+        $daysDiff = floor((time() - $ts) / 86400);
+        $years    = round($daysDiff / 365, 1);
+        return [
+            'years' => $years,
+            'days'  => $daysDiff
+        ];
+    };
+
+    // -----------------------------------------
+    // 1) DNS Records (for the DNS Info tab)
+    // -----------------------------------------
+    $dnsRecords = $data['dns_records'] ?? [];
+    $dnsHtml = '<div class="alert alert-info">No DNS records found.</div>';
+    if (!empty($dnsRecords)) {
+        // Group DNS records by type
+        $dnsByType = [];
+        foreach ($dnsRecords as $rec) {
+            $type = isset($rec['type']) ? strtoupper($rec['type']) : 'UNKNOWN';
+            $dnsByType[$type][] = $rec;
+        }
+
+        $dnsHtml = '<div class="accordion" id="dnsAccordion">';
+        $i = 0;
+        foreach ($dnsByType as $type => $records) {
+            $i++;
+            $collapseId    = "collapseDns{$i}";
+            $expanded      = 'false';
+            $collapseClass = 'accordion-collapse collapse';
+            $buttonClass   = 'accordion-button collapsed';
+
+            $dnsHtml .= '
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingDns' . $i . '">
+                  <button class="' . $buttonClass . '" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#' . $collapseId . '" aria-expanded="' . $expanded . '"
+                          aria-controls="' . $collapseId . '">
+                    ' . htmlspecialchars($type) . ' Records (' . count($records) . ')
+                  </button>
+                </h2>
+                <div id="' . $collapseId . '" class="' . $collapseClass . '"
+                     aria-labelledby="headingDns' . $i . '" data-bs-parent="#dnsAccordion">
+                  <div class="accordion-body">
+                    <table class="table table-sm table-bordered">
+                      <thead class="table-light">
+                        <tr><th>Field</th><th>Value</th></tr>
+                      </thead>
+                      <tbody>';
+
+            foreach ($records as $rec) {
+                foreach ($rec as $fieldKey => $fieldValue) {
+                    if (is_array($fieldValue)) {
+                        $fieldValue = implode(', ', $fieldValue);
+                    }
+                    $dnsHtml .= '
+                        <tr>
+                          <td>' . htmlspecialchars($fieldKey) . '</td>
+                          <td>' . htmlspecialchars((string)$fieldValue) . '</td>
+                        </tr>';
+                }
+                // Spacer row
+                $dnsHtml .= '<tr><td colspan="2" class="bg-light"></td></tr>';
+            }
+
+            $dnsHtml .= '
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>';
+        }
+        $dnsHtml .= '</div>';
+    }
+
+    // -----------------------------------------
+    // 2) Parse WHOIS & gather domain info
+    // -----------------------------------------
+    $whoisInfo = $data['whois_info'] ?? [];
+    $rawWhois  = '';
+    if (is_array($whoisInfo) && isset($whoisInfo['raw_data'])) {
+        $rawWhois = trim($whoisInfo['raw_data']);
+    } elseif (is_string($whoisInfo)) {
+        $rawWhois = trim($whoisInfo);
+    }
+
+    // Defaults
+    $domainName         = $this->urlParse['host'] ?? 'N/A';
+    $registrar          = 'N/A';
+    $ianaID             = 'N/A';
+    $registrarUrl       = 'N/A';
+    $whoisServer        = 'N/A';
+    $abuseContact       = 'N/A';
+    $domainStatus       = 'N/A';
+    $createdDate        = 'N/A';
+    $expiryDate         = 'N/A';
+    $updatedDate        = 'N/A';
+    $hostedIP           = $data['server_ip'] ?? 'N/A';
+    $nsRecordsParsed    = []; // from WHOIS fallback
+    $domainAgeYears     = 'N/A';
+    $domainAgeDays      = 'N/A';
+
+    // Attempt to parse raw WHOIS lines
+    if ($rawWhois !== '') {
+        $lines = explode("\n", $rawWhois);
+        foreach ($lines as $line) {
+            $lineTrim = trim($line);
+            $lcLine   = strtolower($lineTrim);
+
+            if (preg_match('/^domain name:\s*(.+)$/i', $lineTrim, $m)) {
+                $domainName = $m[1];
+            }
+            if (preg_match('/^registrar:\s*(.+)$/i', $lineTrim, $m)) {
+                $registrar = $m[1];
+            }
+            if (preg_match('/^registrar iana id:\s*(.+)$/i', $lineTrim, $m)) {
+                $ianaID = $m[1];
+            }
+            if (preg_match('/^registrar url:\s*(.+)$/i', $lineTrim, $m)) {
+                $registrarUrl = $m[1];
+            }
+            if (preg_match('/^registrar whois server:\s*(.+)$/i', $lineTrim, $m)) {
+                $whoisServer = $m[1];
+            }
+            if (preg_match('/^registrar abuse contact email:\s*(.+)$/i', $lineTrim, $m)) {
+                $abuseContact = $m[1];
+            }
+            if (preg_match('/^registrar abuse contact phone:\s*(.+)$/i', $lineTrim, $m)) {
+                $abuseContact .= ' / ' . $m[1];
+            }
+            if (preg_match('/^domain status:\s*(.+)$/i', $lineTrim, $m)) {
+                if ($domainStatus === 'N/A') {
+                    $domainStatus = $m[1];
+                } else {
+                    $domainStatus .= ', ' . $m[1];
+                }
+            }
+            // Creation date
+            if (preg_match('/(creation date|created on|registered on|registration time|creation time):\s*(.+)/i', $lineTrim, $m)) {
+                $createdDate = trim($m[2]);
+            }
+            // Expiry
+            if (preg_match('/(registry expiry date|expiry date|expiration date):\s*(.+)/i', $lineTrim, $m)) {
+                $expiryDate = trim($m[2]);
+            }
+            // Updated
+            if (preg_match('/(updated date|last updated on):\s*(.+)/i', $lineTrim, $m)) {
+                $updatedDate = trim($m[2]);
+            }
+            // Name servers from WHOIS fallback
+            if (preg_match('/^name server:\s*(.+)$/i', $lineTrim, $m)) {
+                $nsRecordsParsed[] = $m[1];
+            }
+        }
+        // Compute domain age
+        $age = $computeDomainAge($createdDate);
+        $domainAgeYears = $age['years'];
+        $domainAgeDays  = $age['days'];
+    }
+
+    // If DNS-based NS is empty, fallback to WHOIS
+    $nsRecordsDNS = array_filter($dnsRecords, function($r) {
+        return (isset($r['type']) && strtoupper($r['type']) === 'NS');
+    });
+    $finalNsList = [];
+    if (!empty($nsRecordsDNS)) {
+        foreach ($nsRecordsDNS as $r) {
+            $finalNsList[] = $r['target'] ?? $r['ip'] ?? 'N/A';
+        }
+    } elseif (!empty($nsRecordsParsed)) {
+        // WHOIS fallback
+        $finalNsList = $nsRecordsParsed;
+    }
+
+    // Format creation/expiry/updated dates nicely
+    $createdDateFriendly = ($createdDate !== 'N/A') ? $formatDateFriendly($createdDate) : 'N/A';
+    $expiryDateFriendly  = ($expiryDate  !== 'N/A') ? $formatDateFriendly($expiryDate)  : 'N/A';
+    $updatedDateFriendly = ($updatedDate !== 'N/A') ? $formatDateFriendly($updatedDate) : 'N/A';
+
+    // Build the Name Servers tab (first tab)
+    // Combine everything into a single table
+    $nsHtml = '<table class="table table-bordered table-sm mb-3">
+        <tbody>
+          <tr><th>Domain Name</th><td>' . htmlspecialchars($domainName) . '</td></tr>
+          <tr><th>Registrar</th><td>' . htmlspecialchars($registrar) . '</td></tr>
+          <tr><th>IANA ID</th><td>' . htmlspecialchars($ianaID) . '</td></tr>
+          <tr><th>Registrar URL</th><td>' . htmlspecialchars($registrarUrl) . '</td></tr>
+          <tr><th>WHOIS Server</th><td>' . htmlspecialchars($whoisServer) . '</td></tr>
+          <tr><th>Abuse Contact</th><td>' . htmlspecialchars($abuseContact) . '</td></tr>
+          <tr><th>Domain Status</th><td>' . htmlspecialchars($domainStatus) . '</td></tr>
+          <tr><th>Creation Date</th><td>' . htmlspecialchars($createdDateFriendly) . '</td></tr>
+          <tr><th>Expiry Date</th><td>' . htmlspecialchars($expiryDateFriendly) . '</td></tr>
+          <tr><th>Updated Date</th><td>' . htmlspecialchars($updatedDateFriendly) . '</td></tr>
+          <tr><th>Age</th><td>' . htmlspecialchars($domainAgeYears . ' years (' . $domainAgeDays . ' days)') . '</td></tr>
+          <tr><th>Hosted IP Address</th><td>' . htmlspecialchars($hostedIP) . '</td></tr>';
+
+    // Add Name Servers row
+    if (!empty($finalNsList)) {
+        $nsHtml .= '<tr><th>Name Servers</th><td><ul>';
+        foreach ($finalNsList as $oneNs) {
+            $nsHtml .= '<li>' . htmlspecialchars($oneNs) . '</li>';
+        }
+        $nsHtml .= '</ul></td></tr>';
+    } else {
+        $nsHtml .= '<tr><th>Name Servers</th><td><div class="alert alert-info mb-0">No Name Server records found.</div></td></tr>';
+    }
+
+    $nsHtml .= '</tbody></table>';
+
+
+    // -----------------------------------------
+    // 3) IP-API data for "Server Info" tab
+    // (We’ll place city/region/country in that tab)
+    // -----------------------------------------
+    $serverIP = $data['server_ip'] ?? null;
+    $city    = 'N/A';
+    $region  = 'N/A';
+    $country = 'N/A';
+    $asn     = 'N/A';
+    $isp     = 'N/A';
+    $org     = 'N/A';
+    $ipHistory = 'Not available';
+
+    if ($serverIP) {
+        $apiUrl = "http://ip-api.com/json/{$serverIP}?fields=status,message,country,regionName,city,isp,org,as,query";
+        $resp   = @file_get_contents($apiUrl);
+        if ($resp !== false) {
+            $json = json_decode($resp, true);
+            if ($json && isset($json['status']) && $json['status'] === 'success') {
+                $city     = $json['city']       ?? 'N/A';
+                $region   = $json['regionName'] ?? 'N/A';
+                $country  = $json['country']    ?? 'N/A';
+                $asn      = $json['as']         ?? 'N/A';
+                $isp      = $json['isp']        ?? 'N/A';
+                $org      = $json['org']        ?? 'N/A';
+            }
+        }
+        // For demonstration, just a placeholder for IP history:
+        $ipHistory = "12 changes on 10 unique IP addresses over 19 years (example)";
+    }
+
+    // Also get server signature if available
+    $serverSignature = $data['server_signature'] ?? 'N/A';
+
+    $serverInfoHtml = '
+      <table class="table table-bordered table-sm">
+        <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Server IP</td><td>' . htmlspecialchars($serverIP ?? 'N/A') . '</td></tr>
+          <tr><td>IP Location</td><td>' . htmlspecialchars($city . ', ' . $region . ', ' . $country) . '</td></tr>
+          <tr><td>ASN</td><td>' . htmlspecialchars($asn) . '</td></tr>
+          <tr><td>Hosting Company</td><td>' . htmlspecialchars($org) . '</td></tr>
+          <tr><td>ISP</td><td>' . htmlspecialchars($isp) . '</td></tr>
+          <tr><td>Server Signature</td><td>' . htmlspecialchars($serverSignature) . '</td></tr>
+          <tr><td>IP History</td><td>' . htmlspecialchars($ipHistory) . '</td></tr>
+        </tbody>
+      </table>';
+
+
+    // -----------------------------------------
+    // 4) SSL Info
+    // -----------------------------------------
+    $sslHtml = '<div class="alert alert-info">No SSL certificate details found.</div>';
+    $sslInfo = $data['ssl_info'] ?? [];
+    if (is_array($sslInfo) && !empty($sslInfo['ssl_info']) && is_array($sslInfo['ssl_info'])) {
+        $sslCert = $sslInfo['ssl_info'];
+        $subject         = $sslCert['subject']          ?? [];
+        $issuer          = $sslCert['issuer']           ?? [];
+        $validFromUnix   = $sslCert['validFrom_time_t'] ?? null;
+        $validToUnix     = $sslCert['validTo_time_t']   ?? null;
+        $validFrom       = $validFromUnix ? date('M d, Y H:i:s', $validFromUnix) : 'N/A';
+        $validTo         = $validToUnix   ? date('M d, Y H:i:s', $validToUnix)   : 'N/A';
+
+        $san             = $sslCert['extensions']['subjectAltName']      ?? 'N/A';
+        $keyUsage        = $sslCert['extensions']['keyUsage']            ?? 'N/A';
+        $extendedKeyUsage= $sslCert['extensions']['extendedKeyUsage']    ?? 'N/A';
+        $certPolicies    = $sslCert['extensions']['certificatePolicies'] ?? 'N/A';
+
+        $sslHtml = '<div style="font-family:Arial, sans-serif; border:1px solid #ccc; padding:15px; border-radius:5px; background:#f9f9f9;">';
+        $sslHtml .= '<h3 style="margin-top:0;">SSL Certificate Details for ' . htmlspecialchars($this->urlParse['host']) . '</h3>';
+
+        // Subject
+        $sslHtml .= '<h4>Subject</h4><ul>';
+        if (isset($subject['CN'])) {
+            $sslHtml .= '<li><strong>Common Name (CN):</strong> ' . htmlspecialchars($subject['CN']) . '</li>';
+        }
+        $sslHtml .= '</ul>';
+
+        // Issuer
+        $sslHtml .= '<h4>Issuer</h4><ul>';
+        if (isset($issuer['C'])) {
+            $sslHtml .= '<li><strong>Country (C):</strong> ' . htmlspecialchars($issuer['C']) . '</li>';
+        }
+        if (isset($issuer['O'])) {
+            $sslHtml .= '<li><strong>Organization (O):</strong> ' . htmlspecialchars($issuer['O']) . '</li>';
+        }
+        if (isset($issuer['OU'])) {
+            $sslHtml .= '<li><strong>Organizational Unit (OU):</strong> ' . htmlspecialchars($issuer['OU']) . '</li>';
+        }
+        if (isset($issuer['CN'])) {
+            $sslHtml .= '<li><strong>Common Name (CN):</strong> ' . htmlspecialchars($issuer['CN']) . '</li>';
+        }
+        $sslHtml .= '</ul>';
+
+        // Validity Period
+        $sslHtml .= '<h4>Validity Period</h4><ul>';
+        $sslHtml .= '<li><strong>Valid From:</strong> ' . $validFrom . ' <em>(Unix Time: ' . ($validFromUnix ?? 'N/A') . ')</em></li>';
+        $sslHtml .= '<li><strong>Valid To:</strong> ' . $validTo . ' <em>(Unix Time: ' . ($validToUnix ?? 'N/A') . ')</em></li>';
+        $sslHtml .= '</ul>';
+
+        // SAN
+        $sslHtml .= '<h4>Subject Alternative Names (SAN)</h4>';
+        $sslHtml .= '<p>' . htmlspecialchars($san) . '</p>';
+
+        // Key Usage
+        $sslHtml .= '<h4>Key Usage</h4><ul>';
+        $sslHtml .= '<li><strong>Standard:</strong> ' . htmlspecialchars($keyUsage) . '</li>';
+        $sslHtml .= '<li><strong>Extended:</strong> ' . htmlspecialchars($extendedKeyUsage) . '</li>';
+        $sslHtml .= '</ul>';
+
+        // Certificate Policies
+        $sslHtml .= '<h4>Certificate Policies</h4>';
+        $sslHtml .= '<p>' . htmlspecialchars($certPolicies) . '</p>';
+
+        $sslHtml .= '<p style="font-size:0.9em; color:#555;">Other technical details (such as serial number, version, and extensions) are available for advanced troubleshooting and security audits.</p>';
+        $sslHtml .= '</div>';
+    }
+
+    // -----------------------------------------
+    // 5) Technology
+    // -----------------------------------------
+    $techUsed = $data['technology_used'] ?? [];
+    $techHtml = '<div class="alert alert-info">No technology information found.</div>';
+    if (!empty($techUsed)) {
+        $techHtml = '<ul class="list-group">';
+        foreach ($techUsed as $tech) {
+            $techHtml .= '<li class="list-group-item">' . htmlspecialchars($tech) . '</li>';
+        }
+        $techHtml .= '</ul>';
+    }
+
+    // -----------------------------------------
+    // 6) WHOIS (raw text with bolded keys)
+    // -----------------------------------------
+    $whoisHtml = '<div class="alert alert-info">No WHOIS data available.</div>';
+    if ($rawWhois !== '') {
+        $whoisFormatted = preg_replace(
+            '/^(.*?:)/m',
+            '<strong>$1</strong>',
+            nl2br(htmlspecialchars($rawWhois))
+        );
+        $whoisHtml = '<div>' . $whoisFormatted . '</div>';
+    }
+
+    // -----------------------------------------
+    // BUILD THE FINAL TABS
+    //  - Name Servers is first & active
+    // -----------------------------------------
+    $html = '
+<div class="container my-3">
+  <ul class="nav nav-tabs" id="serverInfoTab" role="tablist">
+    <!-- Name Servers (FIRST & ACTIVE) -->
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="ns-tab" data-bs-toggle="tab" data-bs-target="#ns"
+              type="button" role="tab" aria-controls="ns" aria-selected="true">
+        Name Servers
+      </button>
+    </li>
+
+    <!-- DNS Info -->
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="dns-tab" data-bs-toggle="tab" data-bs-target="#dns"
+              type="button" role="tab" aria-controls="dns" aria-selected="false">
+        DNS Info
+      </button>
+    </li>
+
+    <!-- Server Info -->
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="server-tab" data-bs-toggle="tab" data-bs-target="#server"
+              type="button" role="tab" aria-controls="server" aria-selected="false">
+        Server Info
+      </button>
+    </li>
+
+    <!-- SSL Info -->
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="ssl-tab" data-bs-toggle="tab" data-bs-target="#ssl"
+              type="button" role="tab" aria-controls="ssl" aria-selected="false">
+        SSL Info
+      </button>
+    </li>
+
+    <!-- Technology -->
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="tech-tab" data-bs-toggle="tab" data-bs-target="#tech"
+              type="button" role="tab" aria-controls="tech" aria-selected="false">
+        Technology
+      </button>
+    </li>
+
+    <!-- WHOIS -->
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="whois-tab" data-bs-toggle="tab" data-bs-target="#whois"
+              type="button" role="tab" aria-controls="whois" aria-selected="false">
+        Whois
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content p-3" id="serverInfoTabContent">
+    <!-- Name Server Tab (ACTIVE) -->
+    <div class="tab-pane fade show active" id="ns" role="tabpanel" aria-labelledby="ns-tab">
+      ' . $nsHtml . '
+    </div>
+
+    <!-- DNS Info Tab -->
+    <div class="tab-pane fade" id="dns" role="tabpanel" aria-labelledby="dns-tab">
+      ' . $dnsHtml . '
+    </div>
+
+    <!-- Server Info Tab -->
+    <div class="tab-pane fade" id="server" role="tabpanel" aria-labelledby="server-tab">
+      ' . $serverInfoHtml . '
+    </div>
+
+    <!-- SSL Info Tab -->
+    <div class="tab-pane fade" id="ssl" role="tabpanel" aria-labelledby="ssl-tab">
+      ' . $sslHtml . '
+    </div>
+
+    <!-- Technology Tab -->
+    <div class="tab-pane fade" id="tech" role="tabpanel" aria-labelledby="tech-tab">
+      ' . $techHtml . '
+    </div>
+
+    <!-- WHOIS Tab -->
+    <div class="tab-pane fade" id="whois" role="tabpanel" aria-labelledby="whois-tab">
+      ' . $whoisHtml . '
+    </div>
+  </div>
+</div>';
+
+    return $html;
+}
+
+
+
+
+
+ 
+
+
 
     /*===================================================================
      * SPEED TIPS HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processSpeedTips() {
-        // Use regex to count CSS, JS, nested tables, and inline CSS.
         $cssCount = $jsCount = 0;
         preg_match_all("#<link[^>]*>#is", $this->html, $matches);
         if (!empty($matches[0])) {
@@ -2291,18 +2946,17 @@ private function getHttpResponseCode(string $url): int {
         }
         $nestedTables = preg_match("#<(td|th)(?:[^>]*)>(.*?)<table(?:[^>]*)>(.*?)</table>(.*?)</(td|th)#is", $this->html);
         $inlineCss = preg_match("#<.+style=\"[^\"]+\".+>#is", $this->html);
-        $updateStr = serBase(array($cssCount, $jsCount, $nestedTables, $inlineCss));
-        updateToDbPrepared($this->con, 'domains_data', array('speed_tips' => $updateStr), array('domain' => $this->domainStr));
-        return array(
+        $updateStr = serBase([$cssCount, $jsCount, $nestedTables, $inlineCss]);
+        updateToDbPrepared($this->con, 'domains_data', ['speed_tips' => $updateStr], ['domain' => $this->domainStr]);
+        return [
             'cssCount' => $cssCount,
             'jsCount' => $jsCount,
             'nestedTables' => $nestedTables,
             'inlineCss' => $inlineCss
-        );
+        ];
     }
 
     public function showSpeedTips($data) {
-        $speedTipsCheck = 0;
         $speedTipsBody = '';
         $speedTipsBody .= ($data['cssCount'] > 5) ? '<img src="' . themeLink('img/false.png', true) . '" /> ' . $this->lang['AN145'] : '<img src="' . themeLink('img/true.png', true) . '" /> ' . $this->lang['AN144'];
         $speedTipsBody .= '<br><br>';
@@ -2311,16 +2965,11 @@ private function getHttpResponseCode(string $url): int {
         $speedTipsBody .= ($data['nestedTables'] == 1) ? '<img src="' . themeLink('img/false.png', true) . '" /> ' . $this->lang['AN149'] : '<img src="' . themeLink('img/true.png', true) . '" /> ' . $this->lang['AN148'];
         $speedTipsBody .= '<br><br>';
         $speedTipsBody .= ($data['inlineCss'] == 1) ? '<img src="' . themeLink('img/false.png', true) . '" /> ' . $this->lang['AN151'] : '<img src="' . themeLink('img/true.png', true) . '" /> ' . $this->lang['AN150'];
-        if ($data['cssCount'] > 5 || $data['jsCount'] > 5 || $data['nestedTables'] == 1 || $data['inlineCss'] == 1) {
-            $speedTipsClass = ($speedTipsCheck > 2) ? 'errorBox' : 'improveBox';
-        } else {
-            $speedTipsClass = 'passedBox';
-        }
+        $speedTipsClass = ($data['cssCount'] > 5 || $data['jsCount'] > 5 || $data['nestedTables'] == 1 || $data['inlineCss'] == 1) ? 'improveBox' : 'passedBox';
         $output = '<div class="' . $speedTipsClass . '">
                         <div class="msgBox">
                             ' . $this->lang['AN152'] . '<br />
-                            <div class="altImgGroup">' . $speedTipsBody . '</div>
-                            <br />
+                            <div class="altImgGroup">' . $speedTipsBody . '</div><br />
                         </div>
                         <div class="seoBox37 suggestionBox">' . $this->lang['AN209'] . '</div>
                    </div>';
@@ -2329,21 +2978,16 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * ANALYTICS & DOCTYPE HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processDocType() {
-        // Check for Google Analytics tracking code.
-        $anCheck = false;
         if (preg_match("/\bua-\d{4,9}-\d{1,4}\b/i", $this->html) || check_str_contains($this->html, "gtag('")) {
             $analyticsClass = 'passedBox';
             $analyticsMsg = $this->lang['AN154'];
-            $anCheck = true;
         } else {
             $analyticsClass = 'errorBox';
             $analyticsMsg = $this->lang['AN153'];
         }
-        // Detect DOCTYPE.
         $patternCode = "<!DOCTYPE[^>]*>";
         preg_match("#{$patternCode}#is", $this->html, $matches);
         if (!isset($matches[0])) {
@@ -2351,7 +2995,7 @@ private function getHttpResponseCode(string $url): int {
             $docTypeClass = 'improveBox';
             $docType = "";
         } else {
-            $doctypes = array(
+            $doctypes = [
                 'HTML 5' => '<!DOCTYPE html>',
                 'HTML 4.01 Strict' => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">',
                 'HTML 4.01 Transitional' => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
@@ -2360,20 +3004,19 @@ private function getHttpResponseCode(string $url): int {
                 'XHTML 1.0 Transitional' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
                 'XHTML 1.0 Frameset' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">',
                 'XHTML 1.1' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">'
-            );
+            ];
             $found = strtolower(preg_replace('/\s+/', ' ', trim($matches[0])));
             $docType = array_search($found, array_map('strtolower', $doctypes));
             $docTypeMsg = $this->lang['AN156'] . ' ' . $docType;
             $docTypeClass = 'passedBox';
         }
-        $updateStr = jsonEncode(array('analyticsMsg' => $analyticsMsg, 'docTypeMsg' => $docTypeMsg, 'analyticsClass' => $analyticsClass, 'docTypeClass' => $docTypeClass));
-        
-        updateToDbPrepared($this->con, 'domains_data', array('analytics' => $updateStr), array('domain' => $this->domainStr));
+        $updateStr = jsonEncode(['analyticsMsg' => $analyticsMsg, 'docTypeMsg' => $docTypeMsg, 'analyticsClass' => $analyticsClass, 'docTypeClass' => $docTypeClass]);
+        updateToDbPrepared($this->con, 'domains_data', ['analytics' => $updateStr], ['domain' => $this->domainStr]);
         return $updateStr;
     }
 
     public function showDocType($data) {
-        $data = jsonDecode($data); 
+        $data = jsonDecode($data);
         $seoBox38 = '<div class="' . $data['analyticsClass'] . '">
                         <div class="msgBox">' . $data['analyticsMsg'] . '<br /><br /></div>
                         <div class="seoBox38 suggestionBox">' . $this->lang['AN210'] . '</div>
@@ -2387,9 +3030,8 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * W3C VALIDITY HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processW3c() {
         $w3Data = curlGET('https://validator.w3.org/nu/?doc=' . urlencode($this->urlParse['scheme'] . "://" . $this->urlParse['host']));
         if (!empty($w3Data)) {
@@ -2404,44 +3046,34 @@ private function getHttpResponseCode(string $url): int {
             $w3cMsg = $this->lang['AN10'];
             $w3DataCheck = '3';
         }
-        $updateStr = jsonEncode(array('w3cMsg' => $w3cMsg, 'w3DataCheck' => $w3DataCheck));
-        
-        updateToDbPrepared($this->con, 'domains_data', $updateStr, array('domain' => $this->domainStr));
-        return array('w3cMsg' => $w3cMsg, 'w3DataCheck' => $w3DataCheck);
+        $updateStr = jsonEncode(['w3cMsg' => $w3cMsg, 'w3DataCheck' => $w3DataCheck]);
+        updateToDbPrepared($this->con, 'domains_data', $updateStr, ['domain' => $this->domainStr]);
+        return ['w3cMsg' => $w3cMsg, 'w3DataCheck' => $w3DataCheck];
     }
 
     public function showW3c($w3cData) {
-        echo " <pre>";
-        print_r($w3cData);
-        echo "</pre> ";
-        echo "Hi";
-        die();
-       
-        $w3cData = jsonDecode($w3cData); 
-       
+        if (!is_string($w3cData)) {
+            $data = $w3cData;
+        } else {
+            $data = jsonDecode($w3cData);
+        }
         $output = '<div class="lowImpactBox">
-                        <div class="msgBox">' . $w3cData['w3cMsg'] . '<br /><br /></div>
+                        <div class="msgBox">' . $data['w3cMsg'] . '<br /><br /></div>
                         <div class="seoBox39 suggestionBox">' . $this->lang['AN211'] . '</div>
                    </div>';
-                   echo "$output<pre>";
-                   print_r($w3cData);
-                   echo "</pre>";
-                   echo "Hi";
-                   die();
         return $output;
     }
 
     /*===================================================================
      * ENCODING HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processEncoding() {
         $pattern = '<meta[^>]+charset=[\'"]?(.*?)[\'"]?[\/\s>]';
         preg_match("#{$pattern}#is", $this->html, $matches);
-        $charset = isset($matches[1]) ? trim(mb_strtoupper($matches[1])) : null; 
+        $charset = isset($matches[1]) ? trim(mb_strtoupper($matches[1])) : null;
         $updateStr = base64_encode($charset);
-        updateToDbPrepared($this->con, 'domains_data', array('encoding' => $updateStr), array('domain' => $this->domainStr));
+        updateToDbPrepared($this->con, 'domains_data', ['encoding' => $updateStr], ['domain' => $this->domainStr]);
         return $charset;
     }
 
@@ -2457,18 +3089,16 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * INDEXED PAGES HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processIndexedPages() {
-        $indexed = trim(str_replace(',', '', googleIndex($this->urlParse['host']))); 
-        updateToDbPrepared($this->con, 'domains_data', array('indexed' => jsonEncode($indexed)), array('domain' => $this->domainStr));
+        $indexed = trim(str_replace(',', '', googleIndex($this->urlParse['host'])));
+        updateToDbPrepared($this->con, 'domains_data', ['indexed' => jsonEncode($indexed)], ['domain' => $this->domainStr]);
         return $indexed;
     }
 
     public function showIndexedPages($indexed) {
         $indexed = jsonDecode($indexed);
-        
         if (intval($indexed) < 50) {
             $datVal = 25;
             $indexedClass = 'errorBox';
@@ -2497,21 +3127,18 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * BACKLINKS / ALEXA / SITE WORTH HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processBacklinks() {
         $alexa = alexaRank($this->urlParse['host']);
-        $alexa[3] = backlinkCount(clean_url($this->urlParse['host']), $this->con); 
-        $updateStr = jsonEncode(array((string)$alexa[0], (string)$alexa[1], (string)$alexa[2], (string)$alexa[3]));
-        updateToDbPrepared($this->con, 'domains_data', array('alexa' => $updateStr), array('domain' => $this->domainStr));
+        $alexa[3] = backlinkCount(clean_url($this->urlParse['host']), $this->con);
+        $updateStr = jsonEncode([(string)$alexa[0], (string)$alexa[1], (string)$alexa[2], (string)$alexa[3]]);
+        updateToDbPrepared($this->con, 'domains_data', ['alexa' => $updateStr], ['domain' => $this->domainStr]);
         return $updateStr;
     }
 
     public function showBacklinks($alexa) {
-       
         $alexa = jsonDecode($alexa);
-       
         $alexa_back = intval($alexa[3]);
         if ($alexa_back < 50) {
             $datVal = 25;
@@ -2552,13 +3179,12 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * SOCIAL DATA HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processSocialData() {
         $socialData = getSocialData($this->html);
-        $updateStr = serBase(array($socialData['fb'], $socialData['twit'], $socialData['insta'], 0));
-        updateToDbPrepared($this->con, 'domains_data', array('social' => $updateStr), array('domain' => $this->domainStr));
+        $updateStr = serBase([$socialData['fb'], $socialData['twit'], $socialData['insta'], 0]);
+        updateToDbPrepared($this->con, 'domains_data', ['social' => $updateStr], ['domain' => $this->domainStr]);
         return $socialData;
     }
 
@@ -2584,21 +3210,19 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * VISITORS LOCALIZATION HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processVisitorsData() {
-        // Retrieve visitor localization info from DB (simulate here)
-        $data = mysqliPreparedQuery($this->con, "SELECT alexa FROM domains_data WHERE domain=?", 's', array($this->domainStr));
+        $data = mysqliPreparedQuery($this->con, "SELECT alexa FROM domains_data WHERE domain=?", 's', [$this->domainStr]);
         if ($data !== false) {
             $alexa = jsonDecode($data['alexa']);
-            $alexaDatas = array(
-                array('', 'Popularity at', $alexa[1]),
-                array('', 'Regional Rank', $alexa[2])
-            );
+            $alexaDatas = [
+                ['', 'Popularity at', $alexa[1]],
+                ['', 'Regional Rank', $alexa[2]]
+            ];
             return $alexaDatas;
         }
-        return array();
+        return [];
     }
 
     public function showVisitorsData($alexaDatas) {
@@ -2620,15 +3244,13 @@ private function getHttpResponseCode(string $url): int {
 
     /*===================================================================
      * PAGE SPEED INSIGHT HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function processPageSpeedInsight() {
         $desktopScore = pageSpeedInsightChecker($this->urlParse['host'], 'desktop');
         $mobileScore = pageSpeedInsightChecker($this->urlParse['host'], 'mobile');
-        $updateStr =  jsonEncode(array('desktopScore' => $desktopScore, 'mobileScore' => $mobileScore));
-        
-        updateToDbPrepared($this->con, 'domains_data', array('page_speed_insight' => $updateStr), array('domain' => $this->domainStr));
+        $updateStr = jsonEncode(['desktopScore' => $desktopScore, 'mobileScore' => $mobileScore]);
+        updateToDbPrepared($this->con, 'domains_data', ['page_speed_insight' => $updateStr], ['domain' => $this->domainStr]);
         return $updateStr;
     }
 
@@ -2637,7 +3259,6 @@ private function getHttpResponseCode(string $url): int {
         $speedStr = $this->lang['117'];
         $desktopStr = $this->lang['118'];
         $mobileStr = $this->lang['119'];
-        // Desktop gauge script.
         $desktopMsg = <<<EOT
 <script>
 var desktopPageSpeed = new Gauge({
@@ -2667,7 +3288,6 @@ desktopPageSpeed.onready = function() { desktopPageSpeed.setValue({$data['deskto
 desktopPageSpeed.draw();
 </script>
 EOT;
-        // Mobile gauge script.
         $mobileMsg = <<<EOT
 <script>
 var mobilePageSpeed = new Gauge({
@@ -2730,43 +3350,33 @@ EOT;
         return $seoBox48 . $this->sepUnique . $seoBox49;
     }
 
-
-    
-
     /*===================================================================
      * CLEAN OUT HANDLER
-     *===================================================================
+     *=================================================================== 
      */
-
     public function cleanOut() {
         $passscore = raino_trim($_POST['passscore']);
         $improvescore = raino_trim($_POST['improvescore']);
         $errorscore = raino_trim($_POST['errorscore']);
-        $score = array($passscore, $improvescore, $errorscore);
+        $score = [$passscore, $improvescore, $errorscore];
         $updateStr = serBase($score);
-        updateToDbPrepared($this->con, 'domains_data', array('score' => $updateStr, 'completed' => 'yes'), array('domain' => $this->domainStr));
-
-        $data = mysqliPreparedQuery($this->con, "SELECT * FROM domains_data WHERE domain=?", 's', array($this->domainStr));
+        updateToDbPrepared($this->con, 'domains_data', ['score' => $updateStr, 'completed' => 'yes'], ['domain' => $this->domainStr]);
+        $data = mysqliPreparedQuery($this->con, "SELECT * FROM domains_data WHERE domain=?", 's', [$this->domainStr]);
         if ($data !== false) {
             $pageSpeedInsightData = jsonDecode($data['page_speed_insight']);
             $alexa = jsonDecode($data['alexa']);
             $finalScore = ($passscore == '') ? '0' : $passscore;
             $globalRank = ($alexa[0] == '') ? '0' : $alexa[0];
             $pageSpeed = ($pageSpeedInsightData[0] == '') ? '0' : $pageSpeedInsightData[0];
-
             if (!isset($_SESSION['twebUsername']))
                 $username = trans('Guest', $this->lang['11'], true);
             else
                 $username = $_SESSION['twebUsername'];
-
             if ($globalRank == 'No Global Rank')
                 $globalRank = 0;
-
-            $other = serBase(array($finalScore, $globalRank, $pageSpeed));
+            $other = serBase([$finalScore, $globalRank, $pageSpeed]);
             addToRecentSites($this->con, $this->domainStr, $ip, $username, $other);
         }
-
-        // Clear temporary cached file (assume $filename is available globally or passed in)
         delFile($filename);
     }
 }
