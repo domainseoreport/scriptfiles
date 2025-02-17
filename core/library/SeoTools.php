@@ -2442,7 +2442,8 @@ public static function formatWhoisData($data): string
  * showServerInfo()
  *
  * Displays the server information stored in the "server_loc" JSON in a tabbed layout,
- * using an accordion for DNS records for better readability.
+ * with the Name Servers tab first and open by default, followed by DNS Info, Server Info,
+ * SSL Info, Technology, and Whois.
  *
  * @param string $jsonData JSON-encoded server info from DB
  * @return string HTML output
@@ -2455,10 +2456,9 @@ public function showServerInfo(string $jsonData): string
         return '<div class="alert alert-danger">No server information available.</div>';
     }
 
-    // -----------------------------------------
-    // 0) HELPER FUNCTIONS
-    // -----------------------------------------
-    // Format a date string to "M d, Y H:i:s" if possible
+    /*--------------------------------------------------------
+     * Helper functions for date formatting & domain age
+     *-------------------------------------------------------*/
     $formatDateFriendly = function ($rawDate) {
         $ts = strtotime($rawDate);
         return ($ts !== false)
@@ -2466,7 +2466,6 @@ public function showServerInfo(string $jsonData): string
             : $rawDate; // fallback if strtotime fails
     };
 
-    // Compute "X years (Y days)" from a given date string
     $computeDomainAge = function ($rawDate) {
         $ts = strtotime($rawDate);
         if ($ts === false) {
@@ -2480,9 +2479,9 @@ public function showServerInfo(string $jsonData): string
         ];
     };
 
-    // -----------------------------------------
-    // 1) DNS Records (for the DNS Info tab)
-    // -----------------------------------------
+    /*--------------------------------------------------------
+     * 1) DNS Info (Accordion)
+     *-------------------------------------------------------*/
     $dnsRecords = $data['dns_records'] ?? [];
     $dnsHtml = '<div class="alert alert-info">No DNS records found.</div>';
     if (!empty($dnsRecords)) {
@@ -2493,6 +2492,7 @@ public function showServerInfo(string $jsonData): string
             $dnsByType[$type][] = $rec;
         }
 
+        // Build the accordion
         $dnsHtml = '<div class="accordion" id="dnsAccordion">';
         $i = 0;
         foreach ($dnsByType as $type => $records) {
@@ -2542,12 +2542,12 @@ public function showServerInfo(string $jsonData): string
                 </div>
               </div>';
         }
-        $dnsHtml .= '</div>';
+        $dnsHtml .= '</div>'; // end accordion
     }
 
-    // -----------------------------------------
-    // 2) Parse WHOIS & gather domain info
-    // -----------------------------------------
+    /*--------------------------------------------------------
+     * 2) WHOIS + Domain Info (Name Servers Tab is first)
+     *-------------------------------------------------------*/
     $whoisInfo = $data['whois_info'] ?? [];
     $rawWhois  = '';
     if (is_array($whoisInfo) && isset($whoisInfo['raw_data'])) {
@@ -2557,70 +2557,74 @@ public function showServerInfo(string $jsonData): string
     }
 
     // Defaults
-    $domainName         = $this->urlParse['host'] ?? 'N/A';
-    $registrar          = 'N/A';
-    $ianaID             = 'N/A';
-    $registrarUrl       = 'N/A';
-    $whoisServer        = 'N/A';
-    $abuseContact       = 'N/A';
-    $domainStatus       = 'N/A';
-    $createdDate        = 'N/A';
-    $expiryDate         = 'N/A';
-    $updatedDate        = 'N/A';
-    $hostedIP           = $data['server_ip'] ?? 'N/A';
-    $nsRecordsParsed    = []; // from WHOIS fallback
-    $domainAgeYears     = 'N/A';
-    $domainAgeDays      = 'N/A';
+    $domainName       = $this->urlParse['host'] ?? 'N/A';
+    $registrar        = 'N/A';
+    $ianaID           = 'N/A';
+    $registrarUrl     = 'N/A';
+    $whoisServer      = 'N/A';
+    $abuseContact     = 'N/A';
+    $domainStatus     = 'N/A';
+    $createdDate      = 'N/A';
+    $expiryDate       = 'N/A';
+    $updatedDate      = 'N/A';
+    $hostedIP         = $data['server_ip'] ?? 'N/A';
+    $nsRecordsParsed  = [];
+    $domainAgeYears   = 'N/A';
+    $domainAgeDays    = 'N/A';
 
-    // Attempt to parse raw WHOIS lines
     if ($rawWhois !== '') {
         $lines = explode("\n", $rawWhois);
         foreach ($lines as $line) {
-            $lineTrim = trim($line);
-            $lcLine   = strtolower($lineTrim);
-
-            if (preg_match('/^domain name:\s*(.+)$/i', $lineTrim, $m)) {
+            $trimLine = trim($line);
+            // Domain Name
+            if (preg_match('/^domain name:\s*(.+)$/i', $trimLine, $m)) {
                 $domainName = $m[1];
             }
-            if (preg_match('/^registrar:\s*(.+)$/i', $lineTrim, $m)) {
+            // Registrar
+            if (preg_match('/^registrar:\s*(.+)$/i', $trimLine, $m)) {
                 $registrar = $m[1];
             }
-            if (preg_match('/^registrar iana id:\s*(.+)$/i', $lineTrim, $m)) {
+            // IANA ID
+            if (preg_match('/^registrar iana id:\s*(.+)$/i', $trimLine, $m)) {
                 $ianaID = $m[1];
             }
-            if (preg_match('/^registrar url:\s*(.+)$/i', $lineTrim, $m)) {
+            // Registrar URL
+            if (preg_match('/^registrar url:\s*(.+)$/i', $trimLine, $m)) {
                 $registrarUrl = $m[1];
             }
-            if (preg_match('/^registrar whois server:\s*(.+)$/i', $lineTrim, $m)) {
+            // Registrar WHOIS Server
+            if (preg_match('/^registrar whois server:\s*(.+)$/i', $trimLine, $m)) {
                 $whoisServer = $m[1];
             }
-            if (preg_match('/^registrar abuse contact email:\s*(.+)$/i', $lineTrim, $m)) {
+            // Abuse Contact
+            if (preg_match('/^registrar abuse contact email:\s*(.+)$/i', $trimLine, $m)) {
                 $abuseContact = $m[1];
             }
-            if (preg_match('/^registrar abuse contact phone:\s*(.+)$/i', $lineTrim, $m)) {
+            if (preg_match('/^registrar abuse contact phone:\s*(.+)$/i', $trimLine, $m)) {
                 $abuseContact .= ' / ' . $m[1];
             }
-            if (preg_match('/^domain status:\s*(.+)$/i', $lineTrim, $m)) {
+            // Domain Status
+            if (preg_match('/^domain status:\s*(.+)$/i', $trimLine, $m)) {
                 if ($domainStatus === 'N/A') {
                     $domainStatus = $m[1];
                 } else {
                     $domainStatus .= ', ' . $m[1];
                 }
             }
-            // Creation date
-            if (preg_match('/(creation date|created on|registered on|registration time|creation time):\s*(.+)/i', $lineTrim, $m)) {
+            // Created Date
+            if (preg_match('/(creation date|created on|registered on|registration time|creation time):\s*(.+)/i', $trimLine, $m)) {
                 $createdDate = trim($m[2]);
             }
-            // Expiry
-            if (preg_match('/(registry expiry date|expiry date|expiration date):\s*(.+)/i', $lineTrim, $m)) {
+            // Expiry Date
+            if (preg_match('/(registry expiry date|expiry date|expiration date):\s*(.+)/i', $trimLine, $m)) {
                 $expiryDate = trim($m[2]);
             }
-            // Updated
-            if (preg_match('/(updated date|last updated on):\s*(.+)/i', $lineTrim, $m)) {
+            // Updated Date
+            if (preg_match('/(updated date|last updated on):\s*(.+)/i', $trimLine, $m)) {
                 $updatedDate = trim($m[2]);
             }
-            // Name servers from WHOIS fallback
-            if (preg_match('/^name server:\s*(.+)$/i', $lineTrim, $m)) {
+            // WHOIS-based Name Servers
+            if (preg_match('/^name server:\s*(.+)$/i', $trimLine, $m)) {
                 $nsRecordsParsed[] = $m[1];
             }
         }
@@ -2630,7 +2634,7 @@ public function showServerInfo(string $jsonData): string
         $domainAgeDays  = $age['days'];
     }
 
-    // If DNS-based NS is empty, fallback to WHOIS
+    // Fallback to DNS-based NS if available
     $nsRecordsDNS = array_filter($dnsRecords, function($r) {
         return (isset($r['type']) && strtoupper($r['type']) === 'NS');
     });
@@ -2644,13 +2648,12 @@ public function showServerInfo(string $jsonData): string
         $finalNsList = $nsRecordsParsed;
     }
 
-    // Format creation/expiry/updated dates nicely
+    // Friendly date conversions
     $createdDateFriendly = ($createdDate !== 'N/A') ? $formatDateFriendly($createdDate) : 'N/A';
     $expiryDateFriendly  = ($expiryDate  !== 'N/A') ? $formatDateFriendly($expiryDate)  : 'N/A';
     $updatedDateFriendly = ($updatedDate !== 'N/A') ? $formatDateFriendly($updatedDate) : 'N/A';
 
-    // Build the Name Servers tab (first tab)
-    // Combine everything into a single table
+    // Build the Name Servers tab
     $nsHtml = '<table class="table table-bordered table-sm mb-3">
         <tbody>
           <tr><th>Domain Name</th><td>' . htmlspecialchars($domainName) . '</td></tr>
@@ -2666,7 +2669,7 @@ public function showServerInfo(string $jsonData): string
           <tr><th>Age</th><td>' . htmlspecialchars($domainAgeYears . ' years (' . $domainAgeDays . ' days)') . '</td></tr>
           <tr><th>Hosted IP Address</th><td>' . htmlspecialchars($hostedIP) . '</td></tr>';
 
-    // Add Name Servers row
+    // Name servers row
     if (!empty($finalNsList)) {
         $nsHtml .= '<tr><th>Name Servers</th><td><ul>';
         foreach ($finalNsList as $oneNs) {
@@ -2679,11 +2682,9 @@ public function showServerInfo(string $jsonData): string
 
     $nsHtml .= '</tbody></table>';
 
-
-    // -----------------------------------------
-    // 3) IP-API data for "Server Info" tab
-    // (We’ll place city/region/country in that tab)
-    // -----------------------------------------
+    /*--------------------------------------------------------
+     * 3) IP-API (Server Info Tab)
+     *-------------------------------------------------------*/
     $serverIP = $data['server_ip'] ?? null;
     $city    = 'N/A';
     $region  = 'N/A';
@@ -2707,13 +2708,11 @@ public function showServerInfo(string $jsonData): string
                 $org      = $json['org']        ?? 'N/A';
             }
         }
-        // For demonstration, just a placeholder for IP history:
+        // For demonstration, a placeholder IP history:
         $ipHistory = "12 changes on 10 unique IP addresses over 19 years (example)";
     }
 
-    // Also get server signature if available
     $serverSignature = $data['server_signature'] ?? 'N/A';
-
     $serverInfoHtml = '
       <table class="table table-bordered table-sm">
         <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
@@ -2728,14 +2727,14 @@ public function showServerInfo(string $jsonData): string
         </tbody>
       </table>';
 
-
-    // -----------------------------------------
-    // 4) SSL Info
-    // -----------------------------------------
+    /*--------------------------------------------------------
+     * 4) SSL Info
+     *-------------------------------------------------------*/
     $sslHtml = '<div class="alert alert-info">No SSL certificate details found.</div>';
     $sslInfo = $data['ssl_info'] ?? [];
     if (is_array($sslInfo) && !empty($sslInfo['ssl_info']) && is_array($sslInfo['ssl_info'])) {
         $sslCert = $sslInfo['ssl_info'];
+
         $subject         = $sslCert['subject']          ?? [];
         $issuer          = $sslCert['issuer']           ?? [];
         $validFromUnix   = $sslCert['validFrom_time_t'] ?? null;
@@ -2798,9 +2797,9 @@ public function showServerInfo(string $jsonData): string
         $sslHtml .= '</div>';
     }
 
-    // -----------------------------------------
-    // 5) Technology
-    // -----------------------------------------
+    /*--------------------------------------------------------
+     * 5) Technology
+     *-------------------------------------------------------*/
     $techUsed = $data['technology_used'] ?? [];
     $techHtml = '<div class="alert alert-info">No technology information found.</div>';
     if (!empty($techUsed)) {
@@ -2811,11 +2810,12 @@ public function showServerInfo(string $jsonData): string
         $techHtml .= '</ul>';
     }
 
-    // -----------------------------------------
-    // 6) WHOIS (raw text with bolded keys)
-    // -----------------------------------------
+    /*--------------------------------------------------------
+     * 6) WHOIS Tab
+     *-------------------------------------------------------*/
     $whoisHtml = '<div class="alert alert-info">No WHOIS data available.</div>';
     if ($rawWhois !== '') {
+        // Bold everything before the first colon on each line
         $whoisFormatted = preg_replace(
             '/^(.*?:)/m',
             '<strong>$1</strong>',
@@ -2824,10 +2824,11 @@ public function showServerInfo(string $jsonData): string
         $whoisHtml = '<div>' . $whoisFormatted . '</div>';
     }
 
-    // -----------------------------------------
-    // BUILD THE FINAL TABS
-    //  - Name Servers is first & active
-    // -----------------------------------------
+    /*--------------------------------------------------------
+     * Final Tabs Layout
+     *  Name Servers (active), DNS Info, Server Info, SSL Info,
+     *  Technology, WHOIS
+     *-------------------------------------------------------*/
     $html = '
 <div class="container my-3">
   <ul class="nav nav-tabs" id="serverInfoTab" role="tablist">
@@ -2915,6 +2916,7 @@ public function showServerInfo(string $jsonData): string
 
     return $html;
 }
+
 
 
 
