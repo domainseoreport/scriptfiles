@@ -2211,10 +2211,15 @@ private function checkIP(string $domain): array {
                 'error' => 'Unable to fetch IP geolocation data.'
             ];
         }
+        
+        // Optionally, add IP history information if available.
+        // For now, we'll add a placeholder.
+        $ipInfo['ip_history'] = "Not available";
     }
     
     return $ipInfo;
 }
+
 
 
 /**
@@ -2707,9 +2712,7 @@ public function showServerInfo(string $jsonData): string
                 $isp      = $json['isp']        ?? 'N/A';
                 $org      = $json['org']        ?? 'N/A';
             }
-        }
-        // For demonstration, a placeholder IP history:
-        $ipHistory = "12 changes on 10 unique IP addresses over 19 years (example)";
+        } 
     }
 
     $serverSignature = $data['server_signature'] ?? 'N/A';
@@ -2722,8 +2725,7 @@ public function showServerInfo(string $jsonData): string
           <tr><td>ASN</td><td>' . htmlspecialchars($asn) . '</td></tr>
           <tr><td>Hosting Company</td><td>' . htmlspecialchars($org) . '</td></tr>
           <tr><td>ISP</td><td>' . htmlspecialchars($isp) . '</td></tr>
-          <tr><td>Server Signature</td><td>' . htmlspecialchars($serverSignature) . '</td></tr>
-          <tr><td>IP History</td><td>' . htmlspecialchars($ipHistory) . '</td></tr>
+          <tr><td>Server Signature</td><td>' . htmlspecialchars($serverSignature) . '</td></tr> 
         </tbody>
       </table>';
 
