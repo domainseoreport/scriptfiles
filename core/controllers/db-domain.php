@@ -177,7 +177,7 @@ $seoBox12 = $seoTools->showIPCanonicalization($ipData);
 
  
 $links_analyser = $data['links_analyser'];   
-$seoBox13 = $seoTools->showInPageLinks($ipData);
+$seoBox13 = $seoTools->showInPageLinks($links_analyser);
 
 $seoBox17 = '<div class="'.$urlRewritingClass.'">
 <div class="msgBox">       
@@ -1056,48 +1056,10 @@ $seoBox46 = '<div class="'.$alexaClass.'">
 </div>';
 
 
-//Social Data
-$social_Msg = $lang['AN216'];
-$socialMsg = '';
-$socialClass = 'lowImpactBox';
-
-$social_count = decSerBase($data['social']);
-$facebook_like = $social_count[0];
-$twit_count = $social_count[1];
-$insta_count = $social_count[2];
-
-if($facebook_like === '-')
-    $facebook_like = $false;
-else
-    $facebook_like = $true.' '.$facebook_like;
-
-if($twit_count === '-')
-    $twit_count = $false;
-else
-    $twit_count = $true.' '.$twit_count;
-
-if($insta_count === '-')
-    $insta_count = $false;
-else
-    $insta_count = $true.' '.$insta_count;
-
-$socialMsg = $lang['AN167'];  
-        
-$seoBox44 = '<div class="'.$socialClass.'">
-<div class="msgBox">   
-        '.$socialMsg.'
-    <br />
-    <div class="altImgGroup">
-        <br><div class="social-box"><i class="fa fa-facebook social-facebook"></i> Facebook: '.$facebook_like.'</div><br>
-        <div class="social-box"><i class="fa fa-twitter social-linkedin"></i> Twitter: '.$twit_count.' </div><br>
-        <div class="social-box"><i class="fa fa-instagram social-google"></i> Instagram: '.$insta_count.'</div>
-    </div>
-    <br />
-</div>
-<div class="seoBox44 suggestionBox">
-'.$social_Msg.'
-</div> 
-</div>';
+//Schema Data
+ 
+$schemadata = $data['schema_data'];    
+$seoBox44 = $seoTools->showSchema($schemadata);
 
 //Visitors Localization
 $visitors_Msg = $lang['AN219'];

@@ -47,17 +47,22 @@ class SeoTools {
     ) {
         $this->html = $this->normalizeHtml($html);
         $this->con = $con;
+        
+        // If domainStr is empty but the parsed URL contains a host, use that.
+        if (empty($domainStr) && isset($urlParse['host'])) {
+            $domainStr = strtolower($urlParse['host']);
+        }
         $this->domainStr = $domainStr;
         $this->lang = $lang;
     
-        // If no parsed URL is provided, create one using the domain string.
-        if (!$urlParse) {
+        // If no parsed URL is provided, try creating one using the domain string.
+        if (!$urlParse && !empty($domainStr)) {
             $defaultUrl = "http://" . $domainStr;
             $urlParse = parse_url($defaultUrl);
         }
         $this->urlParse = $urlParse;
     
-        // Validate and extract scheme and host from urlParse
+        // Validate that both scheme and host are available.
         if (!isset($this->urlParse['scheme']) || !isset($this->urlParse['host'])) {
             throw new Exception("Invalid URL: Both scheme and host must be provided.");
         }
@@ -69,6 +74,7 @@ class SeoTools {
         $this->true = '<img src="' . themeLink('img/true.png', true) . '" alt="True" />';
         $this->false = '<img src="' . themeLink('img/false.png', true) . '" alt="False" />';
     }
+    
 
     /**
      * normalizeHtml()
@@ -2865,9 +2871,7 @@ public function showServerInfo(string $jsonData): string
      * Processes and stores Schema data from the HTML.
      *=================================================================== 
      */
-
-
-     /**
+/**
  * Processes and stores schema data from the HTML.
  *
  * This method extracts schema information from:
@@ -2876,29 +2880,35 @@ public function showServerInfo(string $jsonData): string
  *   - RDFa (elements with attributes like typeof, property, vocab)
  *
  * It then encodes all the extracted data as JSON and updates the DB.
+ * It also checks for errors (adding suggestions) for each type.
  *
  * @return string JSON-encoded schema data.
  */
-public function processSchema(): string {
+public function processSchema(): string
+{
     $doc = $this->getDom();
     $xpath = new DOMXPath($doc);
-    
+
     $schemas = [
         'json_ld'   => [],
         'microdata' => [],
-        'rdfa'      => []
+        'rdfa'      => [],
+        'suggestions' => [
+            'json_ld'   => [],
+            'microdata' => [],
+            'rdfa'      => []
+        ]
     ];
-    
+
     // --- JSON-LD Extraction ---
     $jsonLdScripts = $xpath->query('//script[@type="application/ld+json"]');
     foreach ($jsonLdScripts as $js) {
         $json = trim($js->nodeValue);
         $decoded = json_decode($json, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            // Log the error if needed.
+            $schemas['suggestions']['json_ld'][] = "Invalid JSON in an ld+json script.";
             continue;
         }
-        // If the JSON-LD has an @graph, process each node.
         if (isset($decoded['@graph']) && is_array($decoded['@graph'])) {
             foreach ($decoded['@graph'] as $node) {
                 $types = $node['@type'] ?? 'undefined';
@@ -2925,117 +2935,235 @@ public function processSchema(): string {
             }
         }
     }
-    
+    if (empty($schemas['json_ld']['Organization'])) {
+        $schemas['suggestions']['json_ld'][] = "Organization schema is missing. Consider adding it to enhance your brand's structured data.";
+    }
+
     // --- Microdata Extraction ---
-    // Look for elements that have the "itemscope" attribute.
     $microItems = $xpath->query('//*[@itemscope]');
     foreach ($microItems as $item) {
         $typeUrl = $item->getAttribute('itemtype');
-        // Use the basename of the URL as the type, or "undefined" if missing.
         $type = $typeUrl ? basename(parse_url($typeUrl, PHP_URL_PATH)) : 'undefined';
-        // For simplicity, we record the nodeName. You could extract more data if needed.
         $schemas['microdata'][$type][] = $item->nodeName;
     }
-    
+    if (empty($schemas['microdata'])) {
+        $schemas['suggestions']['microdata'][] = "No microdata found. Adding microdata can improve structured data richness.";
+    }
+
     // --- RDFa Extraction ---
-    // Look for elements with a "typeof" attribute (commonly used in RDFa)
     $rdfaItems = $xpath->query('//*[@typeof]');
     foreach ($rdfaItems as $item) {
         $type = $item->getAttribute('typeof') ?: 'undefined';
-        // Optionally, you can extract additional RDFa attributes like property, resource, vocab, etc.
         $rdfaData = [
-            'node'    => $item->nodeName,
-            'typeof'  => $type,
-            'vocab'   => $item->getAttribute('vocab') ?: '',
-            'property'=> $item->getAttribute('property') ?: '',
-            'content' => $item->getAttribute('content') ?: $item->textContent
+            'node'     => $item->nodeName,
+            'typeof'   => $type,
+            'vocab'    => $item->getAttribute('vocab') ?: '',
+            'property' => $item->getAttribute('property') ?: '',
+            'content'  => $item->getAttribute('content') ?: $item->textContent
         ];
         $schemas['rdfa'][$type][] = $rdfaData;
     }
-    
-    // If no schema data was found, store a message.
+    if (empty($schemas['rdfa'])) {
+        $schemas['suggestions']['rdfa'][] = "No RDFa data found. Consider adding RDFa to provide additional context.";
+    }
+
     if (empty($schemas['json_ld']) && empty($schemas['microdata']) && empty($schemas['rdfa'])) {
         $schemas = ['schema_data' => 'No schema data found.'];
     }
-    
+
     $schemaJson = json_encode($schemas);
-    // Update the DB (you can choose your desired column name; here we assume "schema_data")
     updateToDbPrepared($this->con, 'domains_data', ['schema_data' => $schemaJson], ['domain' => $this->domainStr]);
     return $schemaJson;
 }
 
 /**
- * Displays the stored schema data in a tabbed layout.
+ * Recursively renders an array as a nested table in a "Google-like" style.
+ *
+ * @param mixed $data The data to render.
+ * @param string $prefix A unique prefix for collapse IDs.
+ * @param int $level Current nesting level.
+ * @return string HTML output.
+ */
+private function renderGoogleStyle($data, string $prefix = 'g', int $level = 0): string
+{
+    if (!is_array($data)) {
+        return '<span>' . htmlspecialchars((string)$data) . '</span>';
+    }
+    $html = '<table class="table table-bordered table-sm mb-0">';
+    foreach ($data as $key => $value) {
+        $html .= '<tr>';
+        $html .= '<th style="width:180px;">' . htmlspecialchars((string)$key) . '</th>';
+        $html .= '<td>';
+        if (is_array($value)) {
+            $collapseId = $prefix . '-' . preg_replace('/\s+/', '-', $key) . '-' . $level . '-' . uniqid();
+            $html .= '<button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#' . $collapseId . '" aria-expanded="false" aria-controls="' . $collapseId . '">View details</button>';
+            $html .= '<div class="collapse mt-1" id="' . $collapseId . '"><div class="card card-body p-2" style="background:#f9f9f9;">' . $this->renderGoogleStyle($value, $collapseId, $level + 1) . '</div></div>';
+        } else {
+            $html .= htmlspecialchars((string)$value);
+        }
+        $html .= '</td>';
+        $html .= '</tr>';
+    }
+    $html .= '</table>';
+    return $html;
+}
+
+/**
+ * Custom rendering for Organization data using a card layout.
+ *
+ * @param array $data The Organization node data.
+ * @return string HTML output.
+ */
+private function renderOrganization(array $data): string
+{
+    $html  = '<div class="card mb-3">';
+    $html .= '<div class="card-header bg-primary text-white"><h5>Organization</h5></div>';
+    $html .= '<div class="card-body">';
+    $html .= '<table class="table table-bordered table-sm">';
+    foreach ($data as $key => $value) {
+        $html .= '<tr>';
+        $html .= '<th style="width:150px;">' . htmlspecialchars(ucfirst($key)) . '</th>';
+        $html .= '<td>';
+        if (is_array($value)) {
+            $html .= $this->renderGoogleStyle($value, 'org-' . $key);
+        } else {
+            $html .= htmlspecialchars((string)$value);
+        }
+        $html .= '</td>';
+        $html .= '</tr>';
+    }
+    $html .= '</table>';
+    $html .= '</div></div>';
+    return $html;
+}
+
+/**
+ * Displays the stored schema data in a tabbed layout in a user-friendly, Google-like format.
+ * - JSON‑LD: Shown with sub-tabs by type (with "Organization" appearing first if present).
+ *   Each sub-tab shows its data rendered via renderGoogleStyle(), and Organization data uses a custom layout.
+ *   Suggestions for JSON‑LD are shown at the bottom of the JSON‑LD tab.
+ * - Microdata and RDFa are rendered similarly with suggestions appended at the bottom.
  *
  * @param string $jsonData JSON-encoded schema data from the database.
  * @return string HTML output.
  */
-public function showSchema(string $jsonData): string {
+public function showSchema(string $jsonData): string
+{
     $data = json_decode($jsonData, true);
     if (!is_array($data)) {
         return '<div class="alert alert-danger">No schema data available.</div>';
     }
-    
-    // Prepare output for each type. If a type is missing, show a default message.
-    $jsonLdHtml = '<div class="alert alert-info">No JSON-LD schema data found.</div>';
+
+    // --- JSON‑LD Section ---
+    $jsonLdContent = '';
     if (!empty($data['json_ld']) && is_array($data['json_ld'])) {
-        $jsonLdHtml = '<ul>';
-        foreach ($data['json_ld'] as $type => $nodes) {
-            $jsonLdHtml .= '<li><strong>' . htmlspecialchars($type) . '</strong>: ' . count($nodes) . ' instance(s)</li>';
+        // Order types so that "Organization" is first if present.
+        $types = array_keys($data['json_ld']);
+        $ordered = [];
+        if (isset($data['json_ld']['Organization'])) {
+            $ordered[] = 'Organization';
         }
-        $jsonLdHtml .= '</ul>';
+        $otherTypes = array_diff($types, ['Organization']);
+        sort($otherTypes);
+        $ordered = array_merge($ordered, $otherTypes);
+
+        // Build sub-tabs for JSON‑LD (remove "fade" class to fix refresh issues)
+        $subTabNav = '<ul class="nav nav-pills mb-3" id="jsonLdSubTab" role="tablist">';
+        $subTabContent = '<div class="tab-content" id="jsonLdSubTabContent">';
+        $i = 0;
+        foreach ($ordered as $type) {
+            $count = count($data['json_ld'][$type]);
+            $activeClass = ($i === 0) ? 'active' : '';
+            $paneId = 'jsonld-' . preg_replace('/\s+/', '-', strtolower($type));
+            $subTabNav .= '
+            <li class="nav-item" role="presentation">
+                <button class="nav-link ' . $activeClass . '" id="' . $paneId . '-tab" data-bs-toggle="tab" data-bs-target="#' . $paneId . '" type="button" role="tab" aria-controls="' . $paneId . '" aria-selected="' . ($i === 0 ? 'true' : 'false') . '">
+                    ' . htmlspecialchars($type) . ' (' . $count . ')
+                </button>
+            </li>';
+            $subTabContent .= '<div class="tab-pane show ' . $activeClass . '" id="' . $paneId . '" role="tabpanel" aria-labelledby="' . $paneId . '-tab">';
+            foreach ($data['json_ld'][$type] as $index => $node) {
+                if ($type === 'Organization') {
+                    $subTabContent .= $this->renderOrganization($node);
+                } else {
+                    $subTabContent .= '<div class="card mb-3">';
+                    $subTabContent .= '<div class="card-header">' . htmlspecialchars($type) . ' - Node ' . ($index + 1) . '</div>';
+                    $subTabContent .= '<div class="card-body" style="background:#f9f9f9;">' . $this->renderGoogleStyle($node, $paneId . '-' . $index) . '</div>';
+                    $subTabContent .= '</div>';
+                }
+            }
+            $subTabContent .= '</div>';
+            $i++;
+        }
+        $subTabNav .= '</ul>';
+        $subTabContent .= '</div>';
+
+        $jsonLdContent .= '<div class="container mt-3"><h4>JSON‑LD Data</h4>';
+        $jsonLdContent .= $subTabNav . $subTabContent;
+        $jsonLdContent .= '</div>';
+        if (!empty($data['suggestions']['json_ld'])) {
+            $jsonLdContent .= '<div class="container mt-2"><div class="alert alert-warning">';
+            $jsonLdContent .= '<strong>Suggestions:</strong> ' . implode(" ", $data['suggestions']['json_ld']);
+            $jsonLdContent .= '</div></div>';
+        }
+    } else {
+        $jsonLdContent = '<div class="alert alert-info">No JSON‑LD schema data found.</div>';
     }
-    
-    $microHtml = '<div class="alert alert-info">No Microdata found.</div>';
+
+    // --- Microdata Section ---
+    $microContent = '';
     if (!empty($data['microdata']) && is_array($data['microdata'])) {
-        $microHtml = '<ul>';
-        foreach ($data['microdata'] as $type => $items) {
-            $microHtml .= '<li><strong>' . htmlspecialchars($type) . '</strong>: ' . count($items) . ' instance(s)</li>';
+        $microContent .= '<div class="container mt-3"><h4>Microdata</h4>';
+        $microContent .= $this->renderGoogleStyle($data['microdata'], 'micro');
+        $microContent .= '</div>';
+        if (!empty($data['suggestions']['microdata'])) {
+            $microContent .= '<div class="container mt-2"><div class="alert alert-warning">';
+            $microContent .= '<strong>Suggestions:</strong> ' . implode(" ", $data['suggestions']['microdata']);
+            $microContent .= '</div></div>';
         }
-        $microHtml .= '</ul>';
+    } else {
+        $microContent = '<div class="alert alert-info">No Microdata found.</div>';
     }
-    
-    $rdfaHtml = '<div class="alert alert-info">No RDFa data found.</div>';
+
+    // --- RDFa Section ---
+    $rdfaContent = '';
     if (!empty($data['rdfa']) && is_array($data['rdfa'])) {
-        $rdfaHtml = '<ul>';
-        foreach ($data['rdfa'] as $type => $items) {
-            $rdfaHtml .= '<li><strong>' . htmlspecialchars($type) . '</strong>: ' . count($items) . ' instance(s)</li>';
+        $rdfaContent .= '<div class="container mt-3"><h4>RDFa</h4>';
+        $rdfaContent .= $this->renderGoogleStyle($data['rdfa'], 'rdfa');
+        $rdfaContent .= '</div>';
+        if (!empty($data['suggestions']['rdfa'])) {
+            $rdfaContent .= '<div class="container mt-2"><div class="alert alert-warning">';
+            $rdfaContent .= '<strong>Suggestions:</strong> ' . implode(" ", $data['suggestions']['rdfa']);
+            $rdfaContent .= '</div></div>';
         }
-        $rdfaHtml .= '</ul>';
+    } else {
+        $rdfaContent = '<div class="alert alert-info">No RDFa data found.</div>';
     }
-    
-    // Build a simple tab layout using Bootstrap (adjust classes as needed)
-    $html = '
-    <div class="container my-3">
-      <ul class="nav nav-tabs" id="schemaTab" role="tablist">
+
+    // --- Build top-level tabs for JSON‑LD, Microdata, RDFa ---
+    $tabs = '
+    <ul class="nav nav-tabs" id="schemaMainTab" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="jsonld-tab" data-bs-toggle="tab" data-bs-target="#jsonld" type="button" role="tab" aria-controls="jsonld" aria-selected="true">JSON‑LD</button>
+            <button class="nav-link active" id="jsonld-tab" data-bs-toggle="tab" data-bs-target="#jsonld" type="button" role="tab" aria-controls="jsonld" aria-selected="true">JSON‑LD</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="microdata-tab" data-bs-toggle="tab" data-bs-target="#microdata" type="button" role="tab" aria-controls="microdata" aria-selected="false">Microdata</button>
+            <button class="nav-link" id="microdata-tab" data-bs-toggle="tab" data-bs-target="#microdata" type="button" role="tab" aria-controls="microdata" aria-selected="false">Microdata</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="rdfa-tab" data-bs-toggle="tab" data-bs-target="#rdfa" type="button" role="tab" aria-controls="rdfa" aria-selected="false">RDFa</button>
+            <button class="nav-link" id="rdfa-tab" data-bs-toggle="tab" data-bs-target="#rdfa" type="button" role="tab" aria-controls="rdfa" aria-selected="false">RDFa</button>
         </li>
-      </ul>
-      <div class="tab-content p-3" id="schemaTabContent">
-        <div class="tab-pane fade show active" id="jsonld" role="tabpanel" aria-labelledby="jsonld-tab">
-          ' . $jsonLdHtml . '
-        </div>
-        <div class="tab-pane fade" id="microdata" role="tabpanel" aria-labelledby="microdata-tab">
-          ' . $microHtml . '
-        </div>
-        <div class="tab-pane fade" id="rdfa" role="tabpanel" aria-labelledby="rdfa-tab">
-          ' . $rdfaHtml . '
-        </div>
-      </div>
+    </ul>';
+
+    $content = '
+    <div class="tab-content" id="schemaMainTabContent">
+        <div class="tab-pane show active" id="jsonld" role="tabpanel" aria-labelledby="jsonld-tab">' . $jsonLdContent . '</div>
+        <div class="tab-pane fade" id="microdata" role="tabpanel" aria-labelledby="microdata-tab">' . $microContent . '</div>
+        <div class="tab-pane fade" id="rdfa" role="tabpanel" aria-labelledby="rdfa-tab">' . $rdfaContent . '</div>
     </div>';
-    
-    return $html;
+
+    return '<div class="container my-3">' . $tabs . $content . '</div>';
 }
 
-
- 
 
 
 

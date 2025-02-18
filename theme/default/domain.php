@@ -37,11 +37,12 @@ if ($updateFound) {
         var errorScore   = '<?php echo makeJavascriptStr($errorScore); ?>';
     </script>
 <?php } ?>
-
+ 
 <script>
     // Setup configuration variables for JavaScript use
     var hashCode    = '<?php echo $hashCode; ?>';
-    var inputHost   = '<?php echo $data["domain_access_url"]; ?>';
+    // Use the domain_access_url from DB if available; otherwise, fall back to $my_url_host
+    var inputHost   = '<?php echo !empty($data["domain_access_url"]) ? $data["domain_access_url"] : $my_url_host; ?>';
     var isOnline    = '<?php echo $isOnline; ?>';
     var pdfUrl      = '<?php echo $pdfUrl; ?>';
     var pdfMsg      = '<?php echo makeJavascriptStr($lang['34']); ?>';
@@ -414,7 +415,23 @@ if ($updateFound) {
                     </div>
 
   
+<?php //////////////////////////////////////////// Schema Section ///////////////////////////////////////////////////////// ?> 
 
+
+                    <div id="serverdetails-analysis" class="container mt-4">    
+                        <div class="card" id="social">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0"><?php trans('Social',$lang['19']); ?></h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="contentBox" id="seoBox44">
+                                    <?php echo $seoBox44; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     
                 
 <?php //////////////////////////////////////////// IP Canonicalization Ratio Section ///////////////////////////////////////////////////////// ?>               
                 <div class="seoBox">
@@ -696,21 +713,7 @@ if ($updateFound) {
                 
                 </div>
                 
-                <div id="social">
-               
-                <div class="clearSep"></div>
-                <h2 class="seoBox-title">
-                    <?php trans('Social',$lang['19']); ?>
-                </h2>
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN112'],$solveMsg,3); ?>
-                    <div class="contentBox" id="seoBox44">
-                        <?php echo $seoBox44; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
                 
-                </div>
                 
                 <div id="visitors" class="hide">
                 <div class="clearSep"></div>

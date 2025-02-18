@@ -18,6 +18,7 @@ defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
 require_once(LIB_DIR . 'SeoTools.php');
 // Define the temporary directory constant for cached files.
 define('TEMP_DIR', APP_DIR . 'temp' . D_S);
+
 /*
  * ---------------------------------------------------------------------
  * GET REQUEST HANDLER
@@ -43,8 +44,26 @@ if (isset($_GET['getImage'])) {
  */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    // Check that the URL parameter is provided and not empty.
+    if (!isset($_POST['url']) || trim($_POST['url']) === '') {
+        error_log("No URL parameter provided in the POST request.");
+        die("Error: URL parameter is missing.");
+    }
+
     // Retrieve and sanitize the website URL from POST data.
-    $my_url = raino_trim($_POST['url']);
+    $urlInput = raino_trim($_POST['url']);
+
+    // If the URL does not start with "http://" or "https://", prepend "http://"
+    if (!preg_match('#^https?://#i', $urlInput)) {
+        $urlInput = 'http://' . $urlInput;
+    }
+    // For debugging, bypass clean_url() to see if it affects the scheme.
+    // Uncomment the following line if you want to use clean_url():
+    // $my_url = clean_url($urlInput);
+    $my_url = $urlInput;
+    
+    // Debug: Log the final URL.
+    error_log("Final URL being parsed: " . $my_url);
     log_message('info', "Called {$my_url}");
 
     // Retrieve the unique hash code for caching.
@@ -58,6 +77,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Parse the input URL to extract scheme and host.
     $my_url_parse = parse_url($my_url);
+    // Ensure that a valid URL is provided by checking for scheme and host.
+    if (!isset($my_url_parse['scheme']) || !isset($my_url_parse['host'])) {
+        error_log("Invalid URL provided: {$my_url}");
+        die("Error: Invalid URL provided. Please include both scheme and host.");
+    }
     $inputHost = $my_url_parse['scheme'] . "://" . $my_url_parse['host'];
     $my_url_host = str_replace("www.", "", $my_url_parse['host']);
     $domainStr = escapeTrim($con, strtolower($my_url_host));
@@ -78,6 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $html = str_ireplace(["Content", "CONTENT"], "content", $html);
     $html = str_ireplace(["Meta", "META"], "meta", $html);
     $html = str_ireplace(["Name", "NAME"], "name", $html);
+
+    // Log debug info to help trace values.
+    log_message('info', "Called my_url: {$my_url} | Parsed host: {$my_url_host} | domainStr: {$domainStr}");
 
     // Instantiate the SeoTools class with the cached HTML and parameters.
     $seoTools = new SeoTools($html, $con, $domainStr, $lang, $my_url_parse, $sepUnique, $seoBoxLogin);
@@ -218,11 +245,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['in_page'])) {
         log_message('debug', "In-Page Links Tag Call for URL {$my_url_host}");
         $linksData = $seoTools->processInPageLinks();
- 
-        if (isset($_POST['inPageoutput'])) {
-            echo $seoTools->showInPageLinks($linksData);
-            die();
-        }
+        echo $seoTools->showInPageLinks($linksData);
+        die();
     }
 
     /*
@@ -438,7 +462,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['serverIP'])) {
         log_message('debug', "Server IP Tag Call for URL {$my_url_host}");
         $serverDataJson = $seoTools->processServerInfo();
-        // Later (or on a separate page) to display:
         echo $seoTools->showServerInfo($serverDataJson);
         die();
     }
@@ -497,8 +520,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      */
     if (isset($_POST['socialData'])) {
-        $socialData = $seoTools->processSocialData();
-        echo $seoTools->showSocialData($socialData);
+        // $socialData = $seoTools->processSocialData();
+        // echo $seoTools->showSocialData($socialData);
+        $schemaJson = $seoTools->processSchema();  // Process and store schema data.
+        echo $seoTools->showSchema($schemaJson);
         die();
     }
 
