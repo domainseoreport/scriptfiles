@@ -766,38 +766,11 @@ $seoBox35 = '<div class="'.$safeBrowsingClass.'">
 </div> 
 </div>';
 
+  
 //Server Location Information
-$serverIP_Msg = $lang['AN208'];
-$serverIPClass = 'lowImpactBox';
-
-$getHostIP = gethostbyname($my_url_host);
-$data_list = decSerBase($data['server_loc']);
-$domain_ip = $data_list[0];
-$domain_country =  $data_list[1];
-$domain_isp = $data_list[2];
+$server_loc = $data['server_loc']; 
             
-$seoBox36 = '<div class="'.$serverIPClass.'">
-<div class="msgBox">   
-    <table class="table table-hover table-bordered table-striped">
-        <tbody>
-            <tr> 
-                <th>'.$lang['AN141'].'</th> 
-                <th>'.$lang['AN142'].'</th>
-                <th>'.$lang['AN143'].'</th>
-            </tr> 
-            <tr> 
-                <td>'.$getHostIP.'</td> 
-                <td>'.$domain_country.'</td>
-                <td>'.$domain_isp.'</td>
-            </tr> 
-        </tbody>
-    </table>
-    <br />
-</div>
-<div class="seoBox36 suggestionBox">
-'.$serverIP_Msg.'
-</div> 
-</div>';
+$seoBox36 = $seoTools->showServerInfo($server_loc);
 
 //Speed Tips 
 $speedTips_Msg = $lang['AN209'];

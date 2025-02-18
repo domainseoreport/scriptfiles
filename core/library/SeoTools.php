@@ -23,7 +23,8 @@ class SeoTools {
     protected string $seoBoxLogin;  // HTML snippet for a login box (if user isn’t logged in)
     protected string $true;         // Icon for "true"
     protected string $false;        // Icon for "false"
-
+    protected string $scheme;
+    protected string $host;
     /**
      * Constructor.
      *
@@ -35,12 +36,34 @@ class SeoTools {
      * @param string|null $sepUnique  A unique separator string. Defaults to '!!!!8!!!!'.
      * @param string|null $seoBoxLogin HTML snippet for a login box.
      */
-    public function __construct(?string $html, $con, string $domainStr, array $lang, ?array $urlParse, ?string $sepUnique = null, ?string $seoBoxLogin = null) {
+    public function __construct(
+        ?string $html, 
+        $con, 
+        string $domainStr, 
+        array $lang, 
+        ?array $urlParse, 
+        ?string $sepUnique = null, 
+        ?string $seoBoxLogin = null
+    ) {
         $this->html = $this->normalizeHtml($html);
         $this->con = $con;
         $this->domainStr = $domainStr;
         $this->lang = $lang;
+    
+        // If no parsed URL is provided, create one using the domain string.
+        if (!$urlParse) {
+            $defaultUrl = "http://" . $domainStr;
+            $urlParse = parse_url($defaultUrl);
+        }
         $this->urlParse = $urlParse;
+    
+        // Validate and extract scheme and host from urlParse
+        if (!isset($this->urlParse['scheme']) || !isset($this->urlParse['host'])) {
+            throw new Exception("Invalid URL: Both scheme and host must be provided.");
+        }
+        $this->scheme = $this->urlParse['scheme'];
+        $this->host = $this->urlParse['host'];
+    
         $this->sepUnique = $sepUnique ?? '!!!!8!!!!';
         $this->seoBoxLogin = $seoBoxLogin ?? '<div class="lowImpactBox"><div class="msgBox">Please log in to view SEO details.</div></div>';
         $this->true = '<img src="' . themeLink('img/true.png', true) . '" alt="True" />';
@@ -791,7 +814,7 @@ HTML;
      *=================================================================== 
      */
     public function processTextRatio() {
-        $url = $this->urlParse['scheme'] . "://" . $this->urlParse['host'];
+        $url = $this->scheme . "://" . $this->host;
         $textRatioData = $this->calculateTextHtmlRatioExtended($url);
         $textRatio = $textRatioData['text_html_ratio'];
         $textRatioJson = jsonEncode($textRatio);
@@ -1164,7 +1187,7 @@ HTML;
         ];
         
         // Base URL & host.
-        $baseUrl = $this->urlParse['scheme'] . '://' . $this->urlParse['host'];
+        $baseUrl = $this->scheme . "://" . $this->host;
         $myHost = strtolower($this->urlParse['host']);
          
         $anchors = $doc->getElementsByTagName('a');
@@ -1176,13 +1199,9 @@ HTML;
             
             // Normalize the URL.
             $href = $rawHref;
-            if (strpos($href, '//') === 0) {
-                $href = $this->urlParse['scheme'] . ':' . $href;
-            } elseif (strpos($href, '/') === 0) {
-                $href = $baseUrl . $href;
-            } elseif (!preg_match('/^https?:\/\//i', $href)) {
-                $href = $baseUrl . '/' . $href;
-            }
+            $this->scheme = $this->scheme;
+            $this->host = $this->host;
+            $baseUrl = $this->scheme . "://" . $this->host;
             
             $rel = strtolower($a->getAttribute('rel'));
             $target = strtolower($a->getAttribute('target'));
@@ -1569,7 +1588,7 @@ HTML;
      *=================================================================== 
      */
     public function processRobots() {
-        $robotLink = $this->urlParse['scheme'] . "://" . $this->urlParse['host'] . '/robots.txt';
+        $robotLink = $this->scheme . "://" . $this->host . '/robots.txt';
         $httpCode = getHttpCode($robotLink);
         updateToDbPrepared($this->con, 'domains_data', ['robots' => jsonEncode($httpCode)], ['domain' => $this->domainStr]);
         return ['robotLink' => $robotLink, 'httpCode' => $httpCode];
@@ -1595,7 +1614,7 @@ HTML;
      *=================================================================== 
      */
     public function processSitemap() {
-        $sitemapInfo = jsonEncode(getSitemapInfo($this->urlParse['scheme'] . "://" . $this->urlParse['host']));
+        $sitemapInfo = jsonEncode(getSitemapInfo($this->scheme . "://" . $this->host));
         updateToDbPrepared($this->con, 'domains_data', ['sitemap' => $sitemapInfo], ['domain' => $this->domainStr]);
         return $sitemapInfo;
     }
@@ -1797,7 +1816,7 @@ public function showWhois($whois_data)
      *=================================================================== 
      */
     public function processMobileCheck() {
-        $jsonData = getMobileFriendly($this->urlParse['scheme'] . "://" . $this->urlParse['host']);
+        $jsonData = getMobileFriendly($this->scheme . "://" . $this->host);
         $updateStr = jsonEncode($jsonData);
         updateToDbPrepared($this->con, 'domains_data', ['mobile_fri' => $updateStr], ['domain' => $this->domainStr]);
         return $updateStr;
@@ -1859,7 +1878,7 @@ public function showWhois($whois_data)
         $host = $this->urlParse['host'];
         $hostParts = explode('.', $host);
         $length = strlen($hostParts[0]);
-        $fullUrl = $this->urlParse['scheme'] . "://" . $host;
+        $fullUrl = $this->scheme . "://" . $this->host;
         return [
             'hostWord' => $hostParts[0],
             'length'   => $length,
@@ -1887,7 +1906,7 @@ public function showWhois($whois_data)
      *=================================================================== 
      */
     public function processErrorPage() {
-        $url = $this->urlParse['scheme'] . "://" . $this->urlParse['host'] . '/404error-test-page-by-atoz-seo-tools';
+        $url = $this->scheme . "://" . $this->host . '/404error-test-page-by-atoz-seo-tools';
         $pageSize = strlen(curlGET($url));
         updateToDbPrepared($this->con, 'domains_data', ['404_page' => jsonEncode($pageSize)], ['domain' => $this->domainStr]);
         return $pageSize;
@@ -1916,7 +1935,7 @@ public function showWhois($whois_data)
     public function processPageLoad() {
         $timeStart = microtime(true);
         $ch = curl_init();
-        $url = $this->urlParse['scheme'] . "://" . $this->urlParse['host'];
+        $url = $this->scheme . "://" . $this->host;
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -2114,10 +2133,16 @@ public function showWhois($whois_data)
  * @return string JSON encoded server information.
  */
 public function processServerInfo(): string {
-    $host = $this->urlParse['host'];
-    $fullUrl = $this->urlParse['scheme'] . '://' . $host;
+    // Validate that URL components exist
+    $scheme = $this->scheme ?? 'http';
+    $host = $this->urlParse['host'] ?? '';
+    if ($host === '') {
+        throw new Exception("Cannot process server info because the host is missing in the URL.");
+    }
+    $fullUrl = $scheme . "://" . $host;
     $serverIP = gethostbyname($host);
     $dnsRecords = $this->checkDNSRecords($host);
+    // checkIP() now returns both IPv4/IPv6 and also geo data (and an "ip_history" key if desired)
     $ipInfo = $this->checkIP($host);
     $headers = @get_headers($fullUrl, 1) ?: [];
     $serverSignature = isset($headers['Server']) ? $headers['Server'] : 'N/A';
@@ -2137,6 +2162,7 @@ public function processServerInfo(): string {
     updateToDbPrepared($this->con, 'domains_data', ['server_loc' => $updateStr], ['domain' => $this->domainStr]);
     return $updateStr;
 }
+
 private function getIpInfo(string $ip): array
 {
     // You can use any external IP info API (ip-api, ipinfo, etc.) or your own logic.
@@ -2446,9 +2472,8 @@ public static function formatWhoisData($data): string
 /**
  * showServerInfo()
  *
- * Displays the server information stored in the "server_loc" JSON in a tabbed layout,
- * with the Name Servers tab first and open by default, followed by DNS Info, Server Info,
- * SSL Info, Technology, and Whois.
+ * Displays the server information stored in the "server_loc" JSON in a tabbed layout.
+ * (Tabs: Name Servers, DNS Info, Server Info, SSL Info, Technology, and Whois.)
  *
  * @param string $jsonData JSON-encoded server info from DB
  * @return string HTML output
@@ -2461,9 +2486,7 @@ public function showServerInfo(string $jsonData): string
         return '<div class="alert alert-danger">No server information available.</div>';
     }
 
-    /*--------------------------------------------------------
-     * Helper functions for date formatting & domain age
-     *-------------------------------------------------------*/
+    // Helper functions for date formatting & domain age
     $formatDateFriendly = function ($rawDate) {
         $ts = strtotime($rawDate);
         return ($ts !== false)
@@ -2524,7 +2547,6 @@ public function showServerInfo(string $jsonData): string
                         <tr><th>Field</th><th>Value</th></tr>
                       </thead>
                       <tbody>';
-
             foreach ($records as $rec) {
                 foreach ($rec as $fieldKey => $fieldValue) {
                     if (is_array($fieldValue)) {
@@ -2539,7 +2561,6 @@ public function showServerInfo(string $jsonData): string
                 // Spacer row
                 $dnsHtml .= '<tr><td colspan="2" class="bg-light"></td></tr>';
             }
-
             $dnsHtml .= '
                       </tbody>
                     </table>
@@ -2561,7 +2582,7 @@ public function showServerInfo(string $jsonData): string
         $rawWhois = trim($whoisInfo);
     }
 
-    // Defaults
+    // Defaults for WHOIS
     $domainName       = $this->urlParse['host'] ?? 'N/A';
     $registrar        = 'N/A';
     $ianaID           = 'N/A';
@@ -2581,65 +2602,49 @@ public function showServerInfo(string $jsonData): string
         $lines = explode("\n", $rawWhois);
         foreach ($lines as $line) {
             $trimLine = trim($line);
-            // Domain Name
             if (preg_match('/^domain name:\s*(.+)$/i', $trimLine, $m)) {
                 $domainName = $m[1];
             }
-            // Registrar
             if (preg_match('/^registrar:\s*(.+)$/i', $trimLine, $m)) {
                 $registrar = $m[1];
             }
-            // IANA ID
             if (preg_match('/^registrar iana id:\s*(.+)$/i', $trimLine, $m)) {
                 $ianaID = $m[1];
             }
-            // Registrar URL
             if (preg_match('/^registrar url:\s*(.+)$/i', $trimLine, $m)) {
                 $registrarUrl = $m[1];
             }
-            // Registrar WHOIS Server
             if (preg_match('/^registrar whois server:\s*(.+)$/i', $trimLine, $m)) {
                 $whoisServer = $m[1];
             }
-            // Abuse Contact
             if (preg_match('/^registrar abuse contact email:\s*(.+)$/i', $trimLine, $m)) {
                 $abuseContact = $m[1];
             }
             if (preg_match('/^registrar abuse contact phone:\s*(.+)$/i', $trimLine, $m)) {
                 $abuseContact .= ' / ' . $m[1];
             }
-            // Domain Status
             if (preg_match('/^domain status:\s*(.+)$/i', $trimLine, $m)) {
-                if ($domainStatus === 'N/A') {
-                    $domainStatus = $m[1];
-                } else {
-                    $domainStatus .= ', ' . $m[1];
-                }
+                $domainStatus = ($domainStatus === 'N/A') ? $m[1] : $domainStatus . ', ' . $m[1];
             }
-            // Created Date
             if (preg_match('/(creation date|created on|registered on|registration time|creation time):\s*(.+)/i', $trimLine, $m)) {
                 $createdDate = trim($m[2]);
             }
-            // Expiry Date
             if (preg_match('/(registry expiry date|expiry date|expiration date):\s*(.+)/i', $trimLine, $m)) {
                 $expiryDate = trim($m[2]);
             }
-            // Updated Date
             if (preg_match('/(updated date|last updated on):\s*(.+)/i', $trimLine, $m)) {
                 $updatedDate = trim($m[2]);
             }
-            // WHOIS-based Name Servers
             if (preg_match('/^name server:\s*(.+)$/i', $trimLine, $m)) {
                 $nsRecordsParsed[] = $m[1];
             }
         }
-        // Compute domain age
         $age = $computeDomainAge($createdDate);
         $domainAgeYears = $age['years'];
         $domainAgeDays  = $age['days'];
     }
 
-    // Fallback to DNS-based NS if available
+    // Fallback: if WHOIS didn't supply NS records, use DNS-based NS records
     $nsRecordsDNS = array_filter($dnsRecords, function($r) {
         return (isset($r['type']) && strtoupper($r['type']) === 'NS');
     });
@@ -2649,16 +2654,13 @@ public function showServerInfo(string $jsonData): string
             $finalNsList[] = $r['target'] ?? $r['ip'] ?? 'N/A';
         }
     } elseif (!empty($nsRecordsParsed)) {
-        // WHOIS fallback
         $finalNsList = $nsRecordsParsed;
     }
 
-    // Friendly date conversions
     $createdDateFriendly = ($createdDate !== 'N/A') ? $formatDateFriendly($createdDate) : 'N/A';
-    $expiryDateFriendly  = ($expiryDate  !== 'N/A') ? $formatDateFriendly($expiryDate)  : 'N/A';
+    $expiryDateFriendly  = ($expiryDate !== 'N/A') ? $formatDateFriendly($expiryDate) : 'N/A';
     $updatedDateFriendly = ($updatedDate !== 'N/A') ? $formatDateFriendly($updatedDate) : 'N/A';
 
-    // Build the Name Servers tab
     $nsHtml = '<table class="table table-bordered table-sm mb-3">
         <tbody>
           <tr><th>Domain Name</th><td>' . htmlspecialchars($domainName) . '</td></tr>
@@ -2673,8 +2675,6 @@ public function showServerInfo(string $jsonData): string
           <tr><th>Updated Date</th><td>' . htmlspecialchars($updatedDateFriendly) . '</td></tr>
           <tr><th>Age</th><td>' . htmlspecialchars($domainAgeYears . ' years (' . $domainAgeDays . ' days)') . '</td></tr>
           <tr><th>Hosted IP Address</th><td>' . htmlspecialchars($hostedIP) . '</td></tr>';
-
-    // Name servers row
     if (!empty($finalNsList)) {
         $nsHtml .= '<tr><th>Name Servers</th><td><ul>';
         foreach ($finalNsList as $oneNs) {
@@ -2684,38 +2684,22 @@ public function showServerInfo(string $jsonData): string
     } else {
         $nsHtml .= '<tr><th>Name Servers</th><td><div class="alert alert-info mb-0">No Name Server records found.</div></td></tr>';
     }
-
     $nsHtml .= '</tbody></table>';
 
     /*--------------------------------------------------------
-     * 3) IP-API (Server Info Tab)
+     * 3) IP-API (Server Info Tab) – Now using stored data
      *-------------------------------------------------------*/
     $serverIP = $data['server_ip'] ?? null;
-    $city    = 'N/A';
-    $region  = 'N/A';
-    $country = 'N/A';
-    $asn     = 'N/A';
-    $isp     = 'N/A';
-    $org     = 'N/A';
-    $ipHistory = 'Not available';
+    // Instead of making a new external call, retrieve stored IP info:
+    $geo = $data['ip_info']['geo'] ?? [];
+    $city     = $geo['city']    ?? 'N/A';
+    $region   = $geo['region']  ?? 'N/A';
+    $country  = $geo['country'] ?? 'N/A';
+    $asn      = $geo['as']      ?? 'N/A';
+    $isp      = $geo['isp']     ?? 'N/A';
+    $org      = $geo['org']     ?? 'N/A';
+    $ipHistory = $data['ip_info']['ip_history'] ?? 'Not available';
 
-    if ($serverIP) {
-        $apiUrl = "http://ip-api.com/json/{$serverIP}?fields=status,message,country,regionName,city,isp,org,as,query";
-        $resp   = @file_get_contents($apiUrl);
-        if ($resp !== false) {
-            $json = json_decode($resp, true);
-            if ($json && isset($json['status']) && $json['status'] === 'success') {
-                $city     = $json['city']       ?? 'N/A';
-                $region   = $json['regionName'] ?? 'N/A';
-                $country  = $json['country']    ?? 'N/A';
-                $asn      = $json['as']         ?? 'N/A';
-                $isp      = $json['isp']        ?? 'N/A';
-                $org      = $json['org']        ?? 'N/A';
-            }
-        } 
-    }
-
-    $serverSignature = $data['server_signature'] ?? 'N/A';
     $serverInfoHtml = '
       <table class="table table-bordered table-sm">
         <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
@@ -2725,7 +2709,7 @@ public function showServerInfo(string $jsonData): string
           <tr><td>ASN</td><td>' . htmlspecialchars($asn) . '</td></tr>
           <tr><td>Hosting Company</td><td>' . htmlspecialchars($org) . '</td></tr>
           <tr><td>ISP</td><td>' . htmlspecialchars($isp) . '</td></tr>
-          <tr><td>Server Signature</td><td>' . htmlspecialchars($serverSignature) . '</td></tr> 
+          <tr><td>IP History</td><td>' . htmlspecialchars($ipHistory) . '</td></tr>
         </tbody>
       </table>';
 
@@ -2736,30 +2720,23 @@ public function showServerInfo(string $jsonData): string
     $sslInfo = $data['ssl_info'] ?? [];
     if (is_array($sslInfo) && !empty($sslInfo['ssl_info']) && is_array($sslInfo['ssl_info'])) {
         $sslCert = $sslInfo['ssl_info'];
-
         $subject         = $sslCert['subject']          ?? [];
         $issuer          = $sslCert['issuer']           ?? [];
         $validFromUnix   = $sslCert['validFrom_time_t'] ?? null;
         $validToUnix     = $sslCert['validTo_time_t']   ?? null;
         $validFrom       = $validFromUnix ? date('M d, Y H:i:s', $validFromUnix) : 'N/A';
         $validTo         = $validToUnix   ? date('M d, Y H:i:s', $validToUnix)   : 'N/A';
-
         $san             = $sslCert['extensions']['subjectAltName']      ?? 'N/A';
         $keyUsage        = $sslCert['extensions']['keyUsage']            ?? 'N/A';
         $extendedKeyUsage= $sslCert['extensions']['extendedKeyUsage']    ?? 'N/A';
         $certPolicies    = $sslCert['extensions']['certificatePolicies'] ?? 'N/A';
-
         $sslHtml = '<div style="font-family:Arial, sans-serif; border:1px solid #ccc; padding:15px; border-radius:5px; background:#f9f9f9;">';
         $sslHtml .= '<h3 style="margin-top:0;">SSL Certificate Details for ' . htmlspecialchars($this->urlParse['host']) . '</h3>';
-
-        // Subject
         $sslHtml .= '<h4>Subject</h4><ul>';
         if (isset($subject['CN'])) {
             $sslHtml .= '<li><strong>Common Name (CN):</strong> ' . htmlspecialchars($subject['CN']) . '</li>';
         }
         $sslHtml .= '</ul>';
-
-        // Issuer
         $sslHtml .= '<h4>Issuer</h4><ul>';
         if (isset($issuer['C'])) {
             $sslHtml .= '<li><strong>Country (C):</strong> ' . htmlspecialchars($issuer['C']) . '</li>';
@@ -2774,27 +2751,18 @@ public function showServerInfo(string $jsonData): string
             $sslHtml .= '<li><strong>Common Name (CN):</strong> ' . htmlspecialchars($issuer['CN']) . '</li>';
         }
         $sslHtml .= '</ul>';
-
-        // Validity Period
         $sslHtml .= '<h4>Validity Period</h4><ul>';
         $sslHtml .= '<li><strong>Valid From:</strong> ' . $validFrom . ' <em>(Unix Time: ' . ($validFromUnix ?? 'N/A') . ')</em></li>';
         $sslHtml .= '<li><strong>Valid To:</strong> ' . $validTo . ' <em>(Unix Time: ' . ($validToUnix ?? 'N/A') . ')</em></li>';
         $sslHtml .= '</ul>';
-
-        // SAN
         $sslHtml .= '<h4>Subject Alternative Names (SAN)</h4>';
         $sslHtml .= '<p>' . htmlspecialchars($san) . '</p>';
-
-        // Key Usage
         $sslHtml .= '<h4>Key Usage</h4><ul>';
         $sslHtml .= '<li><strong>Standard:</strong> ' . htmlspecialchars($keyUsage) . '</li>';
         $sslHtml .= '<li><strong>Extended:</strong> ' . htmlspecialchars($extendedKeyUsage) . '</li>';
         $sslHtml .= '</ul>';
-
-        // Certificate Policies
         $sslHtml .= '<h4>Certificate Policies</h4>';
         $sslHtml .= '<p>' . htmlspecialchars($certPolicies) . '</p>';
-
         $sslHtml .= '<p style="font-size:0.9em; color:#555;">Other technical details (such as serial number, version, and extensions) are available for advanced troubleshooting and security audits.</p>';
         $sslHtml .= '</div>';
     }
@@ -2817,7 +2785,6 @@ public function showServerInfo(string $jsonData): string
      *-------------------------------------------------------*/
     $whoisHtml = '<div class="alert alert-info">No WHOIS data available.</div>';
     if ($rawWhois !== '') {
-        // Bold everything before the first colon on each line
         $whoisFormatted = preg_replace(
             '/^(.*?:)/m',
             '<strong>$1</strong>',
@@ -2828,53 +2795,40 @@ public function showServerInfo(string $jsonData): string
 
     /*--------------------------------------------------------
      * Final Tabs Layout
-     *  Name Servers (active), DNS Info, Server Info, SSL Info,
-     *  Technology, WHOIS
      *-------------------------------------------------------*/
     $html = '
 <div class="container my-3">
   <ul class="nav nav-tabs" id="serverInfoTab" role="tablist">
-    <!-- Name Servers (FIRST & ACTIVE) -->
     <li class="nav-item" role="presentation">
       <button class="nav-link active" id="ns-tab" data-bs-toggle="tab" data-bs-target="#ns"
               type="button" role="tab" aria-controls="ns" aria-selected="true">
         Name Servers
       </button>
     </li>
-
-    <!-- DNS Info -->
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="dns-tab" data-bs-toggle="tab" data-bs-target="#dns"
               type="button" role="tab" aria-controls="dns" aria-selected="false">
         DNS Info
       </button>
     </li>
-
-    <!-- Server Info -->
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="server-tab" data-bs-toggle="tab" data-bs-target="#server"
               type="button" role="tab" aria-controls="server" aria-selected="false">
         Server Info
       </button>
     </li>
-
-    <!-- SSL Info -->
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="ssl-tab" data-bs-toggle="tab" data-bs-target="#ssl"
               type="button" role="tab" aria-controls="ssl" aria-selected="false">
         SSL Info
       </button>
     </li>
-
-    <!-- Technology -->
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="tech-tab" data-bs-toggle="tab" data-bs-target="#tech"
               type="button" role="tab" aria-controls="tech" aria-selected="false">
         Technology
       </button>
     </li>
-
-    <!-- WHOIS -->
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="whois-tab" data-bs-toggle="tab" data-bs-target="#whois"
               type="button" role="tab" aria-controls="whois" aria-selected="false">
@@ -2882,46 +2836,203 @@ public function showServerInfo(string $jsonData): string
       </button>
     </li>
   </ul>
-
   <div class="tab-content p-3" id="serverInfoTabContent">
-    <!-- Name Server Tab (ACTIVE) -->
     <div class="tab-pane fade show active" id="ns" role="tabpanel" aria-labelledby="ns-tab">
       ' . $nsHtml . '
     </div>
-
-    <!-- DNS Info Tab -->
     <div class="tab-pane fade" id="dns" role="tabpanel" aria-labelledby="dns-tab">
       ' . $dnsHtml . '
     </div>
-
-    <!-- Server Info Tab -->
     <div class="tab-pane fade" id="server" role="tabpanel" aria-labelledby="server-tab">
       ' . $serverInfoHtml . '
     </div>
-
-    <!-- SSL Info Tab -->
     <div class="tab-pane fade" id="ssl" role="tabpanel" aria-labelledby="ssl-tab">
       ' . $sslHtml . '
     </div>
-
-    <!-- Technology Tab -->
     <div class="tab-pane fade" id="tech" role="tabpanel" aria-labelledby="tech-tab">
       ' . $techHtml . '
     </div>
-
-    <!-- WHOIS Tab -->
     <div class="tab-pane fade" id="whois" role="tabpanel" aria-labelledby="whois-tab">
       ' . $whoisHtml . '
     </div>
   </div>
 </div>';
-
     return $html;
 }
 
 
+    /*===================================================================
+     * Processes and stores Schema data from the HTML.
+     *=================================================================== 
+     */
 
 
+     /**
+ * Processes and stores schema data from the HTML.
+ *
+ * This method extracts schema information from:
+ *   - JSON‑LD (from <script type="application/ld+json">)
+ *   - Microdata (elements with itemscope/itemtype)
+ *   - RDFa (elements with attributes like typeof, property, vocab)
+ *
+ * It then encodes all the extracted data as JSON and updates the DB.
+ *
+ * @return string JSON-encoded schema data.
+ */
+public function processSchema(): string {
+    $doc = $this->getDom();
+    $xpath = new DOMXPath($doc);
+    
+    $schemas = [
+        'json_ld'   => [],
+        'microdata' => [],
+        'rdfa'      => []
+    ];
+    
+    // --- JSON-LD Extraction ---
+    $jsonLdScripts = $xpath->query('//script[@type="application/ld+json"]');
+    foreach ($jsonLdScripts as $js) {
+        $json = trim($js->nodeValue);
+        $decoded = json_decode($json, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            // Log the error if needed.
+            continue;
+        }
+        // If the JSON-LD has an @graph, process each node.
+        if (isset($decoded['@graph']) && is_array($decoded['@graph'])) {
+            foreach ($decoded['@graph'] as $node) {
+                $types = $node['@type'] ?? 'undefined';
+                if (is_array($types)) {
+                    foreach ($types as $type) {
+                        $type = is_string($type) ? $type : 'undefined';
+                        $schemas['json_ld'][$type][] = $node;
+                    }
+                } else {
+                    $type = is_string($types) ? $types : 'undefined';
+                    $schemas['json_ld'][$type][] = $node;
+                }
+            }
+        } else {
+            $types = $decoded['@type'] ?? 'undefined';
+            if (is_array($types)) {
+                foreach ($types as $type) {
+                    $type = is_string($type) ? $type : 'undefined';
+                    $schemas['json_ld'][$type][] = $decoded;
+                }
+            } else {
+                $type = is_string($types) ? $types : 'undefined';
+                $schemas['json_ld'][$type][] = $decoded;
+            }
+        }
+    }
+    
+    // --- Microdata Extraction ---
+    // Look for elements that have the "itemscope" attribute.
+    $microItems = $xpath->query('//*[@itemscope]');
+    foreach ($microItems as $item) {
+        $typeUrl = $item->getAttribute('itemtype');
+        // Use the basename of the URL as the type, or "undefined" if missing.
+        $type = $typeUrl ? basename(parse_url($typeUrl, PHP_URL_PATH)) : 'undefined';
+        // For simplicity, we record the nodeName. You could extract more data if needed.
+        $schemas['microdata'][$type][] = $item->nodeName;
+    }
+    
+    // --- RDFa Extraction ---
+    // Look for elements with a "typeof" attribute (commonly used in RDFa)
+    $rdfaItems = $xpath->query('//*[@typeof]');
+    foreach ($rdfaItems as $item) {
+        $type = $item->getAttribute('typeof') ?: 'undefined';
+        // Optionally, you can extract additional RDFa attributes like property, resource, vocab, etc.
+        $rdfaData = [
+            'node'    => $item->nodeName,
+            'typeof'  => $type,
+            'vocab'   => $item->getAttribute('vocab') ?: '',
+            'property'=> $item->getAttribute('property') ?: '',
+            'content' => $item->getAttribute('content') ?: $item->textContent
+        ];
+        $schemas['rdfa'][$type][] = $rdfaData;
+    }
+    
+    // If no schema data was found, store a message.
+    if (empty($schemas['json_ld']) && empty($schemas['microdata']) && empty($schemas['rdfa'])) {
+        $schemas = ['schema_data' => 'No schema data found.'];
+    }
+    
+    $schemaJson = json_encode($schemas);
+    // Update the DB (you can choose your desired column name; here we assume "schema_data")
+    updateToDbPrepared($this->con, 'domains_data', ['schema_data' => $schemaJson], ['domain' => $this->domainStr]);
+    return $schemaJson;
+}
+
+/**
+ * Displays the stored schema data in a tabbed layout.
+ *
+ * @param string $jsonData JSON-encoded schema data from the database.
+ * @return string HTML output.
+ */
+public function showSchema(string $jsonData): string {
+    $data = json_decode($jsonData, true);
+    if (!is_array($data)) {
+        return '<div class="alert alert-danger">No schema data available.</div>';
+    }
+    
+    // Prepare output for each type. If a type is missing, show a default message.
+    $jsonLdHtml = '<div class="alert alert-info">No JSON-LD schema data found.</div>';
+    if (!empty($data['json_ld']) && is_array($data['json_ld'])) {
+        $jsonLdHtml = '<ul>';
+        foreach ($data['json_ld'] as $type => $nodes) {
+            $jsonLdHtml .= '<li><strong>' . htmlspecialchars($type) . '</strong>: ' . count($nodes) . ' instance(s)</li>';
+        }
+        $jsonLdHtml .= '</ul>';
+    }
+    
+    $microHtml = '<div class="alert alert-info">No Microdata found.</div>';
+    if (!empty($data['microdata']) && is_array($data['microdata'])) {
+        $microHtml = '<ul>';
+        foreach ($data['microdata'] as $type => $items) {
+            $microHtml .= '<li><strong>' . htmlspecialchars($type) . '</strong>: ' . count($items) . ' instance(s)</li>';
+        }
+        $microHtml .= '</ul>';
+    }
+    
+    $rdfaHtml = '<div class="alert alert-info">No RDFa data found.</div>';
+    if (!empty($data['rdfa']) && is_array($data['rdfa'])) {
+        $rdfaHtml = '<ul>';
+        foreach ($data['rdfa'] as $type => $items) {
+            $rdfaHtml .= '<li><strong>' . htmlspecialchars($type) . '</strong>: ' . count($items) . ' instance(s)</li>';
+        }
+        $rdfaHtml .= '</ul>';
+    }
+    
+    // Build a simple tab layout using Bootstrap (adjust classes as needed)
+    $html = '
+    <div class="container my-3">
+      <ul class="nav nav-tabs" id="schemaTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="jsonld-tab" data-bs-toggle="tab" data-bs-target="#jsonld" type="button" role="tab" aria-controls="jsonld" aria-selected="true">JSON‑LD</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="microdata-tab" data-bs-toggle="tab" data-bs-target="#microdata" type="button" role="tab" aria-controls="microdata" aria-selected="false">Microdata</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="rdfa-tab" data-bs-toggle="tab" data-bs-target="#rdfa" type="button" role="tab" aria-controls="rdfa" aria-selected="false">RDFa</button>
+        </li>
+      </ul>
+      <div class="tab-content p-3" id="schemaTabContent">
+        <div class="tab-pane fade show active" id="jsonld" role="tabpanel" aria-labelledby="jsonld-tab">
+          ' . $jsonLdHtml . '
+        </div>
+        <div class="tab-pane fade" id="microdata" role="tabpanel" aria-labelledby="microdata-tab">
+          ' . $microHtml . '
+        </div>
+        <div class="tab-pane fade" id="rdfa" role="tabpanel" aria-labelledby="rdfa-tab">
+          ' . $rdfaHtml . '
+        </div>
+      </div>
+    </div>';
+    
+    return $html;
+}
 
 
  
@@ -3037,7 +3148,7 @@ public function showServerInfo(string $jsonData): string
      *=================================================================== 
      */
     public function processW3c() {
-        $w3Data = curlGET('https://validator.w3.org/nu/?doc=' . urlencode($this->urlParse['scheme'] . "://" . $this->urlParse['host']));
+        $w3Data = curlGET('https://validator.w3.org/nu/?doc=' . urlencode($this->scheme . "://" . $this->host));
         if (!empty($w3Data)) {
             if (check_str_contains($w3Data, 'document validates')) {
                 $w3cMsg = $this->lang['AN157'];
