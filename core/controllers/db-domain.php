@@ -169,6 +169,12 @@ $seoBox51 = $seoTools->showCards($sitecards);
 //Site Card
 $socialURLs = $data['social_urls'];  
 $seoBox52 = $seoTools->showSocialUrls($socialURLs);
+
+//Page Analysis Report
+$page_analytics = $data['page_analytics'];  
+$seoBox54 = $seoTools->showPageAnalytics($page_analytics);
+
+
 //Check GZIP Compression  
 // $gzipData =  $data['gzip']; 
 // $seoBox10 =  $seoTools->showGzip($gzipData); 

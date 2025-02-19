@@ -286,6 +286,14 @@ $(document).on("click", "[class^='showMore']", function () {
           cls = $("#seoBox8").children(":first").attr("class");
           if (cls) updateScore(cls);
           updateProgressStep("Keyword Consistency Processed", 5);
+
+          // 6. Page Analysis Report Processing
+          data = await postAjax({ PageAnalytics: '1' }); 
+          $("#seoBox54").html(data);
+          cls = $("#seoBox54").children(":first").attr("class");
+          if (cls) updateScore(cls);
+          updateProgressStep("Page Analytics Processed", 5);
+          
   
           // 6. Text-to-HTML Ratio Processing
           data = await postAjax({ textRatio: '1' });

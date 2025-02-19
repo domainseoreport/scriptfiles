@@ -263,6 +263,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die();
     } 
 
+   /*
+     * -----------------------------------------------------------------
+     * Page Analytics Report
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['PageAnalytics'])) { 
+        log_message('debug', "Page Analytic report {$my_url_host}");
+        $pageAnalyticsJson = $seoTools->processPageAnalytics();
+        echo $seoTools->showPageAnalytics($pageAnalyticsJson);
+        die();
+    }
+
+
     /*
      * -----------------------------------------------------------------
      * SOCIAL Cards RETRIEVAL

@@ -3927,6 +3927,497 @@ public function showSchema(string $jsonData): string
 }
 
  /*===================================================================
+     * Page Analytics Handelers
+     *=================================================================== 
+     */
+/**
+ * processPageAnalytics()
+ *
+ * Gathers data for a variety of on-page SEO checks and stores the results as JSON in the
+ * `page_analytics` field in your database. The checks include:
+ *
+ *  1. Encoding
+ *  2. Doc Type
+ *  3. W3C Validity
+ *  4. Analytics
+ *  5. Mobile Compatibility
+ *  6. IP Canonicalization
+ *  7. XML Sitemap
+ *  8. Robots.txt
+ *  9. URL Rewrite
+ * 10. Embedded Objects
+ * 11. Iframe
+ * 12. Usability
+ * 13. URL
+ * 14. Canonical Tag
+ * 15. Canonical Tag Accuracy
+ * 16. Hreflang Tags
+ * 17. AMP HTML
+ * 18. Robots Meta Tag
+ * 19. Favicon and Touch Icons
+ * 20. HTTP Status Code
+ * 21. Indexability (noindex/nofollow)
+ * 22. URL Canonicalization & Redirects
+ * 23. Content Freshness (Last-Modified/Publish Date)
+ * 24. Language and Localization Tags
+ * 25. Error Page Handling (Custom 404, etc.)
+ * 26. Page Security Headers (CSP, X-Frame-Options, etc.)
+ *
+ * @return string JSON string stored in `page_analytics`.
+ */
+public function processPageAnalytics(): string
+{
+    $results = [];
+
+    // 1) ENCODING
+    $encoding = 'Not Detected';
+    if (preg_match('#<meta[^>]+charset=[\'"]?([^\'">]+)#i', $this->html, $m)) {
+        $encoding = strtoupper(trim($m[1]));
+    } elseif (preg_match('#<meta[^>]+http-equiv=[\'"]content-type[\'"].+content=[\'"][^\'"]*charset=([^\'"]+)#i', $this->html, $m)) {
+        $encoding = strtoupper(trim($m[1]));
+    }
+    $results['Encoding'] = $encoding;
+
+    // 2) DOC TYPE
+    $docType = 'Missing';
+    if (preg_match('#<!doctype\s+html.*?>#is', $this->html)) {
+        $docType = 'HTML5';
+    } elseif (preg_match('#<!doctype\s+html\s+public\s+"-//w3c//dtd xhtml 1\.0#i', $this->html)) {
+        $docType = 'XHTML 1.0';
+    } elseif (preg_match('#<!doctype\s+html\s+public\s+"-//w3c//dtd html 4\.01#i', $this->html)) {
+        $docType = 'HTML 4.01';
+    }
+    $results['Doc Type'] = $docType;
+
+    // 3) W3C VALIDITY
+    $w3cStatus = 'Not validated'; // Placeholder
+    $results['W3C Validity'] = $w3cStatus;
+
+    // 4) ANALYTICS
+    $analytics = 'Not Found';
+    if (preg_match('/UA-\d{4,}-\d{1,}/i', $this->html) || stripos($this->html, "gtag(") !== false) {
+        $analytics = 'Google Analytics Detected';
+    }
+    $results['Analytics'] = $analytics;
+
+    // 5) MOBILE COMPATIBILITY
+    $mobileCompatible = 'No';
+    if (preg_match('#<meta[^>]+name=[\'"]viewport[\'"]#i', $this->html)) {
+        $mobileCompatible = 'Yes';
+    }
+    $results['Mobile Compatibility'] = $mobileCompatible;
+
+    // 6) IP CANONICALIZATION
+    $ipCanResult = 'Not Checked';
+    $hostIP = gethostbyname($this->urlParse['host']);
+    if (!empty($hostIP) && filter_var($hostIP, FILTER_VALIDATE_IP)) {
+        $ipCanResult = ($hostIP == $this->urlParse['host'])
+            ? 'No redirection from IP'
+            : 'IP resolves to domain';
+    }
+    $results['IP Canonicalization'] = $ipCanResult;
+
+    // 7) XML SITEMAP
+    $sitemapStatus = 'Not Found';
+    $possibleSitemaps = ['/sitemap.xml', '/sitemap_index.xml'];
+    $foundSitemapUrl = null;
+    foreach ($possibleSitemaps as $s) {
+        $testUrl = $this->scheme . '://' . $this->host . $s;
+        $code = $this->getHttpResponseCode($testUrl);
+        if ($code == 200) {
+            $sitemapStatus = 'Found';
+            $foundSitemapUrl = $testUrl;
+            break;
+        }
+    }
+    $results['XML Sitemap'] = ($foundSitemapUrl)
+        ? $sitemapStatus . ' at ' . $foundSitemapUrl
+        : $sitemapStatus;
+
+    // 8) ROBOTS.TXT
+    $robotsStatus = 'Not Found';
+    $robotsUrl = $this->scheme . '://' . $this->host . '/robots.txt';
+    $code = $this->getHttpResponseCode($robotsUrl);
+    if ($code == 200) {
+        $robotsStatus = 'Found at ' . $robotsUrl;
+    }
+    $results['Robots.txt'] = $robotsStatus;
+
+    // 9) URL REWRITE
+    $urlRewrite = 'Uncertain';
+    if (isset($this->urlParse['query']) && !empty($this->urlParse['query'])) {
+        $urlRewrite = 'Likely using query strings';
+    } else {
+        $urlRewrite = 'Clean URLs detected';
+    }
+    $results['URL Rewrite'] = $urlRewrite;
+
+    // 10) EMBEDDED OBJECTS
+    $embeddedFound = 'No';
+    if (preg_match('#<embed\b[^>]*>#i', $this->html) || preg_match('#<object\b[^>]*>#i', $this->html)) {
+        $embeddedFound = 'Yes';
+    }
+    $results['Embedded Objects'] = $embeddedFound;
+
+    // 11) IFRAME
+    $iframeFound = 'No';
+    if (preg_match('#<iframe\b[^>]*>#i', $this->html)) {
+        $iframeFound = 'Yes';
+    }
+    $results['Iframe'] = $iframeFound;
+
+    // 12) USABILITY
+    $usabilityScore = 'N/A';
+    if ($mobileCompatible === 'Yes') {
+        $usabilityScore = 'Mobile meta tag found. Possibly good usability.';
+    }
+    $results['Usability'] = $usabilityScore;
+
+    // 13) URL
+    $hostLength = strlen($this->host);
+    $hyphenCount = substr_count($this->host, '-');
+    $urlInfo = "Scheme: {$this->scheme}, Host: {$this->host} (Length: {$hostLength}, Hyphens: {$hyphenCount})";
+    $results['URL'] = $urlInfo;
+
+    // 14) CANONICAL TAG
+    $canonical = 'Not Found';
+    if (preg_match('#<link\s+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)["\']#i', $this->html, $m)) {
+        $canonical = $m[1];
+    }
+    $results['Canonical Tag'] = $canonical;
+
+    // 15) CANONICAL TAG ACCURACY
+    $homepageUrl = $this->scheme . '://' . $this->host;
+    $canonicalAccuracy = 'Not Applicable';
+    if ($canonical === 'Not Found') {
+        $canonicalAccuracy = 'No canonical tag found';
+    } else {
+        if (trim($canonical, '/') === trim($homepageUrl, '/')) {
+            $canonicalAccuracy = 'Canonical tag accurately matches homepage URL';
+        } else {
+            $canonicalAccuracy = 'Canonical tag does not match homepage URL';
+        }
+    }
+    $results['Canonical Tag Accuracy'] = $canonicalAccuracy;
+
+    // 16) HREFLANG TAGS
+    $hreflang = 'Not Found';
+    if (preg_match_all('#<link\s+rel=["\']alternate["\']\s+hreflang=["\']([^"\']+)["\'][^>]+href=["\']([^"\']+)["\']#i', $this->html, $matches)) {
+        $count = count($matches[0]);
+        $hreflang = 'Found (' . $count . ' tag' . ($count > 1 ? 's' : '') . ')';
+    }
+    $results['Hreflang Tags'] = $hreflang;
+
+    // 17) AMP HTML
+    $amp = 'Not Found';
+    if (preg_match('#<link\s+rel=["\']amphtml["\']\s+href=["\']([^"\']+)["\']#i', $this->html, $m)) {
+        $amp = $m[1];
+    }
+    $results['AMP HTML'] = $amp;
+
+    // 18) ROBOTS META TAG
+    $robotsMeta = 'Not Found';
+    if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+        $robotsMeta = $m[1];
+    }
+    $results['Robots Meta Tag'] = $robotsMeta;
+
+    // 19) FAVICON & TOUCH ICONS (UPDATED)
+    $faviconUrl = $this->getFaviconUrl();
+    if (!empty($faviconUrl)) {
+        $iconStatus = '<img src="' . htmlspecialchars($faviconUrl) . '" alt="Favicon" style="vertical-align:middle; margin-right:5px;"> Favicon and Touch Icons detected.';
+    } else {
+        $iconStatus = 'No favicon or touch icons detected. This may affect brand recognition in bookmarks and mobile devices.';
+    }
+    $results['Favicon and Touch Icons'] = $iconStatus;
+
+    // 20) HTTP STATUS CODE
+    $homepageUrl = $this->scheme . '://' . $this->host;
+    $httpStatus = $this->getHttpResponseCode($homepageUrl);
+    $results['HTTP Status Code'] = $httpStatus;
+
+    // 21) INDEXABILITY (noindex/nofollow)
+    $indexability = 'Indexable';
+    if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+        $content = strtolower($m[1]);
+        if (strpos($content, 'noindex') !== false) {
+            $indexability = 'Noindex Detected';
+        }
+        if (strpos($content, 'nofollow') !== false) {
+            $indexability .= ' & Nofollow Detected';
+        }
+    }
+    $results['Indexability'] = $indexability;
+
+    // 22) URL CANONICALIZATION & REDIRECTS
+    $urlCanonical = 'Not Checked';
+    if (!empty($canonical) && $canonical !== 'Not Found') {
+        $urlCanonical = ($canonical == $homepageUrl)
+            ? 'Canonical URL matches homepage'
+            : 'Canonical URL differs from homepage';
+    }
+    $results['URL Canonicalization & Redirects'] = $urlCanonical;
+
+    // 23) CONTENT FRESHNESS (Last-Modified/Publish Date)
+    $freshness = 'Not Detected';
+    if (preg_match('#<meta\s+property=["\']article:published_time["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+        $freshness = 'Published on ' . $m[1];
+    } elseif (preg_match('#<meta\s+http-equiv=["\']last-modified["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+        $freshness = 'Last Modified: ' . $m[1];
+    }
+    $results['Content Freshness'] = $freshness;
+
+    // 24) LANGUAGE & LOCALIZATION TAGS
+    $langTag = 'Not Detected';
+    if (preg_match('#<html[^>]+lang=["\']([^"\']+)["\']#i', $this->html, $m)) {
+        $langTag = $m[1];
+    }
+    $results['Language and Localization Tags'] = $langTag;
+
+    // 25) ERROR PAGE HANDLING
+    $errorPage = 'Standard Page';
+    if (stripos($this->html, '404 Not Found') !== false || stripos($this->html, 'Page Not Found') !== false) {
+        $errorPage = 'Custom 404 Detected';
+    }
+    $results['Error Page Handling'] = $errorPage;
+
+    // 26) PAGE SECURITY HEADERS (CSP, X-Frame-Options, etc.)
+    $securityHeaders = 'Not Detected';
+    $headers = @get_headers($homepageUrl, 1) ?: [];
+    if (!empty($headers)) {
+        $csp = isset($headers['Content-Security-Policy']) ? 'CSP Detected' : 'No CSP';
+        $xFrame = isset($headers['X-Frame-Options']) ? 'X-Frame-Options Detected' : 'No X-Frame-Options';
+        $securityHeaders = $csp . ' | ' . $xFrame;
+    }
+    $results['Page Security Headers'] = $securityHeaders;
+
+    // Store results as JSON in the database.
+    $jsonOutput = json_encode($results);
+    updateToDbPrepared($this->con, 'domains_data', ['page_analytics' => $jsonOutput], ['domain' => $this->domainStr]);
+
+    return $jsonOutput;
+}
+
+
+public function showPageAnalytics(string $jsonData): string
+{
+    $data = json_decode($jsonData, true);
+    if (!is_array($data)) {
+        return '<div class="alert alert-danger">Invalid or missing page analytics data.</div>';
+    }
+
+    $cards = [];
+    $suggestions = [];
+
+    // Build card data for each check.
+    foreach ($data as $heading => $value) {
+        // Use a helper method to build each card's icon and suggestion if needed.
+        $cards[] = $this->buildCardData($heading, $value, $suggestions);
+    }
+
+    // Build the card grid layout using Bootstrap cards.
+    $html = '<div class="container my-4">';
+    $html .= '<div class="row row-cols-1 row-cols-md-2 g-4">';
+
+    foreach ($cards as $card) {
+        $html .= '<div class="col">';
+        $html .= '  <div class="card h-100 shadow-sm">';
+        $html .= '    <div class="card-body d-flex align-items-start">';
+        $html .= '      <div class="me-3" style="font-size:1.8rem;">' . $card['icon'] . '</div>';
+        $html .= '      <div>';
+        $html .= '        <h5 class="card-title mb-1">' . htmlspecialchars($card['heading']) . '</h5>';
+        // For Favicon, output raw HTML to show the image.
+        if ($card['heading'] === 'Favicon and Touch Icons') {
+            $html .= '        <p class="card-text text-muted small mb-0">' . $card['description'] . '</p>';
+        } else {
+            $html .= '        <p class="card-text text-muted small mb-0">' . htmlspecialchars($card['description']) . '</p>';
+        }
+        $html .= '      </div>';
+        $html .= '    </div>';
+        $html .= '  </div>';
+        $html .= '</div>';
+    }
+
+    $html .= '</div>'; // end row
+
+    // If suggestions exist, display them.
+    if (!empty($suggestions)) {
+        $html .= '<div class="card border-warning mt-4">';
+        $html .= '  <div class="card-header bg-warning text-dark"><strong>Suggestions for Improvement</strong></div>';
+        $html .= '  <div class="card-body">';
+        $html .= '    <ul class="mb-0">';
+        foreach ($suggestions as $sug) {
+            $html .= '<li>' . htmlspecialchars($sug) . '</li>';
+        }
+        $html .= '    </ul>';
+        $html .= '  </div>';
+        $html .= '</div>';
+    }
+
+    $html .= '</div>'; // end container
+
+    return $html;
+}
+
+/**
+ * buildCardData()
+ *
+ * Builds a card array with keys:
+ *   - 'icon': HTML for a Font Awesome icon based on the value.
+ *   - 'heading': The check heading.
+ *   - 'description': A user-friendly message.
+ *
+ * Also appends suggestions for problematic items.
+ *
+ * @param string $heading
+ * @param string $value
+ * @param array  &$suggestions
+ * @return array
+ */
+private function buildCardData(string $heading, string $value, array &$suggestions): array
+{
+    $iconHtml = $this->getFaIcon($heading, $value);
+    $description = $value; // Default description
+
+    switch ($heading) {
+        case 'AMP HTML':
+            if (stripos($value, 'Not Found') !== false) {
+                $description = 'AMP version not detected. Consider implementing AMP for improved mobile speed.';
+                $suggestions[] = 'Add a valid <link rel="amphtml" href="your-amp-version-url"> tag.';
+            } else {
+                $description = 'AMP HTML detected: ' . $value;
+            }
+            break;
+
+            case 'Favicon and Touch Icons':
+                if (stripos($value, 'Not Found') !== false) {
+                    $description = 'No favicon or touch icons detected. This may affect brand recognition in bookmarks and mobile devices.';
+                    $suggestions[] = 'Include a favicon (<link rel="icon" ...>) and apple-touch-icon for better recognition.';
+                } else {
+                    // Use Google's favicon API to display the favicon image before the text.
+                    $faviconUrl = 'https://www.google.com/s2/favicons?domain=' . urlencode($this->host);
+                    $description = '<img src="' . $faviconUrl . '" alt="Favicon" style="vertical-align:middle; margin-right:5px;"> Favicon and touch icons detected.';
+                }
+                break;  
+            break;
+
+        case 'Content Freshness':
+            if (stripos($value, 'Not Detected') !== false) {
+                $description = 'No publication or last-modified date detected.';
+                $suggestions[] = 'Include meta tags such as <meta property="article:published_time" content="..."> or <meta http-equiv="last-modified" content="...">.';
+            } else {
+                $description = $value;
+            }
+            break;
+
+        case 'Language and Localization Tags':
+            if (stripos($value, 'Not Detected') !== false) {
+                $description = 'No language attribute found in the HTML tag.';
+                $suggestions[] = 'Add a language attribute to your <html> tag (e.g., <html lang="en">).';
+            } else {
+                $description = 'Language detected: ' . $value;
+            }
+            break;
+
+        case 'Canonical Tag Accuracy':
+            if (stripos($value, 'accurately matches') !== false) {
+                $description = $value;
+            } else {
+                $description = $value;
+                $suggestions[] = 'Ensure the canonical tag exactly matches your homepage URL to avoid duplicate content issues.';
+            }
+            break;
+
+        // Additional cases can be added here for other headings...
+    }
+
+    return [
+        'icon' => $iconHtml,
+        'heading' => $heading,
+        'description' => $description,
+    ];
+}
+
+
+/**
+ * getFaIcon()
+ *
+ * Returns a Font Awesome icon based on the heading and its value.
+ * Adjusts the positive/negative conditions for each check.
+ *
+ * @param string $heading
+ * @param string $value
+ * @return string HTML icon markup.
+ */
+private function getFaIcon(string $heading, string $value): string
+{
+    $valLower = strtolower($value);
+
+    // Customize conditions for specific headings:
+    switch ($heading) {
+        case 'AMP HTML':
+        case 'Favicon and Touch Icons':
+        case 'Content Freshness':
+        case 'Language and Localization Tags':
+            if (strpos($valLower, 'not found') !== false || strpos($valLower, 'not detected') !== false) {
+                return '<i class="fa fa-times text-danger"></i>';
+            } else {
+                return '<i class="fa fa-check text-success"></i>';
+            }
+            break;
+        case 'Canonical Tag Accuracy':
+            if (strpos($valLower, 'accurately matches') !== false) {
+                return '<i class="fa fa-check text-success"></i>';
+            } else {
+                return '<i class="fa fa-times text-danger"></i>';
+            }
+            break;
+        default:
+            // For most items, if the value contains positive keywords, show check.
+            if (strpos($valLower, 'found') !== false ||
+                strpos($valLower, 'yes') !== false ||
+                strpos($valLower, 'detected') !== false ||
+                strpos($valLower, 'html5') !== false ||
+                strpos($valLower, 'clean') !== false ||
+                strpos($valLower, 'accurately') !== false) {
+                return '<i class="fa fa-check text-success"></i>';
+            }
+            if (strpos($valLower, 'not found') !== false ||
+                strpos($valLower, 'no') !== false ||
+                strpos($valLower, 'missing') !== false ||
+                strpos($valLower, 'error') !== false ||
+                strpos($valLower, 'not detected') !== false) {
+                return '<i class="fa fa-times text-danger"></i>';
+            }
+            // Neutral condition
+            return '<i class="fa fa-info-circle text-secondary"></i>';
+    }
+}
+
+/**
+ * Helper: getFaviconUrl()
+ *
+ * Attempts to extract the favicon URL from the page’s HTML.
+ *
+ * @return string The favicon URL if found, or an empty string.
+ */
+private function getFaviconUrl(): string {
+    // Use a lookahead to check for a rel attribute containing icon, shortcut icon, or apple-touch-icon,
+    // then capture the href value regardless of attribute order.
+    if (preg_match('#<link(?=[^>]*rel=["\'](?:icon|shortcut icon|apple-touch-icon)["\'])[^>]*href=["\']([^"\']+)["\']#i', $this->html, $matches)) {
+        $favicon = trim($matches[1]);
+        // Convert relative URL to absolute if necessary.
+        if (!preg_match('#^https?://#i', $favicon)) {
+            $favicon = rtrim($this->scheme . '://' . $this->host, '/') . '/' . ltrim($favicon, '/');
+        }
+        return $favicon;
+    }
+    return '';
+}
+
+
+
+ /*===================================================================
      * Social URL Handelers
      *=================================================================== 
      */

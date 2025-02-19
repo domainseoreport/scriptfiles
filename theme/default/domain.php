@@ -317,13 +317,28 @@ if ($updateFound) {
                         </div>
                     </div>
 
+
+                     <!-- Social URL Section -->
+                   <div id="page-analysis" class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0">Cards <?php trans('Link Analysis', $lang['21']); ?></h2>
+                            </div>
+                            <div class="seoBox54 card-body">
+                                <div class="contentBox" id="seoBox54">
+                                <?php echo $seoBox54; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
             <!-- Social URL Section -->
                    <div id="card-analysis" class="container mt-4">
                         <div class="card">
                             <div class="card-header">
                                 <h2 class="card-title mb-0">Cards <?php trans('Link Analysis', $lang['21']); ?></h2>
                             </div>
-                            <div class="card-body">
+                            <div class="seoBox52 card-body">
                                 <div class="contentBox" id="seoBox52">
                                 <?php echo $seoBox52; ?>
                                 </div>
