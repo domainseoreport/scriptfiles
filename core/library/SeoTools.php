@@ -3963,6 +3963,17 @@ public function showSchema(string $jsonData): string
  * 25. Error Page Handling (Custom 404, etc.)
  * 26. Page Security Headers (CSP, X-Frame-Options, etc.)
  *
+ * 27. Google Safe Browsing Check
+ * 28. Gzip Compression Check
+ * 29. Structured Data Validation
+ * 30. Cache Headers Check (Page Cache)
+ * 31. CDN Usage Detection
+ * 32. Noindex Tag Presence
+ * 33. Nofollow Tag Presence
+ * 34. Meta Refresh Tag
+ * 35. SPF Records Check
+ * 36. Ads.txt File Check
+ *
  * @return string JSON string stored in `page_analytics`.
  */
 public function processPageAnalytics(): string
@@ -4100,11 +4111,15 @@ public function processPageAnalytics(): string
     }
     $results['Canonical Tag Accuracy'] = $canonicalAccuracy;
 
-    // 16) HREFLANG TAGS
+   // 16) HREFLANG TAGS
     $hreflang = 'Not Found';
     if (preg_match_all('#<link\s+rel=["\']alternate["\']\s+hreflang=["\']([^"\']+)["\'][^>]+href=["\']([^"\']+)["\']#i', $this->html, $matches)) {
         $count = count($matches[0]);
-        $hreflang = 'Found (' . $count . ' tag' . ($count > 1 ? 's' : '') . ')';
+        $tagsList = [];
+        for($i = 0; $i < $count; $i++){
+            $tagsList[] = $matches[1][$i] . ' => ' . $matches[2][$i];
+        }
+        $hreflang = 'Found (' . $count . ' tag' . ($count > 1 ? 's' : '') . '): ' . implode(', ', $tagsList);
     }
     $results['Hreflang Tags'] = $hreflang;
 
@@ -4138,16 +4153,23 @@ public function processPageAnalytics(): string
 
     // 21) INDEXABILITY (noindex/nofollow)
     $indexability = 'Indexable';
+    $noindexFlag = false;
+    $nofollowFlag = false;
     if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
         $content = strtolower($m[1]);
         if (strpos($content, 'noindex') !== false) {
             $indexability = 'Noindex Detected';
+            $noindexFlag = true;
         }
         if (strpos($content, 'nofollow') !== false) {
             $indexability .= ' & Nofollow Detected';
+            $nofollowFlag = true;
         }
     }
     $results['Indexability'] = $indexability;
+    // Also store explicit flags:
+    $results['Noindex'] = $noindexFlag ? 'Yes' : 'No';
+    $results['Nofollow'] = $nofollowFlag ? 'Yes' : 'No';
 
     // 22) URL CANONICALIZATION & REDIRECTS
     $urlCanonical = 'Not Checked';
@@ -4191,6 +4213,93 @@ public function processPageAnalytics(): string
     }
     $results['Page Security Headers'] = $securityHeaders;
 
+    /* -----------------------------------------------
+       Additional Checks
+    ------------------------------------------------ */
+
+    // 27) GOOGLE SAFE BROWSING CHECK
+    // (Assuming you have a helper function safeBrowsing() that returns a status code.)
+    $safeBrowsingCode = safeBrowsing($this->urlParse['host']);
+    $results['Google Safe Browsing'] = ($safeBrowsingCode == 204)
+        ? 'Safe'
+        : 'Unsafe (Code: ' . $safeBrowsingCode . ')';
+
+    // 28) GZIP COMPRESSION CHECK
+    // (Assuming you have a helper function processGzip() that returns compression info.)
+    $gzipData = $this->processGzip(); // e.g. returns an array or string summary
+    $results['Gzip Compression'] = is_array($gzipData) ? implode(', ', $gzipData) : $gzipData;
+
+    // 29) STRUCTURED DATA VALIDATION
+    // (Call your processSchema() method and note if any valid structured data was found.)
+    $schemaData = $this->processSchema();
+    $results['Structured Data'] = (!empty($schemaData) && $schemaData !== 'No schema data found.')
+        ? 'Structured data detected'
+        : 'No structured data found';
+
+    // 30) CACHE HEADERS (PAGE CACHE)
+    // Check for presence of Cache-Control or Expires headers.
+    $cacheHeaders = 'Not Detected';
+    if (!empty($headers)) {
+        if (isset($headers['Cache-Control']) || isset($headers['Expires'])) {
+            $cacheHeaders = 'Cache headers detected';
+        } else {
+            $cacheHeaders = 'No cache headers found';
+        }
+    }
+    $results['Cache Headers'] = $cacheHeaders;
+
+    // 31) CDN USAGE DETECTION
+    // Check if common CDN identifiers appear in headers or asset URLs.
+    $cdnUsage = 'Not Detected';
+    if (!empty($headers)) {
+        // Check headers for X-CDN or Server containing cdn keywords.
+        $headerStr = is_array($headers) ? implode(' ', $headers) : $headers;
+        if (stripos($headerStr, 'cloudfront') !== false ||
+            stripos($headerStr, 'akamai') !== false ||
+            stripos($headerStr, 'cdn') !== false) {
+            $cdnUsage = 'Likely using a CDN';
+        }
+    }
+    // Additionally, check if asset URLs (e.g., in <script> or <link> tags) contain "cdn".
+    if ($cdnUsage === 'Not Detected' && preg_match('#(cdn\.|cloudfront\.|akamai\.|edgekey\.)#i', $this->html)) {
+        $cdnUsage = 'Likely using a CDN';
+    }
+    $results['CDN Usage'] = $cdnUsage;
+
+    // 32) NOINDEX TAG PRESENCE
+    $results['Noindex Tag'] = ($noindexFlag) ? 'Yes' : 'No';
+
+    // 33) NOFOLLOW TAG PRESENCE
+    $results['Nofollow Tag'] = ($nofollowFlag) ? 'Yes' : 'No';
+
+    // 34) META REFRESH TAG
+    $metaRefresh = 'Not Detected';
+    if (preg_match('#<meta[^>]+http-equiv=["\']refresh["\'][^>]+>#i', $this->html)) {
+        $metaRefresh = 'Meta refresh tag detected';
+    }
+    $results['Meta Refresh'] = $metaRefresh;
+
+    // 35) SPF RECORDS CHECK
+    $spfRecord = 'Not Found';
+    $dnsTxtRecords = @dns_get_record($this->host, DNS_TXT);
+    if (!empty($dnsTxtRecords)) {
+        foreach ($dnsTxtRecords as $record) {
+            if (isset($record['txt']) && stripos($record['txt'], 'v=spf1') !== false) {
+                $spfRecord = 'SPF record found';
+                break;
+            }
+        }
+    }
+    $results['SPF Record'] = $spfRecord;
+
+    // 36) ADS.TXT FILE CHECK
+    $adsTxtUrl = $this->scheme . '://' . $this->host . '/ads.txt';
+    $adsTxtCode = $this->getHttpResponseCode($adsTxtUrl);
+    $results['Ads.txt'] = ($adsTxtCode == 200)
+        ? 'ads.txt found at ' . $adsTxtUrl
+        : 'ads.txt not found';
+
+    // -----------------------------------------------
     // Store results as JSON in the database.
     $jsonOutput = json_encode($results);
     updateToDbPrepared($this->con, 'domains_data', ['page_analytics' => $jsonOutput], ['domain' => $this->domainStr]);
@@ -4280,6 +4389,7 @@ private function buildCardData(string $heading, string $value, array &$suggestio
     $description = $value; // Default description
 
     switch ($heading) {
+
         case 'AMP HTML':
             if (stripos($value, 'Not Found') !== false) {
                 $description = 'AMP version not detected. Consider implementing AMP for improved mobile speed.';
@@ -4289,16 +4399,15 @@ private function buildCardData(string $heading, string $value, array &$suggestio
             }
             break;
 
-            case 'Favicon and Touch Icons':
-                if (stripos($value, 'Not Found') !== false) {
-                    $description = 'No favicon or touch icons detected. This may affect brand recognition in bookmarks and mobile devices.';
-                    $suggestions[] = 'Include a favicon (<link rel="icon" ...>) and apple-touch-icon for better recognition.';
-                } else {
-                    // Use Google's favicon API to display the favicon image before the text.
-                    $faviconUrl = 'https://www.google.com/s2/favicons?domain=' . urlencode($this->host);
-                    $description = '<img src="' . $faviconUrl . '" alt="Favicon" style="vertical-align:middle; margin-right:5px;"> Favicon and touch icons detected.';
-                }
-                break;  
+        case 'Favicon and Touch Icons':
+            if (stripos($value, 'Not Found') !== false) {
+                $description = 'No favicon or touch icons detected. This may affect brand recognition in bookmarks and mobile devices.';
+                $suggestions[] = 'Include a favicon (<link rel="icon" ...>) and an apple-touch-icon for better recognition.';
+            } else {
+                // Example using Google’s favicon API
+                $faviconUrl = 'https://www.google.com/s2/favicons?domain=' . urlencode($this->host);
+                $description = '<img src="' . $faviconUrl . '" alt="Favicon" style="vertical-align:middle; margin-right:5px;"> Favicon and touch icons detected.';
+            }
             break;
 
         case 'Content Freshness':
@@ -4328,7 +4437,82 @@ private function buildCardData(string $heading, string $value, array &$suggestio
             }
             break;
 
-        // Additional cases can be added here for other headings...
+        // New cases added below:
+
+        case 'Noindex Tag':
+            // If "No" means no noindex meta tag is present, that is generally good.
+            if (trim(strtolower($value)) === 'no') {
+                $description = 'No noindex meta tag found. Your page is indexable.';
+            } else {
+                $description = 'Noindex meta tag detected. This may prevent your page from being indexed.';
+                $suggestions[] = 'Remove the noindex meta tag if you want your page to be indexed.';
+            }
+            break;
+
+        case 'Nofollow Tag':
+            if (trim(strtolower($value)) === 'no') {
+                $description = 'No nofollow meta tag found. All links are crawlable.';
+            } else {
+                $description = 'Nofollow meta tag detected. Some links may not pass link juice.';
+                $suggestions[] = 'Review your nofollow usage if you want all links to be followed.';
+            }
+            break;
+
+        case 'Ads.txt':
+            if (stripos($value, 'not found') !== false) {
+                $description = 'Ads.txt not found on your domain. <i class="fa fa-times text-danger"></i> Consider adding an ads.txt file to control your ad inventory.';
+                $suggestions[] = 'Add an ads.txt file to your website root.';
+            } else {
+                $description = 'Ads.txt found: ' . $value;
+            }
+            break;
+
+        case 'HTTP Status Code':
+            // Here we translate the code into a human‑readable message.
+            $code = intval($value);
+            switch ($code) {
+                case 200:
+                    $description = 'HTTP 200 OK: The page is accessible.';
+                    break;
+                case 404:
+                    $description = 'HTTP 404 Not Found: The page was not found.';
+                    break;
+                case 301:
+                case 302:
+                    $description = "HTTP $code Redirect: The page is redirecting.";
+                    break;
+                default:
+                    $description = "HTTP $code: Check the response for details.";
+            }
+            break;
+
+        case 'Hreflang Tags':
+            // Assuming $value now contains a string like "Found (2 tags): en => http://..., fr => http://..."
+            $description = $value;
+            break;
+
+        case 'Embedded Objects':
+            if (stripos($value, 'No') !== false) {
+                $description = 'No embedded objects detected. This is ideal.';
+            } else {
+                $description = 'Embedded objects detected. Review if they are necessary.';
+                $suggestions[] = 'Ensure that any embedded objects (e.g. videos, Flash, etc.) are not negatively affecting page load.';
+            }
+            break;
+
+        default:
+            // For most items, if the value contains positive keywords, show check.
+            if (strpos(strtolower($value), 'found') !== false ||
+                strpos(strtolower($value), 'yes') !== false ||
+                strpos(strtolower($value), 'detected') !== false ||
+                strpos(strtolower($value), 'html5') !== false ||
+                strpos(strtolower($value), 'clean') !== false ||
+                strpos(strtolower($value), 'accurately') !== false) {
+                $description = $value;
+            } else {
+                $description = $value;
+            }
+            break;
     }
 
     return [
@@ -4337,6 +4521,8 @@ private function buildCardData(string $heading, string $value, array &$suggestio
         'description' => $description,
     ];
 }
+
+
 
 
 /**
@@ -4353,8 +4539,23 @@ private function getFaIcon(string $heading, string $value): string
 {
     $valLower = strtolower($value);
 
-    // Customize conditions for specific headings:
     switch ($heading) {
+        case 'Noindex Tag':
+        case 'Nofollow Tag':
+            // "No" is good here.
+            return (trim($valLower) === 'no')
+                ? '<i class="fa fa-check text-success"></i>'
+                : '<i class="fa fa-times text-danger"></i>';
+        case 'Ads.txt':
+            return (stripos($valLower, 'not found') !== false)
+                ? '<i class="fa fa-times text-danger"></i>'
+                : '<i class="fa fa-check text-success"></i>';
+        case 'HTTP Status Code':
+            // Use a check for 200, else an error icon.
+            return ($value == '200')
+                ? '<i class="fa fa-check text-success"></i>'
+                : '<i class="fa fa-exclamation-triangle text-warning"></i>';
+        case 'Hreflang Tags':
         case 'AMP HTML':
         case 'Favicon and Touch Icons':
         case 'Content Freshness':
@@ -4364,16 +4565,16 @@ private function getFaIcon(string $heading, string $value): string
             } else {
                 return '<i class="fa fa-check text-success"></i>';
             }
-            break;
         case 'Canonical Tag Accuracy':
-            if (strpos($valLower, 'accurately matches') !== false) {
-                return '<i class="fa fa-check text-success"></i>';
-            } else {
-                return '<i class="fa fa-times text-danger"></i>';
-            }
-            break;
+            return (strpos($valLower, 'accurately matches') !== false)
+                ? '<i class="fa fa-check text-success"></i>'
+                : '<i class="fa fa-times text-danger"></i>';
+        case 'Embedded Objects':
+            return (stripos($valLower, 'no') !== false)
+                ? '<i class="fa fa-check text-success"></i>'
+                : '<i class="fa fa-exclamation-triangle text-warning"></i>';
         default:
-            // For most items, if the value contains positive keywords, show check.
+            // For other headings, a simple positive/negative check.
             if (strpos($valLower, 'found') !== false ||
                 strpos($valLower, 'yes') !== false ||
                 strpos($valLower, 'detected') !== false ||
@@ -4389,7 +4590,6 @@ private function getFaIcon(string $heading, string $value): string
                 strpos($valLower, 'not detected') !== false) {
                 return '<i class="fa fa-times text-danger"></i>';
             }
-            // Neutral condition
             return '<i class="fa fa-info-circle text-secondary"></i>';
     }
 }

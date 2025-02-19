@@ -1,94 +1,65 @@
-[19-Feb-2025 17:10:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:10:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:10:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:10:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:10:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:10:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:10:33 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: SeoTools::buildCardData(): Argument #2 ($value) must be of type string, array given, called in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 4292 and defined in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php:4354
+[19-Feb-2025 17:22:20 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:20 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:20 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:20 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:20 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:21 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:22 Asia/Calcutta] PHP Fatal error:  Uncaught Error: Call to undefined method SeoTools::getSuggestionsForMetric() in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php:4218
 Stack trace:
-#0 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(4292): SeoTools->buildCardData('metrics', Array, Array)
-#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(274): SeoTools->showPageAnalytics('{"metrics":{"En...')
-#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
-#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
-#4 {main}
-  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 4354
-[19-Feb-2025 17:12:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:12:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:12:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:12:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:12:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:12:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:12:32 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: Cannot access offset of type string on string in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php:4303
-Stack trace:
-#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(274): SeoTools->showPageAnalytics('{"metrics":{"En...')
+#0 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(274): SeoTools->showPageAnalytics('{"Encoding":"UT...')
 #1 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
 #2 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
 #3 {main}
-  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 4303
-[19-Feb-2025 17:14:11 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:12 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:12 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:12 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:12 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:12 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:22 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:55 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:14:55 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:30 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: SeoTools::buildCardData(): Argument #2 ($value) must be of type string, array given, called in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 4292 and defined in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php:4354
-Stack trace:
-#0 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(4292): SeoTools->buildCardData('metrics', Array, Array)
-#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(274): SeoTools->showPageAnalytics('{"metrics":{"En...')
-#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
-#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
-#4 {main}
-  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 4354
-[19-Feb-2025 17:15:41 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:41 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:41 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:41 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:41 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:41 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:15:46 Asia/Calcutta] PHP Fatal error:  Uncaught TypeError: SeoTools::buildCardData(): Argument #2 ($value) must be of type string, array given, called in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 4292 and defined in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php:4354
-Stack trace:
-#0 C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php(4292): SeoTools->buildCardData('metrics', Array, Array)
-#1 C:\seowebdevelopment\htdocs\scriptfiles\core\controllers\domains.php(274): SeoTools->showPageAnalytics('{"metrics":{"En...')
-#2 C:\seowebdevelopment\htdocs\scriptfiles\core\app.php(154): require('C:\\seowebdevelo...')
-#3 C:\seowebdevelopment\htdocs\scriptfiles\index.php(25): require('C:\\seowebdevelo...')
-#4 {main}
-  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 4354
-[19-Feb-2025 17:16:12 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:13 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:13 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:13 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:13 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:13 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:18 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:20 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:20 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:20 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:20 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
-[19-Feb-2025 17:16:38 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:38 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:38 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:38 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:38 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:38 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:39 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:40 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:40 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:40 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:40 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:45 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
-[19-Feb-2025 17:16:45 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+  thrown in C:\seowebdevelopment\htdocs\scriptfiles\core\library\SeoTools.php on line 4218
+[19-Feb-2025 17:22:47 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:47 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:47 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:48 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:48 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:48 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:49 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:50 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:50 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:50 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:50 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:54 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:22:54 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:10 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:10 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:10 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:10 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:10 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:10 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:13 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:14 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:14 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:14 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:14 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:18 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:41:19 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:47 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:48 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:48 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:48 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:48 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:48 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:52 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:53 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:53 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:53 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:53 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:57 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:49:57 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:42 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:42 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:42 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:42 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:42 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:42 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:45 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:46 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:46 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:46 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:46 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:50 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[19-Feb-2025 17:52:50 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
