@@ -332,6 +332,21 @@ if ($updateFound) {
                         </div>
                     </div>
 
+
+                <!-- page speed insight -->
+                   <div id="page-analysis" class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0">Cards <?php trans('Link Analysis', $lang['21']); ?></h2>
+                            </div>
+                            <div class="seoBox55 card-body">
+                                <div class="contentBox" id="seoBox55">
+                                <?php echo $seoBox55; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
             <!-- Social URL Section -->
                    <div id="card-analysis" class="container mt-4">
                         <div class="card">

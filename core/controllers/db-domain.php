@@ -174,6 +174,11 @@ $seoBox52 = $seoTools->showSocialUrls($socialURLs);
 $page_analytics = $data['page_analytics'];  
 $seoBox54 = $seoTools->showPageAnalytics($page_analytics);
 
+$showPageSpeedInsight = $data['page_speed_insight'];  
+if (is_array($showPageSpeedInsight)) {
+    $showPageSpeedInsight = json_encode($showPageSpeedInsight);
+}
+$seoBox55 = $seoTools->showPageSpeedInsightConcurrent($showPageSpeedInsight);
 
 //Check GZIP Compression  
 // $gzipData =  $data['gzip']; 

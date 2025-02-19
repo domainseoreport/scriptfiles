@@ -298,6 +298,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die();
     }
 
+     /*
+     * -----------------------------------------------------------------
+     * Google PageSpeed Insights Report
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['PageSpeedInsights'])) { 
+        log_message('debug', "Page Insights report for {$my_url_host}");
+        // Process and store the PageSpeed Insights report concurrently.
+        // This returns a JSON string.
+        $jsonData = $seoTools->processPageSpeedInsightConcurrent();
+        
+        // Then pass the JSON string to the show function.
+        echo $seoTools->showPageSpeedInsightConcurrent($jsonData);
+        die();
+    }
+
     /*
      * -----------------------------------------------------------------
      * CLEAN OUT / FINALIZE ANALYSIS

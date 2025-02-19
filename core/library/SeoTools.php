@@ -4213,14 +4213,30 @@ public function processPageAnalytics(): string
     // 31) CDN USAGE
     $cdnUsage = 'No CDN detected';
     if (!empty($headers)) {
-        $via = isset($headers['Via']) ? strtolower(implode(' ', (array)$headers['Via'])) : '';
-        $server = isset($headers['Server']) ? strtolower($headers['Server']) : '';
+        // Safely extract and convert 'Via' to a single string
+        $serverVal = $headers['Server'] ?? '';
+        if (is_array($serverVal)) {
+            $serverVal = implode(' ', $serverVal);
+        }
+        $serverVal = (string)$serverVal;
+        $serverVal = trim($serverVal);
+        $server    = strtolower($serverVal);
+
+        // Safely extract and convert 'Server' to a single string
+        $serverVal = $headers['Server'] ?? '';
+        if (is_array($serverVal)) {
+            $serverVal = implode(' ', $serverVal);
+        }
+        $serverVal = trim((string)$serverVal);
+        $server    = strtolower($serverVal);
+
         if (strpos($via, 'cloudflare') !== false || strpos($server, 'cloudflare') !== false) {
             $cdnUsage = 'Likely using Cloudflare';
         } elseif (strpos($via, 'fastly') !== false) {
             $cdnUsage = 'Likely using Fastly';
         }
     }
+    $results['CDN Usage'] = $cdnUsage;
     $results['CDN Usage'] = $cdnUsage;
 
     // 32) NOINDEX TAG
@@ -4551,7 +4567,7 @@ private function buildCardData(string $heading, string $value, array &$suggestio
  */
 private function getFaIcon(string $heading, string $value): string
 {
-    $valLower = strtolower($value);
+    $valLower = strtolower((string)$value); 
 
     switch ($heading) {
         case 'Noindex Tag':
@@ -5073,109 +5089,478 @@ public function showSocialUrls($socialData): string {
      * PAGE SPEED INSIGHT HANDLER
      *=================================================================== 
      */
-    public function processPageSpeedInsight() {
-        $desktopScore = pageSpeedInsightChecker($this->urlParse['host'], 'desktop');
-        $mobileScore = pageSpeedInsightChecker($this->urlParse['host'], 'mobile');
-        $updateStr = jsonEncode(['desktopScore' => $desktopScore, 'mobileScore' => $mobileScore]);
-        updateToDbPrepared($this->con, 'domains_data', ['page_speed_insight' => $updateStr], ['domain' => $this->domainStr]);
-        return $updateStr;
+   /**
+ * processPageSpeedInsightConcurrent()
+ *
+ * Fetches Google PageSpeed Insights data concurrently for desktop and mobile using curl_multi.
+ * It extracts the performance score, filters the API response to include only the necessary fields
+ * for detailed SEO analysis (and removes extraneous information such as the full audits), and removes
+ * the screenshot data. The filtered report is then stored in the "page_speed_insight" field in the DB,
+ * while screenshots are stored separately in "desktop_screenshot" and "mobile_screenshot".
+ *
+ * The consolidated report structure is as follows:
+ * [
+ *   'pagespeed' => [
+ *       'mobile'    => [ filtered mobile report ],
+ *       'desktop'   => [ filtered desktop report ],
+ *       'timestamp' => <timestamp>,
+ *       'url'       => <target url>,
+ *       'cache_hit' => <cache hit info>
+ *   ]
+ * ]
+ *
+ * @return string JSON encoded array with keys: desktopScore, mobileScore.
+ */
+public function processPageSpeedInsightConcurrent(): string {
+    // Get API key from DB settings or use a default key.
+    if (isset($GLOBALS['con'])) {
+        $db = reviewerSettings($GLOBALS['con']);
+        $apiKey = urldecode($db['insights_api']);
+    } else {
+        $apiKey = 'AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0';
+    }
+    
+    // Build the target URL.
+    $targetUrl = $this->scheme . "://" . $this->host;
+    $encodedUrl = urlencode($targetUrl);
+    
+    // Build the endpoints for desktop and mobile (requesting screenshots).
+    $desktopUrl = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key={$apiKey}&screenshot=true&snapshots=true&locale=en_US&url={$encodedUrl}&strategy=desktop";
+    $mobileUrl  = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key={$apiKey}&screenshot=true&snapshots=true&locale=en_US&url={$encodedUrl}&strategy=mobile";
+    
+    $endpoints = [
+        'desktop' => $desktopUrl,
+        'mobile'  => $mobileUrl
+    ];
+    
+    $multiCurl = curl_multi_init();
+    $handles = [];
+    foreach ($endpoints as $key => $url) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);  // Timeout after 30 seconds.
+        curl_multi_add_handle($multiCurl, $ch);
+        $handles[$key] = $ch;
+    }
+    
+    // Execute the handles concurrently.
+    $running = null;
+    do {
+        curl_multi_exec($multiCurl, $running);
+        curl_multi_select($multiCurl);
+    } while ($running > 0);
+    
+    // Prepare the results.
+    $rawReports = [];  // Filtered reports.
+    $scores = [];      // Performance scores.
+    $screenshots = []; // Screenshot data.
+    
+    foreach ($handles as $key => $ch) {
+        $response = curl_multi_getcontent($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($httpCode === 200) {
+            $data = json_decode($response, true);
+            
+            // Extract and remove screenshot data.
+            if (isset($data['lighthouseResult']['audits']['final-screenshot']['details']['data'])) {
+                $screenshots[$key . 'Screenshot'] = $data['lighthouseResult']['audits']['final-screenshot']['details']['data'];
+                unset($data['lighthouseResult']['audits']['final-screenshot']);
+            } else {
+                $screenshots[$key . 'Screenshot'] = '';
+            }
+            
+            // Extract performance score.
+            if (isset($data['lighthouseResult']['categories']['performance']['score'])) {
+                $scores[$key . 'Score'] = intval($data['lighthouseResult']['categories']['performance']['score'] * 100);
+            } else {
+                $scores[$key . 'Score'] = 0;
+            }
+            
+            // Filter the API response.
+            $rawReports[$key] = $this->filterReport($data);
+        } else {
+            // In case of error.
+            $scores[$key . 'Score'] = 0;
+            $screenshots[$key . 'Screenshot'] = '';
+            $rawReports[$key] = [];
+        }
+        curl_multi_remove_handle($multiCurl, $ch);
+        curl_close($ch);
+    }
+    curl_multi_close($multiCurl);
+    
+    // Build the consolidated report structure.
+    $pagespeedReport = [
+        'mobile'    => isset($rawReports['mobile']) ? $rawReports['mobile'] : [],
+        'desktop'   => isset($rawReports['desktop']) ? $rawReports['desktop'] : [],
+        'timestamp' => date('c'),
+        'url'       => $targetUrl,
+        'cache_hit' => isset($rawReports['mobile']['fetchTime']) ? $rawReports['mobile']['fetchTime'] : ''
+    ];
+    
+    // Encode the consolidated report as JSON.
+    $jsonOutput = jsonEncode(['pagespeed' => $pagespeedReport]);
+    
+    // Save the report (without screenshots) in the "page_speed_insight" field.
+    updateToDbPrepared($this->con, 'domains_data', ['page_speed_insight' => $jsonOutput], ['domain' => $this->domainStr]);
+    
+    // Save screenshots separately.
+    if (!empty($screenshots['desktopScreenshot'])) {
+        updateToDbPrepared($this->con, 'domains_data', ['desktop_screenshot' => $screenshots['desktopScreenshot']], ['domain' => $this->domainStr]);
+    }
+    if (!empty($screenshots['mobileScreenshot'])) {
+        updateToDbPrepared($this->con, 'domains_data', ['mobile_screenshot' => $screenshots['mobileScreenshot']], ['domain' => $this->domainStr]);
+    }
+    
+    // Return the scores for display (e.g., in your UI).
+    return   $jsonOutput;
+}
+
+public function showPageSpeedInsightConcurrent(string $jsonData): string
+{
+    $data = json_decode($jsonData, true);
+
+    if (!isset($data['pagespeed']) || !is_array($data['pagespeed'])) {
+        return '<div class="alert alert-warning">No PageSpeed Insights data available.</div>';
     }
 
-    public function showPageSpeedInsight($data) {
-        $data = jsonDecode($data);
-        $speedStr = $this->lang['117'];
-        $desktopStr = $this->lang['118'];
-        $mobileStr = $this->lang['119'];
-        $desktopMsg = <<<EOT
-<script>
-var desktopPageSpeed = new Gauge({
+    $report    = $data['pagespeed'];
+    $timestamp = htmlspecialchars($report['timestamp'] ?? '');
+    $url       = htmlspecialchars($report['url'] ?? '');
+    $cacheHit  = htmlspecialchars($report['cache_hit'] ?? '');
+
+    // We'll define which metrics to show and how to label them.
+    $allowedMetrics = [
+        'timeToFirstByte'       => 'Time to First Byte',
+        'firstContentfulPaint'  => 'First Contentful Paint',
+        'speedIndex'            => 'Speed Index',
+        'largestContentfulPaint'=> 'Largest Contentful Paint',
+        'interactive'           => 'Time to Interactive',
+        'totalBlockingTime'     => 'Total Blocking Time',
+        'cumulativeLayoutShift' => 'Cumulative Layout Shift',
+    ];
+
+    // Convert ms to s for certain metrics
+    $metricsInMilliseconds = [
+        'timeToFirstByte',
+        'firstContentfulPaint',
+        'speedIndex',
+        'largestContentfulPaint',
+        'interactive',
+        'totalBlockingTime',
+    ];
+
+    // Helper to format metric values
+    $formatMetricValue = function($key, $value) use ($metricsInMilliseconds) {
+        if (!is_numeric($value)) {
+            return $value; // Return as-is if not numeric
+        }
+        // Convert from ms -> s if in the list
+        if (in_array($key, $metricsInMilliseconds, true)) {
+            return round($value / 1000, 2) . ' s';
+        }
+        // For CLS, just round to 2 decimals
+        if ($key === 'cumulativeLayoutShift') {
+            return round($value, 2);
+        }
+        return $value;
+    };
+
+    // Renders the platform's report
+    $renderPlatformReport = function(string $platform, array $reportData) use ($allowedMetrics, $formatMetricValue) {
+        $score       = $reportData['score'] ?? 0;
+        $metrics     = $reportData['metrics'] ?? [];
+        $diagnostics = $reportData['diagnostics'] ?? [];
+
+        // Build table rows for selected metrics
+        $rows = '';
+        $foundMetric = false;
+        foreach ($allowedMetrics as $key => $label) {
+            if (isset($metrics[$key])) {
+                $foundMetric = true;
+                $displayVal = $formatMetricValue($key, $metrics[$key]);
+                $rows .= "<tr><td>{$label}</td><td>{$displayVal}</td></tr>";
+            }
+        }
+        if (!$foundMetric) {
+            $rows = '<tr><td colspan="2">No key metrics available.</td></tr>';
+        }
+
+        // Build diagnostic list
+        $diagHtml = '';
+        if (!empty($diagnostics)) {
+            foreach ($diagnostics as $i => $item) {
+                $title          = htmlspecialchars($item['title'] ?? '');
+                $description    = htmlspecialchars($item['description'] ?? '');
+                // If your data doesn't contain these, they'll be blank:
+                $impact         = htmlspecialchars($item['impact'] ?? '');
+                $recommendation = htmlspecialchars($item['recommendation'] ?? '');
+
+                $diagHtml .= <<<HTML
+<div class="accordion-item">
+  <h2 class="accordion-header" id="{$platform}Heading{$i}">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#{$platform}Collapse{$i}" aria-expanded="false"
+            aria-controls="{$platform}Collapse{$i}">
+      {$title}
+    </button>
+  </h2>
+  <div id="{$platform}Collapse{$i}" class="accordion-collapse collapse"
+       aria-labelledby="{$platform}Heading{$i}"
+       data-bs-parent="#{$platform}DiagnosticsAccordion">
+    <div class="accordion-body">
+      <strong>Description:</strong> {$description}<br>
+      <strong>Impact:</strong> {$impact}<br>
+      <strong>Recommendation:</strong> {$recommendation}
+    </div>
+  </div>
+</div>
+HTML;
+            }
+        } else {
+            $diagHtml = '<p>No diagnostic opportunities found.</p>';
+        }
+
+        // We'll use a <canvas> for the gauge, with an ID for each platform
+        $canvasId = ($platform === 'Desktop') ? 'desktopPageSpeed' : 'mobilePageSpeed';
+
+        return <<<HTML
+<div class="card mb-4">
+  <div class="card-header">
+    <h5 class="mb-0">{$platform} Performance</h5>
+  </div>
+  <div class="card-body">
+    <div class="row mb-3">
+      <!-- Place your existing gauge code here -->
+      <div class="col-md-4 text-center">
+        <canvas id="{$canvasId}" width="250" height="250"></canvas>
+      </div>
+      <div class="col-md-8">
+        <h6>Key Lab Metrics</h6>
+        <table class="table table-sm table-striped">
+          <thead>
+            <tr><th>Metric</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+            {$rows}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <h6>Diagnostics &amp; Opportunities</h6>
+    <div class="accordion" id="{$platform}DiagnosticsAccordion">
+      {$diagHtml}
+    </div>
+  </div>
+</div>
+HTML;
+    };
+
+    // Render desktop & mobile
+    $desktopHtml = $renderPlatformReport('Desktop', $report['desktop'] ?? []);
+    $mobileHtml  = $renderPlatformReport('Mobile',  $report['mobile']  ?? []);
+
+    // Now build the final HTML with tabs
+    $html = <<<HTML
+<div class="container my-4">
+  <h3>PageSpeed Insights Detailed Report</h3>
+  <p><strong>URL:</strong> {$url}</p>
+  <p><strong>Report Generated:</strong> {$timestamp}</p>
+  <p><strong>Cache Hit Timestamp:</strong> {$cacheHit}</p>
+
+  <ul class="nav nav-tabs" id="pagespeedReportTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="desktop-tab"
+              data-bs-toggle="tab" data-bs-target="#desktopReportTab"
+              type="button" role="tab" aria-controls="desktopReportTab"
+              aria-selected="true">Desktop</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="mobile-tab"
+              data-bs-toggle="tab" data-bs-target="#mobileReportTab"
+              type="button" role="tab" aria-controls="mobileReportTab"
+              aria-selected="false">Mobile</button>
+    </li>
+  </ul>
+
+  <div class="tab-content" id="pagespeedReportTabContent">
+    <div class="tab-pane fade show active" id="desktopReportTab"
+         role="tabpanel" aria-labelledby="desktop-tab">
+      {$desktopHtml}
+    </div>
+    <div class="tab-pane fade" id="mobileReportTab"
+         role="tabpanel" aria-labelledby="mobile-tab">
+      {$mobileHtml}
+    </div>
+  </div>
+</div>
+
+<!-- GAUGE SCRIPT: Desktop & Mobile -->
+<script type="text/javascript">
+// Make sure the Gauge constructor is already loaded on the page.
+
+document.addEventListener('DOMContentLoaded', function() {
+  // 1) Desktop gauge
+  var desktopGauge = new Gauge({
     renderTo  : 'desktopPageSpeed',
     width     : 250,
     height    : 250,
     glow      : true,
-    units     : '$speedStr',
-    title     : '$desktopStr',
+    units     : 'Speed',
+    title     : 'Desktop',
     minValue  : 0,
     maxValue  : 100,
     majorTicks: ['0','20','40','60','80','100'],
     minorTicks: 5,
     strokeTicks: true,
-    valueFormat: { int : 2, dec : 0, text : '%' },
-    valueBox: { rectStart: '#888', rectEnd: '#666', background: '#CFCFCF' },
-    valueText: { foreground: '#CFCFCF' },
-    highlights: [
-        { from: 0, to: 40, color: '#EFEFEF' },
-        { from: 40, to: 60, color: 'LightSalmon' },
-        { from: 60, to: 80, color: 'Khaki' },
-        { from: 80, to: 100, color: 'PaleGreen' }
+    valueFormat: {
+      int : 2,
+      dec : 0,
+      text: '%'
+    },
+    valueBox: {
+      rectStart: '#888',
+      rectEnd: '#666',
+      background: '#CFCFCF'
+    },
+    valueText: {
+      foreground: '#CFCFCF'
+    },
+    highlights : [
+      { from: 0,  to: 40, color: '#EFEFEF' },
+      { from: 40, to: 60, color: 'LightSalmon' },
+      { from: 60, to: 80, color: 'Khaki' },
+      { from: 80, to: 100,color: 'PaleGreen' }
     ],
-    animation: { delay: 10, duration: 300, fn: 'bounce' }
-});
-desktopPageSpeed.onready = function() { desktopPageSpeed.setValue({$data['desktopScore']}); };
-desktopPageSpeed.draw();
-</script>
-EOT;
-        $mobileMsg = <<<EOT
-<script>
-var mobilePageSpeed = new Gauge({
+    animation : {
+      delay : 10,
+      duration: 300,
+      fn : 'bounce'
+    }
+  });
+  desktopGauge.draw();
+
+  // 2) Mobile gauge
+  var mobileGauge = new Gauge({
     renderTo  : 'mobilePageSpeed',
     width     : 250,
     height    : 250,
     glow      : true,
-    units     : '$speedStr',
-    title     : '$mobileStr',
+    units     : 'Speed',
+    title     : 'Mobile',
     minValue  : 0,
     maxValue  : 100,
     majorTicks: ['0','20','40','60','80','100'],
     minorTicks: 5,
     strokeTicks: true,
-    valueFormat: { int : 2, dec : 0, text : '%' },
-    valueBox: { rectStart: '#888', rectEnd: '#666', background: '#CFCFCF' },
-    valueText: { foreground: '#CFCFCF' },
-    highlights: [
-        { from: 0, to: 40, color: '#EFEFEF' },
-        { from: 40, to: 60, color: 'LightSalmon' },
-        { from: 60, to: 80, color: 'Khaki' },
-        { from: 80, to: 100, color: 'PaleGreen' }
+    valueFormat: {
+      int : 2,
+      dec : 0,
+      text: '%'
+    },
+    valueBox: {
+      rectStart: '#888',
+      rectEnd: '#666',
+      background: '#CFCFCF'
+    },
+    valueText: {
+      foreground: '#CFCFCF'
+    },
+    highlights : [
+      { from: 0,  to: 40, color: '#EFEFEF' },
+      { from: 40, to: 60, color: 'LightSalmon' },
+      { from: 60, to: 80, color: 'Khaki' },
+      { from: 80, to: 100,color: 'PaleGreen' }
     ],
-    animation: { delay: 10, duration: 300, fn: 'bounce' }
-});
-mobilePageSpeed.onready = function() { mobilePageSpeed.setValue({$data['mobileScore']}); };
-mobilePageSpeed.draw();
-</script>
-EOT;
-        $seoBox48 = '<div class="passedBox">
-                        <div class="msgBox">
-                            <div class="row">
-                                <div class="col-sm-6 text-center">
-                                    <canvas id="desktopPageSpeed"></canvas>' . $desktopMsg . '
-                                </div>
-                                <div class="col-sm-6">
-                                    <h2>' . $data['desktopScore'] . ' / 100</h2>
-                                    <h4>' . $this->lang['123'] . '</h4>
-                                    <p><strong>' . ucfirst($this->urlParse['host']) . '</strong> ' . $this->lang['127'] . ' <strong>Sample Speed</strong>. ' . $this->lang['128'] . '</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="seoBox48 suggestionBox">' . $this->lang['AN220'] . '</div>
-                    </div>';
-        $seoBox49 = '<div class="passedBox">
-                        <div class="msgBox">
-                            <div class="row">
-                                <div class="col-sm-6 text-center">
-                                    <canvas id="mobilePageSpeed"></canvas>' . $mobileMsg . '
-                                </div>
-                                <div class="col-sm-6">
-                                    <h2>' . $data['mobileScore'] . ' / 100</h2>
-                                    <h4>' . $this->lang['123'] . '</h4>
-                                    <p><strong>' . ucfirst($this->urlParse['host']) . '</strong> ' . $this->lang['129'] . ' <strong>Sample Speed</strong>. ' . $this->lang['128'] . '</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="seoBox49 suggestionBox">' . $this->lang['AN221'] . '</div>
-                    </div>';
-        return $seoBox48 . $this->sepUnique . $seoBox49;
+    animation : {
+      delay : 10,
+      duration: 300,
+      fn : 'bounce'
     }
+  });
+  mobileGauge.draw();
+
+  // Set gauge values
+  // We have them in your filtered data:
+  var desktopScore = parseInt('{$report['desktop']['score']}' || '0', 10);
+  var mobileScore  = parseInt('{$report['mobile']['score']}'  || '0', 10);
+
+  desktopGauge.setValue(desktopScore);
+  mobileGauge.setValue(mobileScore);
+});
+</script>
+HTML;
+
+    return $html;
+}
+
+
+
+/**
+ * filterReport()
+ *
+ * Given the full decoded PageSpeed API response in $data, this function extracts and returns only the
+ * fields necessary for your detailed SEO analysis. It removes extraneous data.
+ *
+ * The returned array includes:
+ * - score: Performance score (multiplied by 100)
+ * - metrics: Key lab metrics (e.g. FCP, LCP, TTI, CLS, TBT)
+ * - diagnostics: List of opportunities (each with title, description, impact, and recommendation)
+ * - category_scores: Category scores from Lighthouse
+ * - score_class: Textual description (if any) for the score
+ * - version: Lighthouse version used
+ * - fetchTime: The fetch time (if available)
+ *
+ * @param array $data Full decoded API response.
+ * @return array Filtered report.
+ */
+private function filterReport(array $data): array {
+    $lr = $data['lighthouseResult'] ?? [];
+    
+    // Extract performance score
+    $score = isset($lr['categories']['performance']['score'])
+        ? intval($lr['categories']['performance']['score'] * 100)
+        : 0;
+    
+    // Extract lab metrics from audits->metrics->details->items[0]
+    $metrics = [];
+    if (isset($lr['audits']['metrics']['details']['items'][0])) {
+        $metrics = $lr['audits']['metrics']['details']['items'][0];
+    }
+    
+    // Extract diagnostics (only opportunities)
+    $diagnostics = [];
+    if (isset($lr['audits']) && is_array($lr['audits'])) {
+        foreach ($lr['audits'] as $auditId => $audit) {
+            if (isset($audit['details']['type']) && $audit['details']['type'] === 'opportunity') {
+                $diagnostics[] = [
+                    'title'         => $audit['title'] ?? $auditId,
+                    'description'   => $audit['description'] ?? '',
+                    'impact'        => $audit['impact'] ?? '',
+                    'recommendation'=> $audit['recommendation'] ?? ''
+                ];
+            }
+        }
+    }
+    
+    // Additional fields
+    $category_scores = $lr['category_scores'] ?? [];
+    $score_class = $lr['score_class'] ?? [];
+    $version = $lr['version'] ?? '';
+    $fetchTime = $lr['fetchTime'] ?? '';
+
+    return [
+        'score'           => $score,
+        'metrics'         => $metrics,
+        'diagnostics'     => $diagnostics,
+        'category_scores' => $category_scores,
+        'score_class'     => $score_class,
+        'version'         => $version,
+        'fetchTime'       => $fetchTime
+    ];
+}
+
 
     /*===================================================================
      * CLEAN OUT HANDLER

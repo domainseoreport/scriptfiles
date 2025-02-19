@@ -293,7 +293,13 @@ $(document).on("click", "[class^='showMore']", function () {
           cls = $("#seoBox54").children(":first").attr("class");
           if (cls) updateScore(cls);
           updateProgressStep("Page Analytics Processed", 5);
-          
+         
+          // 6. Google Pageinsite Report Processing
+          data = await postAjax({ PageSpeedInsights: '1' }); 
+          $("#seoBox55").html(data);
+          cls = $("#seoBox55").children(":first").attr("class");
+          if (cls) updateScore(cls);
+          updateProgressStep("PageSpeed Insights Processed", 5);       
   
           // 6. Text-to-HTML Ratio Processing
           data = await postAjax({ textRatio: '1' });

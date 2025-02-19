@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<title>JAIPUR Travel Guide, Jaipur Hotels, Jaipur Tourism Portal Jaipur Rajasthan </title>
+<meta name="description" content="Jaipur Travel is a tourism portal for Jaipur city  and Jaipur hotels with details and information on the jaipur city and its tourist places">
+<meta name="content-language" content="en">
+<meta name="robots" content="index,follow">
+<meta name="revisit-after" content="30 days">
+
+<!-- Mobile viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<link rel="shortcut icon" href="images/favicon.ico"  type="image/x-icon">
+
+<!-- CSS-->
+<!-- Google web fonts. You can get your own bundle at http://www.google.com/fonts. Don't forget to update the CSS accordingly!-->
+<link href='https://fonts.googleapis.com/css?family=Droid+Serif|Ubuntu' rel='stylesheet' type='text/css'> <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js?ver=3.4.1"></script>
+<link rel="stylesheet" href="slider/responsiveslides.css">
+<script src="slider/responsiveslides.min.js"></script>
+  <script>
+    // You can also use "$(window).load(function() {"
+    $(function () {
+
+      // Slideshow 1
+      $("#slider1").responsiveSlides({
+        speed: 500
+      });
+
+    });
+  </script>
+
+
+
+
+
+<link rel="stylesheet" href="css/normalize.css">
+<link rel="stylesheet" href="js/flexslider/flexslider.css">
+<link rel="stylesheet" href="css/basic-style.css">
+
+<!-- end CSS-->
+    
+<!-- JS-->
+<script src="js/libs/modernizr-2.6.2.min.js"></script>
+<!-- end JS-->
+
+
+</head>
+
+<body id="home">
+  
+<!-- header area -->
+    <header class="wrapper clearfix">
+		       
+        <div id="banner">        
+        	<div id="logo"><a title="Jaipur Travel" href="index.htm"><img src="images/jaipur-travel.png" alt="logo"></a></div> 
+        </div>
+        
+        <!-- main navigation -->
+        <nav id="topnav" role="navigation">
+        <div class="menu-toggle">Menu</div>  
+        	<ul class="srt-menu" id="menu-main-navigation">
+            <li class="current"><a href="index.htm">HOME</a></li>
+            <li><a href="aboutus.htm">ABOUT US</a></li>
+			<li><a href="http://www.umaidbhawan.com/">UMAID BHAWAN</a></li>	
+			<li><a href="tour_packages.htm">TOUR PACKAGES</a></li>	
+			<li><a href="rent_car_jaipur.htm">CAR RENTAL</a></li>	
+			<li><a href="contactus.htm">CONTACT US</a></li>	
+			
+          </ul>     
+		</nav><!-- end main navigation -->
+  
+    </header><!-- end header -->
+ 
+ 
+<!-- hero area (the grey one with a slider -->
+
+	<!-- Start Slider BODY section -->
+<ul class="rslides" id="slider1">
+      <li><img src="slide1.jpg" alt=""></li>
+      <li><img src="slide2.jpg" alt=""></li>
+      <li><img src="slide3.jpg" alt=""></li>
+      <li><img src="slide4.jpg" alt=""></li>
+    </ul>	
+    <!-- End Slider BODY section -->
+
+
+
+
+    <section id="hero" class="clearfix" style="background-image: url('background-2.jpg');">    
+    
+    
+			
+    
+    
+    <!-- responsive FlexSlider image slideshow -->
+    <div class="wrapper">
+       <div class="row"> 
+        <div class="grid_5" style="padding:20px;background: rgba(255,255,255,0.3);border: solid 0px #333333;border-radius:7px;">
+            <h1>Welcome to JAIPUR</h1>
+            <p>Rajasthan's beautiful Pink City Jaipur, was the stronghold of a 
+			clan of rulers whose three hill forts and series of palaces in the 
+			city are important attractions. 
+            </p>
+			<p>Known as the Pink City because of 
+			the colour of the stone used exclusively in the walled city, 
+			Jaipur's bazaars sell embroidered leather shoes, blue pottery, tie 
+			and dye scarves and other exotic wares. Western Rajasthan itself 
+			forms a convenient circuit, in the heart of the Thar desert which 
+			has shaped its history, lifestyles and architecture.
+            </p>
+            <p><a href="about_jaipur.htm" class="buttonlink">Jaipur</a> <a href="tourist_places.htm" class="buttonlink">Tourist Places 
+			Timings</a></p>
+        </div>
+        <div class="grid_7 rightfloat">
+              <div class="flexslider">
+                  <ul class="slides">
+                      <li>
+                          <img src="images/slide1.jpg" />
+                          <p class="flex-caption">Elephant Ride at Amber Fort.</p>
+                      </li>
+                      <li>
+                          <img src="images/slide2.jpg" />
+                          <p class="flex-caption">Puppets for sale in the walled 
+							pink city.</p>
+                      </li>
+                      <li>
+                          <img src="images/slide3.jpg" />
+                          <p class="flex-caption">Pushkar Camel Fair.</p>
+                      </li>
+                      <li>
+                          <img src="images/slide4.jpg" />
+                          <p class="flex-caption">Typical Rajasthani women in 
+							traditional dress </p>
+                      </li>
+                  </ul>
+                </div><!-- FlexSlider -->
+              </div><!-- end grid_7 -->
+        </div><!-- end row -->
+       </div><!-- end wrapper -->
+    </section><!-- end hero area -->
+
+
+
+
+
+<!-- main content area -->   
+<div id="main" class="wrapper">
+    
+    <!-- sidebar -->    
+    <aside>
+<nav id="secondary-navigation">
+<ul>
+	<li><a href="about_jaipur.htm">About Jaipur</li></a>
+	<li><a href="jaipur_sighseeing.htm">Jaipur Sightseeing</li></a>
+	<li><a href="the_pinkcity_walk.htm">The Pinkcity Walk</li></a>
+	<li><a href="heritage_jaipur.htm">Heritage of Jaipur</li></a>
+	<li><a href="tourist_places.htm">Tourist Palaces</li></a>
+	<li><a href="shopping_jaipur.htm">Shopping in Jaipur</li></a>
+	<li><a href="what_buy.htm">What and where to buy</li></a>
+	<li><a href="jaipur_photographs.htm">Jaipur Photographs</li></a>
+	<li><a href="jaipur_festival_calendar.htm">Jaipur Festival Calendar</li></a>
+	<li><a href="excursions_jaipur.htm">Excursions from Jaipur</li></a>
+	<li><a href="jaipur_eats.htm">Jaipur Eats</li></a>
+	<li><a href="jaipur_local_tours.htm">Jaipur Local Tours</li></a>
+	<li><a href="must_visit_jaipur.htm">Must Visit Places</li></a>
+	<li><a href="spots-around-jaipur.htm">Spots around Jaipur</li></a>
+	<li><a href="luxury-hotels-jaipur.htm">Luxury hotels in Jaipur</li></a>
+	<li><a href="heritage-hotels-jaipur.htm">Heritage hotels in Jaipur</li></a>
+	<li><a href="medium-hotels-jaipur.htm">Medium hotels in Jaipur</li></a>
+	<li><a href="budget-hotels-jaipur.htm">Budget hotels in Jaipur</li></a>
+	<li><a href="restaurants-and-pubs-jaipur.htm">Restaurants & Pubs in Jaipur</li></a>
+	<li><a href="shopping-services.htm">Shopping & Services</li></a>
+	<li><a href="car-hire-jaipur.htm">Car hire, taxi rental in Jaipur</li></a>
+	<li><a href="travel-agents-jaipur.htm">Travel agents in Jaipur</li></a>
+	<li><a href="tour-operators-jaipur.htm">Tour operators in Jaipur</li></a>
+	<li><a href="history-of-jaipur.htm">History of Jaipur</li></a>
+	<li><a href="guided-wall-city-tour.htm">Guided wall city tour</li></a>
+	<li><a href="fairs-and-festivals-jaipur.htm">Fairs and Festivals in Jaipur</li></a>
+	<li><a href="jaipur-shopping.htm">Jaipur Shopping</li></a>
+	<li><a href="jaipur-weather-area.htm">Jaipur Weather and Area</li></a>
+	<li><a href="cinemas-jaipur.htm">Cinemas in Jaipur</li></a>
+	<li><a href="jaipur-cultural-centers.htm">Jaipur Cultural Centers</li></a>
+	<li><a href="hospitals.htm">Hospitals</li></a>
+	<li><a href="places-of-worship-jaipur.htm">Palaces of Worship in Jaipur</li></a>
+	<li><a href="autorikshaw-fare-jaipur.htm">Autorikshaw Fare in Jaipur</li></a>
+	<li><a href="jaipur-flights.htm">Jaipur Flights Information</li></a>
+	<li><a href="local-tours-guide-service.htm">Local Tours & Guide Service</li>
+	</a>
+</ul></nav></aside><!-- #end sidebar -->	
+
+    
+<!-- content area -->    
+	<section id="content" class="wide-content">
+	
+	
+	
+      <div class="row">	
+        <div class="grid_4">
+        	<h2 class="first-header" align="center">The Pink City</h2>
+            <a href="the_pinkcity_walk.htm">
+            <img src="images/index.4.jpg" style="border: 1px solid #F7BFCC;border-radius:3px;box-shadow: 0px 3px 2px #cccccc;" /></a>
+            <p><span style="font-size: 0.8em">Brief detail of a walk down the 
+			walled pink city of Jaipur starting for Albert hall museum. </span></p>
+        </div>
+        
+        <div class="grid_4">
+        	<h2 class="first-header" align="center">Shopping in Jaipur</h2>
+            <a href="what_buy.htm">
+            <img border="0" src="index-1.jpg" style="border: 1px solid #F7BFCC;border-radius:3px;box-shadow: 0px 3px 2px #cccccc;" /></a>
+            <p><span style="font-size: 0.8em">Details of what and where to shop. 
+			Jaipur is famous for handicrafts, textiles and gemstones.</span></p>
+        </div>
+        
+        <div class="grid_4">
+        	<h2 class="first-header" align="center">Travel Assistance</h2>
+            <a href="contactus.htm">
+            <img src="images/jaipur-travel-agency.jpg" style="border: 1px solid #F7BFCC;border-radius:3px;box-shadow: 0px 3px 2px #cccccc;" /></a>
+            <p><span style="font-size: 0.8em">Call +91-141-2205528 (Mon~Sat 
+			10am~6pm) for Hotels, Car Rental and Tour Packages for Jaipur</span></p>
+        </div>
+        
+        <div class="grid_4">
+        	<h2 class="first-header" align="center">Rajasthan Tour Packages</h2>
+            <a target="_blank" title="Rajasthan tour packages" href="http://www.welcomerajasthan.com/rajasthan_tour_packages.htm">
+            <img src="rajasthan-tour-packages.png" style="border: 1px solid #F7BFCC;border-radius:3px;box-shadow: 0px 3px 2px #cccccc;" width="397" height="210" /></a>
+            <p><span style="font-size: 0.8em">Customized Rajasthan tour packages and readymade tour package for 
+			Rajasthan by Welcome Rajasthan.</span></p>
+        </div>
+        
+        <div class="grid_4">
+        	<h2 class="first-header" align="center">Jaipur Car Rental</h2>
+			<a target="_blank" title="Jaipur car rental" href="rent_car_jaipur.htm">
+			<img border="0" src="jaipur-car-rental.png" style="border: 1px solid #F7BFCC;border-radius:3px;box-shadow: 0px 3px 2px #cccccc;" width="397" height="210" /></a>
+			<p><span style="font-size: 0.8em">Car rental in Jaipur, car rental 
+			in Rajasthan, taxi rental and car tour packages by Welcome Rajasthan</span></p>
+        </div>
+        
+        <div class="grid_4">
+        	<h2 class="first-header" align="center">Jaipur Hotel Booking</h2>
+            <a title="Jaipur hotels and booking" href="budget-hotels-jaipur.htm">
+            <img src="budget-hotels-jaipur.png" style="border: 1px solid #F7BFCC;border-radius:3px;box-shadow: 0px 3px 2px #cccccc;" width="397" height="210" /></a>
+            <p><span style="font-size: 0.8em">Budget 
+			<a target="_blank" href="https://www.hotelshikha.com/" style="text-decoration: none">Hotel in Jaipur</a> with best accommodation. 
+			Choose from a variety of hotels in different styles</span>.</p>
+        </div>
+
+        <div class="grid_8">
+Jaipur travel is a sincere effort to provide authentic Jaipur travel 
+information, Jaipur city guide, Jaipur hotel information. We also provide 
+details of Jaipur hotels, Jaipur budget hotels, Jaipur heritage hotels and other 
+decent guest house. This website features a printable guide of the Jaipur city 
+and tour packages suited for everyone. We arrange travel and tour packages in 
+and around Jaipur by car with an option of several different car rental packages 
+to choose from.
+<p>&nbsp;</p>
+<p><strong><br>OTHER SERVICES &amp; SHOPS</strong><br>
+<a href="domestic-airlines.htm">Domestic Airlines</a> ~ 
+				<a href="airlines-gsas.htm">Airlines &amp; Gsas</a> ~ 
+				<a href="jaipur-train.htm">Jaipur 
+				Train Information </a>~ 
+<a href="jaipur-by-road.htm">Jaipur by Road</a> ~
+				<a href="jaipur-guide.htm">Jaipur Guide</a> ~ 
+				<a href="furniture-jaipur.htm">Furniture in Jaipur</a> ~ 
+				<a href="forex-jaipur.htm">Forex in Jaipur</a> ~ 
+				<a href="handmadepaper-products-jaipur.htm">Handmade Paper Products</a> ~
+				<a href="jaipur-handicrafts.htm">Jaipur 
+				Handicrafts</a> ~<a href="jaipur-jewellery.htm"> Jaipur Jewellery</a> ~ 
+				J<a href="jaipur-pubs-bars.htm">aipur Pubs Bars</a> ~<a href="jaipur-sweets-shop.htm"> Jaipur Sweet 
+				Shop</a> ~ 
+<a href="jaipur-bakeries.htm">Jaipur Bakeries</a> ~
+				<a href="jaipur-traditional-bazaars.htm">Jaipur Traditional Bazaars</a> ~
+				<a href="jaipur-ayurvedic-centres.htm">Jaipur Ayurvedic Centres</a> ~
+				<a href="jaipur-leather-goods.htm">Jaipur Leather Goods</a> ~
+				<a href="jaipur-furnishing.htm">Jaipur Furnishing</a> ~
+				<a href="jaipur-event-organiser.htm">Jaipur Event Organiser</a> ~
+				<a href="jaipur-dental-clinics.htm">Jaipur Dental Clinics</a> ~
+				<a href="jaipur-boutiques.htm">Jaipur 
+				Boutiques</a> ~ 
+<a href="jaipur-blue-pottery.htm">Jaipur Blue Pottery</a> ~
+				<a href="jaipur-book-stores.htm">Jaipur Book Stores</a> ~
+				<a href="jaipur-bangles.htm">Jaipur 
+				Bangles</a> ~<a href="jaipur-spa.htm"> Jaipur Spa</a> ~
+				<a href="jaipur-textile.htm">Jaipur Textile</a> ~
+				<a href="jaipur-sarees.htm">Jaipur Sarees</a> ~ 
+				<a href="jaipur-silverware.htm">Jaipur 
+				Silverware</a> ~ 
+<a href="jaipur-potteries.htm">Jaipur Potteries</a> ~
+				<a href="jaipur-musical-instruments.htm">Jaipur Musical Instruments</a> ~
+				<a href="jaipur-opticians.htm">Jaipur Opticians</a> ~
+				<a href="jaipur-marble-statuettes.htm">Jaipur Marble Statuettes</a> ~
+				<a href="jaipur-coffee-shop.htm">Jaipur Coffee Shop</a> 
+				~ 
+~ <a href="jaipur-pashmina.htm">Jaipur Pashmina</a> ~ 
+<a href="jaipur-ambulance.htm">Jaipur Ambulance</a> ~ 
+<a href="business-jaipur.htm">Business Jaipur</a> ~ 
+<a href="jaipur-today.htm">Jaipur Today</a> ~ 
+<a href="service-apartment-jaipur.htm">Jaipur Service Apartments</a> ~ <a href="jaipur_maps.htm">Jaipur Maps</a>
+</p>
+
+<hr>   	
+</div>	
+	
+	
+	
+
+<div class="grid_8">
+<h4 align="center"><b>Jaipurtravel.com</b></h4>
+<p align="center">A unit of Welcome Rajasthan Tours and Travels, <br>C/o Umaid Mahal ,C-20 / B-2 Bihari Marg, Jai Singh Highway, Opp. Lane of K.P. 
+Automotives, <br>Bani Park, Jaipur - 302016, Rajasthan (India) <br>Telephone : +91-141-4914416  
+<br>Mobile Number : +91-9829614748 (06:00 A.M. To 06 P.M.)<br>Email: <a href="mailto:info@jaipurtravel.com">info@jaipurtravel.com</a> </p>
+<p align="center">
+<a target="_blank" rel="nofollow" href="https://www.facebook.com/jaipurtravel">
+<img border="0" src="fb.png" width="44" height="44"></a>
+<a target="_blank" rel="nofollow" href="https://www.twitter.com/jaipurtinfo">
+<img border="0" src="tw.png" width="44" height="44"></a>
+<a target="_blank" rel="nofollow" href="https://plus.google.com/+jaipurtravelandtourism">
+<img border="0" src="gpl.png" width="44" height="44"></a></p>
+<hr>
+</div>
+		<p>&nbsp;</div><!-- end row -->
+	  
+	  
+	  
+	</section><!-- end content area -->   
+	
+      
+</div><!-- #end div #main .wrapper -->
+
+
+<!-- footer area -->    
+<footer>
+	<div id="colophon" class="wrapper clearfix">
+    	<p align="center">All Content Copyright 2018 Jaipurtravel.com, <b>Property of Hotel Umaid Bhawan, Jaipur</b> | Web Solutions by <a target="_blank" href="http://www.technoedge.org/">
+		<font color="#E8E8E8">TECHNO EDGE (INDIA)</font></a>
+    </div>
+</footer><!-- #end footer area --> 
+
+
+<!-- jQuery -->
+
+<script defer src="js/flexslider/jquery.flexslider-min.js"></script>
+
+<!-- fire ups - read this file!  -->   
+<script src="js/main.js"></script>
+
+</body>
+</html>

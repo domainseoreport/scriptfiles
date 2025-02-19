@@ -15,7 +15,7 @@ function pageSpeedInsightChecker($url,$type='desktop',$screenshot=false){
         $db = reviewerSettings($GLOBALS['con']);
         $apiKey = urldecode($db['insights_api']);
     }else{
-        $apiKey = urldecode('AIzaSyB921qf7VUO-mlqlmRQVASImxS5nWgvaUg');
+        $apiKey = urldecode('AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0');
     }
     
     $url = urldecode($url);
@@ -28,6 +28,11 @@ function pageSpeedInsightChecker($url,$type='desktop',$screenshot=false){
     $mobileUrl = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key='.$apiKey.'&screenshot='.$screenshot.'&snapshots='.$screenshot.'&locale=en_US&url='.$url.'&strategy=mobile';
     
     $desktopUrl = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key='.$apiKey.'&screenshot='.$screenshot.'&snapshots='.$screenshot.'&locale=en_US&url='.$url.'&strategy=desktop';
+   echo "<pre>";
+   print_r($mobileUrl);
+   print_r($desktopUrl);
+   echo "</pre>>";
+   die();
     
     if($type === 'desktop')
         $pageSpeedInsightUrl = $desktopUrl;
