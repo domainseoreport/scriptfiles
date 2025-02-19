@@ -3933,8 +3933,10 @@ public function showSchema(string $jsonData): string
 /**
  * processPageAnalytics()
  *
- * Gathers data for a variety of on-page SEO checks and stores the results as JSON in the
- * `page_analytics` field in your database. The checks include:
+ * Gathers data for a variety of on‑page SEO checks and stores the results as JSON in the
+ * `page_analytics` field in your database.
+ *
+ * The checks include:
  *
  *  1. Encoding
  *  2. Doc Type
@@ -3960,19 +3962,18 @@ public function showSchema(string $jsonData): string
  * 22. URL Canonicalization & Redirects
  * 23. Content Freshness (Last-Modified/Publish Date)
  * 24. Language and Localization Tags
- * 25. Error Page Handling (Custom 404, etc.)
+ * 25. Error Page Handling
  * 26. Page Security Headers (CSP, X-Frame-Options, etc.)
- *
- * 27. Google Safe Browsing Check
- * 28. Gzip Compression Check
- * 29. Structured Data Validation
- * 30. Cache Headers Check (Page Cache)
- * 31. CDN Usage Detection
- * 32. Noindex Tag Presence
- * 33. Nofollow Tag Presence
- * 34. Meta Refresh Tag
- * 35. SPF Records Check
- * 36. Ads.txt File Check
+ * 27. Google Safe Browsing
+ * 28. Gzip Compression
+ * 29. Structured Data
+ * 30. Cache Headers
+ * 31. CDN Usage
+ * 32. Noindex Tag
+ * 33. Nofollow Tag
+ * 34. Meta Refresh
+ * 35. SPF Record
+ * 36. Ads.txt
  *
  * @return string JSON string stored in `page_analytics`.
  */
@@ -4001,8 +4002,7 @@ public function processPageAnalytics(): string
     $results['Doc Type'] = $docType;
 
     // 3) W3C VALIDITY
-    $w3cStatus = 'Not validated'; // Placeholder
-    $results['W3C Validity'] = $w3cStatus;
+    $results['W3C Validity'] = 'Not validated';
 
     // 4) ANALYTICS
     $analytics = 'Not Found';
@@ -4012,19 +4012,15 @@ public function processPageAnalytics(): string
     $results['Analytics'] = $analytics;
 
     // 5) MOBILE COMPATIBILITY
-    $mobileCompatible = 'No';
-    if (preg_match('#<meta[^>]+name=[\'"]viewport[\'"]#i', $this->html)) {
-        $mobileCompatible = 'Yes';
-    }
+    $mobileCompatible = (preg_match('#<meta[^>]+name=[\'"]viewport[\'"]#i', $this->html)) ? 'Yes' : 'No';
     $results['Mobile Compatibility'] = $mobileCompatible;
 
     // 6) IP CANONICALIZATION
-    $ipCanResult = 'Not Checked';
     $hostIP = gethostbyname($this->urlParse['host']);
     if (!empty($hostIP) && filter_var($hostIP, FILTER_VALIDATE_IP)) {
-        $ipCanResult = ($hostIP == $this->urlParse['host'])
-            ? 'No redirection from IP'
-            : 'IP resolves to domain';
+        $ipCanResult = ($hostIP == $this->urlParse['host']) ? 'No redirection from IP' : 'IP resolves to domain';
+    } else {
+        $ipCanResult = 'Not Checked';
     }
     $results['IP Canonicalization'] = $ipCanResult;
 
@@ -4034,61 +4030,42 @@ public function processPageAnalytics(): string
     $foundSitemapUrl = null;
     foreach ($possibleSitemaps as $s) {
         $testUrl = $this->scheme . '://' . $this->host . $s;
-        $code = $this->getHttpResponseCode($testUrl);
-        if ($code == 200) {
+        if ($this->getHttpResponseCode($testUrl) == 200) {
             $sitemapStatus = 'Found';
             $foundSitemapUrl = $testUrl;
             break;
         }
     }
-    $results['XML Sitemap'] = ($foundSitemapUrl)
-        ? $sitemapStatus . ' at ' . $foundSitemapUrl
-        : $sitemapStatus;
+    $results['XML Sitemap'] = ($foundSitemapUrl) ? "$sitemapStatus at $foundSitemapUrl" : $sitemapStatus;
 
     // 8) ROBOTS.TXT
-    $robotsStatus = 'Not Found';
     $robotsUrl = $this->scheme . '://' . $this->host . '/robots.txt';
-    $code = $this->getHttpResponseCode($robotsUrl);
-    if ($code == 200) {
-        $robotsStatus = 'Found at ' . $robotsUrl;
-    }
-    $results['Robots.txt'] = $robotsStatus;
+    $results['Robots.txt'] = ($this->getHttpResponseCode($robotsUrl) == 200) ? "Found at $robotsUrl" : "Not Found";
 
     // 9) URL REWRITE
-    $urlRewrite = 'Uncertain';
-    if (isset($this->urlParse['query']) && !empty($this->urlParse['query'])) {
-        $urlRewrite = 'Likely using query strings';
-    } else {
-        $urlRewrite = 'Clean URLs detected';
-    }
-    $results['URL Rewrite'] = $urlRewrite;
+    $results['URL Rewrite'] = (isset($this->urlParse['query']) && !empty($this->urlParse['query']))
+        ? 'Likely using query strings' : 'Clean URLs detected';
 
     // 10) EMBEDDED OBJECTS
-    $embeddedFound = 'No';
-    if (preg_match('#<embed\b[^>]*>#i', $this->html) || preg_match('#<object\b[^>]*>#i', $this->html)) {
-        $embeddedFound = 'Yes';
-    }
-    $results['Embedded Objects'] = $embeddedFound;
+    $embeddedFound = (preg_match('#<embed\b[^>]*>#i', $this->html) || preg_match('#<object\b[^>]*>#i', $this->html))
+        ? 'Yes'
+        : 'No';
+    $results['Embedded Objects'] = ($embeddedFound === 'No')
+        ? 'No embedded objects detected. This is ideal.'
+        : 'Embedded objects detected. Review if they are necessary.';
 
     // 11) IFRAME
-    $iframeFound = 'No';
-    if (preg_match('#<iframe\b[^>]*>#i', $this->html)) {
-        $iframeFound = 'Yes';
-    }
-    $results['Iframe'] = $iframeFound;
+    $results['Iframe'] = (preg_match('#<iframe\b[^>]*>#i', $this->html)) ? 'Yes' : 'No';
 
     // 12) USABILITY
-    $usabilityScore = 'N/A';
-    if ($mobileCompatible === 'Yes') {
-        $usabilityScore = 'Mobile meta tag found. Possibly good usability.';
-    }
-    $results['Usability'] = $usabilityScore;
+    $results['Usability'] = ($mobileCompatible === 'Yes')
+        ? 'Mobile meta tag found. Possibly good usability.'
+        : 'Mobile meta tag not found. Usability may be affected.';
 
     // 13) URL
     $hostLength = strlen($this->host);
     $hyphenCount = substr_count($this->host, '-');
-    $urlInfo = "Scheme: {$this->scheme}, Host: {$this->host} (Length: {$hostLength}, Hyphens: {$hyphenCount})";
-    $results['URL'] = $urlInfo;
+    $results['URL'] = "Scheme: {$this->scheme}, Host: {$this->host} (Length: {$hostLength}, Hyphens: {$hyphenCount})";
 
     // 14) CANONICAL TAG
     $canonical = 'Not Found';
@@ -4099,27 +4076,23 @@ public function processPageAnalytics(): string
 
     // 15) CANONICAL TAG ACCURACY
     $homepageUrl = $this->scheme . '://' . $this->host;
-    $canonicalAccuracy = 'Not Applicable';
     if ($canonical === 'Not Found') {
-        $canonicalAccuracy = 'No canonical tag found';
+        $results['Canonical Tag Accuracy'] = 'No canonical tag found';
     } else {
-        if (trim($canonical, '/') === trim($homepageUrl, '/')) {
-            $canonicalAccuracy = 'Canonical tag accurately matches homepage URL';
-        } else {
-            $canonicalAccuracy = 'Canonical tag does not match homepage URL';
-        }
+        $results['Canonical Tag Accuracy'] = (trim($canonical, '/') === trim($homepageUrl, '/'))
+            ? 'Canonical tag accurately matches homepage URL'
+            : 'Canonical tag does not match homepage URL';
     }
-    $results['Canonical Tag Accuracy'] = $canonicalAccuracy;
 
-   // 16) HREFLANG TAGS
+    // 16) HREFLANG TAGS (now with tag details)
     $hreflang = 'Not Found';
     if (preg_match_all('#<link\s+rel=["\']alternate["\']\s+hreflang=["\']([^"\']+)["\'][^>]+href=["\']([^"\']+)["\']#i', $this->html, $matches)) {
         $count = count($matches[0]);
         $tagsList = [];
-        for($i = 0; $i < $count; $i++){
+        for ($i = 0; $i < $count; $i++) {
             $tagsList[] = $matches[1][$i] . ' => ' . $matches[2][$i];
         }
-        $hreflang = 'Found (' . $count . ' tag' . ($count > 1 ? 's' : '') . '): ' . implode(', ', $tagsList);
+        $hreflang = "Found ({$count} tag" . ($count > 1 ? 's' : '') . "): " . implode(', ', $tagsList);
     }
     $results['Hreflang Tags'] = $hreflang;
 
@@ -4137,50 +4110,53 @@ public function processPageAnalytics(): string
     }
     $results['Robots Meta Tag'] = $robotsMeta;
 
-    // 19) FAVICON & TOUCH ICONS (UPDATED)
+    // 19) FAVICON & TOUCH ICONS
     $faviconUrl = $this->getFaviconUrl();
-    if (!empty($faviconUrl)) {
-        $iconStatus = '<img src="' . htmlspecialchars($faviconUrl) . '" alt="Favicon" style="vertical-align:middle; margin-right:5px;"> Favicon and Touch Icons detected.';
-    } else {
-        $iconStatus = 'No favicon or touch icons detected. This may affect brand recognition in bookmarks and mobile devices.';
-    }
-    $results['Favicon and Touch Icons'] = $iconStatus;
+    $results['Favicon and Touch Icons'] = (!empty($faviconUrl))
+        ? '<img src="' . htmlspecialchars($faviconUrl) . '" alt="Favicon" style="vertical-align:middle; margin-right:5px;"> Favicon and touch icons detected.'
+        : 'No favicon or touch icons detected. This may affect brand recognition in bookmarks and mobile devices.';
 
     // 20) HTTP STATUS CODE
-    $homepageUrl = $this->scheme . '://' . $this->host;
     $httpStatus = $this->getHttpResponseCode($homepageUrl);
-    $results['HTTP Status Code'] = $httpStatus;
+    switch ($httpStatus) {
+        case 200:
+            $statusMsg = 'HTTP 200 OK: The page is accessible.';
+            break;
+        case 404:
+            $statusMsg = 'HTTP 404 Not Found: The page was not found.';
+            break;
+        case 301:
+        case 302:
+            $statusMsg = "HTTP {$httpStatus} Redirect: The page is redirecting.";
+            break;
+        default:
+            $statusMsg = "HTTP {$httpStatus}: Check the response for details.";
+    }
+    $results['HTTP Status Code'] = $statusMsg;
 
-    // 21) INDEXABILITY (noindex/nofollow)
+    // 21) INDEXABILITY (noindex/nofollow) from meta tag
     $indexability = 'Indexable';
-    $noindexFlag = false;
-    $nofollowFlag = false;
     if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
         $content = strtolower($m[1]);
         if (strpos($content, 'noindex') !== false) {
             $indexability = 'Noindex Detected';
-            $noindexFlag = true;
         }
         if (strpos($content, 'nofollow') !== false) {
             $indexability .= ' & Nofollow Detected';
-            $nofollowFlag = true;
         }
     }
     $results['Indexability'] = $indexability;
-    // Also store explicit flags:
-    $results['Noindex'] = $noindexFlag ? 'Yes' : 'No';
-    $results['Nofollow'] = $nofollowFlag ? 'Yes' : 'No';
 
     // 22) URL CANONICALIZATION & REDIRECTS
-    $urlCanonical = 'Not Checked';
     if (!empty($canonical) && $canonical !== 'Not Found') {
-        $urlCanonical = ($canonical == $homepageUrl)
+        $results['URL Canonicalization & Redirects'] = ($canonical == $homepageUrl)
             ? 'Canonical URL matches homepage'
             : 'Canonical URL differs from homepage';
+    } else {
+        $results['URL Canonicalization & Redirects'] = 'Not Checked';
     }
-    $results['URL Canonicalization & Redirects'] = $urlCanonical;
 
-    // 23) CONTENT FRESHNESS (Last-Modified/Publish Date)
+    // 23) CONTENT FRESHNESS
     $freshness = 'Not Detected';
     if (preg_match('#<meta\s+property=["\']article:published_time["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
         $freshness = 'Published on ' . $m[1];
@@ -4197,109 +4173,100 @@ public function processPageAnalytics(): string
     $results['Language and Localization Tags'] = $langTag;
 
     // 25) ERROR PAGE HANDLING
-    $errorPage = 'Standard Page';
-    if (stripos($this->html, '404 Not Found') !== false || stripos($this->html, 'Page Not Found') !== false) {
-        $errorPage = 'Custom 404 Detected';
-    }
+    $errorPage = (stripos($this->html, '404 Not Found') !== false || stripos($this->html, 'Page Not Found') !== false)
+        ? 'Custom 404 Detected' : 'Standard Page';
     $results['Error Page Handling'] = $errorPage;
 
-    // 26) PAGE SECURITY HEADERS (CSP, X-Frame-Options, etc.)
-    $securityHeaders = 'Not Detected';
+    // 26) PAGE SECURITY HEADERS
     $headers = @get_headers($homepageUrl, 1) ?: [];
-    if (!empty($headers)) {
-        $csp = isset($headers['Content-Security-Policy']) ? 'CSP Detected' : 'No CSP';
-        $xFrame = isset($headers['X-Frame-Options']) ? 'X-Frame-Options Detected' : 'No X-Frame-Options';
-        $securityHeaders = $csp . ' | ' . $xFrame;
+    $csp = isset($headers['Content-Security-Policy']) ? 'CSP Detected' : 'No CSP';
+    $xFrame = isset($headers['X-Frame-Options']) ? 'X-Frame-Options Detected' : 'No X-Frame-Options';
+    $results['Page Security Headers'] = $csp . ' | ' . $xFrame;
+
+    // --- New Checks Below ---
+
+    // 27) GOOGLE SAFE BROWSING
+    $results['Google Safe Browsing'] = safeBrowsing($this->host); // e.g. returns "Safe" or "Unsafe"
+
+    // 28) GZIP COMPRESSION
+    $gzipData = $this->processGzip(); // e.g. returns an array like [298251,298188,true,40229,"Data!","Data!"]
+    if (is_array($gzipData)) {
+        list($origSize, $compSize, $isCompressed, $fallbackSize, $headerData, $bodyData) = $gzipData;
+        $savings = ($origSize > 0) ? round((($origSize - $compSize) / $origSize) * 100, 2) : 0;
+        $results['Gzip Compression'] = "Original size: " . formatBytes($origSize) .
+            ", Compressed: " . formatBytes($compSize) .
+            " (saving " . $savings . "%)";
+    } else {
+        $results['Gzip Compression'] = "Not available";
     }
-    $results['Page Security Headers'] = $securityHeaders;
 
-    /* -----------------------------------------------
-       Additional Checks
-    ------------------------------------------------ */
-
-    // 27) GOOGLE SAFE BROWSING CHECK
-    // (Assuming you have a helper function safeBrowsing() that returns a status code.)
-    $safeBrowsingCode = safeBrowsing($this->urlParse['host']);
-    $results['Google Safe Browsing'] = ($safeBrowsingCode == 204)
-        ? 'Safe'
-        : 'Unsafe (Code: ' . $safeBrowsingCode . ')';
-
-    // 28) GZIP COMPRESSION CHECK
-    // (Assuming you have a helper function processGzip() that returns compression info.)
-    $gzipData = $this->processGzip(); // e.g. returns an array or string summary
-    $results['Gzip Compression'] = is_array($gzipData) ? implode(', ', $gzipData) : $gzipData;
-
-    // 29) STRUCTURED DATA VALIDATION
-    // (Call your processSchema() method and note if any valid structured data was found.)
-    $schemaData = $this->processSchema();
-    $results['Structured Data'] = (!empty($schemaData) && $schemaData !== 'No schema data found.')
+    // 29) STRUCTURED DATA
+    $schema = $this->processSchema();
+    $results['Structured Data'] = ($schema && $schema !== 'No schema data found.')
         ? 'Structured data detected'
-        : 'No structured data found';
+        : 'No structured data detected';
 
-    // 30) CACHE HEADERS (PAGE CACHE)
-    // Check for presence of Cache-Control or Expires headers.
-    $cacheHeaders = 'Not Detected';
-    if (!empty($headers)) {
-        if (isset($headers['Cache-Control']) || isset($headers['Expires'])) {
-            $cacheHeaders = 'Cache headers detected';
-        } else {
-            $cacheHeaders = 'No cache headers found';
-        }
-    }
+    // 30) CACHE HEADERS
+    $cacheHeaders = isset($headers['Cache-Control']) ? 'Cache headers detected' : 'No cache headers found';
     $results['Cache Headers'] = $cacheHeaders;
 
-    // 31) CDN USAGE DETECTION
-    // Check if common CDN identifiers appear in headers or asset URLs.
-    $cdnUsage = 'Not Detected';
+    // 31) CDN USAGE
+    $cdnUsage = 'No CDN detected';
     if (!empty($headers)) {
-        // Check headers for X-CDN or Server containing cdn keywords.
-        $headerStr = is_array($headers) ? implode(' ', $headers) : $headers;
-        if (stripos($headerStr, 'cloudfront') !== false ||
-            stripos($headerStr, 'akamai') !== false ||
-            stripos($headerStr, 'cdn') !== false) {
-            $cdnUsage = 'Likely using a CDN';
+        $via = isset($headers['Via']) ? strtolower(implode(' ', (array)$headers['Via'])) : '';
+        $server = isset($headers['Server']) ? strtolower($headers['Server']) : '';
+        if (strpos($via, 'cloudflare') !== false || strpos($server, 'cloudflare') !== false) {
+            $cdnUsage = 'Likely using Cloudflare';
+        } elseif (strpos($via, 'fastly') !== false) {
+            $cdnUsage = 'Likely using Fastly';
         }
-    }
-    // Additionally, check if asset URLs (e.g., in <script> or <link> tags) contain "cdn".
-    if ($cdnUsage === 'Not Detected' && preg_match('#(cdn\.|cloudfront\.|akamai\.|edgekey\.)#i', $this->html)) {
-        $cdnUsage = 'Likely using a CDN';
     }
     $results['CDN Usage'] = $cdnUsage;
 
-    // 32) NOINDEX TAG PRESENCE
-    $results['Noindex Tag'] = ($noindexFlag) ? 'Yes' : 'No';
-
-    // 33) NOFOLLOW TAG PRESENCE
-    $results['Nofollow Tag'] = ($nofollowFlag) ? 'Yes' : 'No';
-
-    // 34) META REFRESH TAG
-    $metaRefresh = 'Not Detected';
-    if (preg_match('#<meta[^>]+http-equiv=["\']refresh["\'][^>]+>#i', $this->html)) {
-        $metaRefresh = 'Meta refresh tag detected';
+    // 32) NOINDEX TAG
+    $noindex = 'No';
+    if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+        if (stripos($m[1], 'noindex') !== false) {
+            $noindex = 'Yes';
+        }
     }
+    $results['Noindex Tag'] = $noindex;
+
+    // 33) NOFOLLOW TAG
+    $nofollow = 'No';
+    if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+        if (stripos($m[1], 'nofollow') !== false) {
+            $nofollow = 'Yes';
+        }
+    }
+    $results['Nofollow Tag'] = $nofollow;
+
+    // 34) META REFRESH
+    $metaRefresh = (preg_match('#<meta\s+http-equiv=["\']refresh["\']#i', $this->html)) ? 'Detected' : 'Not Detected';
     $results['Meta Refresh'] = $metaRefresh;
 
-    // 35) SPF RECORDS CHECK
-    $spfRecord = 'Not Found';
-    $dnsTxtRecords = @dns_get_record($this->host, DNS_TXT);
-    if (!empty($dnsTxtRecords)) {
-        foreach ($dnsTxtRecords as $record) {
+    // 35) SPF RECORD
+    $spf = 'Not Found';
+    $txtRecords = dns_get_record($this->host, DNS_TXT);
+    if ($txtRecords) {
+        foreach ($txtRecords as $record) {
             if (isset($record['txt']) && stripos($record['txt'], 'v=spf1') !== false) {
-                $spfRecord = 'SPF record found';
+                $spf = 'SPF record found';
                 break;
             }
         }
     }
-    $results['SPF Record'] = $spfRecord;
+    $results['SPF Record'] = $spf;
 
-    // 36) ADS.TXT FILE CHECK
-    $adsTxtUrl = $this->scheme . '://' . $this->host . '/ads.txt';
-    $adsTxtCode = $this->getHttpResponseCode($adsTxtUrl);
-    $results['Ads.txt'] = ($adsTxtCode == 200)
-        ? 'ads.txt found at ' . $adsTxtUrl
-        : 'ads.txt not found';
+    // 36) ADS.TXT
+    $adsUrl = $this->scheme . '://' . $this->host . '/ads.txt';
+    $adsCode = $this->getHttpResponseCode($adsUrl);
+    if ($adsCode == 200) {
+        $results['Ads.txt'] = $adsUrl;
+    } else {
+        $results['Ads.txt'] = 'Ads.txt not found on your domain. <i class="fa fa-times text-danger"></i> Consider adding an ads.txt file to control your ad inventory.';
+    }
 
-    // -----------------------------------------------
     // Store results as JSON in the database.
     $jsonOutput = json_encode($results);
     updateToDbPrepared($this->con, 'domains_data', ['page_analytics' => $jsonOutput], ['domain' => $this->domainStr]);
@@ -4315,58 +4282,105 @@ public function showPageAnalytics(string $jsonData): string
         return '<div class="alert alert-danger">Invalid or missing page analytics data.</div>';
     }
 
+    // Define groups and the keys (headings) that belong in each group.
+    $groups = [
+        "General Information" => [
+            "Encoding",
+            "Doc Type",
+            "W3C Validity",
+            "Analytics",
+            "Mobile Compatibility",
+            "IP Canonicalization",
+            "URL",
+            "HTTP Status Code",
+            "Indexability",
+            "URL Canonicalization & Redirects"
+        ],
+        "Meta Tags & SEO Settings" => [
+            "XML Sitemap",
+            "Robots.txt",
+            "URL Rewrite",
+            "Canonical Tag",
+            "Canonical Tag Accuracy",
+            "Hreflang Tags",
+            "AMP HTML",
+            "Robots Meta Tag",
+            "Favicon and Touch Icons",
+            "Noindex Tag",
+            "Nofollow Tag",
+            "Meta Refresh"
+        ],
+        "Technical & Advanced" => [
+            "Embedded Objects",
+            "Iframe",
+            "Usability",
+            "Content Freshness",
+            "Language and Localization Tags",
+            "Error Page Handling",
+            "Page Security Headers",
+            "Google Safe Browsing",
+            "Gzip Compression",
+            "Structured Data",
+            "Cache Headers",
+            "CDN Usage",
+            "SPF Record",
+            "Ads.txt"
+        ]
+    ];
+
+    // Build cards for each check.
     $cards = [];
     $suggestions = [];
-
-    // Build card data for each check.
     foreach ($data as $heading => $value) {
-        // Use a helper method to build each card's icon and suggestion if needed.
-        $cards[] = $this->buildCardData($heading, $value, $suggestions);
+        $cards[$heading] = $this->buildCardData($heading, $value, $suggestions);
     }
 
-    // Build the card grid layout using Bootstrap cards.
+    // Build HTML output with groups.
     $html = '<div class="container my-4">';
-    $html .= '<div class="row row-cols-1 row-cols-md-2 g-4">';
-
-    foreach ($cards as $card) {
-        $html .= '<div class="col">';
-        $html .= '  <div class="card h-100 shadow-sm">';
-        $html .= '    <div class="card-body d-flex align-items-start">';
-        $html .= '      <div class="me-3" style="font-size:1.8rem;">' . $card['icon'] . '</div>';
-        $html .= '      <div>';
-        $html .= '        <h5 class="card-title mb-1">' . htmlspecialchars($card['heading']) . '</h5>';
-        // For Favicon, output raw HTML to show the image.
-        if ($card['heading'] === 'Favicon and Touch Icons') {
-            $html .= '        <p class="card-text text-muted small mb-0">' . $card['description'] . '</p>';
-        } else {
-            $html .= '        <p class="card-text text-muted small mb-0">' . htmlspecialchars($card['description']) . '</p>';
+    foreach ($groups as $groupName => $headings) {
+        $html .= '<h3 class="mb-3">' . htmlspecialchars($groupName) . '</h3>';
+        $html .= '<div class="row row-cols-1 row-cols-md-2 g-4 mb-4">';
+        foreach ($headings as $heading) {
+            if (!isset($cards[$heading])) {
+                continue;
+            }
+            $card = $cards[$heading];
+            $html .= '<div class="col">';
+            $html .= '<div class="card h-100 shadow-sm">';
+            $html .= '  <div class="card-body d-flex align-items-start">';
+            $html .= '    <div class="me-3" style="font-size:1.8rem;">' . $card['icon'] . '</div>';
+            $html .= '    <div>';
+            $html .= '      <h5 class="card-title mb-1">' . htmlspecialchars($card['heading']) . '</h5>';
+            // If the description has HTML (e.g. for favicon or ads.txt), output raw.
+            if (in_array($card['heading'], ['Favicon and Touch Icons', 'Ads.txt'])) {
+                $html .= '      <p class="card-text text-muted small mb-0">' . $card['description'] . '</p>';
+            } else {
+                $html .= '      <p class="card-text text-muted small mb-0">' . htmlspecialchars($card['description']) . '</p>';
+            }
+            $html .= '    </div>';
+            $html .= '  </div>';
+            $html .= '</div>';
+            $html .= '</div>';
         }
-        $html .= '      </div>';
-        $html .= '    </div>';
-        $html .= '  </div>';
         $html .= '</div>';
     }
 
-    $html .= '</div>'; // end row
-
-    // If suggestions exist, display them.
+    // Optionally, display suggestions.
     if (!empty($suggestions)) {
         $html .= '<div class="card border-warning mt-4">';
         $html .= '  <div class="card-header bg-warning text-dark"><strong>Suggestions for Improvement</strong></div>';
-        $html .= '  <div class="card-body">';
-        $html .= '    <ul class="mb-0">';
+        $html .= '  <div class="card-body"><ul class="mb-0">';
         foreach ($suggestions as $sug) {
             $html .= '<li>' . htmlspecialchars($sug) . '</li>';
         }
-        $html .= '    </ul>';
-        $html .= '  </div>';
+        $html .= '  </ul></div>';
         $html .= '</div>';
     }
 
-    $html .= '</div>'; // end container
-
+    $html .= '</div>';
     return $html;
 }
+
 
 /**
  * buildCardData()
