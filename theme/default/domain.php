@@ -303,6 +303,35 @@ if ($updateFound) {
                         </div>
                     </div>
 
+
+                    <div id="card-analysis" class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0">Cards <?php trans('Link Analysis', $lang['21']); ?></h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="contentBox" id="seoBox51">
+                                <?php echo $seoBox51; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            <!-- Social URL Section -->
+                   <div id="card-analysis" class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0">Cards <?php trans('Link Analysis', $lang['21']); ?></h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="contentBox" id="seoBox52">
+                                <?php echo $seoBox52; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <!-- Text/HTML Ratio Section -->
                     <div id="text-analysis" class="container mt-4">
                         <div class="card">
@@ -330,69 +359,25 @@ if ($updateFound) {
                             </div>
                         </div>
                     </div>
+<?php //////////////////////////////////////////// Google Preview Section ///////////////////////////////////////////////////////// ?>    
 
 
-
-
-
-
-
-
-
-              
-<?php //////////////////////////////////////////// SEO Section ///////////////////////////////////////////////////////// ?>  
-
-<?php //////////////////////////////////////////// Page Load Section ///////////////////////////////////////////////////////// ?>  
- 
-<div class="card shadow seo-card mb-4">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-md-3 d-flex align-items-center">
-                                    <div class="me-3 text-success">
-                                        <i class="fa fa-check-circle"></i>
-                                    </div>
-                                    <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN28'], $solveMsg, 4); ?></h5>
-                                </div>
-                                <div class="col-md-9" id="seoBox30">
-                                    <?php echo $seoBox30; ?>
+                    <div id="image-analysis" class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0"><?php outHeadBox($lang['AN17'],$solveMsg,4); ?></h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="contentBox" id="seoBox5">
+                                    <?php echo $seoBox5; ?>
                                 </div>
                             </div>
                         </div>
                     </div>
-  <?php //////////////////////////////////////////// GZIP compression Ratio Section ///////////////////////////////////////////////////////// ?>  
-  <div class="card shadow seo-card mb-4">
-    <div class="card-body">
-      <div class="row align-items-center">
-        <div class="col-md-3 d-flex align-items-center">
-          <div class="me-3 text-success">
-            <i class="fa fa-check-circle"></i>
-          </div>
-          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN40'],$solveMsg,2); ?></h5>
-        </div>
-        <div class="col-md-9" id="seoBox10">
-        <?php echo $seoBox10; ?>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <?php //////////////////////////////////////////// WWW Resolve Ratio Section ///////////////////////////////////////////////////////// ?>  
-  <div class="card shadow seo-card mb-4">
-    <div class="card-body">
-      <div class="row align-items-center">
-        <div class="col-md-3 d-flex align-items-center">
-          <div class="me-3 text-success">
-            <i class="fa fa-check-circle"></i>
-          </div>
-          <h5 class="fw-bold mb-0"><?php outHeadBox($lang['AN45'],$solveMsg,1); ?></h5>
-        </div>
-        <div class="col-md-9" id="seoBox11">
-        <?php echo $seoBox11; ?>
-        </div>
-      </div>
-    </div>
-  </div> 
 
+               
+ 
 
   <?php //////////////////////////////////////////// Server Details Section ///////////////////////////////////////////////////////// ?>
 
@@ -433,313 +418,33 @@ if ($updateFound) {
 
                      
                 
-<?php //////////////////////////////////////////// IP Canonicalization Ratio Section ///////////////////////////////////////////////////////// ?>               
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN48'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox12">
-                        <?php echo $seoBox12; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div> 
-<?php //////////////////////////////////////////// XML Sitemap Ratio Section ///////////////////////////////////////////////////////// ?>                     
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN59'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox15">
-                        <?php echo $seoBox15; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div> 
-<?php //////////////////////////////////////////// XML Sitemap Ratio Section ///////////////////////////////////////////////////////// ?>                       
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN60'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox16">
-                        <?php echo $seoBox16; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div> 
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN61'],$solveMsg,2); ?>
-                    <div class="contentBox" id="seoBox17">
-                        <?php echo $seoBox17; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div> 
-<?php //////////////////////////////////////////// Google Preview Section ///////////////////////////////////////////////////////// ?>                  
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN17'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox5">
-                        <?php echo $seoBox5; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>  
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN62'],$solveMsg,3); ?>
-                    <div class="contentBox" id="seoBox18">
-                        <?php echo $seoBox18; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
+ 
+ 
+ 
+  
+ 
 <?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN63'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox19">
-                        <?php echo $seoBox19; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN76'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox20">
-                        <?php echo $seoBox20; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN81'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox21">
-                        <?php echo $seoBox21; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>     
-
-
-                <div class="seoBox whois">
-                    <?php outHeadBox($lang['AN83'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox22">
-                        <?php echo $seoBox22; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN110'],$solveMsg,2); ?>
-                    <div class="contentBox" id="seoBox42">
-                        <?php echo $seoBox42; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN111'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox43">
-                        <?php echo $seoBox43; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
+ 
                 </div>
  
-                <div id="usability">
+          
                 
-                <div class="clearSep"></div>
-                <h2 class="seoBox-title">
-                    <?php trans('Usability',$lang['16']); ?>
-                </h2>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN94'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox26">
-                        <?php echo $seoBox26; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN95'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox27">
-                        <?php echo $seoBox27; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN96'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox28">
-                        <?php echo $seoBox28; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">ssssssssssssssssssssssssssssssssssssssss
-                    <?php outHeadBox($lang['AN97'],$solveMsg,2); ?>
-                    <div class="contentBox" id="seoBox29">
-                        <?php echo $seoBox29; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['120'],$solveMsg,3); ?>
-                    <div class="contentBox" id="seoBox48">
-                        <?php echo $seoBox48; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div> 
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN99'],$solveMsg,1); ?> ffffffffffffff
-                    <div class="contentBox" id="seoBox31">
-                        <?php echo $seoBox31; ?> 
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN100'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox32">
-                        <?php echo $seoBox32; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN101'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox33">
-                        <?php echo $seoBox33; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN102'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox34">
-                        <?php echo $seoBox34; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN103'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox35">
-                        <?php echo $seoBox35; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                </div>
+          
                 
-                <div id="mobile">
-                    <div class="clearSep"></div>
-                    <h2 class="seoBox-title">
-                        <?php trans('Mobile',$lang['17']); ?>
-                    </h2>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>        
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN91'],$solveMsg,3); ?>
-                    <div class="contentBox" id="seoBox23">
-                        <?php echo $seoBox23; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN92'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox24">
-                        <?php echo $seoBox24; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN93'],$solveMsg,2); ?>
-                    <div class="contentBox" id="seoBox25">
-                        <?php echo $seoBox25; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-<?php ////////////////////////////////////////////  Section ///////////////////////////////////////////////////////// ?>                    
-                <div class="seoBox">
-                    <?php outHeadBox($lang['121'],$solveMsg,3); ?>
-                    <div class="contentBox" id="seoBox49">
-                        <?php echo $seoBox49; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-                </div>
-                
-                </div>
-                
-                <div id="technologies">
-                <div class="clearSep"></div>
-                <h2 class="seoBox-title">
-                    <?php trans('Technologies',$lang['18']); ?>
-                </h2>
-               
-                
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN105'],$solveMsg,3); ?>
-                    <div class="contentBox" id="seoBox37">
-                        <?php echo $seoBox37; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-                
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN106'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox38">
-                        <?php echo $seoBox38; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-                
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN107'],$solveMsg,2); ?>
-                    <div class="contentBox" id="seoBox39">
-                        <?php echo $seoBox39; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-                
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN108'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox40">
-                        <?php echo $seoBox40; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-                
-                <div class="seoBox">
-                    <?php outHeadBox($lang['AN109'],$solveMsg,1); ?>
-                    <div class="contentBox" id="seoBox41">
-                        <?php echo $seoBox41; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-                
-                </div>
+                 
                 
                 
                 
                 <div id="visitors" class="hide">
                 <div class="clearSep"></div>
-                <h2 class="seoBox-title">
-                    <?php trans('Visitors',$lang['20']); ?>
-                </h2>
-                     onclick="javascript:showSuggestion('seoBox45');">
-                    <?php outHeadBox($lang['AN113'],$solveMsg,4); ?>
-                    <div class="contentBox" id="seoBox45">
-                        <?php echo $seoBox45; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
+             
+                
+       
                 
                 <div class="seoBox hide">
-                    <?php outHeadBox($lang['AN114'],$solveMsg,3); ?>
-                    <div class="contentBox" id="seoBox46">
-                        <?php echo $seoBox46; ?>
-                    </div>
-                    <?php outQuestionBox($lang['AN4']); ?>
-	            </div>
-                
-                <div class="seoBox hide">
-                    <?php outHeadBox($lang['AN115'],$solveMsg,4); ?>
+                    <?php outHeadBox($lang['AN115'],$solveMsg,4); ?>ddddddddddddddddddddddddddddddd
                     <div class="contentBox" id="seoBox47">
-                        <?php echo $seoBox47; ?>
+                        <?php echo $seoBox47; ?>wwwwwwwwwwwwwwwwwwwww
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>

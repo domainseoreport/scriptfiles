@@ -142,11 +142,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * LOAD DOM LIBRARY (if needed)
      * -----------------------------------------------------------------
      */
-    if (isset($_POST['loaddom'])) {
-        log_message('debug', "DOM Library Tag Call for URL {$my_url_host}");
-        require_once(LIB_DIR . "simple_html_dom.php");
-        $domData = load_html($sourceData);
-    }
+    // if (isset($_POST['loaddom'])) {
+    //     log_message('debug', "DOM Library Tag Call for URL {$my_url_host}");
+    //     require_once(LIB_DIR . "simple_html_dom.php");
+    //     $domData = load_html($sourceData);
+    // }
 
     /*
      * -----------------------------------------------------------------
@@ -157,6 +157,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         log_message('debug', "Image Tag Call for URL {$my_url_host}");
         $imageData = $seoTools->processImage();
         echo $seoTools->showImage($imageData);
+        die();
+    }
+
+    /*
+     * -----------------------------------------------------------------
+     * Cards Function to show site card
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['sitecards'])) {
+        log_message('debug', "Site Cards for {$my_url_host}");
+        $sitecardsData = $seoTools->processSiteCards();
+        echo $seoTools->showCards($sitecardsData);
         die();
     }
 
@@ -200,49 +212,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $seoTools->showTextRatio($textRatio);
         die();
     }
-
-    /*
-     * -----------------------------------------------------------------
-     * GZIP COMPRESSION TEST
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['gzip'])) {
-        log_message('debug', "GZIP Tag Call for URL {$my_url_host}");
-        $gzipData = $seoTools->processGzip();
-        echo $seoTools->showGzip($gzipData);
-        die();
-    }
+ 
 
     /*
      * -----------------------------------------------------------------
      * WWW RESOLVE CHECK
      * -----------------------------------------------------------------
      */
-    if (isset($_POST['www_resolve'])) {
-        log_message('debug', "WWW Resolve Tag Call for URL {$my_url_host}");
-        $resolveData = $seoTools->processWWWResolve();
-        echo $seoTools->showWWWResolve($resolveData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * IP CANONICALIZATION CHECK
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['ip_can'])) {
-        log_message('debug', "IP Canonicalization Tag Call for URL {$my_url_host}");
-        $ipData = $seoTools->processIPCanonicalization();
-        echo $seoTools->showIPCanonicalization($ipData);
-        die();
-    }
+    // if (isset($_POST['www_resolve'])) {
+    //     log_message('debug', "WWW Resolve Tag Call for URL {$my_url_host}");
+    //     $resolveData = $seoTools->processWWWResolve();
+    //     echo $seoTools->showWWWResolve($resolveData);
+    //     die();
+    // }
+ 
 
     /*
      * -----------------------------------------------------------------
      * IN-PAGE LINKS ANALYZER
      * -----------------------------------------------------------------
      */
-    if (isset($_POST['in_page'])) {
+    if (isset($_POST['linkanalysis'])) {
         log_message('debug', "In-Page Links Tag Call for URL {$my_url_host}");
         $linksData = $seoTools->processInPageLinks();
         echo $seoTools->showInPageLinks($linksData);
@@ -260,200 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $seoTools->showBrokenLinks($brokenLinks);
         die();
     }
-
-    /*
-     * -----------------------------------------------------------------
-     * ROBOTS.TXT CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['robot'])) {
-        log_message('debug', "Robots.txt Tag Call for URL {$my_url_host}");
-        $robotsData = $seoTools->processRobots();
-        echo $seoTools->showRobots($robotsData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * SITEMAP CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['sitemap'])) {
-        log_message('debug', "Sitemap Tag Call for URL {$my_url_host}");
-        $sitemapData = $seoTools->processSitemap();
-        echo $seoTools->showSitemap($sitemapData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * EMBEDDED OBJECT CHECK
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['embedded'])) {
-        log_message('debug', "Embedded Objects Tag Call for URL {$my_url_host}");
-        $embeddedCheck = $seoTools->processEmbedded();
-        echo $seoTools->showEmbedded($embeddedCheck);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * IFRAME CHECK
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['iframe'])) {
-        log_message('debug', "iFrame Tag Call for URL {$my_url_host}");
-        $iframeCheck = $seoTools->processIframe();
-        echo $seoTools->showIframe($iframeCheck);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * WHOIS DATA RETRIEVAL
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['whois'])) {
-        log_message('debug', "WHOIS Tag Call for URL {$my_url_host}");
-        echo "Whois";
-        //$whoisData = $seoTools->processWhois();
-        //echo $seoTools->showWhois($whoisData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * INDEXED PAGES COUNTER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['indexedPages'])) {
-        log_message('debug', "Indexed Pages Tag Call for URL {$my_url_host}");
-        $indexed = $seoTools->processIndexedPages();
-        echo $seoTools->showIndexedPages($indexed);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * BACKLINK COUNTER / ALEXA RANK / SITE WORTH
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['backlinks'])) {
-        log_message('debug', "Backlinks Tag Call for URL {$my_url_host}");
-        $alexaData = $seoTools->processBacklinks();
-        echo $seoTools->showBacklinks($alexaData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * URL LENGTH & FAVICON CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['urlLength'])) {
-        log_message('debug', "URL Length Tag Call for URL {$my_url_host}");
-        $urlLengthData = $seoTools->processUrlLength();
-        echo $seoTools->showUrlLength($urlLengthData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * CUSTOM 404 PAGE CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['errorPage'])) {
-        log_message('debug', "Custom 404 Page Tag Call for URL {$my_url_host}");
-        $errorPageSize = $seoTools->processErrorPage();
-        echo $seoTools->showErrorPage($errorPageSize);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * PAGE LOAD / SIZE / LANGUAGE CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['pageLoad'])) {
-        log_message('debug', "Page Load Tag Call for URL {$my_url_host}");
-        $pageLoadData = $seoTools->processPageLoad();
-        echo $seoTools->showPageLoad($pageLoadData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * PAGE SPEED INSIGHT CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['pageSpeedInsightChecker'])) {
-        log_message('debug', "Page Speed Insight Tag Call for URL {$my_url_host}");
-        $psiData = $seoTools->processPageSpeedInsight();
-        echo $seoTools->showPageSpeedInsight($psiData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * DOMAIN & TYPO AVAILABILITY CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['availabilityChecker'])) {
-        log_message('debug', "Availability Checker Tag Call for URL {$my_url_host}");
-        $availData = $seoTools->processAvailabilityChecker();
-        echo $seoTools->showAvailabilityChecker($availData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * EMAIL PRIVACY CHECK
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['emailPrivacy'])) {
-        log_message('debug', "Email Privacy Tag Call for URL {$my_url_host}");
-        $emailCount = $seoTools->processEmailPrivacy();
-        echo $seoTools->showEmailPrivacy($emailCount);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * SAFE BROWSING CHECK
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['safeBrowsing'])) {
-        log_message('debug', "Safe Browsing Tag Call for URL {$my_url_host}");
-        $safeBrowsingStats = $seoTools->processSafeBrowsing();
-        echo $seoTools->showSafeBrowsing($safeBrowsingStats);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * MOBILE FRIENDLINESS CHECK
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['mobileCheck'])) {
-        log_message('debug', "Mobile Friendliness Tag Call for URL {$my_url_host}");
-        $mobileData = $seoTools->processMobileCheck();
-        echo $seoTools->showMobileCheck($mobileData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * MOBILE COMPATIBILITY CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['mobileCom'])) {
-        log_message('debug', "Mobile Compatibility Tag Call for URL {$my_url_host}");
-        $mobileComData = $seoTools->processMobileCom();
-        echo $seoTools->showMobileCom($mobileComData);
-        die();
-    }
-
+ 
     /*
      * -----------------------------------------------------------------
      * SERVER LOCATION INFORMATION
@@ -464,77 +261,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $serverDataJson = $seoTools->processServerInfo();
         echo $seoTools->showServerInfo($serverDataJson);
         die();
-    }
+    } 
 
     /*
      * -----------------------------------------------------------------
-     * SPEED TIPS ANALYZER
+     * SOCIAL Cards RETRIEVAL
      * -----------------------------------------------------------------
      */
-    if (isset($_POST['speedTips'])) {
-        log_message('debug', "Speed Tips Tag Call for URL {$my_url_host}");
-        $speedTipsData = $seoTools->processSpeedTips();
-        echo $seoTools->showSpeedTips($speedTipsData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * ANALYTICS & DOCUMENT TYPE CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['docType'])) {
-        log_message('debug', "DocType Tag Call for URL {$my_url_host}");
-        $docTypeData = $seoTools->processDocType();
-        echo $seoTools->showDocType($docTypeData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * W3C VALIDITY CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['w3c'])) {
-        log_message('debug', "W3C Validity Tag Call for URL {$my_url_host}");
-        $w3cData = $seoTools->processW3c();
-        echo $seoTools->showW3c($w3cData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * ENCODING TYPE CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['encoding'])) {
-        log_message('debug', "Encoding Tag Call for URL {$my_url_host}");
-        $charset = $seoTools->processEncoding();
-        echo $seoTools->showEncoding($charset);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * SOCIAL DATA RETRIEVAL
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['socialData'])) {
-        // $socialData = $seoTools->processSocialData();
-        // echo $seoTools->showSocialData($socialData);
+    if (isset($_POST['SchemaData'])) { 
         $schemaJson = $seoTools->processSchema();  // Process and store schema data.
         echo $seoTools->showSchema($schemaJson);
         die();
     }
-
-    /*
+ 
+      /*
      * -----------------------------------------------------------------
-     * VISITORS LOCALIZATION
+     * SOCIAL URL  RETRIEVAL
      * -----------------------------------------------------------------
      */
-    if (isset($_POST['visitorsData'])) {
-        $visitorsData = $seoTools->processVisitorsData();
-        echo $seoTools->showVisitorsData($visitorsData);
+    if (isset($_POST['socialurls'])) { 
+        $socialURLs = $seoTools->processSocialUrls();  // Process and store schema data.
+        echo $seoTools->showSocialUrls($socialURLs);
         die();
     }
 

@@ -1640,6 +1640,7 @@ footer .copyright {
 	transform: scale(1.1) rotate(360deg);
 }
 /* Google Preview Styling */
+./* Google Preview Styling */
 .googlePreview {
   background: #fff;
   padding: 20px;
@@ -1648,7 +1649,7 @@ footer .copyright {
   margin-top: 10px;
 }
 
-/* Individual Preview Boxes */
+/* Individual Preview Box */
 .google-preview-box {
   font-family: Arial, sans-serif;
   border: 1px solid #ccc;
@@ -1657,30 +1658,43 @@ footer .copyright {
   background: #fff;
   text-align: left;
   min-height: 120px;
+  margin-bottom: 15px;
 }
 
-/* Title Styling */
+/* Preview Box Header (Device Title) */
+.google-preview-box h6 {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #777;
+}
+
+/* Preview Title (Link) */
 .google-title a {
   color: #1a0dab;
   font-size: 18px;
   font-weight: bold;
   text-decoration: none;
+  transition: color 0.3s ease; /* optional, for smooth transition */
+}
+.google-title a:hover {
+  color: #1a0dab !important;
 }
 
-/* URL */
+/* Preview URL */
 .google-url {
   color: #006621;
   font-size: 14px;
   font-weight: bold;
+  margin: 5px 0;
 }
 
-/* Description */
+/* Preview Description */
 .google-desc {
   color: #545454;
   font-size: 14px;
 }
 
-/* Device-Specific Previews */
+/* Device-specific Preview Layouts */
 .desktop-preview {
   max-width: 700px;
   margin: 20px auto;
@@ -1697,6 +1711,232 @@ footer .copyright {
   background: #f8f9fa;
   padding: 12px;
 }
+
+
+/* COMMON BASE */
+.fb-preview-card,
+.x-preview-card,
+.li-preview-card,
+.dc-preview-card,
+.pin-preview-card,
+.wa-preview-card,
+.g-preview-card,
+.generic-preview-card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  max-width: 100%;
+}
+
+/* All images full-width */
+.fb-preview-card img,
+.x-preview-card img,
+.li-preview-card img,
+.dc-preview-card img,
+.pin-preview-card img,
+.wa-preview-card img,
+.g-preview-card img,
+.generic-preview-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* FACEBOOK */
+.fb-preview-card .fpc-domain {
+  font-size: 12px;
+  color: #666;
+  padding: 6px 10px;
+  background: #f7f7f7;
+  border-bottom: 1px solid #ddd;
+}
+.fb-preview-card .fpc-content {
+  padding: 8px 10px;
+}
+.fb-preview-card .fpc-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 3px;
+  color: #333;
+}
+.fb-preview-card .fpc-desc {
+  font-size: 14px;
+  color: #555;
+}
+
+/* X (Twitter) */
+.x-preview-card .x-image {
+  border-bottom: 1px solid #ddd;
+}
+.x-preview-card .x-content {
+  padding: 8px 10px;
+}
+.x-preview-card .x-domain {
+  font-size: 12px;
+  color: #999;
+  background: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+.x-preview-card .x-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 3px;
+  color: #333;
+}
+.x-preview-card .x-desc {
+  font-size: 14px;
+  color: #555;
+}
+
+/* LINKEDIN */
+.li-preview-card .li-image {
+  border-bottom: 1px solid #ddd;
+}
+.li-preview-card .li-domain {
+  font-size: 12px;
+  color: #999;
+  margin: 5px 10px;
+}
+.li-preview-card .li-title {
+  font-weight: bold;
+  font-size: 15px;
+  margin: 0 10px;
+  color: #333;
+}
+.li-preview-card .li-desc {
+  font-size: 14px;
+  color: #555;
+  margin: 2px 10px 8px;
+}
+
+/* DISCORD */
+.dc-preview-card {
+  background: #2f3136;
+  color: #ddd;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+}
+.dc-preview-card .dc-heading {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 5px;
+}
+.dc-preview-card .dc-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 3px;
+  color: #fff;
+}
+.dc-preview-card .dc-desc {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 8px;
+}
+.dc-preview-card .dc-image img {
+  border-radius: 4px;
+  max-height: 180px;
+  object-fit: cover;
+}
+
+/* PINTEREST */
+.pin-preview-card .pin-image {
+  border-bottom: 1px solid #ddd;
+}
+.pin-preview-card .pin-content {
+  padding: 8px 10px;
+}
+.pin-preview-card .pin-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 3px;
+  color: #333;
+}
+.pin-preview-card .pin-desc {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+.pin-preview-card .pin-domain {
+  font-size: 12px;
+  color: #999;
+}
+
+/* WHATSAPP */
+.wa-preview-card .wa-image {
+  border-bottom: 1px solid #ddd;
+}
+.wa-preview-card .wa-content {
+  padding: 8px 10px;
+}
+.wa-preview-card .wa-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 3px;
+  color: #333;
+}
+.wa-preview-card .wa-desc {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+.wa-preview-card .wa-domain {
+  font-size: 12px;
+  color: #999;
+}
+
+/* GOOGLE */
+.g-preview-card {
+  padding: 8px 10px;
+}
+.g-preview-card .g-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 3px;
+  color: #333;
+}
+.g-preview-card .g-desc {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+.g-preview-card .g-image {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 5px;
+}
+.g-preview-card .g-domain {
+  font-size: 12px;
+  color: #999;
+}
+
+/* GENERIC */
+.generic-preview-card .gp-domain {
+  font-size: 12px;
+  color: #666;
+  padding: 6px 10px;
+  background: #f7f7f7;
+  border-bottom: 1px solid #ddd;
+}
+.generic-preview-card .gp-image {
+  border-bottom: 1px solid #ddd;
+}
+.generic-preview-card .gp-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin: 5px 10px 2px;
+  color: #333;
+}
+.generic-preview-card .gp-desc {
+  font-size: 14px;
+  color: #555;
+  margin: 0 10px 10px;
+}
+
 
 /* Responsive Spacing */
 @media (max-width: 768px) {

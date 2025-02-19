@@ -154,50 +154,99 @@ class SeoTools {
         return $metaEncrypted;
     }
 
-    public function showMeta($metaData) {
+    public function showMeta($metaData): string {
         $metaData = jsonDecode($metaData);
         $lenTitle = mb_strlen($metaData['title'], 'utf8');
         $lenDes   = mb_strlen($metaData['description'], 'utf8');
-
+    
         $site_title       = $metaData['title'] ?: $this->lang['AN11'];
         $site_description = $metaData['description'] ?: $this->lang['AN12'];
         $site_keywords    = $metaData['keywords'] ?: $this->lang['AN15'];
-
+    
+        // Determine box classes based on string lengths.
         $classTitle = ($lenTitle < 10) ? 'improveBox' : (($lenTitle < 70) ? 'passedBox' : 'errorBox');
         $classDes   = ($lenDes < 70) ? 'improveBox' : (($lenDes < 300) ? 'passedBox' : 'errorBox');
         $classKey   = 'lowImpactBox';
-
+    
         // Check login/permissions.
         if (!isset($_SESSION['twebUsername']) && !isAllowedStats($this->con, 'seoBox1')) {
             die(str_repeat($this->seoBoxLogin . $this->sepUnique, 4));
         }
-
+    
         $titleMsg  = $this->lang['AN173'];
         $desMsg    = $this->lang['AN174'];
         $keyMsg    = $this->lang['AN175'];
-
-        $output = '<div class="' . $classTitle . '">
+    
+        // Meta Title Block (seoBox1)
+        $output = '<div class="seoBox seoBox1 ' . $classTitle . '">
                         <div class="msgBox bottom10">
                             ' . $site_title . '<br />
                             <b>' . $this->lang['AN13'] . ':</b> ' . $lenTitle . ' ' . $this->lang['AN14'] . '
                         </div>
-                        <div class="seoBox1 suggestionBox">' . $titleMsg . '</div>
+                        <div class="suggestionBox">' . $titleMsg . '</div>
                    </div>' . $this->sepUnique;
-        $output .= '<div class="' . $classDes . '">
+    
+        // Meta Description Block (seoBox2)
+        $output .= '<div class="seoBox seoBox2 ' . $classDes . '">
                         <div class="msgBox padRight10 bottom10">
                             ' . $site_description . '<br />
                             <b>' . $this->lang['AN13'] . ':</b> ' . $lenDes . ' ' . $this->lang['AN14'] . '
                         </div>
-                        <div class="seoBox2 suggestionBox">' . $desMsg . '</div>
+                        <div class="suggestionBox">' . $desMsg . '</div>
                     </div>' . $this->sepUnique;
-        $output .= '<div class="' . $classKey . '">
+    
+        // Meta Keywords Block (seoBox3)
+        $output .= '<div class="seoBox seoBox3 ' . $classKey . '">
                         <div class="msgBox padRight10">
                             ' . $site_keywords . '<br /><br />
                         </div>
-                        <div class="seoBox3 suggestionBox">' . $keyMsg . '</div>
+                        <div class="suggestionBox">' . $keyMsg . '</div>
                     </div>' . $this->sepUnique;
+    
+        // Google Preview Box (seoBox5)
+        $host = $this->urlParse['host'] ?? '';
+        $googlePreview = '<div id="seoBox5" class="seoBox seoBox5 ' . $classKey . '">
+                            <div class="msgBox">
+                                <div class="googlePreview">
+                                    <!-- First Row: Mobile & Tablet Views -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="google-preview-box mobile-preview">
+                                                <h6>Mobile View</h6>
+                                                <p class="google-title"><a href="#">' . $site_title . '</a></p>
+                                                <p class="google-url"><span class="bold">' . $host . '</span>/</p>
+                                                <p class="google-desc">' . $site_description . '</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="google-preview-box tablet-preview">
+                                                <h6>Tablet View</h6>
+                                                <p class="google-title"><a href="#">' . $site_title . '</a></p>
+                                                <p class="google-url"><span class="bold">' . $host . '</span>/</p>
+                                                <p class="google-desc">' . $site_description . '</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Second Row: Desktop View -->
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="google-preview-box desktop-preview mt-5">
+                                                <h6>Desktop View</h6>
+                                                <p class="google-title"><a href="#">' . $site_title . '</a></p>
+                                                <p class="google-url"><span class="bold">' . $host . '</span>/</p>
+                                                <p class="google-desc">' . $site_description . '</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>';
+        $output .= $googlePreview . $this->sepUnique;
+    
         return $output;
     }
+    
+    
 
     /*-------------------------------------------------------------------
      * HEADING HANDLER
@@ -221,10 +270,10 @@ class SeoTools {
         return $updateStr;
     }
 
-    public function showHeading($headings) {
+    public function showHeading($headings): string {
         $headingsArr = jsonDecode($headings);
         if (!is_array($headingsArr) || !isset($headingsArr[0])) {
-            return '<div class="errorBox"><div class="msgBox">Invalid heading data.</div></div>';
+            return '<div class="alert alert-danger">Invalid heading data.</div>';
         }
         $elementList = $headingsArr[0];
         $tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
@@ -232,30 +281,41 @@ class SeoTools {
         foreach ($tags as $tag) {
             $counts[$tag] = isset($elementList[$tag]) ? count($elementList[$tag]) : 0;
         }
-        $boxClass = ($counts['h1'] > 2) ? 'improveBox' : (($counts['h1'] > 0 && $counts['h2'] > 0) ? 'passedBox' : 'errorBox');
+        // Map the computed class to Bootstrap badge classes:
+        $boxClass = ($counts['h1'] > 2)
+                    ? 'bg-warning text-dark'       // Warning style for too many H1 tags
+                    : (($counts['h1'] > 0 && $counts['h2'] > 0)
+                        ? 'bg-success text-white'    // Success style when structure is good
+                        : 'bg-danger text-white');   // Danger style otherwise
+    
         $headMsg = $this->lang['AN176'] ?? "Please review your heading structure.";
+    
         if (!function_exists('getHeadingSuggestion')) {
             function getHeadingSuggestion($tag, $count) {
                 $tagUpper = strtoupper($tag);
                 if ($count === 0) {
-                    return ($tag === 'h1') 
+                    return ($tag === 'h1')
                         ? "No {$tagUpper} found. At least one H1 tag is recommended for SEO."
-                        : "No {$tagUpper} found. Consider adding for better structure.";
+                        : "No {$tagUpper} found. Consider adding one for better structure.";
                 }
                 return ($tag === 'h1' && $count > 2)
                     ? "More than 2 H1 tags found. Best practice is to have only one."
                     : "Looks good for {$tagUpper}.";
             }
         }
-        $output = '<div class="contentBox" id="seoBox4">
-            <div class="msgBox">
+    
+        $output = '<div class="card my-3" id="seoBox4">
+            <div class="card-header">
+                <h4>Heading Structure</h4>
+            </div>
+            <div class="card-body">
                 <table class="table table-bordered table-hover">
-                    <thead>
+                    <thead class="table-light">
                         <tr>
-                            <th width="50px">Tag</th>
-                            <th width="100px">Count</th>
+                            <th style="width: 50px;">Tag</th>
+                            <th style="width: 100px;">Count</th>
                             <th>Headings</th>
-                            <th width="200px">Suggestion</th>
+                            <th style="width: 200px;">Suggestion</th>
                         </tr>
                     </thead>
                     <tbody>';
@@ -263,28 +323,31 @@ class SeoTools {
             $count = $counts[$tag];
             $headingsList = !empty($elementList[$tag])
                 ? '<ul class="list-unstyled mb-0">' . implode('', array_map(function($text) use ($tag) {
-                      return '<li>&lt;' . strtoupper($tag) . '&gt; <b>' . htmlspecialchars($text) . '</b> &lt;/' . strtoupper($tag) . '&gt;</li>';
+                      return '<li>&lt;' . strtoupper($tag) . '&gt; <strong>' . htmlspecialchars($text) . '</strong> &lt;/' . strtoupper($tag) . '&gt;</li>';
                   }, $elementList[$tag])) . '</ul>'
                 : '<em class="text-muted">None found.</em>';
             $suggestion = getHeadingSuggestion($tag, $count);
             $output .= '<tr>
-                    <td><strong>' . strtoupper($tag) . '</strong></td>
-                    <td>' . $count . '</td>
-                    <td>' . $headingsList . '</td>
-                    <td class="text-muted small">' . $suggestion . '</td>
-                </tr>';
+                        <td><strong>' . strtoupper($tag) . '</strong></td>
+                        <td>' . $count . '</td>
+                        <td>' . $headingsList . '</td>
+                        <td class="text-muted small">' . $suggestion . '</td>
+                    </tr>';
         }
         $output .= '
                     </tbody>
                 </table>
             </div>
-            <div class="seoBox4 suggestionBox">' . $headMsg . '</div>
+            <div class="card-footer text-center">
+                <span class="badge ' . $boxClass . ' p-2">' . $headMsg . '</span>
+            </div>
         </div>
-        <div class="questionBox" data-original-title="More Information" data-toggle="tooltip" data-placement="top">
-            <i class="fa fa-question-circle grayColor"></i>
-        </div>';
+       ';
         return $output;
     }
+    
+    
+    
 
     /*===================================================================
      * IMAGE ALT TAG HANDLER
@@ -303,6 +366,7 @@ class SeoTools {
             'images_with_redundant_alt'=> [],
             'suggestions' => []
         ];
+    
         $aggregate = function (&$array, $data) {
             $src = $data['src'];
             if (isset($array[$src])) {
@@ -312,8 +376,14 @@ class SeoTools {
                 $array[$src] = $data;
             }
         };
+    
         foreach ($imgTags as $img) {
+            // Original extraction
             $src = trim($img->getAttribute('src')) ?: 'N/A';
+    
+            // Convert relative to absolute
+            $src = $this->toAbsoluteUrl($src);
+    
             $alt = $img->getAttribute('alt');
             $title = trim($img->getAttribute('title')) ?: 'N/A';
             $width = trim($img->getAttribute('width')) ?: 'N/A';
@@ -322,7 +392,11 @@ class SeoTools {
             $parentTag = $img->parentNode->nodeName;
             $parentTxt = trim($img->parentNode->textContent);
             $position = method_exists($this, 'getNodePosition') ? $this->getNodePosition($img) : 'N/A';
+    
+            // Build data array
             $data = compact('src', 'title', 'width', 'height', 'class', 'parentTag', 'parentTxt', 'position');
+    
+            // Check alt attribute
             if (!$img->hasAttribute('alt')) {
                 $aggregate($results['images_missing_alt'], $data);
             } elseif (trim($alt) === '') {
@@ -375,115 +449,242 @@ class SeoTools {
         return $updateStr;
     }
 
-    public function showImage($imageData) {
+    public function showImage($imageData): string {
         $data = jsonDecode($imageData);
-        // Calculate the total issues across all categories.
-        $issuesCount = array_sum(array_map(fn($i) => $i['count'], $data['images_missing_alt'])) +
-                       array_sum(array_map(fn($i) => $i['count'], $data['images_with_empty_alt'])) +
-                       array_sum(array_map(fn($i) => $i['count'], $data['images_with_short_alt'])) +
-                       array_sum(array_map(fn($i) => $i['count'], $data['images_with_long_alt'])) +
-                       array_sum(array_map(fn($i) => $i['count'], $data['images_with_redundant_alt']));
-        $altClass = ($issuesCount == 0) ? 'passedBox' : (($issuesCount < 3) ? 'improveBox' : '');
     
-        // Define a helper function for building tables.
+        // Validate the decoded data.
+        if (!is_array($data) || !isset($data['total_images'])) {
+            return '<div class="alert alert-warning">No image data available.</div>';
+        }
+        
+        // Calculate total issues across all categories.
+        $issuesCount = array_sum(array_map(fn($i) => $i['count'], $data['images_missing_alt'] ?? []))
+                     + array_sum(array_map(fn($i) => $i['count'], $data['images_with_empty_alt'] ?? []))
+                     + array_sum(array_map(fn($i) => $i['count'], $data['images_with_short_alt'] ?? []))
+                     + array_sum(array_map(fn($i) => $i['count'], $data['images_with_long_alt'] ?? []))
+                     + array_sum(array_map(fn($i) => $i['count'], $data['images_with_redundant_alt'] ?? []));
+        
+        // Determine border and header color based on issues.
+        if ($issuesCount == 0) {
+            $boxClass = 'border-success';
+            $headerIcon = themeLink('img/true.png', true);
+            $headerText = $this->lang['AN27'];
+        } elseif ($issuesCount < 3) {
+            $boxClass = 'border-warning';
+            $headerIcon = themeLink('img/false.png', true);
+            $headerText = "Issues found: {$issuesCount}";
+        } else {
+            $boxClass = 'border-danger';
+            $headerIcon = themeLink('img/false.png', true);
+            $headerText = "Issues found: {$issuesCount}";
+        }
+        
+        // Build header summary.
+        $headerContent = '
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <img src="' . $headerIcon . '" alt="' . ($issuesCount == 0 ? $this->lang['AN24'] : $this->lang['AN23']) . '" 
+                     title="' . ($issuesCount == 0 ? $this->lang['AN25'] : $this->lang['AN22']) . '" 
+                     class="me-2" /> 
+                <strong>' . $headerText . '</strong>
+            </div>
+            <div>
+                <span class="badge bg-secondary">Total Images: ' . $data['total_images'] . '</span>
+            </div>
+        </div>';
+        
+        /**
+         * Helper function to build tables for each category.
+         * Each row shows:
+         *  - a thumbnail (50×50 by default)
+         *  - additional image info
+         *  - occurrence count
+         * If width/height in HTML is < 50, display at that smaller size instead.
+         */
         $buildTable = function($title, $items) {
-            if (count($items) > 0) {
+            if (!empty($items)) {
                 $total = array_sum(array_map(fn($i) => $i['count'], $items));
                 $table  = '<h5 class="mt-3">' . $title . ' (' . $total . ')</h5>';
-                $table .= '<div class="table-responsive"><table class="table table-striped table-sm">';
-                $table .= '<thead><tr><th>Image Source</th><th class="text-center">Count</th></tr></thead><tbody>';
+                $table .= '<div class="table-responsive"><table class="table table-sm table-striped">';
+                $table .= '<thead class="table-light">
+                            <tr>
+                                <th style="width:60px;">Thumbnail</th>
+                                <th>Image Info</th>
+                                <th class="text-center" style="width:80px;">Count</th>
+                            </tr>
+                           </thead>
+                           <tbody>';
+    
                 foreach ($items as $item) {
-                    $table .= '<tr><td>' . htmlspecialchars($item['src']) . '</td><td class="text-center">' . $item['count'] . '</td></tr>';
+                    // Determine final displayed width/height
+                    $rawWidth = $item['width'] ?? 'N/A';
+                    $rawHeight = $item['height'] ?? 'N/A';
+    
+                    // Try to parse numeric width/height
+                    $imgWidth = (ctype_digit($rawWidth)) ? (int)$rawWidth : 0;
+                    $imgHeight = (ctype_digit($rawHeight)) ? (int)$rawHeight : 0;
+    
+                    // Default to 50px, or use the smaller dimension if < 50
+                    $thumbWidth = ($imgWidth > 0 && $imgWidth < 50) ? $imgWidth : 50;
+                    $thumbHeight = ($imgHeight > 0 && $imgHeight < 50) ? $imgHeight : 50;
+    
+                    // Build a small thumbnail image
+                    $thumbnail = '<img src="' . htmlspecialchars($item['src']) . '" alt="Image" 
+                                  style="width:' . $thumbWidth . 'px; height:' . $thumbHeight . 'px; object-fit:cover;">';
+                    
+                    // Build detailed information block
+                    $info = 'Source: ' . htmlspecialchars($item['src']);
+                    if (isset($item['title']) && $item['title'] !== 'N/A') {
+                        $info .= '<br>Title: ' . htmlspecialchars($item['title']);
+                    }
+                    if ($rawWidth !== 'N/A' && $rawHeight !== 'N/A') {
+                        $info .= '<br>Dimensions: ' . htmlspecialchars($rawWidth) . ' x ' . htmlspecialchars($rawHeight);
+                    }
+                    if (isset($item['alt'])) {
+                        $info .= '<br>Alt: ' . htmlspecialchars($item['alt']);
+                    }
+                    if (isset($item['class']) && $item['class'] !== 'N/A') {
+                        $info .= '<br>Class: ' . htmlspecialchars($item['class']);
+                    }
+                    if (isset($item['parentTag'])) {
+                        $info .= '<br>Parent: ' . htmlspecialchars($item['parentTag']);
+                    }
+                    
+                    $table .= '<tr>';
+                    $table .= '<td>' . $thumbnail . '</td>';
+                    $table .= '<td>' . $info . '</td>';
+                    $table .= '<td class="text-center">' . $item['count'] . '</td>';
+                    $table .= '</tr>';
                 }
+    
                 $table .= '</tbody></table></div>';
                 return $table;
             }
-            return '<p class="text-muted">None found.</p>';
+            return '<div class="alert alert-info py-2">No data found for ' . $title . '.</div>';
         };
-    
-        // Build the header summary.
-        $headerContent = '<div class="d-flex align-items-center mb-3">';
-        if ($issuesCount == 0) {
-            $headerContent .= '<img src="' . themeLink('img/true.png', true) . '" alt="' . $this->lang['AN24'] . '" title="' . $this->lang['AN25'] . '" class="me-2" /> ';
-            $headerContent .= '<strong>' . $this->lang['AN27'] . '</strong>';
-        } else {
-            $headerContent .= '<img src="' . themeLink('img/false.png', true) . '" alt="' . $this->lang['AN23'] . '" title="' . $this->lang['AN22'] . '" class="me-2" /> ';
-            $headerContent .= "<strong>Issues found: {$issuesCount}</strong>";
-        }
-        $headerContent .= ' <span class="ms-auto">Total Images: ' . $data['total_images'] . '</span>';
-        $headerContent .= '</div>';
-    
-        // Start building the final output using Bootstrap card and tabs.
-        $output = '<div id="seoBoxImage" class="card ' . $altClass . ' my-3">';
-        $output .= '<div class="card-header">' . $headerContent . '</div>';
-        $output .= '<div class="card-body">';
         
-        // Create Bootstrap nav tabs.
-        $output .= '
-        <ul class="nav nav-tabs mb-3" id="imageAltTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="missing-alt-tab" data-bs-toggle="tab" data-bs-target="#missing-alt" type="button" role="tab" aria-controls="missing-alt" aria-selected="true">Missing Alt</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="empty-alt-tab" data-bs-toggle="tab" data-bs-target="#empty-alt" type="button" role="tab" aria-controls="empty-alt" aria-selected="false">Empty Alt</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="short-alt-tab" data-bs-toggle="tab" data-bs-target="#short-alt" type="button" role="tab" aria-controls="short-alt" aria-selected="false">Short Alt</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="long-alt-tab" data-bs-toggle="tab" data-bs-target="#long-alt" type="button" role="tab" aria-controls="long-alt" aria-selected="false">Long Alt</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="redundant-alt-tab" data-bs-toggle="tab" data-bs-target="#redundant-alt" type="button" role="tab" aria-controls="redundant-alt" aria-selected="false">Redundant Alt</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="suggestions-tab" data-bs-toggle="tab" data-bs-target="#suggestions" type="button" role="tab" aria-controls="suggestions" aria-selected="false">Suggestions</button>
-          </li>
+        // Build the nav tabs.
+        $tabs = '
+        <ul class="nav nav-tabs" id="imageAltTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="missing-alt-tab" data-bs-toggle="tab" data-bs-target="#missing-alt" 
+                        type="button" role="tab" aria-controls="missing-alt" aria-selected="true">
+                    Missing Alt
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="empty-alt-tab" data-bs-toggle="tab" data-bs-target="#empty-alt" 
+                        type="button" role="tab" aria-controls="empty-alt" aria-selected="false">
+                    Empty Alt
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="short-alt-tab" data-bs-toggle="tab" data-bs-target="#short-alt" 
+                        type="button" role="tab" aria-controls="short-alt" aria-selected="false">
+                    Short Alt
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="long-alt-tab" data-bs-toggle="tab" data-bs-target="#long-alt" 
+                        type="button" role="tab" aria-controls="long-alt" aria-selected="false">
+                    Long Alt
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="redundant-alt-tab" data-bs-toggle="tab" data-bs-target="#redundant-alt" 
+                        type="button" role="tab" aria-controls="redundant-alt" aria-selected="false">
+                    Redundant Alt
+                </button>
+            </li>
         </ul>';
         
-        // Tab content.
-        $output .= '<div class="tab-content" id="imageAltTabContent">';
-        // Missing Alt Tab.
-        $output .= '<div class="tab-pane fade show active" id="missing-alt" role="tabpanel" aria-labelledby="missing-alt-tab">';
-        $output .= $buildTable('Images Missing Alt Attribute', $data['images_missing_alt']);
-        $output .= '</div>';
-        // Empty Alt Tab.
-        $output .= '<div class="tab-pane fade" id="empty-alt" role="tabpanel" aria-labelledby="empty-alt-tab">';
-        $output .= $buildTable('Images With Empty Alt Attribute', $data['images_with_empty_alt']);
-        $output .= '</div>';
-        // Short Alt Tab.
-        $output .= '<div class="tab-pane fade" id="short-alt" role="tabpanel" aria-labelledby="short-alt-tab">';
-        $output .= $buildTable('Images With Short Alt Text', $data['images_with_short_alt']);
-        $output .= '</div>';
-        // Long Alt Tab.
-        $output .= '<div class="tab-pane fade" id="long-alt" role="tabpanel" aria-labelledby="long-alt-tab">';
-        $output .= $buildTable('Images With Long Alt Text', $data['images_with_long_alt']);
-        $output .= '</div>';
-        // Redundant Alt Tab.
-        $output .= '<div class="tab-pane fade" id="redundant-alt" role="tabpanel" aria-labelledby="redundant-alt-tab">';
-        $output .= $buildTable('Images With Redundant Alt Text', $data['images_with_redundant_alt']);
-        $output .= '</div>';
-        // Suggestions Tab.
-        $output .= '<div class="tab-pane fade" id="suggestions" role="tabpanel" aria-labelledby="suggestions-tab">';
+        // Build tab content.
+        $tabContent = '<div class="tab-content" id="imageAltTabContent">';
+    
+        $tabContent .= '<div class="tab-pane fade show active" id="missing-alt" role="tabpanel" aria-labelledby="missing-alt-tab">';
+        $tabContent .= $buildTable('Images Missing Alt Attribute', $data['images_missing_alt'] ?? []);
+        $tabContent .= '</div>';
+        
+        $tabContent .= '<div class="tab-pane fade" id="empty-alt" role="tabpanel" aria-labelledby="empty-alt-tab">';
+        $tabContent .= $buildTable('Images With Empty Alt Attribute', $data['images_with_empty_alt'] ?? []);
+        $tabContent .= '</div>';
+        
+        $tabContent .= '<div class="tab-pane fade" id="short-alt" role="tabpanel" aria-labelledby="short-alt-tab">';
+        $tabContent .= $buildTable('Images With Short Alt Text', $data['images_with_short_alt'] ?? []);
+        $tabContent .= '</div>';
+        
+        $tabContent .= '<div class="tab-pane fade" id="long-alt" role="tabpanel" aria-labelledby="long-alt-tab">';
+        $tabContent .= $buildTable('Images With Long Alt Text', $data['images_with_long_alt'] ?? []);
+        $tabContent .= '</div>';
+        
+        $tabContent .= '<div class="tab-pane fade" id="redundant-alt" role="tabpanel" aria-labelledby="redundant-alt-tab">';
+        $tabContent .= $buildTable('Images With Redundant Alt Text', $data['images_with_redundant_alt'] ?? []);
+        $tabContent .= '</div>';
+        
+        $tabContent .= '</div>'; // End .tab-content
+        
+        // Build additional information section below the tabs.
+        $additionalInfo = '<div class="mt-4">';
+        
+        // Display suggestions if available.
         if (!empty($data['suggestions'])) {
-            $output .= '<ul class="list-group">';
+            $additionalInfo .= '<div class="mb-3">';
+            $additionalInfo .= '<h5>Suggestions</h5>';
+            $additionalInfo .= '<ul class="list-group">';
             foreach ($data['suggestions'] as $suggestion) {
-                $output .= '<li class="list-group-item">' . $suggestion . '</li>';
+                $additionalInfo .= '<li class="list-group-item">' . $suggestion . '</li>';
             }
-            $output .= '</ul>';
-        } else {
-            $output .= '<p class="text-muted">No suggestions available.</p>';
+            $additionalInfo .= '</ul>';
+            $additionalInfo .= '</div>';
         }
-        $output .= '</div>'; // End Suggestions Tab.
         
-        $output .= '</div>'; // End tab-content.
+        // Optionally include other additional information from DB.
+        if (!empty($data['additional_info'])) {
+            $additionalInfo .= '<div class="mb-3">';
+            $additionalInfo .= '<h5>Additional Information</h5>';
+            $additionalInfo .= '<p>' . nl2br(htmlspecialchars($data['additional_info'])) . '</p>';
+            $additionalInfo .= '</div>';
+        }
         
-        $output .= '</div>'; // End card-body.
-        $output .= '</div>'; // End card container.
+        $additionalInfo .= '</div>';
+        
+        // Wrap everything in a Bootstrap card.
+        $output = '<div id="seoBoxImage" class="card ' . $boxClass . ' my-3 shadow-sm">';
+        $output .= '<div class="card-header">' . $headerContent . '</div>';
+        $output .= '<div class="card-body">' . $tabs . $tabContent . $additionalInfo . '</div>';
+        $output .= '</div>';
         
         return $output;
     }
     
+            
+    
+    
+    /**
+ * Convert a (possibly) relative URL to an absolute URL based on the current domain.
+ *
+ * @param string $url   The image path or URL found in the HTML.
+ * @return string       The absolute URL.
+ */
+private function toAbsoluteUrl(string $url): string
+{
+    // If empty or already starts with http:// or https:// or data:image,
+    // we consider it already "absolute" enough.
+    if (empty($url) || preg_match('#^(?:https?:)?//#i', $url) || preg_match('#^data:image#i', $url)) {
+        return $url;
+    }
+
+    // If your domain property does not include scheme, prepend https:// or http://
+    // e.g., $this->domainStr might be "example.com" -> "https://example.com"
+    $domain = $this->domainStr;
+    if (!preg_match('#^https?://#i', $domain)) {
+        $domain = 'https://' . $domain;
+    }
+
+    // Combine them, ensuring we don’t double-slash
+    return rtrim($domain, '/') . '/' . ltrim($url, '/');
+}
+
 
     /**
      * Returns the position of the given node among its siblings.
@@ -709,32 +910,48 @@ class SeoTools {
         return $output;
     }
 
-    public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings) {
-        $this->true  = '<i class="fa fa-check text-success"></i>';
-        $this->false = '<i class="fa fa-times text-danger"></i>';
-        $unigrams = $fullCloud['unigrams'] ?? [];
-        $bigrams  = $fullCloud['bigrams'] ?? [];
-        $trigrams = $fullCloud['trigrams'] ?? [];
-        $trigramTable = $this->buildConsistencyTable('Trigrams', $trigrams, $metaData, $headings);
-        $bigramTable  = $this->buildConsistencyTable('Bigrams', $bigrams, $metaData, $headings);
-        $unigramTable = $this->buildConsistencyTable('Unigrams', $unigrams, $metaData, $headings);
-        $output = <<<HTML
+   /**
+ * Displays keyword consistency data in tabs for Trigrams, Bigrams, and Unigrams.
+ * Also adds a suggestion area below the tabs.
+ *
+ * @param array $fullCloud The full keyword cloud data.
+ * @param array $metaData  The meta data array.
+ * @param array $headings  The headings array.
+ * @return string The formatted HTML output.
+ */
+public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings) {
+    // Set icons for true/false results.
+    $this->true  = '<i class="fa fa-check text-success"></i>';
+    $this->false = '<i class="fa fa-times text-danger"></i>';
+    
+    // Extract each n-gram type.
+    $unigrams = $fullCloud['unigrams'] ?? [];
+    $bigrams  = $fullCloud['bigrams'] ?? [];
+    $trigrams = $fullCloud['trigrams'] ?? [];
+    
+    // Build individual tables.
+    $trigramTable = $this->buildConsistencyTable('Trigrams', $trigrams, $metaData, $headings);
+    $bigramTable  = $this->buildConsistencyTable('Bigrams', $bigrams, $metaData, $headings);
+    $unigramTable = $this->buildConsistencyTable('Unigrams', $unigrams, $metaData, $headings);
+    
+    // Construct the tab layout (using simple Bootstrap buttons for tabs, not colourfully styled).
+    $output = <<<HTML
 <div class="keyword-consistency container-fluid"> 
     <ul class="nav nav-tabs" id="consistencyTabs" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="trigrams-tab" data-bs-toggle="tab" href="#trigrams-pane" role="tab" aria-controls="trigrams-pane" aria-selected="true">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="trigrams-tab" data-bs-toggle="tab" data-bs-target="#trigrams-pane" type="button" role="tab" aria-controls="trigrams-pane" aria-selected="true">
                 Trigrams
-            </a>
+            </button>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" id="bigrams-tab" data-bs-toggle="tab" href="#bigrams-pane" role="tab" aria-controls="bigrams-pane" aria-selected="false">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="bigrams-tab" data-bs-toggle="tab" data-bs-target="#bigrams-pane" type="button" role="tab" aria-controls="bigrams-pane" aria-selected="false">
                 Bigrams
-            </a>
+            </button>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" id="unigrams-tab" data-bs-toggle="tab" href="#unigrams-pane" role="tab" aria-controls="unigrams-pane" aria-selected="false">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="unigrams-tab" data-bs-toggle="tab" data-bs-target="#unigrams-pane" type="button" role="tab" aria-controls="unigrams-pane" aria-selected="false">
                 Unigrams
-            </a>
+            </button>
         </li>
     </ul>
     <div class="tab-content" id="consistencyTabsContent">
@@ -748,72 +965,118 @@ class SeoTools {
             {$unigramTable}
         </div>
     </div>
+    <div class="mt-3">
+      <div class="alert alert-secondary text-center" role="alert">
+        <strong>Suggestion:</strong> Review your keyword usage and consistency in your title, description, and headings.
+      </div>
+    </div>
 </div>
 HTML;
-        return $output;
+    return $output;
+}
+
+/**
+ * Builds a Bootstrap-styled table for keyword consistency data.
+ *
+ * Rows beyond the first 5 are hidden by default (using Bootstrap's d-none).
+ * "Show More" and "Show Less" buttons are added in a centered div.
+ *
+ * @param string $label    The label for the table (e.g., "Trigrams").
+ * @param array  $ngrams   The n-gram data array.
+ * @param array  $metaData The meta data for checking keyword presence.
+ * @param array  $headings The headings data.
+ * @return string The formatted table HTML.
+ */
+private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
+    // Determine suffix for class names based on label.
+    $suffix = '';
+    if (strcasecmp($label, 'Trigrams') === 0) {
+        $suffix = 'Trigrams';
+    } elseif (strcasecmp($label, 'Bigrams') === 0) {
+        $suffix = 'Bigrams';
+    } elseif (strcasecmp($label, 'Unigrams') === 0) {
+        $suffix = 'Unigrams';
     }
 
-    private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
-        $suffix = '';
-        if (strcasecmp($label, 'Trigrams') === 0) {
-            $suffix = 'Trigrams';
-        } elseif (strcasecmp($label, 'Bigrams') === 0) {
-            $suffix = 'Bigrams';
-        } elseif (strcasecmp($label, 'Unigrams') === 0) {
-            $suffix = 'Unigrams';
-        }
-        $rows = '';
-        $hideCount = 1;
-        foreach ($ngrams as $item) {
-            $phrase = $item['phrase'];
-            $count  = $item['count'];
-            $inTitle = (stripos($metaData['title'] ?? '', $phrase) !== false);
-            $inDesc  = (stripos($metaData['description'] ?? '', $phrase) !== false);
-            $inHeading = false;
-            foreach ($headings as $tag => $texts) {
-                foreach ($texts as $text) {
-                    if (stripos($text, $phrase) !== false) {
-                        $inHeading = true;
-                        break 2;
-                    }
+    $rows = '';
+    $hideCount = 1;
+
+    // Build table rows.
+    foreach ($ngrams as $item) {
+        $phrase  = $item['phrase'];
+        $count   = $item['count'];
+        $density = $item['density'] ?? 0;  // Stored in DB
+
+        // Determine if the phrase exists in title, description, or any heading.
+        $inTitle   = (stripos($metaData['title'] ?? '', $phrase) !== false);
+        $inDesc    = (stripos($metaData['description'] ?? '', $phrase) !== false);
+        $inHeading = false;
+        foreach ($headings as $tag => $texts) {
+            foreach ($texts as $text) {
+                if (stripos($text, $phrase) !== false) {
+                    $inHeading = true;
+                    break 2;
                 }
             }
-            $hideClass = ($hideCount > 5) ? 'hideTr hideTr' . $suffix : '';
-            $rows .= '<tr class="' . $hideClass . '">
-                        <td>' . htmlspecialchars($phrase) . '</td>
-                        <td>' . $count . '</td>
-                        <td>' . ($inTitle ? $this->true : $this->false) . '</td>
-                        <td>' . ($inDesc ? $this->true : $this->false) . '</td>
-                        <td>' . ($inHeading ? $this->true : $this->false) . '</td>
-                    </tr>';
-            $hideCount++;
         }
-        $showMoreClass = 'showMore' . $suffix;
-        $showLessClass = 'showLess' . $suffix;
-        $output = '<div class="passedBox">
-            <div class="msgBox">
-                <h4>' . $label . '</h4>
-                <table class="table table-striped table-responsive">
-                    <thead>
+
+        // Hide rows after the first five.
+        $hideClass = ($hideCount > 20) ? 'd-none hideTr hideTr' . $suffix : '';
+
+        // Create the table row.
+        $rows .= '<tr class="' . $hideClass . '">
+                    <td class="text-start">' . htmlspecialchars($phrase) . '</td>
+                    <td>' . $count . '</td>
+                    <td>' . $density . '%</td>
+                    <td>' . ($inTitle ? $this->true : $this->false) . '</td>
+                    <td>' . ($inDesc ? $this->true : $this->false) . '</td>
+                    <td>' . ($inHeading ? $this->true : $this->false) . '</td>
+                  </tr>';
+        $hideCount++;
+    }
+
+    // Define class names for the show/hide buttons.
+    $showMoreClass = 'showMore' . $suffix;
+    $showLessClass = 'showLess' . $suffix;
+
+    // Build the complete table.
+    $output = '<div class="passedBox">
+        <div class="msgBox">
+            <h4 class="mb-3">' . $label . '</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle text-center">
+                    <thead class="table-light">
                         <tr>
-                            <th>' . $this->lang['AN31'] . '</th>
-                            <th>' . $this->lang['AN32'] . '</th>
-                            <th>' . $this->lang['AN33'] . '</th>
-                            <th>' . $this->lang['AN34'] . '</th>
-                            <th>&lt;H&gt;</th>
+                            <th style="width: 35%;">Keywords</th>
+                            <th style="width: 10%;">Freq</th>
+                            <th style="width: 10%;">Density</th>
+                            <th style="width: 10%;">Title</th>
+                            <th style="width: 10%;">Desc</th>
+                            <th style="width: 10%;">&lt;H&gt;</th>
                         </tr>
                     </thead>
                     <tbody>' . $rows . '</tbody>
-                </table>';
-        if ($hideCount > 6) {
-            $output .= '<div class="showLinks">
-                <a class="' . $showMoreClass . '">' . $this->lang['AN18'] . ' <br /><i class="fa fa-angle-double-down"></i></a>
-                <a class="' . $showLessClass . '" style="display:none;">' . $this->lang['AN19'] . '</a>
+                </table>
             </div>';
-        }
-        $output .= '</div></div>';
-        return $output;
+
+    // Add Show More / Show Less buttons if needed.
+    if ($hideCount > 6) {
+        $output .= '<div class="mt-2 text-center">
+            <button type="button" class="' . $showMoreClass . ' btn btn-outline-secondary btn-sm">
+                Show More <i class="fa fa-angle-double-down"></i>
+            </button>
+            <button type="button" class="' . $showLessClass . ' btn btn-outline-secondary btn-sm d-none">
+                Show Less
+            </button>
+        </div>';
     }
+
+    $output .= '</div></div>';
+    return $output;
+}
+
+ 
+    
 
     /*===================================================================
      * TEXT RATIO HANDLER
@@ -833,12 +1096,26 @@ HTML;
         if (!is_array($data)) {
             return '<div class="alert alert-danger">' . htmlspecialchars($data) . '</div>';
         }
-        
-        $ratio = $data['ratio_percent'] ?? 0;
-        // Set Bootstrap alert classes based on the ratio value.
+    
+        // Extract main metrics from $data
+        $ratio         = $data['ratio_percent']        ?? 0;
+        $htmlSize      = $data['html_size_bytes']      ?? 0;
+        $textSize      = $data['text_size_bytes']      ?? 0;
+        $ratioCat      = $data['ratio_category']       ?? 'N/A';
+        $wordCount     = $data['word_count']           ?? 0;
+        $readTime      = $data['estimated_reading_time'] ?? 0;
+        $loadTime      = $data['load_time_seconds']    ?? 0;
+        $totalTags     = $data['total_html_tags']      ?? 0;
+        $totalLinks    = $data['total_links']          ?? 0;
+        $totalImages   = $data['total_images']         ?? 0;
+        $totalScripts  = $data['total_scripts']        ?? 0;
+        $totalStyles   = $data['total_styles']         ?? 0;
+        $httpCode      = $data['http_response_code']   ?? 0;
+    
+        // Determine the bootstrap alert class based on ratio
         $textClass = ($ratio < 2) ? 'alert-danger' : (($ratio < 10) ? 'alert-warning' : 'alert-success');
-        
-        // Build the table inside a responsive container.
+    
+        // Build the main table
         $table = '
         <div class="table-responsive">
           <table class="table table-bordered table-striped mb-0">
@@ -852,12 +1129,12 @@ HTML;
               <tbody>
                   <tr>
                       <td>HTML Size (bytes)</td>
-                      <td>' . formatBytes($data['html_size_bytes']) . '</td>
+                      <td>' . formatBytes($htmlSize) . '</td>
                       <td>Total size of the HTML source.</td>
                   </tr>
                   <tr>
                       <td>Text Size (bytes)</td>
-                      <td>' . formatBytes($data['text_size_bytes']) . '</td>
+                      <td>' . formatBytes($textSize) . '</td>
                       <td>Total size of visible text.</td>
                   </tr>
                   <tr>
@@ -867,73 +1144,122 @@ HTML;
                   </tr>
                   <tr>
                       <td>Ratio Category</td>
-                      <td>' . $data['ratio_category'] . '</td>
+                      <td>' . $ratioCat . '</td>
                       <td>HTML-heavy, Balanced, or Text-heavy.</td>
                   </tr>
                   <tr>
                       <td>Word Count</td>
-                      <td>' . $data['word_count'] . '</td>
+                      <td>' . $wordCount . '</td>
                       <td>Total number of words in visible text.</td>
                   </tr>
                   <tr>
                       <td>Estimated Reading Time</td>
-                      <td>' . $data['estimated_reading_time'] . ' min</td>
+                      <td>' . $readTime . ' min</td>
                       <td>Approximate time to read the page.</td>
                   </tr>
                   <tr>
                       <td>Load Time</td>
-                      <td>' . $data['load_time_seconds'] . ' sec</td>
+                      <td>' . $loadTime . ' sec</td>
                       <td>Time taken to fetch the HTML.</td>
                   </tr>
                   <tr>
                       <td>Total HTML Tags</td>
-                      <td>' . $data['total_html_tags'] . '</td>
+                      <td>' . $totalTags . '</td>
                       <td>Count of all HTML tags.</td>
                   </tr>
                   <tr>
                       <td>Total Links</td>
-                      <td>' . $data['total_links'] . '</td>
+                      <td>' . $totalLinks . '</td>
                       <td>Number of hyperlink tags.</td>
                   </tr>
                   <tr>
                       <td>Total Images</td>
-                      <td>' . $data['total_images'] . '</td>
+                      <td>' . $totalImages . '</td>
                       <td>Number of image tags.</td>
                   </tr>
                   <tr>
                       <td>Total Scripts</td>
-                      <td>' . $data['total_scripts'] . '</td>
+                      <td>' . $totalScripts . '</td>
                       <td>Number of script tags.</td>
                   </tr>
                   <tr>
                       <td>Total Styles</td>
-                      <td>' . $data['total_styles'] . '</td>
+                      <td>' . $totalStyles . '</td>
                       <td>Number of style tags.</td>
                   </tr>
                   <tr>
                       <td>HTTP Response Code</td>
-                      <td>' . $data['http_response_code'] . '</td>
+                      <td>' . $httpCode . '</td>
                       <td>Status code received when fetching the page.</td>
                   </tr>
               </tbody>
           </table>
         </div>';
     
+        // Build suggestions based on the data
+        $suggestions = [];
+        
+        // 1) Ratio-based suggestions
+        if ($ratio < 2) {
+            $suggestions[] = 'Your text-to-HTML ratio is extremely low. Consider adding more textual content or removing excessive markup.';
+        } elseif ($ratio < 10) {
+            $suggestions[] = 'Your text-to-HTML ratio is somewhat low. Aim for at least 15–20% by adding relevant text or optimizing code.';
+        } else {
+            $suggestions[] = 'Great job! Your text-to-HTML ratio seems healthy. Just keep an eye on future changes.';
+        }
+    
+        // 2) If totalImages is large
+        if ($totalImages > 50) {
+            $suggestions[] = 'You have a high number of images (' . $totalImages . '). Consider compressing or lazy-loading images for better performance.';
+        }
+    
+        // 3) If totalScripts is large
+        if ($totalScripts > 20) {
+            $suggestions[] = 'You have ' . $totalScripts . ' script tags. Combining or minifying scripts can improve load time.';
+        }
+    
+        // 4) If word count is very low
+        if ($wordCount < 200) {
+            $suggestions[] = 'Your page has a low word count. Adding more relevant, high-quality content can help user engagement and SEO.';
+        }
+    
+        // 5) If the HTTP code indicates an issue
+        if ($httpCode >= 400) {
+            $suggestions[] = 'Your page returned an HTTP error code (' . $httpCode . '). Ensure the page is accessible and functioning correctly.';
+        }
+    
+        // Build the suggestions UI
+        $suggestionHtml = '';
+        if (!empty($suggestions)) {
+            $suggestionHtml .= '<div class="alert alert-info mt-3"><strong>Suggestions:</strong><ul class="mb-0">';
+            foreach ($suggestions as $sug) {
+                $suggestionHtml .= '<li>' . htmlspecialchars($sug) . '</li>';
+            }
+            $suggestionHtml .= '</ul></div>';
+        }
+    
         // Build the final output inside a Bootstrap card.
-        $output = '<div id="ajaxTextRatio" class="card ' . $textClass . ' mb-3">
-                        <div class="card-header">
-                            <h4>' . $this->lang['AN36'] . ': <strong>' . $ratio . '%</strong> (' . $data['ratio_category'] . ')</h4>
-                        </div>
-                        <div class="card-body">
-                            <p class="mb-3">A low text ratio indicates that your page is heavy on HTML relative to visible text.</p>
-                            ' . $table . '
-                        </div>
-                        <div class="card-footer">
-                            <small>Consider optimizing your page by reducing unnecessary markup or increasing quality textual content.</small>
-                        </div>
-                    </div>';
+        $output = '
+        <div id="ajaxTextRatio" class="card ' . $textClass . ' mb-3">
+            <div class="card-header">
+                <h4>' . $this->lang['AN36'] . ': <strong>' . $ratio . '%</strong> (' . $ratioCat . ')</h4>
+            </div>
+            <div class="card-body">
+                <p class="mb-3">
+                    A low text ratio indicates that your page is heavy on HTML relative to visible text.
+                    Below are some details and suggestions based on our analysis.
+                </p>
+                ' . $table . '
+                ' . $suggestionHtml . '
+            </div>
+            <div class="card-footer">
+                <small>Consider optimizing your page by reducing unnecessary markup or increasing quality textual content.</small>
+            </div>
+        </div>';
+    
         return $output;
     }
+    
     
 
     /**
@@ -1022,7 +1348,7 @@ HTML;
     }
 
     public function showGzip($outData)
-{
+    {
     $outData = jsonDecode($outData);
 
     // Ensure that $outData is an array and has at least 4 items.
@@ -1351,7 +1677,6 @@ HTML;
     }
     
     public function showInPageLinks($linksData) {
-     
         // 1) Decode if $linksData is a JSON string.
         if (is_string($linksData)) {
             $linksData = json_decode($linksData, true);
@@ -1361,31 +1686,29 @@ HTML;
         }
         
         // 2) Extract the main fields.
-        $totalLinks                 = $linksData['total_links']                 ?? 0;
-        $totalInternalLinks         = $linksData['total_internal_links']        ?? 0;
-        $totalExternalLinks         = $linksData['total_external_links']        ?? 0;
-        $uniqueLinksCount           = $linksData['unique_links_count']          ?? 0;
-        $totalNofollowLinks         = $linksData['total_nofollow_links']        ?? 0;
-        $totalDofollowLinks         = $linksData['total_dofollow_links']        ?? 0;
-        $percentageNofollowLinks    = $linksData['percentage_nofollow_links']   ?? 0;
-        $percentageDofollowLinks    = $linksData['percentage_dofollow_links']   ?? 0;
-        $totalTargetBlankLinks      = $linksData['total_target_blank_links']    ?? 0;
-        $totalImageLinks            = $linksData['total_image_links']           ?? 0;
-        $totalTextLinks             = $linksData['total_text_links']            ?? 0;
-        $totalEmptyLinks            = $linksData['total_empty_links']           ?? 0;
-        $externalDomains            = $linksData['external_domains']            ?? [];
+        $totalLinks                 = $linksData['total_links'] ?? 0;
+        $totalInternalLinks         = $linksData['total_internal_links'] ?? 0;
+        $totalExternalLinks         = $linksData['total_external_links'] ?? 0;
+        $uniqueLinksCount           = $linksData['unique_links_count'] ?? 0;
+        $totalNofollowLinks         = $linksData['total_nofollow_links'] ?? 0;
+        $totalDofollowLinks         = $linksData['total_dofollow_links'] ?? 0;
+        $percentageNofollowLinks    = $linksData['percentage_nofollow_links'] ?? 0;
+        $percentageDofollowLinks    = $linksData['percentage_dofollow_links'] ?? 0;
+        $totalTargetBlankLinks      = $linksData['total_target_blank_links'] ?? 0;
+        $totalImageLinks            = $linksData['total_image_links'] ?? 0;
+        $totalTextLinks             = $linksData['total_text_links'] ?? 0;
+        $totalEmptyLinks            = $linksData['total_empty_links'] ?? 0;
+        $externalDomains            = $linksData['external_domains'] ?? [];
         $uniqueExternalDomainsCount = $linksData['unique_external_domains_count'] ?? 0;
-        $totalHttpsLinks            = $linksData['total_https_links']           ?? 0;
-        $totalHttpLinks             = $linksData['total_http_links']            ?? 0;
-        $totalTrackingLinks         = $linksData['total_tracking_links']        ?? 0;
-        $totalNonTrackingLinks      = $linksData['total_non_tracking_links']     ?? 0;
-        $averageAnchorTextLength    = $linksData['average_anchor_text_length']   ?? 0;
-        $linkDiversityScore         = $linksData['link_diversity_score']        ?? 0;
+        $totalHttpsLinks            = $linksData['total_https_links'] ?? 0;
+        $totalHttpLinks             = $linksData['total_http_links'] ?? 0;
+        $totalTrackingLinks         = $linksData['total_tracking_links'] ?? 0;
+        $totalNonTrackingLinks      = $linksData['total_non_tracking_links'] ?? 0;
+        $averageAnchorTextLength    = $linksData['average_anchor_text_length'] ?? 0;
+        $linkDiversityScore         = $linksData['link_diversity_score'] ?? 0;
         
-        // 3) For external links details, if available.
+        // 3) Process external links: group duplicates and count them.
         $externalLinks = $linksData['external_links'] ?? [];
-        
-        // Group duplicate external links into one entry with a "count".
         $uniqueExternalLinks = [];
         foreach ($externalLinks as $ext) {
             $href = $ext['href'];
@@ -1397,10 +1720,10 @@ HTML;
             }
         }
         
-        // 4) Build the output using Bootstrap tabs and cards.
-        $html  = '<div class="container my-4">'; 
+        // 4) Build the output using Bootstrap components.
+        $html = '<div class="container my-4">';
         
-        // Create nav tabs.
+        // Nav Tabs (kept simple to match your theme)
         $html .= '
         <ul class="nav nav-tabs" id="linkReportTabs" role="tablist">
           <li class="nav-item" role="presentation">
@@ -1420,7 +1743,7 @@ HTML;
           </li>
         </ul>';
         
-        // Tab contents container.
+        // Tab content container
         $html .= '<div class="tab-content" id="linkReportTabsContent">';
         
         // Tab 1: Summary
@@ -1433,7 +1756,7 @@ HTML;
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
-                  <table class="table table-sm">
+                  <table class="table table-sm mb-0">
                     <tbody>
                       <tr><th>Total Links</th><td>' . $totalLinks . '</td></tr>
                       <tr><th>Internal Links</th><td>' . $totalInternalLinks . '</td></tr>
@@ -1445,7 +1768,7 @@ HTML;
                   </table>
                 </div>
                 <div class="col-md-6">
-                  <table class="table table-sm">
+                  <table class="table table-sm mb-0">
                     <tbody>
                       <tr><th>Dofollow Links</th><td>' . $totalDofollowLinks . ' (' . $percentageDofollowLinks . '%)</td></tr>
                       <tr><th>Nofollow Links</th><td>' . $totalNofollowLinks . ' (' . $percentageNofollowLinks . '%)</td></tr>
@@ -1456,10 +1779,9 @@ HTML;
                   </table>
                 </div>
               </div>
-              
               <div class="row mt-3">
                 <div class="col-md-6">
-                  <table class="table table-sm">
+                  <table class="table table-sm mb-0">
                     <tbody>
                       <tr><th>Total Image Links</th><td>' . $totalImageLinks . '</td></tr>
                       <tr><th>Total Text Links</th><td>' . $totalTextLinks . '</td></tr>
@@ -1468,7 +1790,7 @@ HTML;
                   </table>
                 </div>
                 <div class="col-md-6">
-                  <table class="table table-sm">
+                  <table class="table table-sm mb-0">
                     <tbody>
                       <tr><th>Total Tracking Links</th><td>' . $totalTrackingLinks . '</td></tr>
                       <tr><th>Non-Tracking Links</th><td>' . $totalNonTrackingLinks . '</td></tr>
@@ -1489,7 +1811,6 @@ HTML;
               <h5>Unique External Links</h5>
             </div>
             <div class="card-body">';
-        
         if (!empty($uniqueExternalLinks)) {
             $html .= '
               <div class="table-responsive">
@@ -1503,9 +1824,7 @@ HTML;
                     </tr>
                   </thead>
                   <tbody>';
-            
             foreach ($uniqueExternalLinks as $ext) {
-                // Use 'innertext' if available; otherwise use href.
                 $displayText = !empty($ext['innertext']) ? $ext['innertext'] : $ext['href'];
                 $html .= '
                     <tr>
@@ -1515,16 +1834,14 @@ HTML;
                       <td>' . $ext['count'] . '</td>
                     </tr>';
             }
-            
             $html .= '
                   </tbody>
                 </table>
-              </div><!-- /.table-responsive -->';
+              </div><!-- table-responsive -->';
         } else {
             $html .= '<div class="alert alert-info">No external links found.</div>';
         }
-        
-        $html .= '
+            $html .= '
             </div><!-- card-body -->
           </div><!-- card -->
         </div><!-- tab-pane -->';
@@ -1537,7 +1854,6 @@ HTML;
               <h5>External Domains</h5>
             </div>
             <div class="card-body">';
-        
         if (!empty($externalDomains)) {
             $html .= '<ul class="list-group">';
             foreach ($externalDomains as $domain) {
@@ -1547,18 +1863,30 @@ HTML;
         } else {
             $html .= '<div class="alert alert-info">No external domains found.</div>';
         }
-        
-        $html .= '
+            $html .= '
             </div><!-- card-body -->
           </div><!-- card -->
         </div><!-- tab-pane -->';
         
-        // Close tab-content and container.
-        $html .= '</div><!-- /.tab-content -->';
-        $html .= '</div><!-- /.container -->';
+        // Close tab content and container.
+        $html .= '</div><!-- tab-content -->';
+        
+        // Suggestion section below the tabs
+        $html .= '
+        <div class="mt-3">
+          <div class="alert alert-secondary text-center" role="alert">
+            <strong>Suggestion:</strong> Review your internal and external link structure to ensure optimal SEO performance.
+          </div>
+        </div>';
+        
+        $html .= '</div><!-- container -->';
         
         return $html;
     }
+    
+    
+
+
     
     
     
@@ -1812,6 +2140,391 @@ public function showWhois($whois_data)
          . '</div>';
 }
 
+ /*===================================================================
+     * Site Cards Handler
+     *=================================================================== 
+     */
+    public function processSiteCards(): string {
+        // Get the DOM from your stored HTML
+        $doc = $this->getDom();
+        $metaTags = $doc->getElementsByTagName('meta');
+        
+        // Initialize an array for different card types.
+        $cards = [
+            'facebook'  => [],
+            'x'         => [], // formerly twitter
+            'linkedin'  => [],
+            'discord'   => [],
+            'pinterest' => [],
+            'whatsapp'  => [],
+            'google'    => []
+        ];
+        
+        // Iterate through all meta tags
+        foreach ($metaTags as $tag) {
+            // Process tags that use "property" (typically Open Graph)
+            if ($tag->hasAttribute('property')) {
+                $property = $tag->getAttribute('property');
+                $content  = $tag->getAttribute('content');
+                if (strpos($property, 'og:') === 0) {
+                    // These tags are used for Facebook, LinkedIn, Pinterest, WhatsApp, and Discord
+                    $cards['facebook'][$property]  = $content;
+                    $cards['linkedin'][$property]  = $content;
+                    $cards['pinterest'][$property] = $content;
+                    $cards['whatsapp'][$property]  = $content;
+                    $cards['discord'][$property]   = $content;
+                }
+            }
+            // Process tags that use "name"
+            if ($tag->hasAttribute('name')) {
+                $name = $tag->getAttribute('name');
+                $content  = $tag->getAttribute('content');
+                if (strpos($name, 'twitter:') === 0) {
+                    // Assign twitter meta tags to the 'x' key
+                    $cards['x'][$name] = $content;
+                }
+                if (strpos($name, 'google:') === 0) {
+                    $cards['google'][$name] = $content;
+                }
+            }
+        }
+        
+        // Ensure that keys expected in the preview arrays exist
+        if (!isset($cards['x']['twitter:url'])) {
+            $cards['x']['twitter:url'] = '';
+        }
+        if (!isset($cards['google']['google:url'])) {
+            $cards['google']['google:url'] = '';
+        }
+        
+        // JSON encode the results.
+        $jsonData = jsonEncode($cards);
+        
+        // Update the sitecards field in your domains_data table.
+        updateToDbPrepared($this->con, 'domains_data', ['sitecards' => $jsonData], ['domain' => $this->domainStr]);
+        
+        return $jsonData;
+    }
+    
+
+    
+    public function showCards($cardsData): string
+    {
+        $data = jsonDecode($cardsData);
+      
+        if (!is_array($data)) {
+            return '<div class="alert alert-warning">No card data available.</div>';
+        }
+    
+        // Define platforms with labels, required tags, preview keys, and data.
+        $cardTypes = [
+            'facebook' => [
+                'label'    => 'FACEBOOK',
+                'required' => ['og:title', 'og:description', 'og:image', 'og:url', 'og:type'],
+                'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
+                'data'     => $data['facebook'] ?? []
+            ],
+            'x' => [
+                'label'    => 'X (FORMERLY TWITTER)',
+                'required' => ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image'],
+                'preview'  => ['twitter:title', 'twitter:description', 'twitter:image', 'twitter:url'],
+                'data'     => $data['x'] ?? []
+            ],
+            'linkedin' => [
+                'label'    => 'LINKEDIN',
+                'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+                'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
+                'data'     => $data['linkedin'] ?? []
+            ],
+            'discord' => [
+                'label'    => 'DISCORD',
+                'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+                'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
+                'data'     => $data['discord'] ?? []
+            ],
+            'pinterest' => [
+                'label'    => 'PINTEREST',
+                'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+                'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
+                'data'     => $data['pinterest'] ?? []
+            ],
+            'whatsapp' => [
+                'label'    => 'WHATSAPP',
+                'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+                'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
+                'data'     => $data['whatsapp'] ?? []
+            ],
+            'google' => [
+                'label'    => 'GOOGLE',
+                'required' => ['google:title', 'google:description', 'google:image'],
+                'preview'  => ['google:title', 'google:description', 'google:image', 'google:url'],
+                'data'     => $data['google'] ?? []
+            ],
+        ];
+    
+        // Build the tab navigation using Bootstrap nav-tabs.
+        $tabsNav = '<ul class="nav nav-tabs" id="cardsTab" role="tablist">';
+        $tabsContent = '';
+        $i = 0;
+    
+        foreach ($cardTypes as $key => $card) {
+            $activeClass = ($i === 0) ? 'active' : '';
+            $selected    = ($i === 0) ? 'true' : 'false';
+            $tabsNav .= '
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link ' . $activeClass . '" id="' . $key . '-tab"
+                            data-bs-toggle="tab" data-bs-target="#' . $key . '" type="button"
+                            role="tab" aria-controls="' . $key . '" aria-selected="' . $selected . '">
+                        ' . $card['label'] . '
+                    </button>
+                </li>';
+    
+            // Extract preview data from the card.
+            list($titleKey, $descKey, $imgKey, $urlKey) = $card['preview'];
+            $cData = $card['data'];
+            $title = $cData[$titleKey] ?? '';
+            $desc  = $cData[$descKey] ?? '';
+            $image = $cData[$imgKey] ?? '';
+            $url   = $cData[$urlKey] ?? '';
+    
+            // Parse domain from URL if available.
+            $domain = '';
+            if (!empty($url)) {
+                $parsed = parse_url($url);
+                $domain = $parsed['host'] ?? '';
+            }
+    
+            // Build preview HTML via platform-specific method.
+            $previewHtml = $this->buildPlatformPreview($key, $title, $desc, $image, $domain);
+    
+            // Build meta tags table.
+            $missing = [];
+            $tableHtml = '<div class="table-responsive">
+                <table class="table table-sm table-bordered">
+                    <thead class="table-light">
+                        <tr><th style="width: 40%;">Meta Tag</th><th style="width: 60%;">Value</th></tr>
+                    </thead>
+                    <tbody>';
+            foreach ($card['required'] as $tag) {
+                $value = $cData[$tag] ?? '';
+                if (empty($value)) {
+                    $tableHtml .= '
+                        <tr>
+                            <td>' . htmlspecialchars($tag) . '</td>
+                            <td><span class="text-danger">Missing</span></td>
+                        </tr>';
+                    $missing[] = $tag;
+                } else {
+                    $tableHtml .= '
+                        <tr>
+                            <td>' . htmlspecialchars($tag) . '</td>
+                            <td>' . htmlspecialchars($value) . '</td>
+                        </tr>';
+                }
+            }
+            $tableHtml .= '</tbody></table></div>';
+    
+            // Build suggestions alert.
+            $suggestions = '';
+            if (!empty($missing)) {
+                $suggestions = '
+                    <div class="alert alert-warning p-2 small mt-3">
+                        <strong>Suggestion:</strong> Missing meta tags: ' . implode(', ', $missing) . '.
+                    </div>';
+            } else {
+                $suggestions = '
+                    <div class="alert alert-success p-2 small mt-3">
+                        All required meta tags are present.
+                    </div>';
+            }
+    
+            // Combine preview and table in a row layout.
+            $fullContent = '
+                <div class="row">
+                    <div class="col-md-5 mb-3">' . $previewHtml . '</div>
+                    <div class="col-md-7 mb-3">' . $tableHtml . $suggestions . '</div>
+                </div>';
+    
+            // Build tab pane.
+            $tabsContent .= '
+                <div class="tab-pane fade ' . ($i === 0 ? 'show active' : '') . '" id="' . $key . '"
+                     role="tabpanel" aria-labelledby="' . $key . '-tab">
+                    ' . $fullContent . '
+                </div>';
+            $i++;
+        }
+    
+        $tabsNav .= '</ul>';
+    
+        // Wrap everything in a Bootstrap card.
+        $output = '<div class="card my-3 shadow-sm">
+                      <div class="card-header"><strong>Social Cards Overview</strong></div>
+                      <div class="card-body">'
+                          . $tabsNav .
+                          '<div class="tab-content mt-3" id="cardsTabContent">' . $tabsContent . '</div>
+                      </div>
+                  </div>';
+    
+        return $output;
+    }
+    
+    /**
+     * buildPlatformPreview()
+     *
+     * Calls the platform-specific preview builder based on $platform.
+     *
+     * @param string $platform  (facebook, x, linkedin, discord, pinterest, whatsapp, google)
+     * @param string $title
+     * @param string $desc
+     * @param string $image
+     * @param string $domain
+     * @return string HTML preview
+     */
+    private function buildPlatformPreview(string $platform, string $title, string $desc, string $image, string $domain): string
+    {
+        $hasPreview = (!empty($title) || !empty($desc) || !empty($image));
+        switch ($platform) {
+            case 'facebook':
+                return $this->buildFacebookStyle($title, $desc, $image, $domain, $hasPreview);
+            case 'x':
+                return $this->buildXStyle($title, $desc, $image, $domain, $hasPreview);
+            case 'linkedin':
+                return $this->buildLinkedInStyle($title, $desc, $image, $domain, $hasPreview);
+            case 'discord':
+                return $this->buildDiscordStyle($title, $desc, $image, $domain, $hasPreview);
+            case 'pinterest':
+                return $this->buildPinterestStyle($title, $desc, $image, $domain, $hasPreview);
+            case 'whatsapp':
+                return $this->buildWhatsAppStyle($title, $desc, $image, $domain, $hasPreview);
+            case 'google':
+                return $this->buildGoogleStyle($title, $desc, $image, $domain, $hasPreview);
+            default:
+                return $this->buildGenericStyle($title, $desc, $image, $domain, $hasPreview);
+        }
+    }
+    
+    /* --- Platform-specific preview builders --- */
+    
+    private function buildFacebookStyle(string $title, string $desc, string $image, string $domain, bool $hasPreview): string
+    {
+        if (!$hasPreview) {
+            return '<div class="alert alert-info p-2">No preview available for Facebook.</div>';
+        }
+        return '
+        <div class="fb-preview-card">
+          <div class="fpc-domain">' . htmlspecialchars($domain ?: 'facebook.com') . '</div>
+          <div class="fpc-image">' . ($image ? '<img src="' . htmlspecialchars($image) . '" alt="">' : '') . '</div>
+          <div class="fpc-content">
+            <div class="fpc-title">' . htmlspecialchars($title) . '</div>
+            <div class="fpc-desc">' . htmlspecialchars($desc) . '</div>
+          </div>
+        </div>';
+    }
+    
+    private function buildXStyle(string $title, string $desc, string $image, string $domain, bool $hasPreview): string
+    {
+        if (!$hasPreview) {
+            return '<div class="alert alert-info p-2">No preview available for X.</div>';
+        }
+        return '
+        <div class="x-preview-card">
+          <div class="x-image">' . ($image ? '<img src="' . htmlspecialchars($image) . '" alt="">' : '') . '</div>
+          <div class="x-content">
+            <div class="x-domain">' . htmlspecialchars($domain ?: 'x.com') . '</div>
+            <div class="x-title">' . htmlspecialchars($title) . '</div>
+            <div class="x-desc">' . htmlspecialchars($desc) . '</div>
+          </div>
+        </div>';
+    }
+    
+    private function buildLinkedInStyle(string $title, string $desc, string $image, string $domain, bool $hasPreview): string
+    {
+        if (!$hasPreview) {
+            return '<div class="alert alert-info p-2">No preview available for LinkedIn.</div>';
+        }
+        return '
+        <div class="li-preview-card">
+          <div class="li-image">' . ($image ? '<img src="' . htmlspecialchars($image) . '" alt="">' : '') . '</div>
+          <div class="li-domain">' . strtoupper(htmlspecialchars($domain ?: 'linkedin.com')) . '</div>
+          <div class="li-title">' . htmlspecialchars($title) . '</div>
+          <div class="li-desc">' . htmlspecialchars($desc) . '</div>
+        </div>';
+    }
+    
+    private function buildDiscordStyle(string $title, string $desc, string $image, string $domain, bool $hasPreview): string
+    {
+        if (!$hasPreview) {
+            return '<div class="alert alert-info p-2">No preview available for Discord.</div>';
+        }
+        return '
+        <div class="dc-preview-card">
+          <div class="dc-heading">' . htmlspecialchars($domain ?: 'discord.com') . '</div>
+          <div class="dc-title">' . htmlspecialchars($title) . '</div>
+          <div class="dc-desc">' . htmlspecialchars($desc) . '</div>
+          ' . ($image ? '<div class="dc-image"><img src="' . htmlspecialchars($image) . '" alt=""></div>' : '') . '
+        </div>';
+    }
+    
+    private function buildPinterestStyle(string $title, string $desc, string $image, string $domain, bool $hasPreview): string
+    {
+        if (!$hasPreview) {
+            return '<div class="alert alert-info p-2">No preview available for Pinterest.</div>';
+        }
+        return '
+        <div class="pin-preview-card">
+          <div class="pin-image">' . ($image ? '<img src="' . htmlspecialchars($image) . '" alt="">' : '') . '</div>
+          <div class="pin-content">
+            <div class="pin-title">' . htmlspecialchars($title) . '</div>
+            <div class="pin-desc">' . htmlspecialchars($desc) . '</div>
+            <div class="pin-domain">' . htmlspecialchars($domain ?: 'pinterest.com') . '</div>
+          </div>
+        </div>';
+    }
+    
+    private function buildWhatsAppStyle(string $title, string $desc, string $image, string $domain, bool $hasPreview): string
+    {
+        if (!$hasPreview) {
+            return '<div class="alert alert-info p-2">No preview available for WhatsApp.</div>';
+        }
+        return '
+        <div class="wa-preview-card">
+          ' . ($image ? '<div class="wa-image"><img src="' . htmlspecialchars($image) . '" alt=""></div>' : '') . '
+          <div class="wa-content">
+            <div class="wa-title">' . htmlspecialchars($title) . '</div>
+            <div class="wa-desc">' . htmlspecialchars($desc) . '</div>
+            <div class="wa-domain">' . htmlspecialchars($domain ?: 'whatsapp.com') . '</div>
+          </div>
+        </div>';
+    }
+    
+    private function buildGoogleStyle(string $title, string $desc, string $image, string $domain, bool $hasPreview): string
+    {
+        if (!$hasPreview) {
+            return '<div class="alert alert-info p-2">No preview available for Google.</div>';
+        }
+        return '
+        <div class="g-preview-card">
+          <div class="g-title">' . htmlspecialchars($title) . '</div>
+          <div class="g-desc">' . htmlspecialchars($desc) . '</div>
+          ' . ($image ? '<div class="g-image"><img src="' . htmlspecialchars($image) . '" alt=""></div>' : '') . '
+          <div class="g-domain">' . htmlspecialchars($domain ?: 'google.com') . '</div>
+        </div>';
+    }
+    
+    private function buildGenericStyle(string $title, string $desc, string $image, string $domain, bool $hasPreview): string
+    {
+        if (!$hasPreview) {
+            return '<div class="alert alert-info p-2">No preview available.</div>';
+        }
+        return '
+        <div class="generic-preview-card">
+          <div class="gp-domain">' . htmlspecialchars($domain ?: 'example.com') . '</div>
+          ' . ($image ? '<div class="gp-image"><img src="' . htmlspecialchars($image) . '" alt=""></div>' : '') . '
+          <div class="gp-title">' . htmlspecialchars($title) . '</div>
+          <div class="gp-desc">' . htmlspecialchars($desc) . '</div>
+        </div>';
+    }
+    
 
     
     
@@ -1995,81 +2708,81 @@ public function showWhois($whois_data)
      * DOMAIN & TYPO AVAILABILITY HANDLER
      *=================================================================== 
      */
-    public function processAvailabilityChecker() {
-        $path = LIB_DIR . 'domainAvailabilityservers.tdata';
-        $serverList = [];
-        if (file_exists($path)) {
-            $contents = file_get_contents($path);
-            $serverList = json_decode($contents, true);
-        }
-        $tldCodes = ['com','net','org','biz','us','info','eu'];
-        $domainWord = explode('.', $this->urlParse['host']);
-        $hostTLD = trim(end($domainWord));
-        $domainWord = $domainWord[0];
-        $doArr = $tyArr = [];
-        $tldCount = 0;
-        foreach ($tldCodes as $tldCode) {
-            if ($tldCount == 5)
-                break;
-            if ($tldCode != $hostTLD) {
-                $topDomain = $domainWord . '.' . $tldCode;
-                $domainAvailabilityChecker = new domainAvailability($serverList);
-                $domainAvailabilityStats = $domainAvailabilityChecker->isAvailable($topDomain);
-                $doArr[] = [$topDomain, $domainAvailabilityStats];
-                $tldCount++;
-            }
-        }
-        $typo = new typos();
-        $domainTypoWords = $typo->get($domainWord);
-        $typoCount = 0;
-        foreach ($domainTypoWords as $word) {
-            if ($typoCount == 5)
-                break;
-            $topDomain = $word . '.' . $hostTLD;
-            $domainAvailabilityChecker = new domainAvailability($serverList);
-            $domainAvailabilityStats = $domainAvailabilityChecker->isAvailable($topDomain);
-            $tyArr[] = [$topDomain, $domainAvailabilityStats];
-            $typoCount++;
-        }
-        $updateStr = jsonEncode(['doArr' => $doArr, 'tyArr' => $tyArr]);
-        updateToDbPrepared($this->con, 'domains_data', ['domain_typo' => $updateStr], ['domain' => $this->domainStr]);
-        return $updateStr;
-    }
+    // public function processAvailabilityChecker() {
+    //     $path = LIB_DIR . 'domainAvailabilityservers.tdata';
+    //     $serverList = [];
+    //     if (file_exists($path)) {
+    //         $contents = file_get_contents($path);
+    //         $serverList = json_decode($contents, true);
+    //     }
+    //     $tldCodes = ['com','net','org','biz','us','info','eu'];
+    //     $domainWord = explode('.', $this->urlParse['host']);
+    //     $hostTLD = trim(end($domainWord));
+    //     $domainWord = $domainWord[0];
+    //     $doArr = $tyArr = [];
+    //     $tldCount = 0;
+    //     foreach ($tldCodes as $tldCode) {
+    //         if ($tldCount == 5)
+    //             break;
+    //         if ($tldCode != $hostTLD) {
+    //             $topDomain = $domainWord . '.' . $tldCode;
+    //             $domainAvailabilityChecker = new domainAvailability($serverList);
+    //             $domainAvailabilityStats = $domainAvailabilityChecker->isAvailable($topDomain);
+    //             $doArr[] = [$topDomain, $domainAvailabilityStats];
+    //             $tldCount++;
+    //         }
+    //     }
+    //     $typo = new typos();
+    //     $domainTypoWords = $typo->get($domainWord);
+    //     $typoCount = 0;
+    //     foreach ($domainTypoWords as $word) {
+    //         if ($typoCount == 5)
+    //             break;
+    //         $topDomain = $word . '.' . $hostTLD;
+    //         $domainAvailabilityChecker = new domainAvailability($serverList);
+    //         $domainAvailabilityStats = $domainAvailabilityChecker->isAvailable($topDomain);
+    //         $tyArr[] = [$topDomain, $domainAvailabilityStats];
+    //         $typoCount++;
+    //     }
+    //     $updateStr = jsonEncode(['doArr' => $doArr, 'tyArr' => $tyArr]);
+    //     updateToDbPrepared($this->con, 'domains_data', ['domain_typo' => $updateStr], ['domain' => $this->domainStr]);
+    //     return $updateStr;
+    // }
 
-    public function showAvailabilityChecker($availabilityData) {
-        $availabilityData = jsonDecode($availabilityData);
-        $domainMsg = '';
-        foreach ($availabilityData['doArr'] as $item) {
-            $domainMsg .= '<tr><td>' . $item[0] . '</td><td>' . $item[1] . '</td></tr>';
-        }
-        $typoMsg = '';
-        foreach ($availabilityData['tyArr'] as $item) {
-            $typoMsg .= '<tr><td>' . $item[0] . '</td><td>' . $item[1] . '</td></tr>';
-        }
-        $seoBox32 = '<div class="lowImpactBox">
-                        <div class="msgBox">
-                            <table class="table table-hover table-bordered table-striped">
-                                <tbody>
-                                    <tr><th>' . $this->lang['AN134'] . '</th><th>' . $this->lang['AN135'] . '</th></tr>' . $domainMsg . '
-                                </tbody>
-                            </table>
-                            <br />
-                        </div>
-                        <div class="seoBox32 suggestionBox">' . $this->lang['AN204'] . '</div>
-                     </div>';
-        $seoBox33 = '<div class="lowImpactBox">
-                        <div class="msgBox">
-                            <table class="table table-hover table-bordered table-striped">
-                                <tbody>
-                                    <tr><th>' . $this->lang['AN134'] . '</th><th>' . $this->lang['AN135'] . '</th></tr>' . $typoMsg . '
-                                </tbody>
-                            </table>
-                            <br />
-                        </div>
-                        <div class="seoBox33 suggestionBox">' . $this->lang['AN205'] . '</div>
-                     </div>';
-        return $seoBox32 . $this->sepUnique . $seoBox33;
-    }
+    // public function showAvailabilityChecker($availabilityData) {
+    //     $availabilityData = jsonDecode($availabilityData);
+    //     $domainMsg = '';
+    //     foreach ($availabilityData['doArr'] as $item) {
+    //         $domainMsg .= '<tr><td>' . $item[0] . '</td><td>' . $item[1] . '</td></tr>';
+    //     }
+    //     $typoMsg = '';
+    //     foreach ($availabilityData['tyArr'] as $item) {
+    //         $typoMsg .= '<tr><td>' . $item[0] . '</td><td>' . $item[1] . '</td></tr>';
+    //     }
+    //     $seoBox32 = '<div class="lowImpactBox">
+    //                     <div class="msgBox">
+    //                         <table class="table table-hover table-bordered table-striped">
+    //                             <tbody>
+    //                                 <tr><th>' . $this->lang['AN134'] . '</th><th>' . $this->lang['AN135'] . '</th></tr>' . $domainMsg . '
+    //                             </tbody>
+    //                         </table>
+    //                         <br />
+    //                     </div>
+    //                     <div class="seoBox32 suggestionBox">' . $this->lang['AN204'] . '</div>
+    //                  </div>';
+    //     $seoBox33 = '<div class="lowImpactBox">
+    //                     <div class="msgBox">
+    //                         <table class="table table-hover table-bordered table-striped">
+    //                             <tbody>
+    //                                 <tr><th>' . $this->lang['AN134'] . '</th><th>' . $this->lang['AN135'] . '</th></tr>' . $typoMsg . '
+    //                             </tbody>
+    //                         </table>
+    //                         <br />
+    //                     </div>
+    //                     <div class="seoBox33 suggestionBox">' . $this->lang['AN205'] . '</div>
+    //                  </div>';
+    //     return $seoBox32 . $this->sepUnique . $seoBox33;
+    // }
 
     /*===================================================================
      * EMAIL PRIVACY HANDLER
@@ -3054,7 +3767,9 @@ public function showSchema(string $jsonData): string
         return '<div class="alert alert-danger">No schema data available.</div>';
     }
 
-    // --- JSON‑LD Section ---
+    // -------------------------------------------------------------------------
+    // 1. Build JSON-LD Section
+    // -------------------------------------------------------------------------
     $jsonLdContent = '';
     if (!empty($data['json_ld']) && is_array($data['json_ld'])) {
         // Order types so that "Organization" is first if present.
@@ -3110,7 +3825,9 @@ public function showSchema(string $jsonData): string
         $jsonLdContent = '<div class="alert alert-info">No JSON‑LD schema data found.</div>';
     }
 
-    // --- Microdata Section ---
+    // -------------------------------------------------------------------------
+    // 2. Microdata Section
+    // -------------------------------------------------------------------------
     $microContent = '';
     if (!empty($data['microdata']) && is_array($data['microdata'])) {
         $microContent .= '<div class="container mt-3"><h4>Microdata</h4>';
@@ -3125,7 +3842,9 @@ public function showSchema(string $jsonData): string
         $microContent = '<div class="alert alert-info">No Microdata found.</div>';
     }
 
-    // --- RDFa Section ---
+    // -------------------------------------------------------------------------
+    // 3. RDFa Section
+    // -------------------------------------------------------------------------
     $rdfaContent = '';
     if (!empty($data['rdfa']) && is_array($data['rdfa'])) {
         $rdfaContent .= '<div class="container mt-3"><h4>RDFa</h4>';
@@ -3140,7 +3859,9 @@ public function showSchema(string $jsonData): string
         $rdfaContent = '<div class="alert alert-info">No RDFa data found.</div>';
     }
 
-    // --- Build top-level tabs for JSON‑LD, Microdata, RDFa ---
+    // -------------------------------------------------------------------------
+    // Build top-level tabs for JSON‑LD, Microdata, RDFa
+    // -------------------------------------------------------------------------
     $tabs = '
     <ul class="nav nav-tabs" id="schemaMainTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -3161,9 +3882,167 @@ public function showSchema(string $jsonData): string
         <div class="tab-pane fade" id="rdfa" role="tabpanel" aria-labelledby="rdfa-tab">' . $rdfaContent . '</div>
     </div>';
 
-    return '<div class="container my-3">' . $tabs . $content . '</div>';
+    // -------------------------------------------------------------------------
+    // 4. High-Level Suggestions (Global)
+    // -------------------------------------------------------------------------
+    $globalSuggestions = [];
+
+    // Example conditions:
+    if (empty($data['json_ld'])) {
+        $globalSuggestions[] = 'We found no JSON‑LD markup. Google recommends JSON‑LD for modern structured data.';
+    }
+    if (empty($data['microdata'])) {
+        $globalSuggestions[] = 'No microdata found. While JSON‑LD is preferred, microdata can be useful on older systems.';
+    }
+    if (empty($data['rdfa'])) {
+        $globalSuggestions[] = 'No RDFa found. RDFa can add inline semantics but is less common nowadays.';
+    }
+
+    // If "Organization" is missing from JSON‑LD:
+    if (empty($data['json_ld']['Organization'])) {
+        $globalSuggestions[] = 'Consider adding "Organization" markup (e.g., your company name, logo, contact info) for better brand presence in search.';
+    }
+
+    // If you want more advanced checks (like checking if "logo" or "contactPoint" is missing), you can do so here:
+    // e.g. if (!empty($data['json_ld']['Organization'])) { ... }
+
+    // Build the final suggestions block
+    $suggestionHtml = '';
+    if (!empty($globalSuggestions)) {
+        $suggestionHtml .= '<div class="container mt-3">';
+        $suggestionHtml .= '<div class="alert alert-info">';
+        $suggestionHtml .= '<strong>Additional Suggestions:</strong>';
+        $suggestionHtml .= '<ul class="mb-0">';
+        foreach ($globalSuggestions as $sug) {
+            $suggestionHtml .= '<li>' . htmlspecialchars($sug) . '</li>';
+        }
+        $suggestionHtml .= '</ul></div></div>';
+    }
+
+    return '<div class="container my-3">'
+            . $tabs
+            . $content
+            . $suggestionHtml
+            . '</div>';
 }
 
+ /*===================================================================
+     * Social URL Handelers
+     *=================================================================== 
+     */
+
+     /**
+ * Processes social page URLs from the HTML.
+ * Scans all anchor tags and extracts URLs that match common social network patterns.
+ * Stores the results as a JSON-encoded associative array in the "social_urls" field.
+ *
+ * @return string JSON data of social URLs.
+ */
+public function processSocialUrls(): string {
+    $doc = $this->getDom();
+    $xpath = new DOMXPath($doc);
+    
+    // Define social networks and regex patterns to match in the href attribute.
+    // The TripAdvisor pattern now handles various TLDs.
+    $socialPatterns = [
+        'facebook'    => '/facebook\.com/i',
+        'x'           => '/(twitter\.com|x\.com)/i', // X (formerly Twitter)
+        'instagram'   => '/instagram\.com/i',
+        'linkedin'    => '/linkedin\.com/i',
+        'youtube'     => '/youtube\.com/i',
+        'pinterest'   => '/pinterest\.com/i',
+        'discord'     => '/discord\.com/i',
+        'whatsapp'    => '/(wa\.me|whatsapp\.com)/i',
+        'tripadvisor' => '/tripadvisor\.[a-z]{2,6}/i',  // handles multiple TLDs
+        'tiktok'      => '/tiktok\.com/i'
+    ];
+    
+    $socialUrls = [];
+    
+    // Loop through each social network pattern.
+    foreach ($socialPatterns as $network => $pattern) {
+        // Use XPath to fetch all <a> tags whose href (lowercased) contains the network keyword.
+        $nodes = $xpath->query("//a[contains(translate(@href, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '$network')]");
+        // Fallback: if no nodes found, iterate all <a> tags.
+        if ($nodes->length === 0) {
+            $nodes = $xpath->query("//a");
+        }
+        
+        $urls = [];
+        foreach ($nodes as $node) {
+            $href = trim($node->getAttribute('href'));
+            if (empty($href)) {
+                continue;
+            }
+            // Check if the URL matches our pattern.
+            if (preg_match($pattern, $href)) {
+                // Normalize relative URLs.
+                if (!preg_match('#^(?:https?:)?//#i', $href)) {
+                    $href = $this->toAbsoluteUrl($href);
+                }
+                $urls[] = $href;
+            }
+        }
+        if (!empty($urls)) {
+            // Save unique URLs for this social network.
+            $socialUrls[$network] = array_values(array_unique($urls));
+        }
+    }
+   
+    $jsonData = jsonEncode($socialUrls);
+    updateToDbPrepared($this->con, 'domains_data', ['social_urls' => $jsonData], ['domain' => $this->domainStr]);
+    return $jsonData;
+}
+
+/**
+ * Displays the processed social page URLs in a nicely formatted card.
+ * Uses Font Awesome icons for each social network.
+ *
+ * @param string $socialData JSON-encoded social URLs from DB.
+ * @return string HTML output.
+ */
+public function showSocialUrls($socialData): string {
+    $data = jsonDecode($socialData, true);
+    if (!is_array($data) || empty($data)) {
+        return '<div class="alert alert-info">No social URLs found.</div>';
+    }
+    
+    // Define Font Awesome icons for each social network.
+    $icons = [
+        'facebook'    => 'fa-facebook',
+        'x'           => 'fa-twitter', // Replace with custom X icon if available.
+        'instagram'   => 'fa-instagram',
+        'linkedin'    => 'fa-linkedin',
+        'youtube'     => 'fa-youtube',
+        'pinterest'   => 'fa-pinterest',
+        'discord'     => 'fa-discord',
+        'whatsapp'    => 'fa-whatsapp',
+        'tripadvisor' => 'fa-tripadvisor',
+        'tiktok'      => 'fa-tiktok'
+    ];
+    
+    $output = '<div class="card my-3 shadow-sm">
+                    <div class="card-header"><strong>Social Page URLs</strong></div>
+                    <div class="card-body">';
+    
+    // Loop through each network found.
+    foreach ($data as $network => $urls) {
+        $icon = $icons[$network] ?? 'fa-globe';
+        $output .= '<div class="social-url-group mb-3">';
+        $output .= '<h5><i class="fa ' . $icon . '"></i> ' . ucfirst($network) . '</h5>';
+        $output .= '<ul class="list-unstyled">';
+        foreach ($urls as $url) {
+            $output .= '<li><a href="' . htmlspecialchars($url) . '" target="_blank" rel="nofollow">' . htmlspecialchars($url) . '</a></li>';
+        }
+        $output .= '</ul></div>';
+    }
+    
+    $output .= '</div>
+                <div class="card-footer"><small>Social page URLs extracted from the site.</small></div>
+                </div>';
+    
+    return $output;
+}
 
 
 
