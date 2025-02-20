@@ -1,4 +1,5 @@
 <?php
+//domains.php File
 /**
  * Turbo Website Reviewer - PHP Script
  * Author: Balaji
@@ -111,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     /*
      * -----------------------------------------------------------------
-     * META DATA HANDLER
+     * META DATA HANDLER - Used to generate meta tags.
      * -----------------------------------------------------------------
      */
     if (isset($_POST['meta'])) {
@@ -122,10 +123,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             die();
         }
     }
-
+die();
     /*
      * -----------------------------------------------------------------
-     * HEADING DATA HANDLER
+     * HEADING DATA HANDLER - Used to generate heading tags.
      * -----------------------------------------------------------------
      */
     if (isset($_POST['heading'])) {
@@ -135,6 +136,71 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo $seoTools->showHeading($headings);
             die();
         }
+    }
+
+        /*
+     * -----------------------------------------------------------------
+     * KEYWORD CLOUD GENERATOR - Used to generate keyword cloud.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['keycloud'])) {
+        log_message('debug', "Keyword Cloud Tag Call for URL {$my_url_host}");
+        $keyCloud = $seoTools->processKeyCloud();
+        if (isset($_POST['keycloudOut'])) {
+            echo $seoTools->showKeyCloud($keyCloud);
+            die();
+        }
+    }
+
+    /*
+     * -----------------------------------------------------------------
+     * KEYWORD CONSISTENCY CHECKER - Used to check keyword consistency.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['keyConsistency'])) {
+        log_message('debug', "Keyword Consistency Tag Call for URL {$my_url_host}");
+        $metaData    = jsonDecode($seoTools->processMeta());
+        $headingData = jsonDecode($seoTools->processHeading());
+        $keyCloudResult = $seoTools->processKeyCloud();
+        $fullCloud = $keyCloudResult['fullCloud'] ?? [];
+        echo $seoTools->showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headingData[0]);
+        die();
+    }
+
+    /*
+     * -----------------------------------------------------------------
+     * IN-PAGE LINKS ANALYZER - Used to analyze in-page links.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['linkanalysis'])) {
+        log_message('debug', "In-Page Links Tag Call for URL {$my_url_host}");
+        $linksData = $seoTools->processInPageLinks();
+        echo $seoTools->showInPageLinks($linksData);
+        die();
+    }
+
+     /*
+     * -----------------------------------------------------------------
+     * Cards Function to show site card - Used to generate site cards.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['sitecards'])) {
+        log_message('debug', "Site Cards for {$my_url_host}");
+        $sitecardsData = $seoTools->processSiteCards();
+        echo $seoTools->showCards($sitecardsData);
+        die();
+    }
+
+       /*
+     * -----------------------------------------------------------------
+     * Page Analytics Report - Used to generate page analytics.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['PageAnalytics'])) { 
+        log_message('debug', "Page Analytic report {$my_url_host}");
+        $pageAnalyticsJson = $seoTools->processPageAnalytics();
+        echo $seoTools->showPageAnalytics($pageAnalyticsJson);
+        die();
     }
 
     /*
@@ -160,46 +226,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die();
     }
 
-    /*
-     * -----------------------------------------------------------------
-     * Cards Function to show site card
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['sitecards'])) {
-        log_message('debug', "Site Cards for {$my_url_host}");
-        $sitecardsData = $seoTools->processSiteCards();
-        echo $seoTools->showCards($sitecardsData);
-        die();
-    }
+   
 
-    /*
-     * -----------------------------------------------------------------
-     * KEYWORD CLOUD GENERATOR
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['keycloud'])) {
-        log_message('debug', "Keyword Cloud Tag Call for URL {$my_url_host}");
-        $keyCloud = $seoTools->processKeyCloud();
-        if (isset($_POST['keycloudOut'])) {
-            echo $seoTools->showKeyCloud($keyCloud);
-            die();
-        }
-    }
 
-    /*
-     * -----------------------------------------------------------------
-     * KEYWORD CONSISTENCY CHECKER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['keyConsistency'])) {
-        log_message('debug', "Keyword Consistency Tag Call for URL {$my_url_host}");
-        $metaData    = jsonDecode($seoTools->processMeta());
-        $headingData = jsonDecode($seoTools->processHeading());
-        $keyCloudResult = $seoTools->processKeyCloud();
-        $fullCloud = $keyCloudResult['fullCloud'] ?? [];
-        echo $seoTools->showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headingData[0]);
-        die();
-    }
+
+    
 
     /*
      * -----------------------------------------------------------------
@@ -227,29 +258,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // }
  
 
-    /*
-     * -----------------------------------------------------------------
-     * IN-PAGE LINKS ANALYZER
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['linkanalysis'])) {
-        log_message('debug', "In-Page Links Tag Call for URL {$my_url_host}");
-        $linksData = $seoTools->processInPageLinks();
-        echo $seoTools->showInPageLinks($linksData);
-        die();
-    }
+    
 
     /*
      * -----------------------------------------------------------------
      * BROKEN LINKS CHECKER
      * -----------------------------------------------------------------
-     */
-    if (isset($_POST['brokenlinks'])) {
-        log_message('debug', "Broken Links Tag Call for URL {$my_url_host}");
-        $brokenLinks = $seoTools->processBrokenLinks();
-        echo $seoTools->showBrokenLinks($brokenLinks);
-        die();
-    }
+    //  */
+    // if (isset($_POST['brokenlinks'])) {
+    //     log_message('debug', "Broken Links Tag Call for URL {$my_url_host}");
+    //     $brokenLinks = $seoTools->processBrokenLinks();
+    //     echo $seoTools->showBrokenLinks($brokenLinks);
+    //     die();
+    // }
  
     /*
      * -----------------------------------------------------------------
@@ -263,17 +284,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die();
     } 
 
-   /*
-     * -----------------------------------------------------------------
-     * Page Analytics Report
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['PageAnalytics'])) { 
-        log_message('debug', "Page Analytic report {$my_url_host}");
-        $pageAnalyticsJson = $seoTools->processPageAnalytics();
-        echo $seoTools->showPageAnalytics($pageAnalyticsJson);
-        die();
-    }
+
 
 
     /*

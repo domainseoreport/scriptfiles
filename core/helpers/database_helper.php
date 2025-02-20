@@ -1,5 +1,5 @@
 <?php
-
+//database_helper.php File Code
 /*
  * @author Balaji
  * @name: Rainbow PHP Framework

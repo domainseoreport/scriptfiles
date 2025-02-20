@@ -35,6 +35,7 @@ if ($updateFound) {
         var passScore    = '<?php echo makeJavascriptStr($passScore); ?>';
         var improveScore = '<?php echo makeJavascriptStr($improveScore); ?>';
         var errorScore   = '<?php echo makeJavascriptStr($errorScore); ?>';
+        var overallPercent = '<?php echo makeJavascriptStr($overallPercent); ?>'; // New overall percentage
     </script>
 <?php } ?>
  

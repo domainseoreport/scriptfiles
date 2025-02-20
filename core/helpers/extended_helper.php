@@ -612,30 +612,32 @@ function htmlPrint($htmlCode,$return=false){
         echo htmlspecialchars_decode($htmlCode);
 }
 
-function shortCodeFilter($string){
-    //Bala-ji $regex = "/\{{\((.*?)\)\}}/";
+function shortCodeFilter($string) {
     $regex = "/\{{(.*?)\}}/";
     $arrRegex = "/\[(.*?)\]/";
     preg_match_all($regex, $string, $matches);
     
-    for($i = 0; $i < count($matches[1]); $i++) {
+    for ($i = 0; $i < count($matches[1]); $i++) {
         $match = $matches[1][$i];
         preg_match($arrRegex, $match, $arrMatches);
-        if(isset($arrMatches[1])){
-            $newMatch =  str_replace("[".$arrMatches[1]."]",'',$match);
-            if(isset($GLOBALS[$newMatch][$arrMatches[1]]))
-                $string = str_replace("{{".$match."}}",$GLOBALS[$newMatch][$arrMatches[1]],$string);
+        if (isset($arrMatches[1])) {
+            $newMatch =  str_replace("[".$arrMatches[1]."]", '', $match);
+            if (isset($GLOBALS[$newMatch][$arrMatches[1]]))
+                $string = str_replace("{{".$match."}}", $GLOBALS[$newMatch][$arrMatches[1]], $string);
             else
-                stop('SHORT CODE ERROR - "'. $match.'" NOT FOUND');
-        }else{
-            if(isset($GLOBALS[$match]) && $match != '')
-                $string = str_replace("{{".$match."}}",$GLOBALS[$match],$string);
+                // Instead of stopping, replace with empty string or some default text
+                $string = str_replace("{{".$match."}}", '', $string);
+        } else {
+            if (isset($GLOBALS[$match]) && $match != '')
+                $string = str_replace("{{".$match."}}", $GLOBALS[$match], $string);
             else
-                stop('SHORT CODE ERROR - "'. $match.'" NOT FOUND');
+                // Instead of stopping, replace with empty string
+                $string = str_replace("{{".$match."}}", '', $string);
         }
     }
     return $string;
 }
+
 
 function removeShortCodes($string){
     $regex = "/\{{(.*?)\}}/";

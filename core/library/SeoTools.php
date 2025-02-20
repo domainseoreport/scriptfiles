@@ -1,7 +1,4 @@
 <?php
-require_once __DIR__ . '/../../vendor/autoload.php';
-
-require_once   'ServerInfoHelper.php';
 /**
  * SeoTools.php
  *
@@ -12,6 +9,8 @@ require_once   'ServerInfoHelper.php';
  *
  * All functions from the original version are retained.
  */
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once   'ServerInfoHelper.php';
 class SeoTools {
     // Global properties used by all handlers.
     protected string $html;         // Normalized HTML source (with meta tag names in lowercase)
@@ -5566,30 +5565,71 @@ private function filterReport(array $data): array {
      * CLEAN OUT HANDLER
      *=================================================================== 
      */
-    public function cleanOut() {
-        $passscore = raino_trim($_POST['passscore']);
-        $improvescore = raino_trim($_POST['improvescore']);
-        $errorscore = raino_trim($_POST['errorscore']);
-        $score = [$passscore, $improvescore, $errorscore];
-        $updateStr = serBase($score);
-        updateToDbPrepared($this->con, 'domains_data', ['score' => $updateStr, 'completed' => 'yes'], ['domain' => $this->domainStr]);
-        $data = mysqliPreparedQuery($this->con, "SELECT * FROM domains_data WHERE domain=?", 's', [$this->domainStr]);
-        if ($data !== false) {
-            $pageSpeedInsightData = jsonDecode($data['page_speed_insight']);
-            $alexa = jsonDecode($data['alexa']);
-            $finalScore = ($passscore == '') ? '0' : $passscore;
-            $globalRank = ($alexa[0] == '') ? '0' : $alexa[0];
-            $pageSpeed = ($pageSpeedInsightData[0] == '') ? '0' : $pageSpeedInsightData[0];
-            if (!isset($_SESSION['twebUsername']))
-                $username = trans('Guest', $this->lang['11'], true);
-            else
-                $username = $_SESSION['twebUsername'];
-            if ($globalRank == 'No Global Rank')
-                $globalRank = 0;
-            $other = serBase([$finalScore, $globalRank, $pageSpeed]);
-            addToRecentSites($this->con, $this->domainStr, $ip, $username, $other);
+    public function cleanOut()
+{
+    // 1) Retrieve the scores from POST data and convert them to integers.
+    $passscore    = (int) raino_trim($_POST['passscore']);
+    $improvescore = (int) raino_trim($_POST['improvescore']);
+    $errorscore   = (int) raino_trim($_POST['errorscore']);
+
+    // 2) Calculate the overall percentage.
+    // Each passed check earns 2 points, each "to improve" earns 1 point, errors earn 0.
+    $totalChecks   = $passscore + $improvescore + $errorscore;
+    $maxPoints     = $totalChecks * 2;  // Maximum possible if every check passed.
+    $currentPoints = ($passscore * 2) + ($improvescore * 1);
+    $overallPercent = ($maxPoints > 0) ? round(($currentPoints / $maxPoints) * 100) : 0;
+
+    // 3) Package the scores into an associative array.
+    $scoreData = [
+        'passed'  => $passscore,
+        'improve' => $improvescore,
+        'errors'  => $errorscore,
+        'percent' => $overallPercent
+    ];
+    // Convert the score array to JSON.
+    $scoreEncoded = json_encode($scoreData);
+
+    // 4) Update the domains_data table with the new score and mark as complete.
+    updateToDbPrepared(
+        $this->con,
+        'domains_data',
+        ['score' => $scoreEncoded, 'completed' => 'yes'],
+        ['domain' => $this->domainStr]
+    );
+
+    // 5) Retrieve the updated domain record.
+    $data = mysqliPreparedQuery(
+        $this->con,
+        "SELECT * FROM domains_data WHERE domain=?",
+        's',
+        [$this->domainStr]
+    );
+
+    if ($data !== false) {
+        // 6) Retrieve page speed insight data and extract the first element as page speed.
+        $pageSpeedInsightData = jsonDecode($data['page_speed_insight']);
+        $pageSpeed = (empty($pageSpeedInsightData[0]) || $pageSpeedInsightData[0] === '') ? '0' : $pageSpeedInsightData[0];
+
+        // For recent sites, we use the passscore as the final score.
+        $finalScore = ($passscore == '') ? '0' : $passscore;
+
+        // 7) Determine the username.
+        if (!isset($_SESSION['twebUsername'])) {
+            $username = trans('Guest', $this->lang['11'], true);
+        } else {
+            $username = $_SESSION['twebUsername'];
         }
-        delFile($filename);
+
+        // 8) Package additional info (for example, final score and page speed) using your helper.
+        $other = serBase([$finalScore, $pageSpeed]);
+
+        // 9) Add this domain to the recent sites list.
+        // (Make sure $ip is defined in your context; if not, retrieve it accordingly.)
+        addToRecentSites($this->con, $this->domainStr, $ip, $username, $other);
     }
+
+    // 10) Optionally perform any cleanup, such as deleting temporary files.
+}
+
 }
 ?>
