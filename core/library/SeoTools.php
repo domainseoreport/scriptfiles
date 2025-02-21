@@ -126,7 +126,13 @@ class SeoTools {
      * META HANDLER
      *=================================================================== 
      */
-    public function processMeta() {
+    public function processMeta(): string {
+        // Start the session if not already started.
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+        
+        // === 1. Extract raw meta data ===
         $title = $description = $keywords = '';
         $doc = $this->getDom();
         $nodes = $doc->getElementsByTagName('title');
@@ -136,114 +142,393 @@ class SeoTools {
         $metas = $doc->getElementsByTagName('meta');
         for ($i = 0; $i < $metas->length; $i++) {
             $meta = $metas->item($i);
-            if ($meta->getAttribute('name') === 'description') {
+            // Use case‑insensitive comparison
+            if (strtolower($meta->getAttribute('name')) === 'description') {
                 $description = $meta->getAttribute('content');
             }
-            if ($meta->getAttribute('name') === 'keywords') {
+            if (strtolower($meta->getAttribute('name')) === 'keywords') {
                 $keywords = $meta->getAttribute('content');
             }
         }
-        $meta = [
-            'title'       => trim($title),
-            'description' => trim($description),
-            'keywords'    => trim($keywords)
+        // Use a helper to clean extra spaces/newlines
+        $clean = function($str) {
+            return trim(preg_replace('/\s+/', ' ', $str));
+        };
+        
+        $rawMeta = [
+            'title'       => $clean($title),
+            'description' => $clean($description),
+            'keywords'    => $clean($keywords)
         ];
-        $metaEncrypted = jsonEncode($meta);
-        updateToDbPrepared($this->con, 'domains_data', ['meta_data' => $metaEncrypted], ['domain' => $this->domainStr]);
-        return $metaEncrypted;
+        
+        // === 2. Compute meta score and build meta report ===
+        $score   = 0;
+        $passed  = 0;
+        $improve = 0;
+        $errors  = 0;
+        
+        // Title scoring: if length between 10 and 70, award 2 points
+        $lenTitle = mb_strlen($rawMeta['title'], 'utf8');
+        if ($lenTitle < 10) {
+            $errors++;
+        } elseif ($lenTitle <= 70) {
+            $passed++;
+            $score += 2;
+        } else {
+            $errors++;
+        }
+        
+        // Description scoring: if length between 70 and 300, award 2 points
+        $lenDesc = mb_strlen($rawMeta['description'], 'utf8');
+        if ($lenDesc < 70) {
+            $errors++;
+        } elseif ($lenDesc <= 300) {
+            $passed++;
+            $score += 2;
+        } else {
+            $errors++;
+        }
+        
+        // Keywords scoring: if provided, award 2 points; if missing, mark as "to improve"
+        if (!empty($rawMeta['keywords'])) {
+            $passed++;
+            $score += 2;
+        } else {
+            $improve++;
+        }
+        
+        // Calculate percentage (max score is 6)
+        $maxScore = 6;
+        $percent = ($maxScore > 0) ? round(($score / $maxScore) * 100) : 0;
+        
+        // Build a comment summarizing the findings
+        $comment = "";
+        if ($lenTitle < 10) {
+            $comment .= "Title is too short. ";
+        } elseif ($lenTitle > 70) {
+            $comment .= "Title is too long. ";
+        } else {
+            $comment .= "Title is within range. ";
+        }
+        if ($lenDesc < 70) {
+            $comment .= "Description is too short. ";
+        } elseif ($lenDesc > 300) {
+            $comment .= "Description is too long. ";
+        } else {
+            $comment .= "Description is acceptable. ";
+        }
+        if (empty($rawMeta['keywords'])) {
+            $comment .= "No keywords provided.";
+        } else {
+            $comment .= "Keywords are provided.";
+        }
+        
+        // Prepare the meta report array
+        $metaReport = [
+            'score'   => $score,
+            'passed'  => $passed,
+            'improve' => $improve,
+            'errors'  => $errors,
+            'percent' => $percent,
+            'details' => [
+                'title_length'       => $lenTitle,
+                'description_length' => $lenDesc,
+                'keywords_present'   => !empty($rawMeta['keywords'])
+            ],
+            'comment' => $comment
+        ];
+        
+        // === 3. Combine raw meta and report into one array and update the DB ===
+        // Also store the meta report in a session variable for later consolidation.
+        $_SESSION['report_data']['meta'] = $metaReport;
+        
+        $completeMetaData = [
+            'raw'    => $rawMeta,
+            'report' => $_SESSION['report_data']['meta']
+        ];
+        $completeMetaJson = jsonEncode($completeMetaData);
+        
+        // Update the DB with both the complete meta data and the overall score in one call.
+        updateToDbPrepared($this->con, 'domains_data', [
+            'meta_data' => $completeMetaJson,
+            'score'     => $score
+        ], ['domain' => $this->domainStr]);
+        
+        // Return the complete meta JSON.
+        return $completeMetaJson;
     }
+    
+    
+    
+    
 
-    public function showMeta($metaData): string {
-        $metaData = jsonDecode($metaData);
-        $lenTitle = mb_strlen($metaData['title'], 'utf8');
-        $lenDes   = mb_strlen($metaData['description'], 'utf8');
+    public function showMeta(string $jsonData): string {
+        // Decode the JSON stored in DB.
+        $data = jsonDecode($jsonData);
+        if (!is_array($data) || !isset($data['raw']) || !isset($data['report'])) {
+            return '<div class="alert alert-warning">No meta report available.</div>';
+        }
     
-        $site_title       = $metaData['title'] ?: $this->lang['AN11'];
-        $site_description = $metaData['description'] ?: $this->lang['AN12'];
-        $site_keywords    = $metaData['keywords'] ?: $this->lang['AN15'];
+        // Extract raw data & computed report.
+        $rawMeta    = $data['raw'];
+        $metaReport = $data['report'];
     
-        // Determine box classes based on string lengths.
-        $classTitle = ($lenTitle < 10) ? 'improveBox' : (($lenTitle < 70) ? 'passedBox' : 'errorBox');
-        $classDes   = ($lenDes < 70) ? 'improveBox' : (($lenDes < 300) ? 'passedBox' : 'errorBox');
-        $classKey   = 'lowImpactBox';
+        // For Title and Description, use the raw data; for Keywords, if empty then display empty.
+        $siteTitle       = !empty($rawMeta['title']) ? $rawMeta['title'] : $this->lang['AN11'];
+        $siteDescription = !empty($rawMeta['description']) ? $rawMeta['description'] : $this->lang['AN12'];
+        $siteKeywords    = (isset($rawMeta['keywords']) && trim($rawMeta['keywords']) !== "") ? $rawMeta['keywords'] : ""; // Do NOT fallback to lang string.
+        
+        $host = $this->urlParse['host'] ?? '';
     
-        // Check login/permissions.
+        // --- Recommended Ranges ---
+        $titleMin = 50; 
+        $titleMax = 60;   // recommended 50–60
+        $descMin  = 120; 
+        $descMax  = 160;  // recommended 120–160
+        $keysMax  = 200;  // example limit for keywords
+    
+        // --- Actual Lengths ---
+        // For title and description, use the report details if available.
+        $actualTitleLen = $metaReport['details']['title_length'] ?? mb_strlen($siteTitle);
+        $actualDescLen  = $metaReport['details']['description_length'] ?? mb_strlen($siteDescription);
+        // For keywords, we now use the actual length of the raw keywords (which will be 0 if empty).
+        $actualKeysLen  = mb_strlen($siteKeywords);
+    
+        // Check permissions.
         if (!isset($_SESSION['twebUsername']) && !isAllowedStats($this->con, 'seoBox1')) {
             die(str_repeat($this->seoBoxLogin . $this->sepUnique, 4));
         }
     
-        $titleMsg  = $this->lang['AN173'];
-        $desMsg    = $this->lang['AN174'];
-        $keyMsg    = $this->lang['AN175'];
+        // Build progress bars using the helper function.
+        [$titleBarHTML, $classTitle] = $this->buildLengthBar(
+            actualLen: $actualTitleLen,
+            min: $titleMin,
+            max: $titleMax
+        );
+        [$descBarHTML, $classDesc] = $this->buildLengthBar(
+            actualLen: $actualDescLen,
+            min: $descMin,
+            max: $descMax
+        );
+        [$keysBarHTML, $classKeys] = $this->buildLengthBar(
+            actualLen: $actualKeysLen,
+            min: 0,
+            max: $keysMax
+        );
     
-        // Meta Title Block (seoBox1)
-        $output = '<div class="seoBox seoBox1 ' . $classTitle . '">
-                        <div class="msgBox bottom10">
-                            ' . $site_title . '<br />
-                            <b>' . $this->lang['AN13'] . ':</b> ' . $lenTitle . ' ' . $this->lang['AN14'] . '
-                        </div>
-                        <div class="suggestionBox">' . $titleMsg . '</div>
-                   </div>' . $this->sepUnique;
+        // Build HTML output.
+        // 1) Title Tag block.
+        $output = '
+    <div class="seoBox seoBox1 '.$classTitle.'">
+      <div class="row">
+        <div class="col-md-3">
+          <strong>Title Tag</strong>
+        </div>
+        <div class="col-md-9">
+          <div class="msgBox">
+            '.htmlspecialchars($siteTitle).'<br />
+          </div>
+          '.$titleBarHTML.'
+          <small class="text-muted">
+              <strong>Length: </strong>'.$actualTitleLen.' chars 
+              <span style="float:right;"><strong>(recommended '.$titleMin.'–'.$titleMax.')</strong></span>
+          </small>
+        </div>
+      </div>
+    </div>' . $this->sepUnique;
     
-        // Meta Description Block (seoBox2)
-        $output .= '<div class="seoBox seoBox2 ' . $classDes . '">
-                        <div class="msgBox padRight10 bottom10">
-                            ' . $site_description . '<br />
-                            <b>' . $this->lang['AN13'] . ':</b> ' . $lenDes . ' ' . $this->lang['AN14'] . '
-                        </div>
-                        <div class="suggestionBox">' . $desMsg . '</div>
-                    </div>' . $this->sepUnique;
+        // 2) Meta Description block.
+        $output .= '
+    <div class="seoBox seoBox2 '.$classDesc.'">
+      <div class="row">
+        <div class="col-md-3">
+          <strong>Meta Description</strong>
+        </div>
+        <div class="col-md-9">
+          <div class="msgBox padRight10">
+            '.htmlspecialchars($siteDescription).'<br />
+          </div>
+          '.$descBarHTML.'
+          <small class="text-muted">
+              <strong>Length: </strong>'.$actualDescLen.' chars 
+              <span style="float:right;"><strong>(recommended '.$descMin.'–'.$descMax.')</strong></span>
+          </small>
+        </div>
+      </div>
+    </div>' . $this->sepUnique;
     
-        // Meta Keywords Block (seoBox3)
-        $output .= '<div class="seoBox seoBox3 ' . $classKey . '">
-                        <div class="msgBox padRight10">
-                            ' . $site_keywords . '<br /><br />
-                        </div>
-                        <div class="suggestionBox">' . $keyMsg . '</div>
-                    </div>' . $this->sepUnique;
+        // 3) Meta Keywords block.
+        // If keywords are empty, we display "Not provided" and a length of 0.
+        $displayKeywords = !empty($siteKeywords) ? htmlspecialchars($siteKeywords) : '<em>Not provided</em>';
+        $output .= '
+    <div class="seoBox seoBox3 '.$classKeys.'">
+      <div class="row">
+        <div class="col-md-3">
+          <strong>Meta Keywords</strong>
+        </div>
+        <div class="col-md-9">
+          <div class="msgBox padRight10">
+            '.$displayKeywords.'<br />
+          </div>
+          '.$keysBarHTML.'
+          <small class="text-muted">
+              <strong>Length: </strong>'.$actualKeysLen.' chars 
+              <span style="float:right;"><strong>(recommended up to '.$keysMax.')</strong></span>
+          </small>
+        </div>
+      </div>
+    </div>' . $this->sepUnique;
     
-        // Google Preview Box (seoBox5)
-        $host = $this->urlParse['host'] ?? '';
-        $googlePreview = '<div id="seoBox5" class="seoBox seoBox5 ' . $classKey . '">
-                            <div class="msgBox">
-                                <div class="googlePreview">
-                                    <!-- First Row: Mobile & Tablet Views -->
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="google-preview-box mobile-preview">
-                                                <h6>Mobile View</h6>
-                                                <p class="google-title"><a href="#">' . $site_title . '</a></p>
-                                                <p class="google-url"><span class="bold">' . $host . '</span>/</p>
-                                                <p class="google-desc">' . $site_description . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="google-preview-box tablet-preview">
-                                                <h6>Tablet View</h6>
-                                                <p class="google-title"><a href="#">' . $site_title . '</a></p>
-                                                <p class="google-url"><span class="bold">' . $host . '</span>/</p>
-                                                <p class="google-desc">' . $site_description . '</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Second Row: Desktop View -->
-                                    <div class="row mt-3">
-                                        <div class="col-12">
-                                            <div class="google-preview-box desktop-preview mt-5">
-                                                <h6>Desktop View</h6>
-                                                <p class="google-title"><a href="#">' . $site_title . '</a></p>
-                                                <p class="google-url"><span class="bold">' . $host . '</span>/</p>
-                                                <p class="google-desc">' . $site_description . '</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                         </div>';
-        $output .= $googlePreview . $this->sepUnique;
+        // 4) Google Preview block (unchanged to preserve your JS and styling).
+        $output .= '
+    <div id="seoBox5" class="seoBox seoBox5 lowImpactBox">
+      <div class="msgBox">
+        <div class="googlePreview">
+          <!-- First Row: Mobile & Tablet Views -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="google-preview-box mobile-preview">
+                <h6>Mobile View</h6>
+                <p class="google-title"><a href="#">'.htmlspecialchars($siteTitle).'</a></p>
+                <p class="google-url"><span class="bold">'.htmlspecialchars($host).'</span>/</p>
+                <p class="google-desc">'.htmlspecialchars($siteDescription).'</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="google-preview-box tablet-preview">
+                <h6>Tablet View</h6>
+                <p class="google-title"><a href="#">'.htmlspecialchars($siteTitle).'</a></p>
+                <p class="google-url"><span class="bold">'.htmlspecialchars($host).'</span>/</p>
+                <p class="google-desc">'.htmlspecialchars($siteDescription).'</p>
+              </div>
+            </div>
+          </div>
+          <!-- Second Row: Desktop View -->
+          <div class="row mt-3">
+            <div class="col-12">
+              <div class="google-preview-box desktop-preview mt-5">
+                <h6>Desktop View</h6>
+                <p class="google-title"><a href="#">'.htmlspecialchars($siteTitle).'</a></p>
+                <p class="google-url"><span class="bold">'.htmlspecialchars($host).'</span>/</p>
+                <p class="google-desc">'.htmlspecialchars($siteDescription).'</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>' . $this->sepUnique;
+    
+        // 5) Summary card for meta analysis.
+        $score   = $metaReport['score']   ?? 0;
+        $percent = $metaReport['percent'] ?? 0;
+        $comment = $metaReport['comment'] ?? '';
+    
+        $output .= '
+    <div class="card my-3">
+      <div class="card-header">
+        <h4>Meta Analysis Summary</h4>
+      </div>
+      <div class="card-body">
+        <p><strong>Score:</strong> '.$score.' (Percent: '.$percent.'%)</p>
+        <p><strong>Comment:</strong> '.htmlspecialchars($comment).'</p>
+      </div>
+    </div>';
     
         return $output;
     }
+        
+
+/**
+ * Helper function to build a length-based progress bar (always 100% width) with user-friendly text.
+ * Returns an array: [ $progressBarHTML, $cssClassBox ].
+ */
+private function buildLengthBar(int $actualLen, int $min, int $max): array
+{
+    // Use a constant width (100%) and change only the color/text
+    $widthPercent = 100;
+    $barClass     = 'bg-success';
+    $barText      = 'Within recommended range';
+    $boxClass     = 'passedBox';
+
+    if ($min > 0 && $actualLen < $min) {
+        // Too short
+        $barClass = 'bg-danger';
+        $needed   = $min - $actualLen;
+        $barText  = "Too short - Need {$needed} more chars";
+        $boxClass = 'improveBox';
+    } elseif ($max > 0 && $actualLen > $max) {
+        // Too long
+        $barClass = 'bg-danger';
+        $exceed   = $actualLen - $max;
+        $barText  = "Too long - Exceeded by {$exceed} chars";
+        $boxClass = 'errorBox';
+    }
+
+    $progressBarHTML = '
+<div class="progress mt-2" style="height: 22px;">
+  <div class="progress-bar ' . $barClass . '"
+       role="progressbar"
+       style="width: ' . $widthPercent . '%;"
+       aria-valuenow="' . $widthPercent . '"
+       aria-valuemin="0"
+       aria-valuemax="100">
+    ' . $barText . '
+  </div>
+</div>';
+
+    return [$progressBarHTML, $boxClass];
+}
+
+    
+
+
+
+/**
+ * Helper function to build the Google preview block.
+ */
+private function buildGooglePreview(string $title, string $description, string $host): string
+{
+    $classKey = 'lowImpactBox'; // your existing style
+
+    return '<div id="seoBox5" class="seoBox seoBox5 ' . $classKey . '">
+              <div class="msgBox">
+                <div class="googlePreview">
+                  <!-- First Row: Mobile & Tablet Views -->
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="google-preview-box mobile-preview">
+                        <h6>Mobile View</h6>
+                        <p class="google-title"><a href="#">' . htmlspecialchars($title) . '</a></p>
+                        <p class="google-url"><span class="bold">' . htmlspecialchars($host) . '</span>/</p>
+                        <p class="google-desc">' . htmlspecialchars($description) . '</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="google-preview-box tablet-preview">
+                        <h6>Tablet View</h6>
+                        <p class="google-title"><a href="#">' . htmlspecialchars($title) . '</a></p>
+                        <p class="google-url"><span class="bold">' . htmlspecialchars($host) . '</span>/</p>
+                        <p class="google-desc">' . htmlspecialchars($description) . '</p>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Second Row: Desktop View -->
+                  <div class="row mt-3">
+                    <div class="col-12">
+                      <div class="google-preview-box desktop-preview mt-5">
+                        <h6>Desktop View</h6>
+                        <p class="google-title"><a href="#">' . htmlspecialchars($title) . '</a></p>
+                        <p class="google-url"><span class="bold">' . htmlspecialchars($host) . '</span>/</p>
+                        <p class="google-desc">' . htmlspecialchars($description) . '</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>' . $this->sepUnique;
+}
+
+    
     
     
 
@@ -251,98 +536,231 @@ class SeoTools {
      * HEADING HANDLER
      *-------------------------------------------------------------------
      */
-    public function processHeading() {
-        $doc = $this->getDom();
-        $tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-        $headings = [];
-        foreach ($tags as $tag) {
-            $elements = $doc->getElementsByTagName($tag);
-            foreach ($elements as $element) {
-                $content = trim(strip_tags($element->textContent));
-                if ($content !== "") {
-                    $headings[$tag][] = trim($content, " \t\n\r\0\x0B\xc2\xa0");
+    public function processHeading(): string {
+        try {
+            // === 1. Extract raw heading data ===
+            $doc = $this->getDom();
+            if (!$doc) {
+                throw new Exception("Failed to load DOM.");
+            }
+    
+            $tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+            $headings = [];
+            foreach ($tags as $tag) {
+                $elements = $doc->getElementsByTagName($tag);
+                foreach ($elements as $element) {
+                    $content = trim(strip_tags($element->textContent));
+                    if ($content !== "") {
+                        $headings[$tag][] = trim($content, " \t\n\r\0\x0B\xc2\xa0");
+                    }
                 }
             }
+    
+            // === 2. Compute heading report ===
+            $report = $this->computeHeadingReport($tags, $headings);
+    
+            // === 3. Combine raw headings and report, update the DB in one call ===
+            $completeHeadingData = [
+                'raw'    => $headings,
+                'report' => $report
+            ];
+            $completeHeadingJson = json_encode($completeHeadingData);
+    
+            // Update the DB column "headings" with the complete JSON
+            updateToDbPrepared($this->con, 'domains_data', ['headings' => $completeHeadingJson], ['domain' => $this->domainStr]);
+            // Optionally update the overall score field (if combining with other tests)
+            updateToDbPrepared($this->con, 'domains_data', ['score' => $report['score']], ['domain' => $this->domainStr]);
+    
+            return $completeHeadingJson;
+    
+        } catch (Exception $e) {
+            error_log("Error in processHeading: " . $e->getMessage());
+            return json_encode(['error' => 'An error occurred while processing headings.']);
         }
-        $updateStr = jsonEncode([$headings]);
-        updateToDbPrepared($this->con, 'domains_data', ['headings' => $updateStr], ['domain' => $this->domainStr]);
-        return $updateStr;
     }
-
-    public function showHeading($headings): string {
-        $headingsArr = jsonDecode($headings);
-        if (!is_array($headingsArr) || !isset($headingsArr[0])) {
-            return '<div class="alert alert-danger">Invalid heading data.</div>';
-        }
-        $elementList = $headingsArr[0];
-        $tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+    
+    private function computeHeadingReport(array $tags, array $headings): array {
+        // Count headings for each tag
         $counts = [];
         foreach ($tags as $tag) {
-            $counts[$tag] = isset($elementList[$tag]) ? count($elementList[$tag]) : 0;
+            $counts[$tag] = isset($headings[$tag]) ? count($headings[$tag]) : 0;
         }
-        // Map the computed class to Bootstrap badge classes:
-        $boxClass = ($counts['h1'] > 2)
-                    ? 'bg-warning text-dark'       // Warning style for too many H1 tags
-                    : (($counts['h1'] > 0 && $counts['h2'] > 0)
-                        ? 'bg-success text-white'    // Success style when structure is good
-                        : 'bg-danger text-white');   // Danger style otherwise
     
-        $headMsg = $this->lang['AN176'] ?? "Please review your heading structure.";
+        // Initialize scoring variables and recommendations
+        $score = 0;
+        $maxScore = 7;
+        $comments = [];
     
-        if (!function_exists('getHeadingSuggestion')) {
-            function getHeadingSuggestion($tag, $count) {
-                $tagUpper = strtoupper($tag);
-                if ($count === 0) {
-                    return ($tag === 'h1')
-                        ? "No {$tagUpper} found. At least one H1 tag is recommended for SEO."
-                        : "No {$tagUpper} found. Consider adding one for better structure.";
+        // -- H1 Validation --
+        if ($counts['h1'] === 1) {
+            $score += 2;
+            $h1Content = $headings['h1'][0];
+            if (mb_strlen($h1Content, 'utf8') > 70) {
+                $comments[] = "H1 is too long (keep under 70 characters)";
+            }
+        } elseif ($counts['h1'] === 0) {
+            $comments[] = "Missing H1 tag";
+        } else {
+            $comments[] = "Multiple H1 tags detected";
+        }
+    
+        // -- Hierarchy Validation --
+        $lastLevel = 1;
+        $hierarchyErrors = 0;
+        foreach ($tags as $tag) {
+            if (isset($headings[$tag])) {
+                $currentLevel = (int) substr($tag, 1);
+                if ($currentLevel > $lastLevel + 1) {
+                    $hierarchyErrors++;
+                    $comments[] = "Jump from H{$lastLevel} to H{$currentLevel} detected";
                 }
-                return ($tag === 'h1' && $count > 2)
-                    ? "More than 2 H1 tags found. Best practice is to have only one."
-                    : "Looks good for {$tagUpper}.";
+                $lastLevel = $currentLevel;
             }
         }
-    
-        $output = '<div class="card my-3" id="seoBox4">
-            <div class="card-header">
-                <h4>Heading Structure</h4>
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th style="width: 50px;">Tag</th>
-                            <th style="width: 100px;">Count</th>
-                            <th>Headings</th>
-                            <th style="width: 200px;">Suggestion</th>
-                        </tr>
-                    </thead>
-                    <tbody>';
-        foreach ($tags as $tag) {
-            $count = $counts[$tag];
-            $headingsList = !empty($elementList[$tag])
-                ? '<ul class="list-unstyled mb-0">' . implode('', array_map(function($text) use ($tag) {
-                      return '<li>&lt;' . strtoupper($tag) . '&gt; <strong>' . htmlspecialchars($text) . '</strong> &lt;/' . strtoupper($tag) . '&gt;</li>';
-                  }, $elementList[$tag])) . '</ul>'
-                : '<em class="text-muted">None found.</em>';
-            $suggestion = getHeadingSuggestion($tag, $count);
-            $output .= '<tr>
-                        <td><strong>' . strtoupper($tag) . '</strong></td>
-                        <td>' . $count . '</td>
-                        <td>' . $headingsList . '</td>
-                        <td class="text-muted small">' . $suggestion . '</td>
-                    </tr>';
+        if ($hierarchyErrors === 0) {
+            $score += 2;
+        } else {
+            $comments[] = "$hierarchyErrors hierarchy jump(s) found";
         }
-        $output .= '
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-footer text-center">
-                <span class="badge ' . $boxClass . ' p-2">' . $headMsg . '</span>
-            </div>
-        </div>
-       ';
-        return $output;
+    
+        // -- Content Quality Checks --
+        $uniqueHeadings = [];
+        $duplicates = [];
+        foreach ($headings as $tag => $contents) {
+            foreach ($contents as $heading) {
+                // Remove punctuation and lower-case for comparison
+                $key = mb_strtolower(trim(preg_replace('/[^\w\s]/u', '', $heading)));
+                if (isset($uniqueHeadings[$key])) {
+                    $duplicates[] = $heading;
+                }
+                $uniqueHeadings[$key] = true;
+            }
+        }
+        if (!empty($duplicates)) {
+            $comments[] = "Duplicate headings found: " . implode(", ", array_slice($duplicates, 0, 3));
+        }
+    
+        // -- Structure Validation --
+        if ($counts['h2'] >= 2) {
+            $score += 1;
+        } else {
+            $comments[] = "At least 2 H2 tags are recommended for better structure";
+        }
+    
+        // -- Accessibility Check --
+        if (empty($headings)) {
+            $comments[] = "No headings detected - this affects accessibility";
+        }
+    
+        $percent = ($maxScore > 0) ? round(($score / $maxScore) * 100) : 0;
+    
+        return [
+            'score'           => $score,
+            'percent'         => $percent,
+            'details'         => [
+                'counts'           => $counts,
+                'hierarchy_errors' => $hierarchyErrors,
+                'duplicates'       => count($duplicates),
+                'content_issues'   => [
+                    'long_h1' => (isset($h1Content) && mb_strlen($h1Content, 'utf8') > 70)
+                ]
+            ],
+            'recommendations' => $comments
+        ];
+    }
+    
+    
+    public function showHeading(string $jsonData): string {
+        try {
+            // Decode the JSON stored in the DB
+            $data = json_decode($jsonData, true);
+            if (!is_array($data) || !isset($data['raw']) || !isset($data['report'])) {
+                return '<div class="alert alert-danger">Invalid heading data.</div>';
+            }
+    
+            $rawHeadings = $data['raw'];
+            $report = $data['report'];
+            $tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+    
+            // Build a detailed table of headings
+            $tableHTML = '<table class="table table-bordered table-hover">
+                            <thead class="table-light">
+                              <tr>
+                                <th style="width:50px;">Tag</th>
+                                <th style="width:100px;">Count</th>
+                                <th>Headings</th>
+                                <th style="width:250px;">Suggestion</th>
+                              </tr>
+                            </thead>
+                            <tbody>';
+            foreach ($tags as $tag) {
+                $count = isset($rawHeadings[$tag]) ? count($rawHeadings[$tag]) : 0;
+    
+                // Build list of headings for this tag
+                $headingsList = '';
+                if (!empty($rawHeadings[$tag])) {
+                    $headingsList = '<ul class="list-unstyled mb-0">';
+                    foreach ($rawHeadings[$tag] as $text) {
+                        $warnings = [];
+                        if ($tag === 'h1' && mb_strlen($text, 'utf8') > 70) {
+                            $warnings[] = 'Too long';
+                        }
+                        $warningHTML = !empty($warnings) ? '<br /><span class="text-warning small">' . implode(', ', $warnings) . '</span>' : '';
+                        $headingsList .= '<li>&lt;' . strtoupper($tag) . '&gt; <strong>' . htmlspecialchars($text) . '</strong> &lt;/' . strtoupper($tag) . '&gt;' . $warningHTML . '</li>';
+                    }
+                    $headingsList .= '</ul>';
+                } else {
+                    $headingsList = '<em class="text-muted">None found.</em>';
+                }
+    
+                // Build suggestion for this tag using a simple match logic
+                $suggestion = match (true) {
+                    $tag === 'h1' && $count === 0 => '<span class="text-danger">❌ Missing H1</span>',
+                    $tag === 'h1' && $count > 1  => '<span class="text-danger">❌ Multiple H1s detected</span>',
+                    $tag === 'h2' && $count < 2  => '<span class="text-warning">⚠️ Add more H2s for better structure</span>',
+                    default => '<span class="text-success">Looks good</span>',
+                };
+    
+                $tableHTML .= '<tr>
+                                <td><strong>' . strtoupper($tag) . '</strong></td>
+                                <td>' . $count . '</td>
+                                <td>' . $headingsList . '</td>
+                                <td>' . $suggestion . '</td>
+                              </tr>';
+            }
+            $tableHTML .= '</tbody></table>';
+    
+            // Build a formatted list of recommendations
+            $recommendations = $report['recommendations'] ?? [];
+            $recomHTML = '';
+            if (!empty($recommendations)) {
+                $recomHTML .= '<ul class="list-group">';
+                foreach ($recommendations as $rec) {
+                    $recomHTML .= '<li class="list-group-item">' . htmlspecialchars($rec) . '</li>';
+                }
+                $recomHTML .= '</ul>';
+            } else {
+                $recomHTML = '<em class="text-muted">No recommendations.</em>';
+            }
+    
+            // Build a summary card for the overall heading report
+            $summaryHTML = '
+            <div class="card my-3">
+               <div class="card-header">
+                 <h4>Heading Analysis Summary</h4>
+               </div>
+               <div class="card-body"> 
+                 <p><strong>Recommendations:</strong></p>
+                 ' . $recomHTML . '
+               </div>
+            </div>';
+    
+            return $tableHTML.$summaryHTML ;
+    
+        } catch (Exception $e) {
+            error_log("Error in showHeading: " . $e->getMessage());
+            return '<div class="alert alert-danger">An error occurred while displaying heading data.</div>';
+        }
     }
     
     

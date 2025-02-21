@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             die();
         }
     }
-die();
+ 
     /*
      * -----------------------------------------------------------------
      * HEADING DATA HANDLER - Used to generate heading tags.
@@ -278,9 +278,9 @@ die();
      * -----------------------------------------------------------------
      */
     if (isset($_POST['serverIP'])) {
-        log_message('debug', "Server IP Tag Call for URL {$my_url_host}");
-        $serverDataJson = $seoTools->processServerInfo();
-        echo $seoTools->showServerInfo($serverDataJson);
+        // log_message('debug', "Server IP Tag Call for URL {$my_url_host}");
+        // $serverDataJson = $seoTools->processServerInfo();
+        // echo $seoTools->showServerInfo($serverDataJson);
         die();
     } 
 
@@ -315,13 +315,13 @@ die();
      * -----------------------------------------------------------------
      */
     if (isset($_POST['PageSpeedInsights'])) { 
-        log_message('debug', "Page Insights report for {$my_url_host}");
-        // Process and store the PageSpeed Insights report concurrently.
-        // This returns a JSON string.
-        $jsonData = $seoTools->processPageSpeedInsightConcurrent();
+        // log_message('debug', "Page Insights report for {$my_url_host}");
+        // // Process and store the PageSpeed Insights report concurrently.
+        // // This returns a JSON string.
+        // $jsonData = $seoTools->processPageSpeedInsightConcurrent();
         
-        // Then pass the JSON string to the show function.
-        echo $seoTools->showPageSpeedInsightConcurrent($jsonData);
+        // // Then pass the JSON string to the show function.
+        // echo $seoTools->showPageSpeedInsightConcurrent($jsonData);
         die();
     }
 

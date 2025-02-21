@@ -217,30 +217,21 @@ if ($updateFound) {
                         <div class="card-body">
                             <!-- Title Section -->
                             <div class="row mb-3 align-items-center">
-                                <div class="col-md-3">
-                                    <h6><?php outHeadBox($lang['AN1'], $solveMsg, 1); ?></h6>
-                                </div>
-                                <div class="col-md-9" id="seoBox1">
+                                 <div class="col-md-12" id="seoBox1">
                                     <?php echo $seoBox1; ?>
                                 </div>
                             </div>
                             <hr>
                             <!-- Description Section -->
                             <div class="row mb-3 align-items-center">
-                                <div class="col-md-3">
-                                    <h6><?php outHeadBox($lang['AN2'], $solveMsg, 1); ?></h6>
-                                </div>
-                                <div class="col-md-9" id="seoBox2">
+                                <div class="col-md-12" id="seoBox2">
                                     <?php echo $seoBox2; ?>
                                 </div>
                             </div>
                             <hr>
                             <!-- Keywords Section -->
-                            <div class="row align-items-center">
-                                <div class="col-md-3">
-                                    <h6><?php outHeadBox($lang['AN3'], $solveMsg, 1); ?></h6>
-                                </div>
-                                <div class="col-md-9" id="seoBox3">
+                            <div class="row align-items-center"> 
+                                <div class="col-md-12" id="seoBox3">
                                     <?php echo $seoBox3; ?>
                                 </div>
                             </div>
