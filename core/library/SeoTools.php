@@ -792,354 +792,491 @@ private function buildGooglePreview(string $title, string $description, string $
      * IMAGE ALT TAG HANDLER
      *=================================================================== 
      */
-    public function processImage() {
-        $doc = $this->getDom();
-        $xpath = new DOMXPath($doc);
-        $imgTags = $xpath->query("//img");
-        $results = [
-            'total_images' => $imgTags->length,
-            'images_missing_alt'       => [],
-            'images_with_empty_alt'    => [],
-            'images_with_short_alt'    => [],
-            'images_with_long_alt'     => [],
-            'images_with_redundant_alt'=> [],
-            'suggestions' => []
-        ];
-    
-        $aggregate = function (&$array, $data) {
-            $src = $data['src'];
-            if (isset($array[$src])) {
-                $array[$src]['count']++;
-            } else {
-                $data['count'] = 1;
-                $array[$src] = $data;
+    /**
+ * Processes image tags to extract raw metrics about alt attributes,
+ * then computes a detailed report with scoring and suggestions.
+ *
+ * The returned JSON contains:
+ *   - raw: all collected metrics (counts for total images, missing alt, empty alt, short alt, long alt, and redundant alt).
+ *   - report: a computed report with:
+ *         • score: total points earned (max 10)
+ *         • passed: count of conditions passing (2 points each)
+ *         • improve: count of conditions “to improve” (1 point each)
+ *         • errors: count of error conditions (0 points)
+ *         • percent: overall percentage score
+ *         • details: a per‑condition status (Pass, To Improve, Error)
+ *         • comment: an overall comment.
+ *
+ * The final JSON is updated in the DB (field "image_alt") and saved in session.
+ *
+ * @return string JSON-encoded combined raw data and report.
+ */
+public function processImage(): string {
+    $doc = $this->getDom();
+    $xpath = new DOMXPath($doc);
+    $imgTags = $xpath->query("//img");
+    $results = [
+        'total_images' => $imgTags->length,
+        'images_missing_alt'       => [],
+        'images_with_empty_alt'    => [],
+        'images_with_short_alt'    => [],
+        'images_with_long_alt'     => [],
+        'images_with_redundant_alt'=> [],
+        'suggestions' => []  // raw suggestions
+    ];
+
+    $aggregate = function (&$array, $data) {
+        $src = $data['src'];
+        if (isset($array[$src])) {
+            $array[$src]['count']++;
+        } else {
+            $data['count'] = 1;
+            $array[$src] = $data;
+        }
+    };
+
+    foreach ($imgTags as $img) {
+        $src = trim($img->getAttribute('src')) ?: 'N/A';
+        // Convert relative URL to absolute.
+        $src = $this->toAbsoluteUrl($src);
+        $alt = $img->getAttribute('alt');
+        $title = trim($img->getAttribute('title')) ?: 'N/A';
+        $width = trim($img->getAttribute('width')) ?: 'N/A';
+        $height = trim($img->getAttribute('height')) ?: 'N/A';
+        $class = trim($img->getAttribute('class')) ?: 'N/A';
+        $parentTag = $img->parentNode->nodeName;
+        $parentTxt = trim($img->parentNode->textContent);
+        $position = method_exists($this, 'getNodePosition') ? $this->getNodePosition($img) : 'N/A';
+
+        $data = compact('src', 'title', 'width', 'height', 'class', 'parentTag', 'parentTxt', 'position');
+
+        if (!$img->hasAttribute('alt')) {
+            $aggregate($results['images_missing_alt'], $data);
+        } elseif (trim($alt) === "") {
+            $aggregate($results['images_with_empty_alt'], $data);
+        } else {
+            $altLength = mb_strlen($alt);
+            $normalizedAlt = strtolower($alt);
+            $redundantAlt = in_array($normalizedAlt, ['image', 'photo', 'picture', 'logo']);
+            // We consider alt text with less than 5 characters as too short.
+            if ($altLength < 5) {
+                $data['alt'] = $alt;
+                $data['length'] = $altLength;
+                $aggregate($results['images_with_short_alt'], $data);
             }
-        };
-    
-        foreach ($imgTags as $img) {
-            // Original extraction
-            $src = trim($img->getAttribute('src')) ?: 'N/A';
-    
-            // Convert relative to absolute
-            $src = $this->toAbsoluteUrl($src);
-    
-            $alt = $img->getAttribute('alt');
-            $title = trim($img->getAttribute('title')) ?: 'N/A';
-            $width = trim($img->getAttribute('width')) ?: 'N/A';
-            $height = trim($img->getAttribute('height')) ?: 'N/A';
-            $class = trim($img->getAttribute('class')) ?: 'N/A';
-            $parentTag = $img->parentNode->nodeName;
-            $parentTxt = trim($img->parentNode->textContent);
-            $position = method_exists($this, 'getNodePosition') ? $this->getNodePosition($img) : 'N/A';
-    
-            // Build data array
-            $data = compact('src', 'title', 'width', 'height', 'class', 'parentTag', 'parentTxt', 'position');
-    
-            // Check alt attribute
-            if (!$img->hasAttribute('alt')) {
-                $aggregate($results['images_missing_alt'], $data);
-            } elseif (trim($alt) === '') {
-                $aggregate($results['images_with_empty_alt'], $data);
-            } else {
-                $altLength = mb_strlen($alt);
-                $normalizedAlt = strtolower($alt);
-                $redundantAlt = in_array($normalizedAlt, ['image', 'photo', 'picture', 'logo']);
-                if ($altLength < 5) {
-                    $data['alt'] = $alt;
-                    $data['length'] = $altLength;
-                    $aggregate($results['images_with_short_alt'], $data);
-                }
-                if ($altLength > 100) {
-                    $data['alt'] = $alt;
-                    $data['length'] = $altLength;
-                    $aggregate($results['images_with_long_alt'], $data);
-                }
-                if ($redundantAlt) {
-                    $data['alt'] = $alt;
-                    $aggregate($results['images_with_redundant_alt'], $data);
-                }
+            // If alt text is very long (e.g. >100 characters), flag it.
+            if ($altLength > 100) {
+                $data['alt'] = $alt;
+                $data['length'] = $altLength;
+                $aggregate($results['images_with_long_alt'], $data);
+            }
+            if ($redundantAlt) {
+                $data['alt'] = $alt;
+                $aggregate($results['images_with_redundant_alt'], $data);
             }
         }
-        $totalMissing = array_sum(array_map(fn($i) => $i['count'], $results['images_missing_alt']));
-        $totalEmpty   = array_sum(array_map(fn($i) => $i['count'], $results['images_with_empty_alt']));
-        $totalShort   = array_sum(array_map(fn($i) => $i['count'], $results['images_with_short_alt']));
-        $totalLong    = array_sum(array_map(fn($i) => $i['count'], $results['images_with_long_alt']));
-        $totalRedund  = array_sum(array_map(fn($i) => $i['count'], $results['images_with_redundant_alt']));
-        if ($totalMissing > 0) {
-            $results['suggestions'][] = "There are {$totalMissing} image instances missing alt attributes.";
-        }
-        if ($totalEmpty > 0) {
-            $results['suggestions'][] = "There are {$totalEmpty} image instances with empty alt attributes.";
-        }
-        if ($totalShort > 0) {
-            $results['suggestions'][] = "There are {$totalShort} image instances with very short alt text (<5 chars).";
-        }
-        if ($totalLong > 0) {
-            $results['suggestions'][] = "There are {$totalLong} image instances with very long alt text (>100 chars).";
-        }
-        if ($totalRedund > 0) {
-            $results['suggestions'][] = "There are {$totalRedund} image instances with redundant alt text (e.g., 'image','logo').";
-        }
-        if ($totalMissing === 0 && $totalEmpty === 0 && $totalShort === 0 && $totalLong === 0 && $totalRedund === 0) {
-            $results['suggestions'][] = "Great job! All images have appropriate alt attributes.";
-        }
-        $updateStr = jsonEncode($results);
-        updateToDbPrepared($this->con, 'domains_data', ['image_alt' => $updateStr], ['domain' => $this->domainStr]);
-        return $updateStr;
     }
 
-    public function showImage($imageData): string {
-        $data = jsonDecode($imageData);
-    
-        // Validate the decoded data.
-        if (!is_array($data) || !isset($data['total_images'])) {
-            return '<div class="alert alert-warning">No image data available.</div>';
-        }
-        
-        // Calculate total issues across all categories.
-        $issuesCount = array_sum(array_map(fn($i) => $i['count'], $data['images_missing_alt'] ?? []))
-                     + array_sum(array_map(fn($i) => $i['count'], $data['images_with_empty_alt'] ?? []))
-                     + array_sum(array_map(fn($i) => $i['count'], $data['images_with_short_alt'] ?? []))
-                     + array_sum(array_map(fn($i) => $i['count'], $data['images_with_long_alt'] ?? []))
-                     + array_sum(array_map(fn($i) => $i['count'], $data['images_with_redundant_alt'] ?? []));
-        
-        // Determine border and header color based on issues.
-        if ($issuesCount == 0) {
-            $boxClass = 'border-success';
-            $headerIcon = themeLink('img/true.png', true);
-            $headerText = $this->lang['AN27'];
-        } elseif ($issuesCount < 3) {
-            $boxClass = 'border-warning';
-            $headerIcon = themeLink('img/false.png', true);
-            $headerText = "Issues found: {$issuesCount}";
-        } else {
-            $boxClass = 'border-danger';
-            $headerIcon = themeLink('img/false.png', true);
-            $headerText = "Issues found: {$issuesCount}";
-        }
-        
-        // Build header summary.
-        $headerContent = '
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <img src="' . $headerIcon . '" alt="' . ($issuesCount == 0 ? $this->lang['AN24'] : $this->lang['AN23']) . '" 
-                     title="' . ($issuesCount == 0 ? $this->lang['AN25'] : $this->lang['AN22']) . '" 
-                     class="me-2" /> 
-                <strong>' . $headerText . '</strong>
-            </div>
-            <div>
-                <span class="badge bg-secondary">Total Images: ' . $data['total_images'] . '</span>
-            </div>
-        </div>';
-        
-        /**
-         * Helper function to build tables for each category.
-         * Each row shows:
-         *  - a thumbnail (50×50 by default)
-         *  - additional image info
-         *  - occurrence count
-         * If width/height in HTML is < 50, display at that smaller size instead.
-         */
-        $buildTable = function($title, $items) {
-            if (!empty($items)) {
-                $total = array_sum(array_map(fn($i) => $i['count'], $items));
-                $table  = '<h5 class="mt-3">' . $title . ' (' . $total . ')</h5>';
-                $table .= '<div class="table-responsive"><table class="table table-sm table-striped">';
-                $table .= '<thead class="table-light">
-                            <tr>
-                                <th style="width:60px;">Thumbnail</th>
-                                <th>Image Info</th>
-                                <th class="text-center" style="width:80px;">Count</th>
-                            </tr>
-                           </thead>
-                           <tbody>';
-    
-                foreach ($items as $item) {
-                    // Determine final displayed width/height
-                    $rawWidth = $item['width'] ?? 'N/A';
-                    $rawHeight = $item['height'] ?? 'N/A';
-    
-                    // Try to parse numeric width/height
-                    $imgWidth = (ctype_digit($rawWidth)) ? (int)$rawWidth : 0;
-                    $imgHeight = (ctype_digit($rawHeight)) ? (int)$rawHeight : 0;
-    
-                    // Default to 50px, or use the smaller dimension if < 50
-                    $thumbWidth = ($imgWidth > 0 && $imgWidth < 50) ? $imgWidth : 50;
-                    $thumbHeight = ($imgHeight > 0 && $imgHeight < 50) ? $imgHeight : 50;
-    
-                    // Build a small thumbnail image
-                    $thumbnail = '<img src="' . htmlspecialchars($item['src']) . '" alt="Image" 
-                                  style="width:' . $thumbWidth . 'px; height:' . $thumbHeight . 'px; object-fit:cover;">';
-                    
-                    // Build detailed information block
-                    $info = 'Source: ' . htmlspecialchars($item['src']);
-                    if (isset($item['title']) && $item['title'] !== 'N/A') {
-                        $info .= '<br>Title: ' . htmlspecialchars($item['title']);
-                    }
-                    if ($rawWidth !== 'N/A' && $rawHeight !== 'N/A') {
-                        $info .= '<br>Dimensions: ' . htmlspecialchars($rawWidth) . ' x ' . htmlspecialchars($rawHeight);
-                    }
-                    if (isset($item['alt'])) {
-                        $info .= '<br>Alt: ' . htmlspecialchars($item['alt']);
-                    }
-                    if (isset($item['class']) && $item['class'] !== 'N/A') {
-                        $info .= '<br>Class: ' . htmlspecialchars($item['class']);
-                    }
-                    if (isset($item['parentTag'])) {
-                        $info .= '<br>Parent: ' . htmlspecialchars($item['parentTag']);
-                    }
-                    
-                    $table .= '<tr>';
-                    $table .= '<td>' . $thumbnail . '</td>';
-                    $table .= '<td>' . $info . '</td>';
-                    $table .= '<td class="text-center">' . $item['count'] . '</td>';
-                    $table .= '</tr>';
-                }
-    
-                $table .= '</tbody></table></div>';
-                return $table;
-            }
-            return '<div class="alert alert-info py-2">No data found for ' . $title . '.</div>';
-        };
-        
-        // Build the nav tabs.
-        $tabs = '
-        <ul class="nav nav-tabs" id="imageAltTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="missing-alt-tab" data-bs-toggle="tab" data-bs-target="#missing-alt" 
-                        type="button" role="tab" aria-controls="missing-alt" aria-selected="true">
-                    Missing Alt
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="empty-alt-tab" data-bs-toggle="tab" data-bs-target="#empty-alt" 
-                        type="button" role="tab" aria-controls="empty-alt" aria-selected="false">
-                    Empty Alt
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="short-alt-tab" data-bs-toggle="tab" data-bs-target="#short-alt" 
-                        type="button" role="tab" aria-controls="short-alt" aria-selected="false">
-                    Short Alt
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="long-alt-tab" data-bs-toggle="tab" data-bs-target="#long-alt" 
-                        type="button" role="tab" aria-controls="long-alt" aria-selected="false">
-                    Long Alt
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="redundant-alt-tab" data-bs-toggle="tab" data-bs-target="#redundant-alt" 
-                        type="button" role="tab" aria-controls="redundant-alt" aria-selected="false">
-                    Redundant Alt
-                </button>
-            </li>
-        </ul>';
-        
-        // Build tab content.
-        $tabContent = '<div class="tab-content" id="imageAltTabContent">';
-    
-        $tabContent .= '<div class="tab-pane fade show active" id="missing-alt" role="tabpanel" aria-labelledby="missing-alt-tab">';
-        $tabContent .= $buildTable('Images Missing Alt Attribute', $data['images_missing_alt'] ?? []);
-        $tabContent .= '</div>';
-        
-        $tabContent .= '<div class="tab-pane fade" id="empty-alt" role="tabpanel" aria-labelledby="empty-alt-tab">';
-        $tabContent .= $buildTable('Images With Empty Alt Attribute', $data['images_with_empty_alt'] ?? []);
-        $tabContent .= '</div>';
-        
-        $tabContent .= '<div class="tab-pane fade" id="short-alt" role="tabpanel" aria-labelledby="short-alt-tab">';
-        $tabContent .= $buildTable('Images With Short Alt Text', $data['images_with_short_alt'] ?? []);
-        $tabContent .= '</div>';
-        
-        $tabContent .= '<div class="tab-pane fade" id="long-alt" role="tabpanel" aria-labelledby="long-alt-tab">';
-        $tabContent .= $buildTable('Images With Long Alt Text', $data['images_with_long_alt'] ?? []);
-        $tabContent .= '</div>';
-        
-        $tabContent .= '<div class="tab-pane fade" id="redundant-alt" role="tabpanel" aria-labelledby="redundant-alt-tab">';
-        $tabContent .= $buildTable('Images With Redundant Alt Text', $data['images_with_redundant_alt'] ?? []);
-        $tabContent .= '</div>';
-        
-        $tabContent .= '</div>'; // End .tab-content
-        
-        // Build additional information section below the tabs.
-        $additionalInfo = '<div class="mt-4">';
-        
-        // Display suggestions if available.
-        if (!empty($data['suggestions'])) {
-            $additionalInfo .= '<div class="mb-3">';
-            $additionalInfo .= '<h5>Suggestions</h5>';
-            $additionalInfo .= '<ul class="list-group">';
-            foreach ($data['suggestions'] as $suggestion) {
-                $additionalInfo .= '<li class="list-group-item">' . $suggestion . '</li>';
-            }
-            $additionalInfo .= '</ul>';
-            $additionalInfo .= '</div>';
-        }
-        
-        // Optionally include other additional information from DB.
-        if (!empty($data['additional_info'])) {
-            $additionalInfo .= '<div class="mb-3">';
-            $additionalInfo .= '<h5>Additional Information</h5>';
-            $additionalInfo .= '<p>' . nl2br(htmlspecialchars($data['additional_info'])) . '</p>';
-            $additionalInfo .= '</div>';
-        }
-        
-        $additionalInfo .= '</div>';
-        
-        // Wrap everything in a Bootstrap card.
-        $output = '<div id="seoBoxImage" class="card ' . $boxClass . ' my-3 shadow-sm">';
-        $output .= '<div class="card-header">' . $headerContent . '</div>';
-        $output .= '<div class="card-body">' . $tabs . $tabContent . $additionalInfo . '</div>';
-        $output .= '</div>';
-        
-        return $output;
+    // Calculate totals.
+    $totalMissing = array_sum(array_map(fn($i) => $i['count'], $results['images_missing_alt']));
+    $totalEmpty   = array_sum(array_map(fn($i) => $i['count'], $results['images_with_empty_alt']));
+    $totalShort   = array_sum(array_map(fn($i) => $i['count'], $results['images_with_short_alt']));
+    $totalLong    = array_sum(array_map(fn($i) => $i['count'], $results['images_with_long_alt']));
+    $totalRedund  = array_sum(array_map(fn($i) => $i['count'], $results['images_with_redundant_alt']));
+
+    // Add raw suggestions.
+    if ($totalMissing > 0) {
+        $results['suggestions'][] = "There are {$totalMissing} image instance(s) missing alt attributes.";
     }
+    if ($totalEmpty > 0) {
+        $results['suggestions'][] = "There are {$totalEmpty} image instance(s) with empty alt attributes.";
+    }
+    if ($totalShort > 0) {
+        $results['suggestions'][] = "There are {$totalShort} image instance(s) with very short alt text (<5 chars).";
+    }
+    if ($totalLong > 0) {
+        $results['suggestions'][] = "There are {$totalLong} image instance(s) with very long alt text (>100 chars).";
+    }
+    if ($totalRedund > 0) {
+        $results['suggestions'][] = "There are {$totalRedund} image instance(s) with redundant alt text (e.g., 'image','logo').";
+    }
+    if ($totalMissing === 0 && $totalEmpty === 0 && $totalShort === 0 && $totalLong === 0 && $totalRedund === 0) {
+        $results['suggestions'][] = "Great job! All images have appropriate alt attributes.";
+    }
+
+    // --- Compute Report ---
+    // We'll define five conditions based on our raw data.
+    // (Note: total_images is available from $results['total_images'].)
+    $totalImages = $results['total_images'];
+
+    // Condition 1: Missing Alt Attributes.
+    // Ideal: 0 missing. If missing ratio <= 5%, then "To Improve", else "Error".
+    $ratioMissing = $totalImages > 0 ? $totalMissing / $totalImages : 1;
+    if ($ratioMissing == 0) {
+        $cond1Status = "Pass";
+        $cond1Score = 2;
+    } elseif ($ratioMissing <= 0.05) {
+        $cond1Status = "To Improve";
+        $cond1Score = 1;
+    } else {
+        $cond1Status = "Error";
+        $cond1Score = 0;
+    }
+
+    // Condition 2: Empty Alt Text Ratio.
+    $ratioEmpty = $totalImages > 0 ? $totalEmpty / $totalImages : 1;
+    if ($ratioEmpty <= 0.10) {
+        $cond2Status = "Pass";
+        $cond2Score = 2;
+    } elseif ($ratioEmpty <= 0.20) {
+        $cond2Status = "To Improve";
+        $cond2Score = 1;
+    } else {
+        $cond2Status = "Error";
+        $cond2Score = 0;
+    }
+
+    // Condition 3: Short Alt Text Ratio.
+    // Consider only images that have alt text (i.e. total effective = totalImages - missing - empty).
+    $imagesWithAlt = ($totalImages - $totalMissing - $totalEmpty);
+    $ratioShort = $imagesWithAlt > 0 ? $totalShort / $imagesWithAlt : 1;
+    if ($ratioShort == 0) {
+        $cond3Status = "Pass";
+        $cond3Score = 2;
+    } elseif ($ratioShort <= 0.10) {
+        $cond3Status = "To Improve";
+        $cond3Score = 1;
+    } else {
+        $cond3Status = "Error";
+        $cond3Score = 0;
+    }
+
+    // Condition 4: Redundant Alt Text.
+    if ($totalRedund == 0) {
+        $cond4Status = "Pass";
+        $cond4Score = 2;
+    } else {
+        $cond4Status = "Error";
+        $cond4Score = 0;
+    }
+
+    // Condition 5: Long Alt Text.
+    if ($totalLong == 0) {
+        $cond5Status = "Pass";
+        $cond5Score = 2;
+    } else {
+        $cond5Status = "Error";
+        $cond5Score = 0;
+    }
+
+    $totalScore = $cond1Score + $cond2Score + $cond3Score + $cond4Score + $cond5Score;
+    $maxPoints = 10;
+    $scorePercent = $maxPoints > 0 ? round(($totalScore / $maxPoints) * 100) : 0;
+
+    // Count conditions that pass, need improvement, or error.
+    $passedCount = 0;
+    $improveCount = 0;
+    $errorCount = 0;
+    $conditions = [
+        'Alt Missing Ratio' => $cond1Status,
+        'Empty Alt Ratio' => $cond2Status,
+        'Short Alt Ratio' => $cond3Status,
+        'Redundant Alt' => $cond4Status,
+        'Long Alt' => $cond5Status
+    ];
+    foreach ($conditions as $status) {
+        if ($status === "Pass") {
+            $passedCount++;
+        } elseif ($status === "To Improve") {
+            $improveCount++;
+        } else {
+            $errorCount++;
+        }
+    }
+
+    // Build an overall comment.
+    $comment = "Image analysis computed. ";
+    if ($scorePercent >= 90) {
+        $comment .= "Excellent image alt attribute usage.";
+    } elseif ($scorePercent >= 70) {
+        $comment .= "Good, but consider improving alt text quality.";
+    } elseif ($scorePercent >= 50) {
+        $comment .= "Average performance; review alt text issues.";
+    } else {
+        $comment .= "Poor image alt attributes; significant improvements are needed.";
+    }
+    
+    // Assemble final report.
+    $report = [
+        'score'   => $totalScore,
+        'passed'  => $passedCount,
+        'improve' => $improveCount,
+        'errors'  => $errorCount,
+        'percent' => $scorePercent,
+        'details' => $conditions,
+        'comment' => $comment
+    ];
+    
+    // Combine raw data and report.
+    $completeImageData = [
+        'raw' => $results,
+        'report' => $report
+    ];
+    
+    $updateStr = jsonEncode($completeImageData);
+    updateToDbPrepared($this->con, 'domains_data', ['image_alt' => $updateStr], ['domain' => $this->domainStr]);
+    $_SESSION['imageAltReport'] = $completeImageData;
+    
+    return $updateStr;
+}
+
+    /**
+ * Displays image analysis data.
+ *
+ * This function displays a header summary that includes an icon, total images,
+ * and a border color that reflects the overall issues (none, few, or many).
+ * Then it renders a tabbed view for the detailed raw data (Missing Alt, Empty Alt,
+ * Short Alt, Long Alt, Redundant Alt) along with any suggestions.
+ *
+ * @param string $imageData JSON-encoded image analysis data and report.
+ * @return string HTML output.
+ */
+public function showImage($imageData): string {
+    $data = jsonDecode($imageData);
+    
+    if (!is_array($data) || !isset($data['raw']['total_images'])) {
+        return '<div class="alert alert-warning">No image data available.</div>';
+    }
+    
+    // Extract raw data.
+    $raw = $data['raw'];
+    $report = $data['report'] ?? [];
+    
+    // Calculate overall issues count.
+    $issuesCount = array_sum(array_map(fn($i) => $i['count'], $raw['images_missing_alt'] ?? []))
+                 + array_sum(array_map(fn($i) => $i['count'], $raw['images_with_empty_alt'] ?? []))
+                 + array_sum(array_map(fn($i) => $i['count'], $raw['images_with_short_alt'] ?? []))
+                 + array_sum(array_map(fn($i) => $i['count'], $raw['images_with_long_alt'] ?? []))
+                 + array_sum(array_map(fn($i) => $i['count'], $raw['images_with_redundant_alt'] ?? []));
+    
+    // Set border class based on issues.
+    if ($issuesCount == 0) {
+        $boxClass = 'border-success';
+        $headerIcon = themeLink('img/true.png', true);
+        $headerText = "No issues detected.";
+    } elseif ($issuesCount < 3) {
+        $boxClass = 'border-warning';
+        $headerIcon = themeLink('img/false.png', true);
+        $headerText = "Issues found: {$issuesCount}";
+    } else {
+        $boxClass = 'border-danger';
+        $headerIcon = themeLink('img/false.png', true);
+        $headerText = "Issues found: {$issuesCount}";
+    }
+    
+    // Build header summary.
+    $headerContent = '
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <img src="' . $headerIcon . '" alt="' . ($issuesCount == 0 ? "No issues" : "Issues detected") . '" 
+                 title="' . ($issuesCount == 0 ? "All images have appropriate alt attributes." : "Some image alt attribute issues detected.") . '" 
+                 class="me-2" /> 
+            <strong>' . $headerText . '</strong>
+        </div>
+        <div>
+            <span class="badge bg-secondary">Total Images: ' . $raw['total_images'] . '</span>
+        </div>
+    </div>';
+    
+    // Build nav tabs for detailed raw data.
+    $tabs = '
+    <ul class="nav nav-tabs" id="imageAltTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="missing-alt-tab" data-bs-toggle="tab" data-bs-target="#missing-alt" 
+                    type="button" role="tab" aria-controls="missing-alt" aria-selected="true">
+                Missing Alt
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="empty-alt-tab" data-bs-toggle="tab" data-bs-target="#empty-alt" 
+                    type="button" role="tab" aria-controls="empty-alt" aria-selected="false">
+                Empty Alt
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="short-alt-tab" data-bs-toggle="tab" data-bs-target="#short-alt" 
+                    type="button" role="tab" aria-controls="short-alt" aria-selected="false">
+                Short Alt
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="long-alt-tab" data-bs-toggle="tab" data-bs-target="#long-alt" 
+                    type="button" role="tab" aria-controls="long-alt" aria-selected="false">
+                Long Alt
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="redundant-alt-tab" data-bs-toggle="tab" data-bs-target="#redundant-alt" 
+                    type="button" role="tab" aria-controls="redundant-alt" aria-selected="false">
+                Redundant Alt
+            </button>
+        </li>
+    </ul>';
+    
+    // Helper function (anonymous) to build a table for each category.
+    $buildTable = function($title, $items) {
+        if (!empty($items)) {
+            $total = array_sum(array_map(fn($i) => $i['count'], $items));
+            $table  = '<h5 class="mt-3">' . $title . ' (' . $total . ')</h5>';
+            $table .= '<div class="table-responsive"><table class="table table-sm table-striped">';
+            $table .= '<thead class="table-light">
+                        <tr>
+                            <th style="width:60px;">Thumbnail</th>
+                            <th>Image Info</th>
+                            <th class="text-center" style="width:80px;">Count</th>
+                        </tr>
+                       </thead>
+                       <tbody>';
+    
+            foreach ($items as $item) {
+                // Determine final displayed width/height.
+                $rawWidth = $item['width'] ?? 'N/A';
+                $rawHeight = $item['height'] ?? 'N/A';
+                $imgWidth = (ctype_digit($rawWidth)) ? (int)$rawWidth : 0;
+                $imgHeight = (ctype_digit($rawHeight)) ? (int)$rawHeight : 0;
+                $thumbWidth = ($imgWidth > 0 && $imgWidth < 50) ? $imgWidth : 50;
+                $thumbHeight = ($imgHeight > 0 && $imgHeight < 50) ? $imgHeight : 50;
+    
+                // Build thumbnail with an overlay if the image src is a data URI.
+                $thumbnail = '<div style="position: relative; display: inline-block;">';
+                $thumbnail .= '<img src="' . htmlspecialchars($item['src']) . '" alt="Image" style="width:' . $thumbWidth . 'px; height:' . $thumbHeight . 'px; object-fit:cover;">';
+                if (stripos($item['src'], 'data:image') === 0) {
+                    $thumbnail .= '<span style="position: absolute; bottom: 0; left: 0; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 2px;">Encoded</span>';
+                }
+                $thumbnail .= '</div>';
+    
+                // Build detailed info block.
+                $info = 'Source: ' . htmlspecialchars($item['src']);
+                if (isset($item['title']) && $item['title'] !== 'N/A') {
+                    $info .= '<br>Title: ' . htmlspecialchars($item['title']);
+                }
+                if ($rawWidth !== 'N/A' && $rawHeight !== 'N/A') {
+                    $info .= '<br>Dimensions: ' . htmlspecialchars($rawWidth) . ' x ' . htmlspecialchars($rawHeight);
+                }
+                if (isset($item['alt'])) {
+                    $info .= '<br>Alt: ' . htmlspecialchars($item['alt']);
+                }
+                if (isset($item['class']) && $item['class'] !== 'N/A') {
+                    $info .= '<br>Class: ' . htmlspecialchars($item['class']);
+                }
+                if (isset($item['parentTag'])) {
+                    $info .= '<br>Parent: ' . htmlspecialchars($item['parentTag']);
+                }
+                $table .= '<tr>';
+                $table .= '<td>' . $thumbnail . '</td>';
+                $table .= '<td>' . $info . '</td>';
+                $table .= '<td class="text-center">' . $item['count'] . '</td>';
+                $table .= '</tr>';
+            }
+    
+            $table .= '</tbody></table></div>';
+            return $table;
+        }
+        return '<div class="alert alert-info py-2">No data found for ' . $title . '.</div>';
+    };
+    
+    // Build tab content.
+    $tabContent = '<div class="tab-content" id="imageAltTabContent">';
+    $tabContent .= '<div class="tab-pane fade show active" id="missing-alt" role="tabpanel" aria-labelledby="missing-alt-tab">';
+    $tabContent .= $buildTable('Images Missing Alt Attribute', $raw['images_missing_alt'] ?? []);
+    $tabContent .= '</div>';
+    $tabContent .= '<div class="tab-pane fade" id="empty-alt" role="tabpanel" aria-labelledby="empty-alt-tab">';
+    $tabContent .= $buildTable('Images With Empty Alt Attribute', $raw['images_with_empty_alt'] ?? []);
+    $tabContent .= '</div>';
+    $tabContent .= '<div class="tab-pane fade" id="short-alt" role="tabpanel" aria-labelledby="short-alt-tab">';
+    $tabContent .= $buildTable('Images With Short Alt Text', $raw['images_with_short_alt'] ?? []);
+    $tabContent .= '</div>';
+    $tabContent .= '<div class="tab-pane fade" id="long-alt" role="tabpanel" aria-labelledby="long-alt-tab">';
+    $tabContent .= $buildTable('Images With Long Alt Text', $raw['images_with_long_alt'] ?? []);
+    $tabContent .= '</div>';
+    $tabContent .= '<div class="tab-pane fade" id="redundant-alt" role="tabpanel" aria-labelledby="redundant-alt-tab">';
+    $tabContent .= $buildTable('Images With Redundant Alt Text', $raw['images_with_redundant_alt'] ?? []);
+    $tabContent .= '</div>';
+    $tabContent .= '</div>';
+    
+    // Build overall report summary.
+    $summaryHtml = '<div class="alert alert-info mt-4">';
+    $summaryHtml .= '<strong>Overall Image Alt Score:</strong> ' . ($report['percent'] ?? 0) . '%<br>';
+    $summaryHtml .= '<strong>Score:</strong> ' . ($report['score'] ?? 0) . ' out of 10<br>';
+    $summaryHtml .= '<strong>Details:</strong><br>';
+    foreach ($report['details'] as $cond => $status) {
+        $summaryHtml .= htmlspecialchars($cond) . ': ' . htmlspecialchars($status) . '<br>';
+    }
+    $summaryHtml .= '<strong>Comment:</strong> ' . ($report['comment'] ?? '');
+    $summaryHtml .= '</div>';
+    
+    // Optionally display any overall suggestions from the raw data.
+    $suggestionHtml = '';
+    if (!empty($raw['suggestions'])) {
+        $suggestionHtml .= '<div class="card border-warning mt-4">';
+        $suggestionHtml .= '  <div class="card-header bg-warning text-dark"><strong>Suggestions for Improvement</strong></div>';
+        $suggestionHtml .= '  <div class="card-body"><ul class="mb-0">';
+        foreach ($raw['suggestions'] as $sug) {
+            $suggestionHtml .= '<li>' . htmlspecialchars($sug) . '</li>';
+        }
+        $suggestionHtml .= '  </ul></div>';
+        $suggestionHtml .= '</div>';
+    }
+    
+    // Wrap everything in a Bootstrap card.
+    $output = '<div id="seoBoxImage" class="card ' . $boxClass . ' my-3 shadow-sm">';
+    $output .= '<div class="card-header">' . $headerContent . '</div>';
+    $output .= '<div class="card-body">' . $tabs . $tabContent . $suggestionHtml . '</div>';
+    $output .= '</div>';
+    
+    // Append the overall report summary below the card.
+    $output .= $summaryHtml;
+    
+    return $output;
+}
+
     
             
     
     
-    /**
+ /**
  * Convert a (possibly) relative URL to an absolute URL based on the current domain.
  *
- * @param string $url   The image path or URL found in the HTML.
- * @return string       The absolute URL.
+ * @param string $url The image path or URL found in the HTML.
+ * @return string The absolute URL.
  */
-private function toAbsoluteUrl(string $url): string
-{
-    // If empty or already starts with http:// or https:// or data:image,
-    // we consider it already "absolute" enough.
+private function toAbsoluteUrl(string $url): string {
     if (empty($url) || preg_match('#^(?:https?:)?//#i', $url) || preg_match('#^data:image#i', $url)) {
         return $url;
     }
-
-    // If your domain property does not include scheme, prepend https:// or http://
-    // e.g., $this->domainStr might be "example.com" -> "https://example.com"
     $domain = $this->domainStr;
     if (!preg_match('#^https?://#i', $domain)) {
         $domain = 'https://' . $domain;
     }
-
-    // Combine them, ensuring we don’t double-slash
     return rtrim($domain, '/') . '/' . ltrim($url, '/');
 }
 
 
-    /**
-     * Returns the position of the given node among its siblings.
-     * (This method remains for calculating node position numbers.)
-     *
-     * @param DOMNode $node
-     * @return int
-     */
-    private function getNodePosition(DOMNode $node): int {
-        $position = 1;
-        while ($node->previousSibling) {
-            $node = $node->previousSibling;
-            $position++;
-        }
-        return $position;
+
+ /**
+ * Returns the position of the given node among its siblings.
+ *
+ * @param DOMNode $node
+ * @return int
+ */
+private function getNodePosition(DOMNode $node): int {
+    $position = 1;
+    while ($node->previousSibling) {
+        $node = $node->previousSibling;
+        $position++;
     }
+    return $position;
+}
 
     /*===================================================================
      * KEYWORD CLOUD HANDLER
@@ -1846,183 +1983,342 @@ public function showKeyCloudAndConsistency(string $savedJson): string {
      * TEXT RATIO HANDLER
      *=================================================================== 
      */
-    public function processTextRatio() {
-        $url = $this->scheme . "://" . $this->host;
-        $textRatioData = $this->calculateTextHtmlRatioExtended($url);
-        $textRatio = $textRatioData['text_html_ratio'];
-        $textRatioJson = jsonEncode($textRatio);
-        updateToDbPrepared($this->con, 'domains_data', ['ratio_data' => $textRatioJson], ['domain' => $this->domainStr]);
-        return $textRatioJson;
+   /**
+ * Processes the text-to-HTML ratio, computes raw metrics as well as a score report,
+ * updates the database, and stores the complete report in a session array.
+ *
+ * @return string JSON-encoded combined raw data and report.
+ */
+public function processTextRatio(): string {
+    $url = $this->scheme . "://" . $this->host;
+    $textRatioData = $this->calculateTextHtmlRatioExtended($url);
+    $rawData = $textRatioData['text_html_ratio'] ?? [];
+    
+    // Extract required values from raw data.
+    $ratio = $rawData['ratio_percent'] ?? 0;
+    $loadTime = $rawData['load_time_seconds'] ?? 0;
+    $wordCount = $rawData['word_count'] ?? 0;
+    $htmlSize = $rawData['html_size_bytes'] ?? 0;
+    $httpCode = $rawData['http_response_code'] ?? 0;
+    
+    // --- Condition A: Text Ratio ---
+    if ($ratio < 10) {
+        $condAStatus = "Error";
+        $condAScore = 0;
+    } elseif ($ratio < 20) {
+        $condAStatus = "To Improve";
+        $condAScore = 1;
+    } elseif ($ratio <= 50) {
+        $condAStatus = "Pass";
+        $condAScore = 2;
+    } else {
+        $condAStatus = "To Improve";
+        $condAScore = 1;
     }
-
-    public function showTextRatio($textRatio): string {
-        $data = jsonDecode($textRatio);
-        if (!is_array($data)) {
-            return '<div class="alert alert-danger">' . htmlspecialchars($data) . '</div>';
-        }
     
-        // Extract main metrics from $data
-        $ratio         = $data['ratio_percent']        ?? 0;
-        $htmlSize      = $data['html_size_bytes']      ?? 0;
-        $textSize      = $data['text_size_bytes']      ?? 0;
-        $ratioCat      = $data['ratio_category']       ?? 'N/A';
-        $wordCount     = $data['word_count']           ?? 0;
-        $readTime      = $data['estimated_reading_time'] ?? 0;
-        $loadTime      = $data['load_time_seconds']    ?? 0;
-        $totalTags     = $data['total_html_tags']      ?? 0;
-        $totalLinks    = $data['total_links']          ?? 0;
-        $totalImages   = $data['total_images']         ?? 0;
-        $totalScripts  = $data['total_scripts']        ?? 0;
-        $totalStyles   = $data['total_styles']         ?? 0;
-        $httpCode      = $data['http_response_code']   ?? 0;
+    // --- Condition B: Load Time (seconds) ---
+    if ($loadTime < 1) {
+        $condBStatus = "Pass";
+        $condBScore = 2;
+    } elseif ($loadTime < 3) {
+        $condBStatus = "To Improve";
+        $condBScore = 1;
+    } else {
+        $condBStatus = "Error";
+        $condBScore = 0;
+    }
     
-        // Determine the bootstrap alert class based on ratio
-        $textClass = ($ratio < 2) ? 'alert-danger' : (($ratio < 10) ? 'alert-warning' : 'alert-success');
+    // --- Condition C: Word Count ---
+    if ($wordCount < 200) {
+        $condCStatus = "Error";
+        $condCScore = 0;
+    } elseif ($wordCount < 500) {
+        $condCStatus = "To Improve";
+        $condCScore = 1;
+    } else {
+        $condCStatus = "Pass";
+        $condCScore = 2;
+    }
     
-        // Build the main table
-        $table = '
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped mb-0">
-              <thead class="table-light">
-                  <tr>
-                      <th>Metric</th>
-                      <th>Value</th>
-                      <th>Description</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>HTML Size (bytes)</td>
-                      <td>' . formatBytes($htmlSize) . '</td>
-                      <td>Total size of the HTML source.</td>
-                  </tr>
-                  <tr>
-                      <td>Text Size (bytes)</td>
-                      <td>' . formatBytes($textSize) . '</td>
-                      <td>Total size of visible text.</td>
-                  </tr>
-                  <tr>
-                      <td>Text Ratio (%)</td>
-                      <td>' . $ratio . '%</td>
-                      <td>Percentage of text compared to total HTML.</td>
-                  </tr>
-                  <tr>
-                      <td>Ratio Category</td>
-                      <td>' . $ratioCat . '</td>
-                      <td>HTML-heavy, Balanced, or Text-heavy.</td>
-                  </tr>
-                  <tr>
-                      <td>Word Count</td>
-                      <td>' . $wordCount . '</td>
-                      <td>Total number of words in visible text.</td>
-                  </tr>
-                  <tr>
-                      <td>Estimated Reading Time</td>
-                      <td>' . $readTime . ' min</td>
-                      <td>Approximate time to read the page.</td>
-                  </tr>
-                  <tr>
-                      <td>Load Time</td>
-                      <td>' . $loadTime . ' sec</td>
-                      <td>Time taken to fetch the HTML.</td>
-                  </tr>
-                  <tr>
-                      <td>Total HTML Tags</td>
-                      <td>' . $totalTags . '</td>
-                      <td>Count of all HTML tags.</td>
-                  </tr>
-                  <tr>
-                      <td>Total Links</td>
-                      <td>' . $totalLinks . '</td>
-                      <td>Number of hyperlink tags.</td>
-                  </tr>
-                  <tr>
-                      <td>Total Images</td>
-                      <td>' . $totalImages . '</td>
-                      <td>Number of image tags.</td>
-                  </tr>
-                  <tr>
-                      <td>Total Scripts</td>
-                      <td>' . $totalScripts . '</td>
-                      <td>Number of script tags.</td>
-                  </tr>
-                  <tr>
-                      <td>Total Styles</td>
-                      <td>' . $totalStyles . '</td>
-                      <td>Number of style tags.</td>
-                  </tr>
-                  <tr>
-                      <td>HTTP Response Code</td>
-                      <td>' . $httpCode . '</td>
-                      <td>Status code received when fetching the page.</td>
-                  </tr>
-              </tbody>
-          </table>
-        </div>';
+    // --- Condition D: HTTP Response Code ---
+    if ($httpCode == 200) {
+        $condDStatus = "Pass";
+        $condDScore = 2;
+    } else {
+        $condDStatus = "Error";
+        $condDScore = 0;
+    }
     
-        // Build suggestions based on the data
-        $suggestions = [];
-        
-        // 1) Ratio-based suggestions
-        if ($ratio < 2) {
-            $suggestions[] = 'Your text-to-HTML ratio is extremely low. Consider adding more textual content or removing excessive markup.';
-        } elseif ($ratio < 10) {
-            $suggestions[] = 'Your text-to-HTML ratio is somewhat low. Aim for at least 15–20% by adding relevant text or optimizing code.';
+    // --- Condition E: HTML Size (in bytes) ---
+    // Thresholds: less than 300KB is Pass, 300-600KB is To Improve, above 600KB is Error.
+    if ($htmlSize < (300 * 1024)) {
+        $condEStatus = "Pass";
+        $condEScore = 2;
+    } elseif ($htmlSize < (600 * 1024)) {
+        $condEStatus = "To Improve";
+        $condEScore = 1;
+    } else {
+        $condEStatus = "Error";
+        $condEScore = 0;
+    }
+    
+    // Total score (max 10 points).
+    $totalScore = $condAScore + $condBScore + $condCScore + $condDScore + $condEScore;
+    $maxPoints = 10;
+    $scorePercent = $maxPoints > 0 ? round(($totalScore / $maxPoints) * 100) : 0;
+    
+    // Count conditions.
+    $passedCount = 0;
+    $improveCount = 0;
+    $errorCount = 0;
+    $conditions = [
+        'Text Ratio' => $condAStatus,
+        'Load Time'  => $condBStatus,
+        'Word Count' => $condCStatus,
+        'HTTP Response' => $condDStatus,
+        'HTML Size'  => $condEStatus,
+    ];
+    foreach ($conditions as $status) {
+        if ($status === "Pass") {
+            $passedCount++;
+        } elseif ($status === "To Improve") {
+            $improveCount++;
         } else {
-            $suggestions[] = 'Great job! Your text-to-HTML ratio seems healthy. Just keep an eye on future changes.';
+            $errorCount++;
         }
-    
-        // 2) If totalImages is large
-        if ($totalImages > 50) {
-            $suggestions[] = 'You have a high number of images (' . $totalImages . '). Consider compressing or lazy-loading images for better performance.';
-        }
-    
-        // 3) If totalScripts is large
-        if ($totalScripts > 20) {
-            $suggestions[] = 'You have ' . $totalScripts . ' script tags. Combining or minifying scripts can improve load time.';
-        }
-    
-        // 4) If word count is very low
-        if ($wordCount < 200) {
-            $suggestions[] = 'Your page has a low word count. Adding more relevant, high-quality content can help user engagement and SEO.';
-        }
-    
-        // 5) If the HTTP code indicates an issue
-        if ($httpCode >= 400) {
-            $suggestions[] = 'Your page returned an HTTP error code (' . $httpCode . '). Ensure the page is accessible and functioning correctly.';
-        }
-    
-        // Build the suggestions UI
-        $suggestionHtml = '';
-        if (!empty($suggestions)) {
-            $suggestionHtml .= '<div class="alert alert-info mt-3"><strong>Suggestions:</strong><ul class="mb-0">';
-            foreach ($suggestions as $sug) {
-                $suggestionHtml .= '<li>' . htmlspecialchars($sug) . '</li>';
-            }
-            $suggestionHtml .= '</ul></div>';
-        }
-    
-        // Build the final output inside a Bootstrap card.
-        $output = '
-        <div id="ajaxTextRatio" class="card ' . $textClass . ' mb-3">
-            <div class="card-header">
-                <h4>' . $this->lang['AN36'] . ': <strong>' . $ratio . '%</strong> (' . $ratioCat . ')</h4>
-            </div>
-            <div class="card-body">
-                <p class="mb-3">
-                    A low text ratio indicates that your page is heavy on HTML relative to visible text.
-                    Below are some details and suggestions based on our analysis.
-                </p>
-                ' . $table . '
-                ' . $suggestionHtml . '
-            </div>
-            <div class="card-footer">
-                <small>Consider optimizing your page by reducing unnecessary markup or increasing quality textual content.</small>
-            </div>
-        </div>';
-    
-        return $output;
     }
+    
+    // --- Detailed suggestions per condition ---
+    if ($condAStatus === "Pass") {
+        $suggestA = "Text ratio is within the optimal range.";
+    } elseif ($condAStatus === "To Improve") {
+        $suggestA = "Text ratio is borderline; consider increasing quality content or reducing excess markup.";
+    } else {
+        $suggestA = "Text ratio is extremely low; add more quality textual content and reduce unnecessary HTML.";
+    }
+    
+    if ($condBStatus === "Pass") {
+        $suggestB = "Load time is optimal.";
+    } elseif ($condBStatus === "To Improve") {
+        $suggestB = "Load time is slightly high; optimize images or scripts to improve performance.";
+    } else {
+        $suggestB = "Load time is very slow; consider major performance optimizations.";
+    }
+    
+    if ($condCStatus === "Pass") {
+        $suggestC = "Word count is sufficient.";
+    } elseif ($condCStatus === "To Improve") {
+        $suggestC = "Word count is below optimal; adding more high-quality text could help.";
+    } else {
+        $suggestC = "Word count is too low; significantly increase textual content for better SEO and user engagement.";
+    }
+    
+    if ($condDStatus === "Pass") {
+        $suggestD = "HTTP response is successful.";
+    } else {
+        $suggestD = "HTTP response error detected; check the page for accessibility issues.";
+    }
+    
+    if ($condEStatus === "Pass") {
+        $suggestE = "HTML size is within an acceptable range.";
+    } elseif ($condEStatus === "To Improve") {
+        $suggestE = "HTML size is borderline; consider cleaning up unnecessary code or markup.";
+    } else {
+        $suggestE = "HTML size is too large; optimize or minify HTML to reduce bloat.";
+    }
+    
+    $detailedSuggestions = [
+        "Text Ratio" => $suggestA,
+        "Load Time"  => $suggestB,
+        "Word Count" => $suggestC,
+        "HTTP Response" => $suggestD,
+        "HTML Size"  => $suggestE,
+    ];
+    
+    // Overall comment based on the overall percentage.
+    if ($scorePercent >= 90) {
+        $overallComment = "Excellent technical SEO performance regarding text content.";
+    } elseif ($scorePercent >= 70) {
+        $overallComment = "Good performance, though some areas could be improved.";
+    } elseif ($scorePercent >= 50) {
+        $overallComment = "Average performance; review the detailed suggestions for improvements.";
+    } else {
+        $overallComment = "Poor technical SEO performance; significant improvements are needed.";
+    }
+    
+    // Build the final report array.
+    $report = [
+        'score'     => $totalScore,
+        'max_points'=> $maxPoints,
+        'percent'   => $scorePercent,
+        'passed'    => $passedCount,
+        'improve'   => $improveCount,
+        'errors'    => $errorCount,
+        'details'   => $conditions,
+        'detailed_suggestions' => $detailedSuggestions,
+        'comment'   => $overallComment
+    ];
+    
+    // Combine raw data and report.
+    $completeTextRatioData = [
+        'raw' => $rawData,
+        'report' => $report
+    ];
+    
+    $textRatioJson = jsonEncode($completeTextRatioData);
+    updateToDbPrepared($this->con, 'domains_data', ['ratio_data' => $textRatioJson], ['domain' => $this->domainStr]);
+    
+    // Save the report in a session array.
+    if (!isset($_SESSION['seoReports'])) {
+        $_SESSION['seoReports'] = [];
+    }
+    $_SESSION['seoReports']['textRatio'] = $completeTextRatioData;
+    
+    return $textRatioJson;
+}
+
+/**
+ * Displays the text ratio analysis in a user-friendly layout.
+ *
+ * Shows a detailed table of the raw metrics along with an overall summary
+ * of the computed score, condition statuses, and suggestions.
+ *
+ * @param string $textRatio JSON-encoded text ratio data.
+ * @return string HTML output.
+ */
+public function showTextRatio($textRatio): string {
+    $data = jsonDecode($textRatio);
+    if (!is_array($data)) {
+        return '<div class="alert alert-danger">' . htmlspecialchars($data) . '</div>';
+    }
+    
+    $raw = $data['raw'] ?? [];
+    $report = $data['report'] ?? [];
+    
+    // Build the raw metrics table.
+    $table = '
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped mb-0">
+          <thead class="table-light">
+              <tr>
+                  <th>Metric</th>
+                  <th>Value</th>
+                  <th>Description</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>HTML Size (bytes)</td>
+                  <td>' . formatBytes($raw['html_size_bytes'] ?? 0) . '</td>
+                  <td>Total size of the HTML source.</td>
+              </tr>
+              <tr>
+                  <td>Text Size (bytes)</td>
+                  <td>' . formatBytes($raw['text_size_bytes'] ?? 0) . '</td>
+                  <td>Total size of visible text.</td>
+              </tr>
+              <tr>
+                  <td>Text Ratio (%)</td>
+                  <td>' . ($raw['ratio_percent'] ?? 0) . '%</td>
+                  <td>Percentage of text compared to total HTML.</td>
+              </tr>
+              <tr>
+                  <td>Ratio Category</td>
+                  <td>' . ($raw['ratio_category'] ?? 'N/A') . '</td>
+                  <td>Indicates if the page is HTML-heavy, Balanced, or Text-heavy.</td>
+              </tr>
+              <tr>
+                  <td>Word Count</td>
+                  <td>' . ($raw['word_count'] ?? 0) . '</td>
+                  <td>Total number of words in visible text.</td>
+              </tr>
+              <tr>
+                  <td>Estimated Reading Time</td>
+                  <td>' . ($raw['estimated_reading_time'] ?? 0) . ' min</td>
+                  <td>Approximate time to read the page.</td>
+              </tr>
+              <tr>
+                  <td>Load Time</td>
+                  <td>' . ($raw['load_time_seconds'] ?? 0) . ' sec</td>
+                  <td>Time taken to fetch the HTML.</td>
+              </tr>
+              <tr>
+                  <td>Total HTML Tags</td>
+                  <td>' . ($raw['total_html_tags'] ?? 0) . '</td>
+                  <td>Count of all HTML tags.</td>
+              </tr>
+              <tr>
+                  <td>Total Links</td>
+                  <td>' . ($raw['total_links'] ?? 0) . '</td>
+                  <td>Number of hyperlink tags.</td>
+              </tr>
+              <tr>
+                  <td>Total Images</td>
+                  <td>' . ($raw['total_images'] ?? 0) . '</td>
+                  <td>Number of image tags.</td>
+              </tr>
+              <tr>
+                  <td>Total Scripts</td>
+                  <td>' . ($raw['total_scripts'] ?? 0) . '</td>
+                  <td>Number of script tags.</td>
+              </tr>
+              <tr>
+                  <td>Total Styles</td>
+                  <td>' . ($raw['total_styles'] ?? 0) . '</td>
+                  <td>Number of style tags.</td>
+              </tr>
+              <tr>
+                  <td>HTTP Response Code</td>
+                  <td>' . ($raw['http_response_code'] ?? 0) . '</td>
+                  <td>Status code received when fetching the page.</td>
+              </tr>
+          </tbody>
+      </table>
+    </div>';
+    
+    // Build a detailed suggestions list from the report's detailed_suggestions.
+    $detailedSugHtml = '';
+    if (isset($report['detailed_suggestions']) && is_array($report['detailed_suggestions'])) {
+        $detailedSugHtml .= '<div class="mt-3"><h5>Detailed Suggestions:</h5><ul>';
+        foreach ($report['detailed_suggestions'] as $cond => $sug) {
+            $detailedSugHtml .= '<li><strong>' . htmlspecialchars($cond) . ":</strong> " . htmlspecialchars($sug) . '</li>';
+        }
+        $detailedSugHtml .= '</ul></div>';
+    }
+    
+    // Build overall summary.
+    $summary = '<div class="alert alert-info mt-4">';
+    $summary .= '<strong>Overall Text Ratio Score:</strong> ' . ($report['percent'] ?? 0) . '%<br>';
+    $summary .= '<strong>Score:</strong> ' . ($report['score'] ?? 0) . ' out of ' . ($report['max_points'] ?? 0) . '<br>';
+    $summary .= '<strong>Condition Status:</strong><br>';
+    if (isset($report['details']) && is_array($report['details'])) {
+        foreach ($report['details'] as $cond => $status) {
+            $summary .= htmlspecialchars($cond) . ': ' . htmlspecialchars($status) . '<br>';
+        }
+    }
+    $summary .= '<strong>Overall Comment:</strong> ' . htmlspecialchars($report['comment'] ?? '') . '<br>';
+    $summary .= '</div>';
+    
+    // Assemble final output.
+    $output = '
+    <div id="ajaxTextRatio" class="card mb-3">
+        <div class="card-header">
+            <h4>' . $this->lang['AN36'] . ': <strong>' . ($raw['ratio_percent'] ?? 0) . '%</strong> (' . ($raw['ratio_category'] ?? 'N/A') . ')</h4>
+        </div>
+        <div class="card-body">
+            <p class="mb-3">
+                This metric indicates the percentage of visible text relative to the total HTML markup. A balanced ratio is key for readability and SEO.
+            </p>
+            ' . $table . '
+            ' . $detailedSugHtml . '
+        </div>
+        <div class="card-footer">
+            <small>Consider optimizing your page by reducing unnecessary markup or adding quality textual content.</small>
+        </div>
+    </div>' . $summary;
+    
+    return $output;
+}
     
     
 
@@ -2088,15 +2384,31 @@ public function showKeyCloudAndConsistency(string $savedJson): string {
      * @return int The HTTP response code, or 0 on failure.
      */
     private function getHttpResponseCode(string $url): int {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_NOBODY, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_NOBODY, true); // We don't need the body
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_exec($ch);
+        // For testing, disable SSL verification (remove these lines in production)
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        
+        $response = curl_exec($ch);
+        if ($response === false) {
+            // Log the error message to your PHP error log.
+            $error = curl_error($ch);
+            error_log("Curl error for URL ($url): $error");
+            curl_close($ch);
+            return 0;
+        }
+        
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return $httpCode ? (int)$httpCode : 0;
+        return (int)$httpCode;
     }
+    
 
     /*===================================================================
      * GZIP COMPRESSION HANDLER
@@ -2244,415 +2556,485 @@ public function showKeyCloudAndConsistency(string $savedJson): string {
      * IN-PAGE LINKS HANDLER
      *=================================================================== 
      */
-    public function processInPageLinks() {
-        // Use the pre-loaded DOMDocument if available.
-        if (isset($this->dom) && $this->dom instanceof DOMDocument) {
-            $doc = $this->dom;
-        } else {
-            $doc = new DOMDocument();
-            @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
-            $this->dom = $doc;
+    /**
+ * Processes in-page links by extracting various metrics and computing a link analysis report.
+ * The returned structure follows the same pattern as processMeta() and processHeading():
+ * it contains a 'raw' key (with all metrics) and a 'report' key (with score, passes, to improve, errors, details, and a comment).
+ * The complete JSON is saved in the DB (in the "links_analyser" column) and in a session variable.
+ *
+ * @return string JSON-encoded combined raw data and report.
+ */
+public function processInPageLinks(): string {
+    // Use pre-loaded DOMDocument if available.
+    if (isset($this->dom) && $this->dom instanceof DOMDocument) {
+        $doc = $this->dom;
+    } else {
+        $doc = new DOMDocument();
+        @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
+        $this->dom = $doc;
+    }
+    
+    // Initialize arrays and counters.
+    $internalLinks = [];
+    $externalLinks = [];
+    $uniqueLinkSet = [];
+    $externalDomainSet = [];
+    
+    $totalTargetBlank = 0;
+    $totalHttps = 0;
+    $totalHttp = 0;
+    $totalTracking = 0;
+    $totalTextLength = 0;
+    $totalImageLinks = 0;
+    $totalNoFollow = 0;
+    $totalDoFollow = 0;
+    $totalEmptyLinks = 0;
+    
+    // Count links by position (for potential use).
+    $linksByPosition = [
+        'header'  => 0,
+        'nav'     => 0,
+        'main'    => 0,
+        'footer'  => 0,
+        'aside'   => 0,
+        'section' => 0,
+        'body'    => 0,
+    ];
+    
+    $baseUrl = $this->scheme . "://" . $this->host;
+    $myHost = strtolower($this->urlParse['host']);
+    
+    // Loop through all anchor tags.
+    $anchors = $doc->getElementsByTagName('a');
+    foreach ($anchors as $a) {
+        $rawHref = trim($a->getAttribute('href'));
+        if ($rawHref === "" || $rawHref === "#") {
+            continue;
         }
-        
-        $internalLinks = [];
-        $externalLinks = [];
-        $uniqueLinkSet = [];
-        $externalDomainSet = [];
-        
-        // Initialize counters.
-        $totalTargetBlank = 0;
-        $totalHttps = 0;
-        $totalHttp = 0;
-        $totalTracking = 0;
-        $totalTextLength = 0;
-        $totalImageLinks = 0;
-        $totalNoFollow = 0;
-        $totalDoFollow = 0;
-        // New counter for empty anchor text links.
-        $totalEmptyLinks = 0;
-        
-        // We still count links by position for any potential use, but won't include detailed array.
-        $linksByPosition = [
-            'header'  => 0,
-            'nav'     => 0,
-            'main'    => 0,
-            'footer'  => 0,
-            'aside'   => 0,
-            'section' => 0,
-            'body'    => 0,
-        ];
-        
-        // Base URL & host.
-        $baseUrl = $this->scheme . "://" . $this->host;
-        $myHost = strtolower($this->urlParse['host']);
-         
-        $anchors = $doc->getElementsByTagName('a');
-        foreach ($anchors as $a) {
-            $rawHref = trim($a->getAttribute('href'));
-            if ($rawHref === "" || $rawHref === "#") {
-                continue;
+        $href = $rawHref;
+        $rel = strtolower($a->getAttribute('rel'));
+        $target = strtolower($a->getAttribute('target'));
+        $anchorText = trim(strip_tags($a->textContent));
+        if ($anchorText === "") {
+            $totalEmptyLinks++;
+        }
+        if (strpos($rel, 'nofollow') !== false) {
+            $followType = 'nofollow';
+            $totalNoFollow++;
+        } else {
+            $followType = 'dofollow';
+            $totalDoFollow++;
+        }
+        if ($target === '_blank') {
+            $totalTargetBlank++;
+        }
+        $parsed = parse_url($href);
+        if ($parsed === false) {
+            continue;
+        }
+        if (isset($parsed['scheme'])) {
+            $scheme = strtolower($parsed['scheme']);
+            if ($scheme === 'https') {
+                $totalHttps++;
+            } elseif ($scheme === 'http') {
+                $totalHttp++;
             }
-            
-            // Normalize the URL.
-            $href = $rawHref;
-            $this->scheme = $this->scheme;
-            $this->host = $this->host;
-            $baseUrl = $this->scheme . "://" . $this->host;
-            
-            $rel = strtolower($a->getAttribute('rel'));
-            $target = strtolower($a->getAttribute('target'));
-            $anchorText = trim(strip_tags($a->textContent));
-            // Count empty anchor text if no text is present.
-            if ($anchorText === "") {
-                $totalEmptyLinks++;
+        }
+        if (isset($parsed['query']) && stripos($parsed['query'], 'utm_') !== false) {
+            $totalTracking++;
+        }
+        $hasImage = false;
+        foreach ($a->childNodes as $child) {
+            if ($child->nodeType === XML_ELEMENT_NODE && strtolower($child->nodeName) === 'img') {
+                $hasImage = true;
+                break;
             }
-            
-            // Determine follow type.
-            if (strpos($rel, 'nofollow') !== false) {
-                $followType = 'nofollow';
-                $totalNoFollow++;
-            } else {
-                $followType = 'dofollow';
-                $totalDoFollow++;
-            }
-            
-            if ($target === '_blank') {
-                $totalTargetBlank++;
-            }
-            
-            // Parse URL parts.
-            $parsed = parse_url($href);
-            if ($parsed === false) {
-                continue;
-            }
-            if (isset($parsed['scheme'])) {
-                $scheme = strtolower($parsed['scheme']);
-                if ($scheme === 'https') {
-                    $totalHttps++;
-                } elseif ($scheme === 'http') {
-                    $totalHttp++;
-                }
-            }
-            if (isset($parsed['query']) && stripos($parsed['query'], 'utm_') !== false) {
-                $totalTracking++;
-            }
-            
-            // Check if the anchor encloses an image.
-            $hasImage = false;
-            foreach ($a->childNodes as $child) {
-                if ($child->nodeType === XML_ELEMENT_NODE && strtolower($child->nodeName) === 'img') {
-                    $hasImage = true;
-                    break;
-                }
-            }
-            if ($hasImage) {
-                $totalImageLinks++;
-                $linkType = 'image';
-            } else {
-                $linkType = 'text';
-                $totalTextLength += mb_strlen($anchorText);
-            }
-            
-            // Determine position using our private method.
-            $position = $this->getLinkPosition($a->parentNode);
-            if (isset($linksByPosition[$position])) {
-                $linksByPosition[$position]++;
-            } else {
-                $linksByPosition['body']++;
-            }
-            
-            // Determine internal vs. external.
-            $isInternal = false;
-            if (!empty($parsed['host'])) {
-                $linkHost = strtolower($parsed['host']);
-                if ($linkHost === $myHost || $linkHost === "www.$myHost") {
-                    $isInternal = true;
-                }
-            } else {
+        }
+        if ($hasImage) {
+            $totalImageLinks++;
+            $linkType = 'image';
+        } else {
+            $linkType = 'text';
+            $totalTextLength += mb_strlen($anchorText);
+        }
+        $position = $this->getLinkPosition($a->parentNode);
+        if (isset($linksByPosition[$position])) {
+            $linksByPosition[$position]++;
+        } else {
+            $linksByPosition['body']++;
+        }
+        $isInternal = false;
+        if (!empty($parsed['host'])) {
+            $linkHost = strtolower($parsed['host']);
+            if ($linkHost === $myHost || $linkHost === "www.$myHost") {
                 $isInternal = true;
             }
-            if ($isInternal) {
-                $internalLinks[] = $href;
-            } else {
-                $externalLinks[] = [
-                    'href'      => $href,
-                    'follow_type' => $followType,
-                    'target'    => $target,
-                    'innertext' => $anchorText,
-                    'rel'       => $rel
-                ];
-                if (isset($parsed['host'])) {
-                    $externalDomainSet[strtolower($parsed['host'])] = true;
-                }
-            }
-            
-            // Build unique link set.
-            $uniqueLinkSet[$href] = true;
+        } else {
+            $isInternal = true;
         }
-        
-        // Totals and derived metrics.
-        $totalLinks = count($internalLinks) + count($externalLinks);
-        $totalInternalLinks = count($internalLinks);
-        $totalExternalLinks = count($externalLinks);
-        $uniqueLinksCount = count($uniqueLinkSet);
-        $uniqueExternalDomainsCount = count($externalDomainSet);
-        $totalNonTracking = $totalLinks - $totalTracking;
-        
-        $percentageNoFollow = ($totalLinks > 0) ? round(($totalNoFollow / $totalLinks) * 100, 2) : 0;
-        $percentageDoFollow = ($totalLinks > 0) ? round(($totalDoFollow / $totalLinks) * 100, 2) : 0;
-        
-        $textLinkCount = count($internalLinks);
-        $averageAnchorTextLength = ($textLinkCount > 0) ? round($totalTextLength / $textLinkCount, 2) : 0;
-        
-        $linkDiversityScore = ($totalLinks > 0) ? round($uniqueLinksCount / $totalLinks, 2) : 0;
-        
-        $externalDomains = array_keys($externalDomainSet);
-        
-        // Include the empty links count in our update array.
-        $updateStr = json_encode( [
-            'total_links'                   => $totalLinks,
-            'total_internal_links'          => $totalInternalLinks,
-            'total_external_links'          => $totalExternalLinks,
-            'unique_links_count'            => $uniqueLinksCount,
-            'total_nofollow_links'          => $totalNoFollow,
-            'total_dofollow_links'          => $totalDoFollow,
-            'percentage_nofollow_links'     => $percentageNoFollow,
-            'percentage_dofollow_links'     => $percentageDoFollow,
-            'total_target_blank_links'      => $totalTargetBlank,
-            // 'links_by_position' removed.
-            'total_image_links'             => $totalImageLinks,
-            'total_text_links'              => $textLinkCount,
-            'total_empty_links'             => $totalEmptyLinks,   // NEW: Count of empty anchor text links.
-            'external_domains'              => $externalDomains,
-            'unique_external_domains_count' => $uniqueExternalDomainsCount,
-            'total_https_links'             => $totalHttps,
-            'total_http_links'              => $totalHttp,
-            'total_tracking_links'          => $totalTracking,
-            'total_non_tracking_links'      => $totalNonTracking,
-            'average_anchor_text_length'    => $averageAnchorTextLength,
-            'link_diversity_score'          => $linkDiversityScore,
-            // Optionally, you may include external links detailed list if required:
-            'external_links'                => $externalLinks
-        ]);
-
-        updateToDbPrepared($this->con, 'domains_data', ['links_analyser' => $updateStr], ['domain' => $this->domainStr]);
-        
-        return $updateStr;
+        if ($isInternal) {
+            $internalLinks[] = $href;
+        } else {
+            $externalLinks[] = [
+                'href'        => $href,
+                'follow_type' => $followType,
+                'target'      => $target,
+                'innertext'   => $anchorText,
+                'rel'         => $rel
+            ];
+            if (isset($parsed['host'])) {
+                $externalDomainSet[strtolower($parsed['host'])] = true;
+            }
+        }
+        $uniqueLinkSet[$href] = true;
     }
     
-    public function showInPageLinks($linksData) {
-        // 1) Decode if $linksData is a JSON string.
-        if (is_string($linksData)) {
-            $linksData = json_decode($linksData, true);
-        }
-        if (!is_array($linksData)) {
-            return '<div class="alert alert-danger">Invalid link data provided.</div>';
-        }
-        
-        // 2) Extract the main fields.
-        $totalLinks                 = $linksData['total_links'] ?? 0;
-        $totalInternalLinks         = $linksData['total_internal_links'] ?? 0;
-        $totalExternalLinks         = $linksData['total_external_links'] ?? 0;
-        $uniqueLinksCount           = $linksData['unique_links_count'] ?? 0;
-        $totalNofollowLinks         = $linksData['total_nofollow_links'] ?? 0;
-        $totalDofollowLinks         = $linksData['total_dofollow_links'] ?? 0;
-        $percentageNofollowLinks    = $linksData['percentage_nofollow_links'] ?? 0;
-        $percentageDofollowLinks    = $linksData['percentage_dofollow_links'] ?? 0;
-        $totalTargetBlankLinks      = $linksData['total_target_blank_links'] ?? 0;
-        $totalImageLinks            = $linksData['total_image_links'] ?? 0;
-        $totalTextLinks             = $linksData['total_text_links'] ?? 0;
-        $totalEmptyLinks            = $linksData['total_empty_links'] ?? 0;
-        $externalDomains            = $linksData['external_domains'] ?? [];
-        $uniqueExternalDomainsCount = $linksData['unique_external_domains_count'] ?? 0;
-        $totalHttpsLinks            = $linksData['total_https_links'] ?? 0;
-        $totalHttpLinks             = $linksData['total_http_links'] ?? 0;
-        $totalTrackingLinks         = $linksData['total_tracking_links'] ?? 0;
-        $totalNonTrackingLinks      = $linksData['total_non_tracking_links'] ?? 0;
-        $averageAnchorTextLength    = $linksData['average_anchor_text_length'] ?? 0;
-        $linkDiversityScore         = $linksData['link_diversity_score'] ?? 0;
-        
-        // 3) Process external links: group duplicates and count them.
-        $externalLinks = $linksData['external_links'] ?? [];
-        $uniqueExternalLinks = [];
-        foreach ($externalLinks as $ext) {
-            $href = $ext['href'];
-            if (!isset($uniqueExternalLinks[$href])) {
-                $uniqueExternalLinks[$href] = $ext;
-                $uniqueExternalLinks[$href]['count'] = 1;
-            } else {
-                $uniqueExternalLinks[$href]['count']++;
-            }
-        }
-        
-        // 4) Build the output using Bootstrap components.
-        $html = '<div class="container my-4">';
-        
-        // Nav Tabs (kept simple to match your theme)
-        $html .= '
-        <ul class="nav nav-tabs" id="linkReportTabs" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summaryTab" type="button" role="tab" aria-controls="summaryTab" aria-selected="true">
-              Summary
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="externalLinks-tab" data-bs-toggle="tab" data-bs-target="#externalLinksTab" type="button" role="tab" aria-controls="externalLinksTab" aria-selected="false">
-              External Links
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="externalDomains-tab" data-bs-toggle="tab" data-bs-target="#externalDomainsTab" type="button" role="tab" aria-controls="externalDomainsTab" aria-selected="false">
-              External Domains
-            </button>
-          </li>
-        </ul>';
-        
-        // Tab content container
-        $html .= '<div class="tab-content" id="linkReportTabsContent">';
-        
-        // Tab 1: Summary
-        $html .= '
-        <div class="tab-pane fade show active" id="summaryTab" role="tabpanel" aria-labelledby="summary-tab">
-          <div class="card my-3">
-            <div class="card-header">
-              <h5>Link Summary</h5>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <table class="table table-sm mb-0">
-                    <tbody>
-                      <tr><th>Total Links</th><td>' . $totalLinks . '</td></tr>
-                      <tr><th>Internal Links</th><td>' . $totalInternalLinks . '</td></tr>
-                      <tr><th>External Links</th><td>' . $totalExternalLinks . '</td></tr>
-                      <tr><th>Unique Links</th><td>' . $uniqueLinksCount . '</td></tr>
-                      <tr><th>Empty Links</th><td>' . $totalEmptyLinks . '</td></tr>
-                      <tr><th>Link Diversity Score</th><td>' . $linkDiversityScore . '</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-md-6">
-                  <table class="table table-sm mb-0">
-                    <tbody>
-                      <tr><th>Dofollow Links</th><td>' . $totalDofollowLinks . ' (' . $percentageDofollowLinks . '%)</td></tr>
-                      <tr><th>Nofollow Links</th><td>' . $totalNofollowLinks . ' (' . $percentageNofollowLinks . '%)</td></tr>
-                      <tr><th>Target Blank Links</th><td>' . $totalTargetBlankLinks . '</td></tr>
-                      <tr><th>HTTPS Links</th><td>' . $totalHttpsLinks . '</td></tr>
-                      <tr><th>HTTP Links</th><td>' . $totalHttpLinks . '</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="row mt-3">
-                <div class="col-md-6">
-                  <table class="table table-sm mb-0">
-                    <tbody>
-                      <tr><th>Total Image Links</th><td>' . $totalImageLinks . '</td></tr>
-                      <tr><th>Total Text Links</th><td>' . $totalTextLinks . '</td></tr>
-                      <tr><th>Avg. Anchor Text Length</th><td>' . $averageAnchorTextLength . '</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-md-6">
-                  <table class="table table-sm mb-0">
-                    <tbody>
-                      <tr><th>Total Tracking Links</th><td>' . $totalTrackingLinks . '</td></tr>
-                      <tr><th>Non-Tracking Links</th><td>' . $totalNonTrackingLinks . '</td></tr>
-                      <tr><th>Unique External Domains</th><td>' . $uniqueExternalDomainsCount . '</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div><!-- card-body -->
-          </div><!-- card -->
-        </div><!-- tab-pane -->';
-        
-        // Tab 2: External Links
-        $html .= '
-        <div class="tab-pane fade" id="externalLinksTab" role="tabpanel" aria-labelledby="externalLinks-tab">
-          <div class="card my-3">
-            <div class="card-header">
-              <h5>Unique External Links</h5>
-            </div>
-            <div class="card-body">';
-        if (!empty($uniqueExternalLinks)) {
-            $html .= '
-              <div class="table-responsive">
-                <table class="table table-striped table-hover align-middle">
-                  <thead class="table-dark">
-                    <tr>
-                      <th>Link</th>
-                      <th>Follow Type</th>
-                      <th>Anchor Text</th>
-                      <th>Count</th>
-                    </tr>
-                  </thead>
-                  <tbody>';
-            foreach ($uniqueExternalLinks as $ext) {
-                $displayText = !empty($ext['innertext']) ? $ext['innertext'] : $ext['href'];
-                $html .= '
-                    <tr>
-                      <td>' . htmlspecialchars($ext['href']) . '</td>
-                      <td>' . htmlspecialchars($ext['follow_type']) . '</td>
-                      <td>' . htmlspecialchars($displayText) . '</td>
-                      <td>' . $ext['count'] . '</td>
-                    </tr>';
-            }
-            $html .= '
-                  </tbody>
-                </table>
-              </div><!-- table-responsive -->';
-        } else {
-            $html .= '<div class="alert alert-info">No external links found.</div>';
-        }
-            $html .= '
-            </div><!-- card-body -->
-          </div><!-- card -->
-        </div><!-- tab-pane -->';
-        
-        // Tab 3: External Domains
-        $html .= '
-        <div class="tab-pane fade" id="externalDomainsTab" role="tabpanel" aria-labelledby="externalDomains-tab">
-          <div class="card my-3">
-            <div class="card-header">
-              <h5>External Domains</h5>
-            </div>
-            <div class="card-body">';
-        if (!empty($externalDomains)) {
-            $html .= '<ul class="list-group">';
-            foreach ($externalDomains as $domain) {
-                $html .= '<li class="list-group-item">' . htmlspecialchars($domain) . '</li>';
-            }
-            $html .= '</ul>';
-        } else {
-            $html .= '<div class="alert alert-info">No external domains found.</div>';
-        }
-            $html .= '
-            </div><!-- card-body -->
-          </div><!-- card -->
-        </div><!-- tab-pane -->';
-        
-        // Close tab content and container.
-        $html .= '</div><!-- tab-content -->';
-        
-        // Suggestion section below the tabs
-        $html .= '
-        <div class="mt-3">
-          <div class="alert alert-secondary text-center" role="alert">
-            <strong>Suggestion:</strong> Review your internal and external link structure to ensure optimal SEO performance.
-          </div>
-        </div>';
-        
-        $html .= '</div><!-- container -->';
-        
-        return $html;
+    // Prepare raw metrics.
+    $rawData = [
+        'total_links'                   => count($internalLinks) + count($externalLinks),
+        'total_internal_links'          => count($internalLinks),
+        'total_external_links'          => count($externalLinks),
+        'unique_links_count'            => count($uniqueLinkSet),
+        'total_nofollow_links'          => $totalNoFollow,
+        'total_dofollow_links'          => $totalDoFollow,
+        'percentage_nofollow_links'     => (count($internalLinks)+count($externalLinks)) > 0 ? round(($totalNoFollow / (count($internalLinks)+count($externalLinks)))*100, 2) : 0,
+        'percentage_dofollow_links'     => (count($internalLinks)+count($externalLinks)) > 0 ? round(($totalDoFollow / (count($internalLinks)+count($externalLinks)))*100, 2) : 0,
+        'total_target_blank_links'      => $totalTargetBlank,
+        'total_image_links'             => $totalImageLinks,
+        'total_text_links'              => count($internalLinks),
+        'total_empty_links'             => $totalEmptyLinks,
+        'external_domains'              => array_keys($externalDomainSet),
+        'unique_external_domains_count' => count($externalDomainSet),
+        'total_https_links'             => $totalHttps,
+        'total_http_links'              => $totalHttp,
+        'total_tracking_links'          => $totalTracking,
+        'total_non_tracking_links'      => (count($internalLinks)+count($externalLinks)) - $totalTracking,
+        'average_anchor_text_length'    => count($internalLinks) > 0 ? round($totalTextLength / count($internalLinks), 2) : 0,
+        'link_diversity_score'          => (count($internalLinks)+count($externalLinks)) > 0 ? round(count($uniqueLinkSet) / (count($internalLinks)+count($externalLinks)), 2) : 0,
+        // NEW: Save raw external links array for later display.
+        'external_links'                => $externalLinks
+    ];
+    
+    // -----------------------------------------------------------------
+    // Compute the report following the same logic pattern as meta/heading.
+    // We'll define five conditions and assign points (Pass = 2, To Improve = 1, Error = 0).
+    // Maximum score is 10.
+    // Condition A: At least one link exists.
+    $passA = ($rawData['total_links'] > 0) ? 2 : 0;
+    $passAStatus = ($rawData['total_links'] > 0) ? 'Pass' : 'Error';
+    
+    // Condition B: Link Diversity Score >= 0.5 (otherwise, if between 0.3-0.5, to improve).
+    if ($rawData['link_diversity_score'] >= 0.5) {
+        $passB = 2;
+        $passBStatus = 'Pass';
+    } elseif ($rawData['link_diversity_score'] >= 0.3) {
+        $passB = 1;
+        $passBStatus = 'To Improve';
+    } else {
+        $passB = 0;
+        $passBStatus = 'Error';
     }
     
+    // Condition C: Average Anchor Text Length: >= 10 = pass; 5-10 = to improve; < 5 = error.
+    if ($rawData['average_anchor_text_length'] >= 10) {
+        $passC = 2;
+        $passCStatus = 'Pass';
+    } elseif ($rawData['average_anchor_text_length'] >= 5) {
+        $passC = 1;
+        $passCStatus = 'To Improve';
+    } else {
+        $passC = 0;
+        $passCStatus = 'Error';
+    }
     
+    // Condition D: Empty Link Ratio (empty_ratio = total_empty_links / total_links).
+    $emptyRatio = ($rawData['total_links'] > 0) ? $rawData['total_empty_links'] / $rawData['total_links'] : 1;
+    if ($emptyRatio <= 0.1) {
+        $passD = 2;
+        $passDStatus = 'Pass';
+    } elseif ($emptyRatio <= 0.2) {
+        $passD = 1;
+        $passDStatus = 'To Improve';
+    } else {
+        $passD = 0;
+        $passDStatus = 'Error';
+    }
+    
+    // Condition E: Tracking Links: Ideally, zero tracking links.
+    $passE = ($rawData['total_tracking_links'] == 0) ? 2 : 0;
+    $passEStatus = ($rawData['total_tracking_links'] == 0) ? 'Pass' : 'Error';
+    
+    $totalScore = $passA + $passB + $passC + $passD + $passE;
+    $maxScore = 10;
+    $scorePercent = ($maxScore > 0) ? round(($totalScore / $maxScore) * 100) : 0;
+    
+    // Build an overall comment.
+    $comment = "";
+    if ($rawData['total_links'] == 0) {
+        $comment .= "No links found on the page. ";
+    } else {
+        $comment .= "Links extracted successfully. ";
+    }
+    if ($passBStatus !== 'Pass') {
+        $comment .= "Link diversity is low. ";
+    }
+    if ($passCStatus !== 'Pass') {
+        $comment .= "Average anchor text length is below optimal. ";
+    }
+    if ($passDStatus !== 'Pass') {
+        $comment .= "A high proportion of links have empty anchor text. ";
+    }
+    if ($passEStatus !== 'Pass') {
+        $comment .= "Tracking parameters are detected in some links. ";
+    }
+    
+    // Prepare a details summary.
+    $conditions = [
+        'Total Links' => $passAStatus,
+        'Diversity Score' => $passBStatus,
+        'Anchor Text Length' => $passCStatus,
+        'Empty Link Ratio' => $passDStatus,
+        'Tracking Links' => $passEStatus
+    ];
+    
+    $report = [
+        'score'   => $totalScore,
+        'passed'  => ($passAStatus==='Pass' ? 1 : 0) + ($passBStatus==='Pass' ? 1 : 0) + ($passCStatus==='Pass' ? 1 : 0) + ($passDStatus==='Pass' ? 1 : 0) + ($passEStatus==='Pass' ? 1 : 0),
+        'improve' => ($passBStatus==='To Improve' ? 1 : 0) + ($passCStatus==='To Improve' ? 1 : 0) + ($passDStatus==='To Improve' ? 1 : 0),
+        'errors'  => ($passAStatus==='Error' ? 1 : 0) + ($passBStatus==='Error' ? 1 : 0) + ($passCStatus==='Error' ? 1 : 0) + ($passDStatus==='Error' ? 1 : 0) + ($passEStatus==='Error' ? 1 : 0),
+        'percent' => $scorePercent,
+        'details' => $conditions,
+        'comment' => $comment
+    ];
+    
+    // Combine raw data and report.
+    $completeLinkData = [
+        'raw'    => $rawData,
+        'report' => $report
+    ];
+    
+    $reportJson = json_encode($completeLinkData);
+    updateToDbPrepared($this->con, 'domains_data', ['links_analyser' => $reportJson], ['domain' => $this->domainStr]);
+    $_SESSION['linksReport'] = $completeLinkData;
+    return $reportJson;
+}
+
+public function showInPageLinks($linksData): string {
+    // 1) Decode if $linksData is a JSON string.
+    if (is_string($linksData)) {
+        $linksData = json_decode($linksData, true);
+    }
+    if (!is_array($linksData)) {
+        return '<div class="alert alert-danger">Invalid link data provided.</div>';
+    }
+    
+    // 2) Extract raw metrics and computed report.
+    $raw = $linksData['raw'] ?? [];
+    $report = $linksData['report'] ?? [];
+    
+    // 3) Build a table of raw metrics.
+    $rawMetrics = [
+        'Total Links'                   => $raw['total_links'] ?? 'N/A',
+        'Internal Links'                => $raw['total_internal_links'] ?? 'N/A',
+        'External Links'                => $raw['total_external_links'] ?? 'N/A',
+        'Unique Links'                  => $raw['unique_links_count'] ?? 'N/A',
+        'Empty Links'                   => $raw['total_empty_links'] ?? 'N/A',
+        'Link Diversity Score'          => $raw['link_diversity_score'] ?? 'N/A',
+        'Dofollow Links'                => isset($raw['total_dofollow_links'], $raw['percentage_dofollow_links']) ? $raw['total_dofollow_links'] . ' (' . $raw['percentage_dofollow_links'] . '%)' : 'N/A',
+        'Nofollow Links'                => isset($raw['total_nofollow_links'], $raw['percentage_nofollow_links']) ? $raw['total_nofollow_links'] . ' (' . $raw['percentage_nofollow_links'] . '%)' : 'N/A',
+        'Target Blank Links'            => $raw['total_target_blank_links'] ?? 'N/A',
+        'HTTPS Links'                   => $raw['total_https_links'] ?? 'N/A',
+        'HTTP Links'                    => $raw['total_http_links'] ?? 'N/A',
+        'Total Image Links'             => $raw['total_image_links'] ?? 'N/A',
+        'Total Text Links'              => $raw['total_text_links'] ?? 'N/A',
+        'Avg. Anchor Text Length'       => $raw['average_anchor_text_length'] ?? 'N/A',
+        'Total Tracking Links'          => $raw['total_tracking_links'] ?? 'N/A',
+        'Non-Tracking Links'            => $raw['total_non_tracking_links'] ?? 'N/A',
+        'Unique External Domains'       => $raw['unique_external_domains_count'] ?? 'N/A'
+    ];
+    
+    $rawTableRows = '';
+    foreach ($rawMetrics as $metric => $value) {
+        $rawTableRows .= "<tr><td>{$metric}</td><td>{$value}</td></tr>";
+    }
+    $rawTable = '<table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>' . $rawTableRows . '</tbody>
+                 </table>';
+    
+    // 4) Build the detailed report card.
+    // Define human-friendly messages for each condition.
+    $conditionMessages = [
+        'Total Links' => [
+            'Pass' => 'The page has sufficient links.',
+            'Error' => 'No links found on the page.'
+        ],
+        'Diversity Score' => [
+            'Pass' => 'Link diversity is healthy.',
+            'To Improve' => 'Link diversity could be improved.',
+            'Error' => 'Link diversity is critically low.'
+        ],
+        'Anchor Text Length' => [
+            'Pass' => 'Average anchor text length is within the optimal range.',
+            'To Improve' => 'Anchor text length is lower than optimal. Consider adding more descriptive anchor texts.',
+            'Error' => 'Anchor text is too short, which may hurt SEO.'
+        ],
+        'Empty Link Ratio' => [
+            'Pass' => 'Very few links have empty anchor text.',
+            'To Improve' => 'Some links have empty anchor text. Consider adding descriptive text.',
+            'Error' => 'A high proportion of links have empty anchor text. It is recommended to provide descriptive anchor texts.'
+        ],
+        'Tracking Links' => [
+            'Pass' => 'No tracking parameters are detected in the links.',
+            'Error' => 'Tracking parameters are found, which might affect user privacy and link value.'
+        ]
+    ];
+    
+    // We'll iterate through the conditions in the report details.
+    $detailsHtml = '';
+    $suggestionsList = [];
+    if (isset($report['details']) && is_array($report['details'])) {
+        foreach ($report['details'] as $condition => $status) {
+            $statusClean = ucfirst(trim($status));
+            $message = isset($conditionMessages[$condition][$statusClean])
+                        ? $conditionMessages[$condition][$statusClean]
+                        : $statusClean;
+            $detailsHtml .= htmlspecialchars($condition) . ': ' . htmlspecialchars($message) . '<br>';
+            if ($statusClean !== 'Pass') {
+                $suggestionsList[] = $message;
+            }
+        }
+    }
+    
+    $reportHtml = '<div class="card mb-3">';
+    $reportHtml .= '<div class="card-header"><strong>Detailed Link Analysis Report</strong></div>';
+    $reportHtml .= '<div class="card-body">';
+    $reportHtml .= '<p><strong>Score:</strong> ' . ($report['score'] ?? 0) . ' (Percentage: ' . ($report['percent'] ?? 0) . '%)</p>';
+    $reportHtml .= '<p><strong>Passed:</strong> ' . ($report['passed'] ?? 0) . ', <strong>To Improve:</strong> ' . ($report['improve'] ?? 0) . ', <strong>Errors:</strong> ' . ($report['errors'] ?? 0) . '</p>';
+    $reportHtml .= '<p><strong>Condition Status:</strong><br>' . $detailsHtml . '</p>';
+    $reportHtml .= '<p><strong>Overall Comment:</strong> ' . ($report['comment'] ?? '') . '</p>';
+    $reportHtml .= '</div></div>';
+    
+    // 5) Process external links: use the "external_links" key from raw data.
+    $externalLinksRaw = $raw['external_links'] ?? [];
+    $uniqueExternalLinks = [];
+    foreach ($externalLinksRaw as $ext) {
+        $href = $ext['href'];
+        if (!isset($uniqueExternalLinks[$href])) {
+            $uniqueExternalLinks[$href] = $ext;
+            $uniqueExternalLinks[$href]['count'] = 1;
+        } else {
+            $uniqueExternalLinks[$href]['count']++;
+        }
+    }
+    
+    // Build External Links table.
+    $externalLinksTable = '';
+    if (!empty($uniqueExternalLinks)) {
+        $externalLinksTable .= '<div class="table-responsive"><table class="table table-striped table-hover">';
+        $externalLinksTable .= '<thead class="table-dark"><tr><th>Link</th><th>Follow Type</th><th>Anchor Text</th><th>Count</th></tr></thead><tbody>';
+        foreach ($uniqueExternalLinks as $ext) {
+            $displayText = !empty($ext['innertext']) ? $ext['innertext'] : $ext['href'];
+            $externalLinksTable .= '<tr>';
+            $externalLinksTable .= '<td>' . htmlspecialchars($ext['href']) . '</td>';
+            $externalLinksTable .= '<td>' . htmlspecialchars($ext['follow_type']) . '</td>';
+            $externalLinksTable .= '<td>' . htmlspecialchars($displayText) . '</td>';
+            $externalLinksTable .= '<td>' . $ext['count'] . '</td>';
+            $externalLinksTable .= '</tr>';
+        }
+        $externalLinksTable .= '</tbody></table></div>';
+    } else {
+        $externalLinksTable = '<div class="alert alert-info">No external links found.</div>';
+    }
+    
+    // 6) Build External Domains list.
+    $externalDomains = $raw['external_domains'] ?? [];
+    $domainsHtml = '';
+    if (!empty($externalDomains)) {
+        $domainsHtml .= '<ul class="list-group">';
+        foreach ($externalDomains as $domain) {
+            $domainsHtml .= '<li class="list-group-item">' . htmlspecialchars($domain) . '</li>';
+        }
+        $domainsHtml .= '</ul>';
+    } else {
+        $domainsHtml = '<div class="alert alert-info">No external domains found.</div>';
+    }
+    
+    // 7) Build the nav tabs and tab content.
+    $html = '<div class="container my-4">';
+    
+    // Nav Tabs.
+    $html .= '<ul class="nav nav-tabs" id="linkReportTabs" role="tablist">';
+    $html .= '  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summaryTab" type="button" role="tab" aria-controls="summaryTab" aria-selected="true">
+                        Summary
+                    </button>
+                </li>';
+    $html .= '  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="externalLinks-tab" data-bs-toggle="tab" data-bs-target="#externalLinksTab" type="button" role="tab" aria-controls="externalLinksTab" aria-selected="false">
+                        External Links
+                    </button>
+                </li>';
+    $html .= '  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="externalDomains-tab" data-bs-toggle="tab" data-bs-target="#externalDomainsTab" type="button" role="tab" aria-controls="externalDomainsTab" aria-selected="false">
+                        External Domains
+                    </button>
+                </li>';
+    $html .= '</ul>';
+    
+    // Tab Content.
+    $html .= '<div class="tab-content" id="linkReportTabsContent">';
+    
+    // Tab 1: Summary.
+    $html .= '<div class="tab-pane fade show active" id="summaryTab" role="tabpanel" aria-labelledby="summary-tab">';
+    $html .= '  <div class="card my-3">';
+    $html .= '    <div class="card-header"><h5>Raw Metrics</h5></div>';
+    $html .= '    <div class="card-body">' . $rawTable . '</div>';
+    $html .= '  </div>';
+    $html .= $reportHtml; // Detailed report card appended below.
+    // Also, if there are suggestions gathered from conditions, show them.
+    if (!empty($suggestionsList)) {
+        $html .= '<div class="alert alert-warning mt-3"><strong>Suggestions:</strong><ul>';
+        foreach ($suggestionsList as $sug) {
+            $html .= '<li>' . htmlspecialchars($sug) . '</li>';
+        }
+        $html .= '</ul></div>';
+    }
+    $html .= '</div>';
+    
+    // Tab 2: External Links.
+    $html .= '<div class="tab-pane fade" id="externalLinksTab" role="tabpanel" aria-labelledby="externalLinks-tab">';
+    $html .= '  <div class="card my-3">';
+    $html .= '    <div class="card-header"><h5>Unique External Links</h5></div>';
+    $html .= '    <div class="card-body">' . $externalLinksTable . '</div>';
+    $html .= '  </div>';
+    $html .= '</div>';
+    
+    // Tab 3: External Domains.
+    $html .= '<div class="tab-pane fade" id="externalDomainsTab" role="tabpanel" aria-labelledby="externalDomains-tab">';
+    $html .= '  <div class="card my-3">';
+    $html .= '    <div class="card-header"><h5>External Domains</h5></div>';
+    $html .= '    <div class="card-body">' . $domainsHtml . '</div>';
+    $html .= '  </div>';
+    $html .= '</div>';
+    
+    $html .= '</div>'; // End tab-content.
+    
+  
+    
+    $html .= '</div>'; // End container.
+    
+    return $html;
+}
 
 
-    
-    
+
+ 
     
     /*===================================================================
      * BROKEN LINKS HANDLER
@@ -2908,133 +3290,287 @@ public function showWhois($whois_data)
      * Site Cards Handler
      *=================================================================== 
      */
-    public function processSiteCards(): string {
-        // Get the DOM from your stored HTML
-        $doc = $this->getDom();
-        $metaTags = $doc->getElementsByTagName('meta');
-        
-        // Initialize an array for different card types.
-        $cards = [
-            'facebook'  => [],
-            'x'         => [], // formerly twitter
-            'linkedin'  => [],
-            'discord'   => [],
-            'pinterest' => [],
-            'whatsapp'  => [],
-            'google'    => []
-        ];
-        
-        // Iterate through all meta tags
-        foreach ($metaTags as $tag) {
-            // Process tags that use "property" (typically Open Graph)
-            if ($tag->hasAttribute('property')) {
-                $property = $tag->getAttribute('property');
-                $content  = $tag->getAttribute('content');
-                if (strpos($property, 'og:') === 0) {
-                    // These tags are used for Facebook, LinkedIn, Pinterest, WhatsApp, and Discord
-                    $cards['facebook'][$property]  = $content;
-                    $cards['linkedin'][$property]  = $content;
-                    $cards['pinterest'][$property] = $content;
-                    $cards['whatsapp'][$property]  = $content;
-                    $cards['discord'][$property]   = $content;
-                }
+    /**
+ * Processes the site cards by extracting meta tags for each social platform,
+ * then computes a score/report for each platform. The final output is a JSON‑encoded
+ * structure with keys:
+ *    - raw: the full raw meta data grouped by platform.
+ *    - report: a computed report that contains, for each platform, the score (Pass =2, To Improve =1, Error =0),
+ *              percentage of required tags present, status ("Pass", "To Improve", "Error"), list of missing tags,
+ *              and a suggestion. It also includes an overall score computed as an average.
+ *
+ * This JSON is then updated into the database (in the "sitecards" column) and stored in the session.
+ *
+ * @return string JSON-encoded combined raw data and report.
+ */
+public function processSiteCards(): string {
+    // Get the DOM from stored HTML.
+    $doc = $this->getDom();
+    $metaTags = $doc->getElementsByTagName('meta');
+    
+    // Initialize an array for different card types.
+    $cards = [
+        'facebook'  => [],
+        'x'         => [], // formerly twitter
+        'linkedin'  => [],
+        'discord'   => [],
+        'pinterest' => [],
+        'whatsapp'  => [],
+        'google'    => []
+    ];
+    
+    // Iterate through all meta tags.
+    foreach ($metaTags as $tag) {
+        // Process tags that use "property" (typically Open Graph).
+        if ($tag->hasAttribute('property')) {
+            $property = $tag->getAttribute('property');
+            $content  = $tag->getAttribute('content');
+            if (strpos($property, 'og:') === 0) {
+                // These tags are used for Facebook, LinkedIn, Pinterest, WhatsApp, and Discord.
+                $cards['facebook'][$property]  = $content;
+                $cards['linkedin'][$property]  = $content;
+                $cards['pinterest'][$property] = $content;
+                $cards['whatsapp'][$property]  = $content;
+                $cards['discord'][$property]   = $content;
             }
-            // Process tags that use "name"
-            if ($tag->hasAttribute('name')) {
-                $name = $tag->getAttribute('name');
-                $content  = $tag->getAttribute('content');
-                if (strpos($name, 'twitter:') === 0) {
-                    // Assign twitter meta tags to the 'x' key
-                    $cards['x'][$name] = $content;
-                }
-                if (strpos($name, 'google:') === 0) {
-                    $cards['google'][$name] = $content;
-                }
+        }
+        // Process tags that use "name"
+        if ($tag->hasAttribute('name')) {
+            $name = $tag->getAttribute('name');
+            $content  = $tag->getAttribute('content');
+            if (strpos($name, 'twitter:') === 0) {
+                // Assign Twitter meta tags to the 'x' key.
+                $cards['x'][$name] = $content;
+            }
+            if (strpos($name, 'google:') === 0) {
+                $cards['google'][$name] = $content;
             }
         }
-        
-        // Ensure that keys expected in the preview arrays exist
-        if (!isset($cards['x']['twitter:url'])) {
-            $cards['x']['twitter:url'] = '';
-        }
-        if (!isset($cards['google']['google:url'])) {
-            $cards['google']['google:url'] = '';
-        }
-        
-        // JSON encode the results.
-        $jsonData = jsonEncode($cards);
-        
-        // Update the sitecards field in your domains_data table.
-        updateToDbPrepared($this->con, 'domains_data', ['sitecards' => $jsonData], ['domain' => $this->domainStr]);
-        
-        return $jsonData;
     }
+    
+    // Ensure keys expected for preview exist.
+    if (!isset($cards['x']['twitter:url'])) {
+        $cards['x']['twitter:url'] = '';
+    }
+    if (!isset($cards['google']['google:url'])) {
+        $cards['google']['google:url'] = '';
+    }
+    
+    /*
+     * Now calculate a score/report for each platform.
+     * For each platform, we compare its meta data to a list of required tags.
+     * For each tag: if present, count as pass; if missing, note it.
+     * We then assign:
+     *    - If 100% of required tags are present: status "Pass" (score 2)
+     *    - If at least 50% are present: "To Improve" (score 1)
+     *    - Otherwise: "Error" (score 0)
+     */
+    $cardTypes = [
+        'facebook' => [
+            'label'    => 'FACEBOOK',
+            'required' => ['og:title', 'og:description', 'og:image', 'og:url', 'og:type'],
+            'preview'  => ['og:title', 'og:description', 'og:image', 'og:url']
+        ],
+        'x' => [
+            'label'    => 'X (FORMERLY TWITTER)',
+            'required' => ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image'],
+            'preview'  => ['twitter:title', 'twitter:description', 'twitter:image', 'twitter:url']
+        ],
+        'linkedin' => [
+            'label'    => 'LINKEDIN',
+            'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'preview'  => ['og:title', 'og:description', 'og:image', 'og:url']
+        ],
+        'discord' => [
+            'label'    => 'DISCORD',
+            'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'preview'  => ['og:title', 'og:description', 'og:image', 'og:url']
+        ],
+        'pinterest' => [
+            'label'    => 'PINTEREST',
+            'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'preview'  => ['og:title', 'og:description', 'og:image', 'og:url']
+        ],
+        'whatsapp' => [
+            'label'    => 'WHATSAPP',
+            'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'preview'  => ['og:title', 'og:description', 'og:image', 'og:url']
+        ],
+        'google' => [
+            'label'    => 'GOOGLE',
+            'required' => ['google:title', 'google:description', 'google:image'],
+            'preview'  => ['google:title', 'google:description', 'google:image', 'google:url']
+        ],
+    ];
+    
+    // We'll compute an individual report per platform.
+    $cardReport = [];
+    $totalScoreAccum = 0;
+    $platformCount = 0;
+    
+    // Use our helper below to calculate score for a single platform.
+    foreach ($cardTypes as $platform => $settings) {
+        $required = $settings['required'];
+        $platformData = $cards[$platform] ?? [];
+        $missing = [];
+        $presentCount = 0;
+        foreach ($required as $tag) {
+            if (isset($platformData[$tag]) && trim($platformData[$tag]) !== "") {
+                $presentCount++;
+            } else {
+                $missing[] = $tag;
+            }
+        }
+        $totalReq = count($required);
+        $percentage = ($totalReq > 0) ? ($presentCount / $totalReq) * 100 : 0;
+        if ($percentage == 100) {
+            $status = "Pass";
+            $score = 2;
+            $suggestion = "All required meta tags are present.";
+        } elseif ($percentage >= 50) {
+            $status = "To Improve";
+            $score = 1;
+            $suggestion = "Missing tags: " . implode(", ", $missing) . ". Consider adding them.";
+        } else {
+            $status = "Error";
+            $score = 0;
+            $suggestion = "Most required tags are missing: " . implode(", ", $missing) . ".";
+        }
+        $cardReport[$platform] = [
+            'label'       => $settings['label'],
+            'score'       => $score,
+            'percentage'  => round($percentage),
+            'status'      => $status,
+            'missing'     => $missing,
+            'suggestion'  => $suggestion
+        ];
+        $totalScoreAccum += $score;
+        $platformCount++;
+    }
+    
+    // Compute overall average score (each platform has max 2 points).
+    $overallPercent = $platformCount > 0 ? round(($totalScoreAccum / ($platformCount * 2)) * 100) : 0;
+    if ($overallPercent == 100) {
+        $overallStatus = "Excellent";
+    } elseif ($overallPercent >= 70) {
+        $overallStatus = "Good";
+    } elseif ($overallPercent >= 50) {
+        $overallStatus = "Average";
+    } else {
+        $overallStatus = "Poor";
+    }
+    
+    // Collect overall suggestions from platforms that are not "Pass".
+    $overallSuggestions = [];
+    foreach ($cardReport as $platform => $rep) {
+        if ($rep['status'] !== "Pass") {
+            $overallSuggestions[] = "{$rep['label']}: " . $rep['suggestion'];
+        }
+    }
+    
+    // Prepare complete report.
+    $completeCardsData = [
+        'raw'    => $cards,
+        'report' => [
+            'platforms'      => $cardReport,
+            'overall_score'  => $overallPercent,
+            'overall_status' => $overallStatus,
+            'suggestions'    => $overallSuggestions
+        ]
+    ];
+    
+    $jsonData = json_encode($completeCardsData);
+    updateToDbPrepared($this->con, 'domains_data', ['sitecards' => $jsonData], ['domain' => $this->domainStr]);
+    $_SESSION['sitecardsReport'] = $completeCardsData;
+    
+    return $jsonData;
+}
     
 
     
-    public function showCards($cardsData): string
-    {
-        $data = jsonDecode($cardsData);
-      
-        if (!is_array($data)) {
-            return '<div class="alert alert-warning">No card data available.</div>';
-        }
-    
-        // Define platforms with labels, required tags, preview keys, and data.
-        $cardTypes = [
-            'facebook' => [
-                'label'    => 'FACEBOOK',
-                'required' => ['og:title', 'og:description', 'og:image', 'og:url', 'og:type'],
-                'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
-                'data'     => $data['facebook'] ?? []
-            ],
-            'x' => [
-                'label'    => 'X (FORMERLY TWITTER)',
-                'required' => ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image'],
-                'preview'  => ['twitter:title', 'twitter:description', 'twitter:image', 'twitter:url'],
-                'data'     => $data['x'] ?? []
-            ],
-            'linkedin' => [
-                'label'    => 'LINKEDIN',
-                'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
-                'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
-                'data'     => $data['linkedin'] ?? []
-            ],
-            'discord' => [
-                'label'    => 'DISCORD',
-                'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
-                'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
-                'data'     => $data['discord'] ?? []
-            ],
-            'pinterest' => [
-                'label'    => 'PINTEREST',
-                'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
-                'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
-                'data'     => $data['pinterest'] ?? []
-            ],
-            'whatsapp' => [
-                'label'    => 'WHATSAPP',
-                'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
-                'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
-                'data'     => $data['whatsapp'] ?? []
-            ],
-            'google' => [
-                'label'    => 'GOOGLE',
-                'required' => ['google:title', 'google:description', 'google:image'],
-                'preview'  => ['google:title', 'google:description', 'google:image', 'google:url'],
-                'data'     => $data['google'] ?? []
-            ],
-        ];
-    
-        // Build the tab navigation using Bootstrap nav-tabs.
-        $tabsNav = '<ul class="nav nav-tabs" id="cardsTab" role="tablist">';
-        $tabsContent = '';
-        $i = 0;
-    
-        foreach ($cardTypes as $key => $card) {
-            $activeClass = ($i === 0) ? 'active' : '';
-            $selected    = ($i === 0) ? 'true' : 'false';
-            $tabsNav .= '
+/**
+ * Displays the social cards along with their score/report.
+ * The display uses Bootstrap tabs for each platform.
+ * Each tab shows the platform's preview, a table of required meta tags (highlighting missing ones),
+ * and its computed score, status, and suggestion.
+ * An overall summary (average score, overall status, and combined suggestions) is shown at the top.
+ *
+ * @param string $cardsData JSON-encoded site card data and report.
+ * @return string HTML output.
+ */
+public function showCards($cardsData): string {
+    $data = jsonDecode($cardsData);
+  
+    if (!is_array($data)) {
+        return '<div class="alert alert-warning">No card data available.</div>';
+    }
+  
+    // Use the same $cardTypes definition as in processSiteCards().
+    $cardTypes = [
+        'facebook' => [
+            'label'    => 'FACEBOOK',
+            'required' => ['og:title', 'og:description', 'og:image', 'og:url', 'og:type'],
+            'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'data'     => $data['raw']['facebook'] ?? []
+        ],
+        'x' => [
+            'label'    => 'X (FORMERLY TWITTER)',
+            'required' => ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image'],
+            'preview'  => ['twitter:title', 'twitter:description', 'twitter:image', 'twitter:url'],
+            'data'     => $data['raw']['x'] ?? []
+        ],
+        'linkedin' => [
+            'label'    => 'LINKEDIN',
+            'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'data'     => $data['raw']['linkedin'] ?? []
+        ],
+        'discord' => [
+            'label'    => 'DISCORD',
+            'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'data'     => $data['raw']['discord'] ?? []
+        ],
+        'pinterest' => [
+            'label'    => 'PINTEREST',
+            'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'data'     => $data['raw']['pinterest'] ?? []
+        ],
+        'whatsapp' => [
+            'label'    => 'WHATSAPP',
+            'required' => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'preview'  => ['og:title', 'og:description', 'og:image', 'og:url'],
+            'data'     => $data['raw']['whatsapp'] ?? []
+        ],
+        'google' => [
+            'label'    => 'GOOGLE',
+            'required' => ['google:title', 'google:description', 'google:image'],
+            'preview'  => ['google:title', 'google:description', 'google:image', 'google:url'],
+            'data'     => $data['raw']['google'] ?? []
+        ],
+    ];
+  
+    // Overall report data.
+    $overallReport = $data['report'] ?? [];
+    $overallScore = $overallReport['overall_score'] ?? 0;
+    $overallStatus = $overallReport['overall_status'] ?? '';
+    $overallSuggestions = $overallReport['suggestions'] ?? [];
+  
+    $overallSummary = '<div class="alert alert-info mt-3">
+                        <strong>Overall Social Card Score:</strong> ' . $overallScore . '% (' . $overallStatus . ')
+                        <br><em>' . (!empty($overallSuggestions) ? implode(" | ", $overallSuggestions) : 'All required meta tags are present.') . '</em>
+                       </div>';
+  
+    // Build tab navigation.
+    $tabsNav = '<ul class="nav nav-tabs" id="cardsTab" role="tablist">';
+    $tabsContent = '';
+    $i = 0;
+  
+    foreach ($cardTypes as $key => $card) {
+        $activeClass = ($i === 0) ? 'active' : '';
+        $selected    = ($i === 0) ? 'true' : 'false';
+        $tabsNav .= '
                 <li class="nav-item" role="presentation">
                     <button class="nav-link ' . $activeClass . '" id="' . $key . '-tab"
                             data-bs-toggle="tab" data-bs-target="#' . $key . '" type="button"
@@ -3043,94 +3579,85 @@ public function showWhois($whois_data)
                     </button>
                 </li>';
     
-            // Extract preview data from the card.
-            list($titleKey, $descKey, $imgKey, $urlKey) = $card['preview'];
-            $cData = $card['data'];
-            $title = $cData[$titleKey] ?? '';
-            $desc  = $cData[$descKey] ?? '';
-            $image = $cData[$imgKey] ?? '';
-            $url   = $cData[$urlKey] ?? '';
+        // Extract preview data.
+        list($titleKey, $descKey, $imgKey, $urlKey) = $card['preview'];
+        $cData = $card['data'];
+        $title = $cData[$titleKey] ?? '';
+        $desc  = $cData[$descKey] ?? '';
+        $image = $cData[$imgKey] ?? '';
+        $url   = $cData[$urlKey] ?? '';
     
-            // Parse domain from URL if available.
-            $domain = '';
-            if (!empty($url)) {
-                $parsed = parse_url($url);
-                $domain = $parsed['host'] ?? '';
-            }
+        // Parse domain from URL.
+        $domain = '';
+        if (!empty($url)) {
+            $parsed = parse_url($url);
+            $domain = $parsed['host'] ?? '';
+        }
     
-            // Build preview HTML via platform-specific method.
-            $previewHtml = $this->buildPlatformPreview($key, $title, $desc, $image, $domain);
+        // Build preview HTML.
+        $previewHtml = $this->buildPlatformPreview($key, $title, $desc, $image, $domain);
     
-            // Build meta tags table.
-            $missing = [];
-            $tableHtml = '<div class="table-responsive">
+        // Build meta tags table for required fields.
+        $missing = [];
+        $tableHtml = '<div class="table-responsive">
                 <table class="table table-sm table-bordered">
                     <thead class="table-light">
                         <tr><th style="width: 40%;">Meta Tag</th><th style="width: 60%;">Value</th></tr>
                     </thead>
                     <tbody>';
-            foreach ($card['required'] as $tag) {
-                $value = $cData[$tag] ?? '';
-                if (empty($value)) {
-                    $tableHtml .= '
+        foreach ($cardTypes[$key]['required'] as $tag) {
+            $value = $cData[$tag] ?? '';
+            if (empty($value)) {
+                $tableHtml .= '
                         <tr>
                             <td>' . htmlspecialchars($tag) . '</td>
                             <td><span class="text-danger">Missing</span></td>
                         </tr>';
-                    $missing[] = $tag;
-                } else {
-                    $tableHtml .= '
+                $missing[] = $tag;
+            } else {
+                $tableHtml .= '
                         <tr>
                             <td>' . htmlspecialchars($tag) . '</td>
                             <td>' . htmlspecialchars($value) . '</td>
                         </tr>';
-                }
             }
-            $tableHtml .= '</tbody></table></div>';
+        }
+        $tableHtml .= '</tbody></table></div>';
     
-            // Build suggestions alert.
-            $suggestions = '';
-            if (!empty($missing)) {
-                $suggestions = '
-                    <div class="alert alert-warning p-2 small mt-3">
-                        <strong>Suggestion:</strong> Missing meta tags: ' . implode(', ', $missing) . '.
-                    </div>';
-            } else {
-                $suggestions = '
-                    <div class="alert alert-success p-2 small mt-3">
-                        All required meta tags are present.
-                    </div>';
-            }
+        // Retrieve the pre-calculated score for this platform from the overall report.
+        $platformReport = $overallReport['platforms'][$key] ?? ['score' => 0, 'status' => 'Error', 'percentage' => 0, 'suggestion' => 'No data'];
+        $scoreBox = '<div class="alert alert-' . ($platformReport['score'] == 2 ? 'success' : ($platformReport['score'] == 1 ? 'warning' : 'danger')) . ' mt-2">
+                        <strong>Status:</strong> ' . $platformReport['status'] . ' (' . $platformReport['percentage'] . '%)<br>
+                        <em>' . $platformReport['suggestion'] . '</em>
+                     </div>';
     
-            // Combine preview and table in a row layout.
-            $fullContent = '
+        // Combine preview, table and score box.
+        $fullContent = '
                 <div class="row">
                     <div class="col-md-5 mb-3">' . $previewHtml . '</div>
-                    <div class="col-md-7 mb-3">' . $tableHtml . $suggestions . '</div>
+                    <div class="col-md-7 mb-3">' . $tableHtml . $scoreBox . '</div>
                 </div>';
     
-            // Build tab pane.
-            $tabsContent .= '
+        // Build tab pane.
+        $tabsContent .= '
                 <div class="tab-pane fade ' . ($i === 0 ? 'show active' : '') . '" id="' . $key . '"
                      role="tabpanel" aria-labelledby="' . $key . '-tab">
                     ' . $fullContent . '
                 </div>';
-            $i++;
-        }
-    
-        $tabsNav .= '</ul>';
-    
-        // Wrap everything in a Bootstrap card.
-        $output = '<div class="card my-3 shadow-sm">
-                      <div class="card-header"><strong>Social Cards Overview</strong></div>
-                      <div class="card-body">'
-                          . $tabsNav .
-                          '<div class="tab-content mt-3" id="cardsTabContent">' . $tabsContent . '</div>
-                      </div>
-                  </div>';
-    
-        return $output;
+        $i++;
     }
+  
+    $tabsNav .= '</ul>';
+  
+    // Wrap everything in a Bootstrap card.
+    $output = '<div class="card my-3 shadow-sm">
+                      <div class="card-header"><strong>Social Cards Overview</strong></div>
+                      <div class="card-body">'.$tabsNav .'
+                      <div class="tab-content mt-3" id="cardsTabContent">' . $tabsContent . '</div>'. $overallSummary .'
+                       </div></div>';
+  
+    return $output;
+}
     
     /**
      * buildPlatformPreview()
@@ -3290,7 +3817,53 @@ public function showWhois($whois_data)
     }
     
 
+    /**
+ * Helper: Calculate the score and report for a given platform's meta data.
+ *
+ * @param array $cardData    The meta data array for the platform.
+ * @param array $requiredTags The list of required meta tags.
+ * @return array An array containing:
+ *   - score: (int) 2 for pass, 1 for to improve, 0 for error.
+ *   - percentage: (int) percentage of required tags present.
+ *   - status: A string "Pass", "To Improve", or "Error".
+ *   - missing: An array of missing meta tags.
+ *   - suggestion: A suggestion message.
+ */
+private function calculateCardScore(array $cardData, array $requiredTags): array {
+    $missing = [];
+    $present = [];
+    foreach ($requiredTags as $tag) {
+        if (isset($cardData[$tag]) && trim($cardData[$tag]) !== "") {
+            $present[] = $tag;
+        } else {
+            $missing[] = $tag;
+        }
+    }
+    $total = count($requiredTags);
+    $presentCount = count($present);
+    $percentage = ($total > 0) ? ($presentCount / $total) * 100 : 0;
     
+    if ($percentage == 100) {
+        $status = "Pass";
+        $score = 2;
+        $suggestion = "All required meta tags are present.";
+    } elseif ($percentage >= 50) {
+        $status = "To Improve";
+        $score = 1;
+        $suggestion = "Missing meta tags: " . implode(", ", $missing) . ". Consider adding them.";
+    } else {
+        $status = "Error";
+        $score = 0;
+        $suggestion = "Most required meta tags are missing: " . implode(", ", $missing) . ".";
+    }
+    return [
+        'score' => $score,
+        'percentage' => round($percentage),
+        'status' => $status,
+        'missing' => $missing,
+        'suggestion' => $suggestion
+    ];
+}
     
     
 
@@ -4741,15 +5314,14 @@ public function showSchema(string $jsonData): string
  *
  * @return string JSON string stored in `page_analytics`.
  */
-public function processPageAnalytics(): string
-{
+public function processPageAnalytics(): string {
     $results = [];
 
     // 1) ENCODING
     $encoding = 'Not Detected';
     if (preg_match('#<meta[^>]+charset=[\'"]?([^\'">]+)#i', $this->html, $m)) {
         $encoding = strtoupper(trim($m[1]));
-    } elseif (preg_match('#<meta[^>]+http-equiv=[\'"]content-type[\'"].+content=[\'"][^\'"]*charset=([^\'"]+)#i', $this->html, $m)) {
+    } elseif (preg_match('#<meta[^>]+http-equiv=[\'"]content-type[\'"].+charset=([^\'">]+)#i', $this->html, $m)) {
         $encoding = strtoupper(trim($m[1]));
     }
     $results['Encoding'] = $encoding;
@@ -4766,6 +5338,7 @@ public function processPageAnalytics(): string
     $results['Doc Type'] = $docType;
 
     // 3) W3C VALIDITY
+    // (This example doesn't run actual validation; ideally, you'd integrate the validator.)
     $results['W3C Validity'] = 'Not validated';
 
     // 4) ANALYTICS
@@ -4812,8 +5385,7 @@ public function processPageAnalytics(): string
 
     // 10) EMBEDDED OBJECTS
     $embeddedFound = (preg_match('#<embed\b[^>]*>#i', $this->html) || preg_match('#<object\b[^>]*>#i', $this->html))
-        ? 'Yes'
-        : 'No';
+        ? 'Yes' : 'No';
     $results['Embedded Objects'] = ($embeddedFound === 'No')
         ? 'No embedded objects detected. This is ideal.'
         : 'Embedded objects detected. Review if they are necessary.';
@@ -4848,7 +5420,7 @@ public function processPageAnalytics(): string
             : 'Canonical tag does not match homepage URL';
     }
 
-    // 16) HREFLANG TAGS (now with tag details)
+    // 16) HREFLANG TAGS
     $hreflang = 'Not Found';
     if (preg_match_all('#<link\s+rel=["\']alternate["\']\s+hreflang=["\']([^"\']+)["\'][^>]+href=["\']([^"\']+)["\']#i', $this->html, $matches)) {
         $count = count($matches[0]);
@@ -4879,7 +5451,7 @@ public function processPageAnalytics(): string
     $results['Favicon and Touch Icons'] = (!empty($faviconUrl))
         ? '<img src="' . htmlspecialchars($faviconUrl) . '" alt="Favicon" style="vertical-align:middle; margin-right:5px;"> Favicon and touch icons detected.'
         : 'No favicon or touch icons detected. This may affect brand recognition in bookmarks and mobile devices.';
-
+ 
     // 20) HTTP STATUS CODE
     $httpStatus = $this->getHttpResponseCode($homepageUrl);
     switch ($httpStatus) {
@@ -4898,7 +5470,7 @@ public function processPageAnalytics(): string
     }
     $results['HTTP Status Code'] = $statusMsg;
 
-    // 21) INDEXABILITY (noindex/nofollow) from meta tag
+    // 21) INDEXABILITY
     $indexability = 'Indexable';
     if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
         $content = strtolower($m[1]);
@@ -4947,13 +5519,11 @@ public function processPageAnalytics(): string
     $xFrame = isset($headers['X-Frame-Options']) ? 'X-Frame-Options Detected' : 'No X-Frame-Options';
     $results['Page Security Headers'] = $csp . ' | ' . $xFrame;
 
-    // --- New Checks Below ---
-
     // 27) GOOGLE SAFE BROWSING
-    $results['Google Safe Browsing'] = safeBrowsing($this->host); // e.g. returns "Safe" or "Unsafe"
+    $results['Google Safe Browsing'] = safeBrowsing($this->host);
 
     // 28) GZIP COMPRESSION
-    $gzipData = $this->processGzip(); // e.g. returns an array like [298251,298188,true,40229,"Data!","Data!"]
+    $gzipData = $this->processGzip();
     if (is_array($gzipData)) {
         list($origSize, $compSize, $isCompressed, $fallbackSize, $headerData, $bodyData) = $gzipData;
         $savings = ($origSize > 0) ? round((($origSize - $compSize) / $origSize) * 100, 2) : 0;
@@ -4977,30 +5547,23 @@ public function processPageAnalytics(): string
     // 31) CDN USAGE
     $cdnUsage = 'No CDN detected';
     if (!empty($headers)) {
-        // Safely extract and convert 'Via' to a single string
-        $serverVal = $headers['Server'] ?? '';
-        if (is_array($serverVal)) {
-            $serverVal = implode(' ', $serverVal);
-        }
-        $serverVal = (string)$serverVal;
-        $serverVal = trim($serverVal);
-        $server    = strtolower($serverVal);
-
-        // Safely extract and convert 'Server' to a single string
         $serverVal = $headers['Server'] ?? '';
         if (is_array($serverVal)) {
             $serverVal = implode(' ', $serverVal);
         }
         $serverVal = trim((string)$serverVal);
-        $server    = strtolower($serverVal);
-
+        $server = strtolower($serverVal);
+        // Note: variable $via was referenced but not defined; assuming it should be obtained similarly.
+        $via = '';
+        if (isset($headers['Via'])) {
+            $via = is_array($headers['Via']) ? implode(' ', $headers['Via']) : $headers['Via'];
+        }
         if (strpos($via, 'cloudflare') !== false || strpos($server, 'cloudflare') !== false) {
             $cdnUsage = 'Likely using Cloudflare';
         } elseif (strpos($via, 'fastly') !== false) {
             $cdnUsage = 'Likely using Fastly';
         }
     }
-    $results['CDN Usage'] = $cdnUsage;
     $results['CDN Usage'] = $cdnUsage;
 
     // 32) NOINDEX TAG
@@ -5047,21 +5610,131 @@ public function processPageAnalytics(): string
         $results['Ads.txt'] = 'Ads.txt not found on your domain. <i class="fa fa-times text-danger"></i> Consider adding an ads.txt file to control your ad inventory.';
     }
 
-    // Store results as JSON in the database.
-    $jsonOutput = json_encode($results);
+    // -----------------------------------------------------------------
+    // Compute score/report based on ideal conditions.
+    // For each check in a defined set, we compare the actual result to an ideal.
+    $scoreDetails = [];
+    $totalScore = 0;
+    $maxPoints = 0;
+    
+    // Define the ideal conditions (adjust as necessary).
+    $idealConditions = [
+        'Encoding' => 'UTF-8',
+        'Doc Type' => 'HTML5',
+        'W3C Validity' => 'Valid',
+        'Analytics' => 'Google Analytics Detected',
+        'Mobile Compatibility' => 'Yes',
+        'IP Canonicalization' => 'No redirection from IP',
+        'XML Sitemap' => 'Found',
+        'Robots.txt' => 'Found',
+        'URL Rewrite' => 'Clean URLs detected',
+        'Embedded Objects' => 'No embedded objects detected. This is ideal.',
+        'Iframe' => 'No',
+        'Usability' => 'Mobile meta tag found. Possibly good usability.',
+        'Canonical Tag' => 'Found',
+        'Canonical Tag Accuracy' => 'Canonical tag accurately matches homepage URL',
+        'Hreflang Tags' => 'Found',
+        'AMP HTML' => 'Found',
+        'Robots Meta Tag' => 'Found',
+        'Favicon and Touch Icons' => 'Favicon and touch icons detected',
+        'HTTP Status Code' => 'HTTP 200 OK',
+        'Indexability' => 'Indexable',
+        'URL Canonicalization & Redirects' => 'Canonical URL matches homepage',
+        'Content Freshness' => 'Detected',
+        'Language and Localization Tags' => 'Detected',
+        'Error Page Handling' => 'Standard Page',
+        'Page Security Headers' => 'CSP Detected',
+        'Google Safe Browsing' => 'Safe',
+        'Gzip Compression' => 'High',  // e.g. saving >50%
+        'Structured Data' => 'Structured data detected',
+        'Cache Headers' => 'Cache headers detected',
+        'CDN Usage' => 'Likely using Cloudflare',
+        'Noindex Tag' => 'No',
+        'Nofollow Tag' => 'No',
+        'Meta Refresh' => 'Not Detected',
+        'SPF Record' => 'SPF record found',
+        'Ads.txt' => 'Found'
+    ];
+    
+    foreach ($idealConditions as $check => $ideal) {
+        $maxPoints += 2;
+        $actual = $results[$check] ?? 'Not Found';
+        // For some checks, we use a substring match.
+        if (stripos($actual, $ideal) !== false) {
+            $scoreDetails[$check] = "Pass";
+            $totalScore += 2;
+        } else {
+            // If actual is not "Not Found", mark it as "To Improve", else "Error".
+            if (stripos($actual, 'Not Found') === false && stripos($actual, 'No') === false) {
+                $scoreDetails[$check] = "To Improve";
+                $totalScore += 1;
+            } else {
+                $scoreDetails[$check] = "Error";
+            }
+        }
+    }
+    
+    $overallScorePercent = $maxPoints > 0 ? round(($totalScore / $maxPoints) * 100) : 0;
+    if ($overallScorePercent == 100) {
+        $overallStatus = "Excellent";
+    } elseif ($overallScorePercent >= 70) {
+        $overallStatus = "Good";
+    } elseif ($overallScorePercent >= 50) {
+        $overallStatus = "Average";
+    } else {
+        $overallStatus = "Poor";
+    }
+    
+    // Build an overall comment.
+    $overallComment = "Page analytics computed. ";
+    if ($overallScorePercent >= 90) {
+        $overallComment .= "Excellent technical SEO performance.";
+    } elseif ($overallScorePercent >= 70) {
+        $overallComment .= "Good performance, but there is room for improvement.";
+    } elseif ($overallScorePercent >= 50) {
+        $overallComment .= "Average performance; review the suggestions.";
+    } else {
+        $overallComment .= "Poor technical SEO; significant improvements are needed.";
+    }
+    
+    $finalReport = [
+        'raw' => $results,
+        'report' => [
+            'score' => $totalScore,
+            'max_points' => $maxPoints,
+            'percent' => $overallScorePercent,
+            'details' => $scoreDetails,
+            'comment' => $overallComment
+        ]
+    ];
+    $_SESSION['pageAnalyticsReport'] = $finalReport;
+    $jsonOutput = json_encode($finalReport);
     updateToDbPrepared($this->con, 'domains_data', ['page_analytics' => $jsonOutput], ['domain' => $this->domainStr]);
-
+    
     return $jsonOutput;
 }
 
 
-public function showPageAnalytics(string $jsonData): string
-{
+/**
+ * Displays the page analytics data in a grouped, user-friendly layout.
+ *
+ * The data is grouped into three categories:
+ *   1. General Information
+ *   2. Meta Tags & SEO Settings
+ *   3. Technical & Advanced
+ *
+ * An overall summary (score, points, and comment) is displayed at the top,
+ * and suggestions (if any) are listed below.
+ *
+ * @param string $jsonData JSON-encoded page analytics data.
+ * @return string HTML output.
+ */
+public function showPageAnalytics(string $jsonData): string {
     $data = json_decode($jsonData, true);
     if (!is_array($data)) {
         return '<div class="alert alert-danger">Invalid or missing page analytics data.</div>';
     }
-
+    
     // Define groups and the keys (headings) that belong in each group.
     $groups = [
         "General Information" => [
@@ -5107,15 +5780,20 @@ public function showPageAnalytics(string $jsonData): string
             "Ads.txt"
         ]
     ];
-
+    
     // Build cards for each check.
     $cards = [];
     $suggestions = [];
-    foreach ($data as $heading => $value) {
-        $cards[$heading] = $this->buildCardData($heading, $value, $suggestions);
+    foreach ($data['raw'] as $heading => $value) {
+        // Only include headings that are in our defined groups.
+        foreach ($groups as $group) {
+            if (in_array($heading, $group)) {
+                $cards[$heading] = $this->buildCardData($heading, $value, $suggestions);
+            }
+        }
     }
-
-    // Build HTML output with groups.
+    
+    // Build HTML output by groups.
     $html = '<div class="container my-4">';
     foreach ($groups as $groupName => $headings) {
         $html .= '<h3 class="mb-3">' . htmlspecialchars($groupName) . '</h3>';
@@ -5131,7 +5809,7 @@ public function showPageAnalytics(string $jsonData): string
             $html .= '    <div class="me-3" style="font-size:1.8rem;">' . $card['icon'] . '</div>';
             $html .= '    <div>';
             $html .= '      <h5 class="card-title mb-1">' . htmlspecialchars($card['heading']) . '</h5>';
-            // If the description has HTML (e.g. for favicon or ads.txt), output raw.
+            // If the description has HTML (for keys like Favicon or Ads.txt), output it raw.
             if (in_array($card['heading'], ['Favicon and Touch Icons', 'Ads.txt'])) {
                 $html .= '      <p class="card-text text-muted small mb-0">' . $card['description'] . '</p>';
             } else {
@@ -5144,22 +5822,32 @@ public function showPageAnalytics(string $jsonData): string
         }
         $html .= '</div>';
     }
-
+    
+    // Overall summary.
+    $overallReport = $data['report'] ?? [];
+    $summaryHtml = '<div class="alert alert-info mt-4">';
+    $summaryHtml .= '<strong>Overall Page Analytics Score:</strong> ' . ($overallReport['percent'] ?? 0) . '%<br>';
+    $summaryHtml .= '<strong>Score:</strong> ' . ($overallReport['score'] ?? 0) . ' out of ' . ($overallReport['max_points'] ?? 0) . '<br>';
+    $summaryHtml .= '<strong>Comment:</strong> ' . ($overallReport['comment'] ?? '');
+    $summaryHtml .= '</div>';
+    
     // Optionally, display suggestions.
     if (!empty($suggestions)) {
-        $html .= '<div class="card border-warning mt-4">';
-        $html .= '  <div class="card-header bg-warning text-dark"><strong>Suggestions for Improvement</strong></div>';
-        $html .= '  <div class="card-body"><ul class="mb-0">';
+        $summaryHtml .= '<div class="card border-warning mt-4">';
+        $summaryHtml .= '  <div class="card-header bg-warning text-dark"><strong>Suggestions for Improvement</strong></div>';
+        $summaryHtml .= '  <div class="card-body"><ul class="mb-0">';
         foreach ($suggestions as $sug) {
-            $html .= '<li>' . htmlspecialchars($sug) . '</li>';
+            $summaryHtml .= '<li>' . htmlspecialchars($sug) . '</li>';
         }
-        $html .= '  </ul></div>';
-        $html .= '</div>';
+        $summaryHtml .= '  </ul></div>';
+        $summaryHtml .= '</div>';
     }
-
+    
+    $html .= $summaryHtml;
     $html .= '</div>';
     return $html;
 }
+ 
 
 
 /**

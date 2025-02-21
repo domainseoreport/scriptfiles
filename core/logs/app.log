@@ -1676,3 +1676,1276 @@
 [2025-02-21 20:49:15] [info] Called https://www.jaipurroutes.com
 [2025-02-21 20:49:15] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
 [2025-02-21 20:50:19] [debug] In Else 
+[2025-02-21 21:11:14] [debug] In Else 
+[2025-02-21 21:11:14] [debug] Not Valid Domain provided: 
+[2025-02-21 21:11:18] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-21 21:11:18] [debug] Not Valid Domain provided: 
+[2025-02-21 21:11:18] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:18] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:18] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 21:11:18] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:18] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:18] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 21:11:19] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:19] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:19] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-21 21:11:19] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:19] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:19] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 21:11:19] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 21:11:19] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:19] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:19] [debug] Page Analytic report jaipurroutes.com
+[2025-02-21 21:11:31] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:31] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:31] [debug] Page Insights report for jaipurroutes.com
+[2025-02-21 21:11:55] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:55] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:55] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-21 21:11:57] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:57] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:57] [debug] Site Cards for jaipurroutes.com
+[2025-02-21 21:11:57] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:57] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:57] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:57] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:57] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-21 21:11:57] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:11:57] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:11:57] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-21 21:12:04] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:12:04] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:12:04] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:12:04] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:18:08] [debug] In Else 
+[2025-02-21 21:18:08] [debug] Not Valid Domain provided: 
+[2025-02-21 21:21:32] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-21 21:21:32] [debug] Not Valid Domain provided: 
+[2025-02-21 21:21:32] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:21:32] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:21:32] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 21:21:33] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:21:33] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:21:33] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 21:21:33] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:21:33] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:21:33] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-21 21:21:33] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:21:33] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:21:33] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 21:21:33] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 21:21:33] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:21:33] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:21:33] [debug] Page Analytic report jaipurroutes.com
+[2025-02-21 21:21:45] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:21:45] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:21:45] [debug] Page Insights report for jaipurroutes.com
+[2025-02-21 21:22:10] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:22:10] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:22:10] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-21 21:22:12] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:22:12] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:22:12] [debug] Site Cards for jaipurroutes.com
+[2025-02-21 21:22:12] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:22:12] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:22:12] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:22:12] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:22:12] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-21 21:22:12] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:22:12] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:22:12] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-21 21:22:43] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:22:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:22:43] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:22:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:25:33] [debug] In Else 
+[2025-02-21 21:25:33] [debug] Not Valid Domain provided: 
+[2025-02-21 21:26:27] [debug] In Else 
+[2025-02-21 21:26:27] [debug] Not Valid Domain provided: 
+[2025-02-21 21:26:50] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-21 21:26:50] [debug] Not Valid Domain provided: 
+[2025-02-21 21:26:51] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:26:51] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:26:51] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 21:26:51] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:26:51] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:26:51] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 21:26:51] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:26:51] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:26:51] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-21 21:26:51] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:26:51] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:26:51] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 21:26:51] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 21:26:51] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:26:51] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:26:51] [debug] Page Analytic report jaipurroutes.com
+[2025-02-21 21:27:05] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:27:05] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:27:05] [debug] Page Insights report for jaipurroutes.com
+[2025-02-21 21:27:29] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:27:29] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:27:29] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-21 21:27:31] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:27:31] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:27:31] [debug] Site Cards for jaipurroutes.com
+[2025-02-21 21:27:31] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:27:31] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:27:31] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:27:31] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:27:31] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-21 21:27:31] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:27:31] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:27:31] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-21 21:27:39] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:27:39] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:27:39] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:27:39] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:28:25] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-21 21:28:25] [debug] Not Valid Domain provided: 
+[2025-02-21 21:28:26] [info] Called https://www.silverandgem.com
+[2025-02-21 21:28:26] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:28:26] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-21 21:28:26] [info] Called https://www.silverandgem.com
+[2025-02-21 21:28:26] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:28:26] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-21 21:28:26] [info] Called https://www.silverandgem.com
+[2025-02-21 21:28:26] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:28:26] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-21 21:28:26] [info] Called https://www.silverandgem.com
+[2025-02-21 21:28:26] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:28:26] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-21 21:28:26] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-21 21:28:26] [info] Called https://www.silverandgem.com
+[2025-02-21 21:28:26] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:28:26] [debug] Page Analytic report silverandgem.com
+[2025-02-21 21:28:30] [info] Called https://www.silverandgem.com
+[2025-02-21 21:28:30] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:28:30] [debug] Page Insights report for silverandgem.com
+[2025-02-21 21:29:00] [info] Called https://www.silverandgem.com
+[2025-02-21 21:29:00] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:29:00] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-21 21:29:03] [info] Called https://www.silverandgem.com
+[2025-02-21 21:29:03] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:29:03] [debug] Site Cards for silverandgem.com
+[2025-02-21 21:29:03] [info] Called https://www.silverandgem.com
+[2025-02-21 21:29:03] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:29:03] [info] Called https://www.silverandgem.com
+[2025-02-21 21:29:03] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:29:03] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-21 21:29:03] [info] Called https://www.silverandgem.com
+[2025-02-21 21:29:03] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:29:03] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-21 21:29:09] [info] Called https://www.silverandgem.com
+[2025-02-21 21:29:09] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:29:09] [info] Called https://www.silverandgem.com
+[2025-02-21 21:29:09] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 21:30:59] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-21 21:30:59] [debug] Not Valid Domain provided: 
+[2025-02-21 21:30:59] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:30:59] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:30:59] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 21:31:00] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:00] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:00] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 21:31:00] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:00] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:00] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-21 21:31:00] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:00] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:00] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 21:31:00] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 21:31:00] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:00] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:00] [debug] Page Analytic report jaipurroutes.com
+[2025-02-21 21:31:13] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:13] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:13] [debug] Page Insights report for jaipurroutes.com
+[2025-02-21 21:31:33] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:33] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:33] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-21 21:31:35] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:35] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:35] [debug] Site Cards for jaipurroutes.com
+[2025-02-21 21:31:35] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:35] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:35] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:35] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:35] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-21 21:31:35] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:35] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:35] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-21 21:31:43] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 21:31:43] [info] Called https://www.jaipurroutes.com
+[2025-02-21 21:31:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:38:49] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-21 22:38:49] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:38:49] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:38:49] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 22:38:49] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:38:49] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:38:49] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 22:38:49] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:38:49] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:38:49] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-21 22:38:50] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:38:50] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:38:50] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 22:38:50] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 22:38:50] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:38:50] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:38:50] [debug] Page Analytic report jaipurroutes.com
+[2025-02-21 22:38:59] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:38:59] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:38:59] [debug] Page Insights report for jaipurroutes.com
+[2025-02-21 22:39:24] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:39:24] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:39:24] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-21 22:39:25] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:39:25] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:39:25] [debug] Site Cards for jaipurroutes.com
+[2025-02-21 22:39:26] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:39:26] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:39:26] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:39:26] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:39:26] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-21 22:39:26] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:39:26] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:39:26] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-21 22:39:32] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:39:32] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:39:32] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:39:32] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:40:29] [debug] In Else 
+[2025-02-21 22:41:36] [debug] In Else 
+[2025-02-21 22:41:37] [debug] In Else 
+[2025-02-21 22:41:38] [debug] In Else 
+[2025-02-21 22:41:39] [debug] In Else 
+[2025-02-21 22:45:41] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-21 22:45:42] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:45:42] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:45:42] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 22:45:42] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:45:42] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:45:42] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 22:45:42] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:45:42] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:45:42] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-21 22:45:42] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:45:42] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:45:42] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 22:45:42] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 22:45:42] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:45:42] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:45:42] [debug] Page Analytic report jaipurroutes.com
+[2025-02-21 22:45:50] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:45:50] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:45:50] [debug] Page Insights report for jaipurroutes.com
+[2025-02-21 22:46:15] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:15] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:15] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:17] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:17] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:17] [debug] Site Cards for jaipurroutes.com
+[2025-02-21 22:46:17] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:17] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:17] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:17] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:17] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:17] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:17] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:17] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:22] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:22] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:22] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:22] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:26] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-21 22:46:26] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:26] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:26] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:26] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:26] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:26] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:26] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:26] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:26] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:26] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:26] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:26] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:26] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:26] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:26] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:26] [debug] Page Analytic report jaipurroutes.com
+[2025-02-21 22:46:33] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:33] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:33] [debug] Page Insights report for jaipurroutes.com
+[2025-02-21 22:46:34] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:34] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:34] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:36] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:36] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:36] [debug] Site Cards for jaipurroutes.com
+[2025-02-21 22:46:36] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:36] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:36] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:36] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:36] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:36] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:36] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:36] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-21 22:46:41] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:41] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 22:46:42] [info] Called https://www.jaipurroutes.com
+[2025-02-21 22:46:42] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:17:39] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-21 23:17:39] [debug] Not Valid Domain provided: 
+[2025-02-21 23:17:39] [info] Called https://www.silverandgem.com
+[2025-02-21 23:17:39] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:17:39] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-21 23:17:39] [info] Called https://www.silverandgem.com
+[2025-02-21 23:17:39] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:17:39] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-21 23:17:39] [info] Called https://www.silverandgem.com
+[2025-02-21 23:17:39] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:17:39] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-21 23:17:39] [info] Called https://www.silverandgem.com
+[2025-02-21 23:17:39] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:17:39] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-21 23:17:39] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-21 23:17:39] [info] Called https://www.silverandgem.com
+[2025-02-21 23:17:39] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:17:39] [debug] Page Analytic report silverandgem.com
+[2025-02-21 23:17:42] [info] Called https://www.silverandgem.com
+[2025-02-21 23:17:42] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:17:42] [debug] Page Insights report for silverandgem.com
+[2025-02-21 23:18:12] [info] Called https://www.silverandgem.com
+[2025-02-21 23:18:12] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:18:12] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-21 23:18:13] [info] Called https://www.silverandgem.com
+[2025-02-21 23:18:13] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:18:13] [debug] Site Cards for silverandgem.com
+[2025-02-21 23:18:13] [info] Called https://www.silverandgem.com
+[2025-02-21 23:18:13] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:18:13] [info] Called https://www.silverandgem.com
+[2025-02-21 23:18:13] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:18:13] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-21 23:18:13] [info] Called https://www.silverandgem.com
+[2025-02-21 23:18:13] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:18:13] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-21 23:18:17] [info] Called https://www.silverandgem.com
+[2025-02-21 23:18:17] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:18:17] [info] Called https://www.silverandgem.com
+[2025-02-21 23:18:17] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-21 23:24:15] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-21 23:24:15] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:16] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:16] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 23:24:16] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:16] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:16] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 23:24:16] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:16] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:16] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-21 23:24:16] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:16] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:16] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 23:24:16] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 23:24:16] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:16] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:16] [debug] Page Analytic report jaipurroutes.com
+[2025-02-21 23:24:26] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:26] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:26] [debug] Page Insights report for jaipurroutes.com
+[2025-02-21 23:24:48] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:48] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:48] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-21 23:24:49] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:49] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:49] [debug] Site Cards for jaipurroutes.com
+[2025-02-21 23:24:49] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:49] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:49] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:49] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:49] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-21 23:24:49] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:49] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:49] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-21 23:24:55] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:55] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:24:55] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:24:55] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:27:24] [debug] In Else 
+[2025-02-21 23:27:27] [debug] In Else 
+[2025-02-21 23:27:53] [debug] In Else 
+[2025-02-21 23:30:19] [debug] In Else 
+[2025-02-21 23:31:01] [debug] In Else 
+[2025-02-21 23:41:10] [debug] In Else 
+[2025-02-21 23:41:26] [debug] In Else 
+[2025-02-21 23:41:36] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-21 23:41:36] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:41:36] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:41:36] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 23:41:36] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:41:36] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:41:36] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 23:41:36] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:41:36] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:41:36] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-21 23:41:36] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:41:36] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:41:36] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 23:41:36] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 23:41:37] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:41:37] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:41:37] [debug] Page Analytic report jaipurroutes.com
+[2025-02-21 23:41:47] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:41:47] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:41:47] [debug] Page Insights report for jaipurroutes.com
+[2025-02-21 23:42:09] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:42:09] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:42:09] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-21 23:42:11] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:42:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:42:11] [debug] Site Cards for jaipurroutes.com
+[2025-02-21 23:42:11] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:42:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:42:11] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:42:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:42:11] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-21 23:42:11] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:42:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:42:11] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-21 23:42:17] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:42:17] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:42:17] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:42:17] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:42:20] [debug] In Else 
+[2025-02-21 23:50:33] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-21 23:50:33] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:50:33] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:50:33] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 23:50:33] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:50:33] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:50:33] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 23:50:33] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:50:33] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:50:33] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-21 23:50:33] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:50:33] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:50:34] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-21 23:50:34] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-21 23:50:34] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:50:34] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:50:34] [debug] Page Analytic report jaipurroutes.com
+[2025-02-21 23:50:42] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:50:42] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:50:42] [debug] Page Insights report for jaipurroutes.com
+[2025-02-21 23:51:03] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:51:03] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:51:03] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-21 23:51:05] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:51:05] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:51:05] [debug] Site Cards for jaipurroutes.com
+[2025-02-21 23:51:05] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:51:05] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:51:05] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:51:05] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:51:05] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-21 23:51:05] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:51:05] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:51:05] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-21 23:51:11] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:51:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:51:11] [info] Called https://www.jaipurroutes.com
+[2025-02-21 23:51:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-21 23:52:38] [debug] In Else 
+[2025-02-21 23:54:00] [debug] In Else 
+[2025-02-21 23:54:29] [debug] In Else 
+[2025-02-22 00:07:26] [debug] In Else 
+[2025-02-22 00:07:34] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-22 00:07:34] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:07:35] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:07:35] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 00:07:35] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:07:35] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:07:35] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 00:07:35] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:07:35] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:07:35] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-22 00:07:35] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:07:35] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:07:35] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 00:07:35] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 00:07:35] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:07:35] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:07:35] [debug] Page Analytic report jaipurroutes.com
+[2025-02-22 00:07:45] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:07:45] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:07:45] [debug] Page Insights report for jaipurroutes.com
+[2025-02-22 00:08:05] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:08:05] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:08:05] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-22 00:08:07] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:08:07] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:08:07] [debug] Site Cards for jaipurroutes.com
+[2025-02-22 00:08:07] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:08:07] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:08:07] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:08:07] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:08:07] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-22 00:08:07] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:08:07] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:08:07] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-22 00:08:12] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:08:12] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:08:12] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:08:12] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:31:28] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-22 00:31:28] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:31:28] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:31:28] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 00:31:29] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:31:29] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:31:29] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 00:31:29] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:31:29] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:31:29] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-22 00:31:29] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:31:29] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:31:29] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 00:31:29] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 00:31:29] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:31:29] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:31:29] [debug] Page Analytic report jaipurroutes.com
+[2025-02-22 00:31:38] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:31:38] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:31:38] [debug] Page Insights report for jaipurroutes.com
+[2025-02-22 00:31:59] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:31:59] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:31:59] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-22 00:32:00] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:32:00] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:32:00] [debug] Site Cards for jaipurroutes.com
+[2025-02-22 00:32:00] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:32:00] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:32:00] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:32:00] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:32:00] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-22 00:32:00] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:32:00] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:32:00] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-22 00:32:10] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:32:10] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 00:32:10] [info] Called https://www.jaipurroutes.com
+[2025-02-22 00:32:10] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:15] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-22 01:07:16] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:16] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:16] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 01:07:16] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:16] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:16] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 01:07:16] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:16] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:16] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-22 01:07:16] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:16] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:16] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 01:07:16] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 01:07:16] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:16] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:16] [debug] Page Analytic report jaipurroutes.com
+[2025-02-22 01:07:22] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:22] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:22] [debug] Page Insights report for jaipurroutes.com
+[2025-02-22 01:07:43] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:43] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-22 01:07:45] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:45] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:45] [debug] Site Cards for jaipurroutes.com
+[2025-02-22 01:07:45] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:45] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:45] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:45] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:45] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-22 01:07:45] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:07:45] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:07:45] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-22 01:08:11] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:08:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:08:11] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:08:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:10] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-22 01:11:10] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:11] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 01:11:11] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:11] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 01:11:11] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:11] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-22 01:11:11] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:11] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 01:11:11] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 01:11:11] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:11] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:11] [debug] Page Analytic report jaipurroutes.com
+[2025-02-22 01:11:21] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:21] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:21] [debug] Page Insights report for jaipurroutes.com
+[2025-02-22 01:11:41] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:41] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:41] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-22 01:11:43] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:43] [debug] Site Cards for jaipurroutes.com
+[2025-02-22 01:11:43] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:43] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:43] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-22 01:11:43] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:43] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-22 01:11:49] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:49] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:11:49] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:11:49] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:24] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-22 01:37:24] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:24] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:24] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 01:37:24] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:24] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:24] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 01:37:24] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:24] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:24] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-22 01:37:24] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:24] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:24] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 01:37:24] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 01:37:24] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:24] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:24] [debug] Page Analytic report jaipurroutes.com
+[2025-02-22 01:37:31] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:31] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:31] [debug] Page Insights report for jaipurroutes.com
+[2025-02-22 01:37:54] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:54] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:54] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-22 01:37:55] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:55] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:55] [debug] Site Cards for jaipurroutes.com
+[2025-02-22 01:37:55] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:55] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:55] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:55] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:55] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-22 01:37:55] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:37:55] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:37:55] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-22 01:38:01] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:38:01] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:38:01] [info] Called https://www.jaipurroutes.com
+[2025-02-22 01:38:01] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 01:38:16] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 01:38:16] [debug] Not Valid Domain provided: 
+[2025-02-22 01:38:17] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:17] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:17] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 01:38:17] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:17] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:17] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 01:38:17] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:17] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:17] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 01:38:17] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:17] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:17] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 01:38:17] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 01:38:17] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:17] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:17] [debug] Page Analytic report silverandgem.com
+[2025-02-22 01:38:19] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:19] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:19] [debug] Page Insights report for silverandgem.com
+[2025-02-22 01:38:49] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:49] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:49] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 01:38:49] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:49] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:49] [debug] Site Cards for silverandgem.com
+[2025-02-22 01:38:50] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:50] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:50] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:50] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:50] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 01:38:50] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:50] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:50] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 01:38:54] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:54] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:38:54] [info] Called https://www.silverandgem.com
+[2025-02-22 01:38:54] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 01:44:04] [debug] In Else 
+[2025-02-22 01:44:04] [debug] Not Valid Domain provided: 
+[2025-02-22 01:45:00] [debug] In Else 
+[2025-02-22 01:45:00] [debug] Not Valid Domain provided: 
+[2025-02-22 01:59:01] [debug] In Else 
+[2025-02-22 01:59:01] [debug] Not Valid Domain provided: 
+[2025-02-22 02:00:04] [debug] In Else 
+[2025-02-22 02:00:04] [debug] Not Valid Domain provided: 
+[2025-02-22 02:00:07] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:00:07] [debug] Not Valid Domain provided: 
+[2025-02-22 02:00:07] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:07] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:07] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:00:07] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:07] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:07] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:00:07] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:07] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:07] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:00:07] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:07] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:07] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:00:07] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:00:08] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:08] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:08] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:00:09] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:10] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:00:40] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:40] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:40] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:00:40] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:40] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:40] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:00:40] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:40] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:40] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:40] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:40] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:00:40] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:40] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:40] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:00:45] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:45] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:00:45] [info] Called https://www.silverandgem.com
+[2025-02-22 02:00:45] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:09] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:04:10] [debug] Not Valid Domain provided: 
+[2025-02-22 02:04:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:10] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:04:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:10] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:04:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:10] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:04:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:10] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:04:10] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:04:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:10] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:04:18] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-22 02:04:18] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:18] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:18] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:04:49] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-22 02:04:49] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:49] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:49] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:04:50] [debug] Not Valid Domain provided: 
+[2025-02-22 02:04:50] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:50] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:50] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:04:50] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:50] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:50] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:50] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:50] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:04:50] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:04:50] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:04:50] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 02:04:50] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:50] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:50] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:04:54] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:04:54] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:04:54] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 02:04:54] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:54] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:54] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:04:54] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:04:54] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-22 02:04:54] [info] Called https://www.silverandgem.com
+[2025-02-22 02:04:54] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:04:54] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:04:54] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:04:54] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 02:04:54] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 02:04:54] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:04:54] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:04:54] [debug] Page Analytic report jaipurroutes.com
+[2025-02-22 02:05:03] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:05:03] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:05:03] [debug] Page Insights report for jaipurroutes.com
+[2025-02-22 02:05:27] [debug] In Else 
+[2025-02-22 02:05:27] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:05:27] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:05:27] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-22 02:05:29] [debug] Not Valid Domain provided: 
+[2025-02-22 02:05:29] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:05:29] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:05:29] [debug] Site Cards for jaipurroutes.com
+[2025-02-22 02:05:29] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:05:29] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:05:29] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:05:29] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:05:29] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-22 02:05:29] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:05:29] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:05:29] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-22 02:05:34] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:05:34] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:05:34] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:05:34] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:12:46] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:12:46] [debug] Not Valid Domain provided: 
+[2025-02-22 02:12:47] [info] Called https://www.silverandgem.com
+[2025-02-22 02:12:47] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:12:47] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:12:47] [info] Called https://www.silverandgem.com
+[2025-02-22 02:12:47] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:12:47] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:12:47] [info] Called https://www.silverandgem.com
+[2025-02-22 02:12:47] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:12:47] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:12:47] [info] Called https://www.silverandgem.com
+[2025-02-22 02:12:47] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:12:47] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:12:47] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:12:47] [info] Called https://www.silverandgem.com
+[2025-02-22 02:12:47] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:12:47] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:12:49] [info] Called https://www.silverandgem.com
+[2025-02-22 02:12:49] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:12:49] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:13:19] [info] Called https://www.silverandgem.com
+[2025-02-22 02:13:19] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:13:19] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:13:20] [info] Called https://www.silverandgem.com
+[2025-02-22 02:13:20] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:13:20] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:13:20] [info] Called https://www.silverandgem.com
+[2025-02-22 02:13:20] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:13:20] [info] Called https://www.silverandgem.com
+[2025-02-22 02:13:20] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:13:20] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:13:20] [info] Called https://www.silverandgem.com
+[2025-02-22 02:13:20] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:13:20] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:13:24] [info] Called https://www.silverandgem.com
+[2025-02-22 02:13:24] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:13:24] [info] Called https://www.silverandgem.com
+[2025-02-22 02:13:24] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:24] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:15:24] [debug] Not Valid Domain provided: 
+[2025-02-22 02:15:24] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:24] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:24] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:15:25] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:25] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:25] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:15:25] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:25] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:25] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:15:25] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:25] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:25] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:15:25] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:15:25] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:25] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:25] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:15:27] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:27] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:27] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:15:57] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:57] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:57] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:15:57] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:57] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:57] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:15:57] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:57] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:57] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:57] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:57] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:15:57] [info] Called https://www.silverandgem.com
+[2025-02-22 02:15:57] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:15:57] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:16:02] [info] Called https://www.silverandgem.com
+[2025-02-22 02:16:02] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:16:02] [info] Called https://www.silverandgem.com
+[2025-02-22 02:16:02] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:16:48] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:16:48] [debug] Not Valid Domain provided: 
+[2025-02-22 02:16:48] [info] Called https://www.silverandgem.com
+[2025-02-22 02:16:48] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:16:48] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:16:48] [info] Called https://www.silverandgem.com
+[2025-02-22 02:16:48] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:16:48] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:16:48] [info] Called https://www.silverandgem.com
+[2025-02-22 02:16:48] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:16:48] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:16:48] [info] Called https://www.silverandgem.com
+[2025-02-22 02:16:48] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:16:48] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:16:48] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:16:48] [info] Called https://www.silverandgem.com
+[2025-02-22 02:16:48] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:16:48] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:16:50] [info] Called https://www.silverandgem.com
+[2025-02-22 02:16:50] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:16:50] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:17:18] [info] Called https://www.silverandgem.com
+[2025-02-22 02:17:18] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:17:18] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:17:19] [info] Called https://www.silverandgem.com
+[2025-02-22 02:17:19] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:17:19] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:17:19] [info] Called https://www.silverandgem.com
+[2025-02-22 02:17:19] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:17:19] [info] Called https://www.silverandgem.com
+[2025-02-22 02:17:19] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:17:19] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:17:19] [info] Called https://www.silverandgem.com
+[2025-02-22 02:17:19] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:17:19] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:17:23] [info] Called https://www.silverandgem.com
+[2025-02-22 02:17:23] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:17:23] [info] Called https://www.silverandgem.com
+[2025-02-22 02:17:23] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:22:36] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:22:36] [debug] Not Valid Domain provided: 
+[2025-02-22 02:22:37] [info] Called https://www.silverandgem.com
+[2025-02-22 02:22:37] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:22:37] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:22:37] [info] Called https://www.silverandgem.com
+[2025-02-22 02:22:37] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:22:37] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:22:37] [info] Called https://www.silverandgem.com
+[2025-02-22 02:22:37] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:22:37] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:22:37] [info] Called https://www.silverandgem.com
+[2025-02-22 02:22:37] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:22:37] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:22:37] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:22:37] [info] Called https://www.silverandgem.com
+[2025-02-22 02:22:37] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:22:37] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:22:39] [info] Called https://www.silverandgem.com
+[2025-02-22 02:22:39] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:22:39] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:23:09] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:09] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:09] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:23:09] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:09] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:09] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:23:09] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:09] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:09] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:09] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:09] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:23:09] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:09] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:09] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:23:14] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:14] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:14] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:14] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:38] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:23:38] [debug] Not Valid Domain provided: 
+[2025-02-22 02:23:38] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:38] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:38] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:23:38] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:38] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:38] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:23:38] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:38] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:38] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:23:38] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:38] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:38] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:23:38] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:23:39] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:39] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:39] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:23:40] [info] Called https://www.silverandgem.com
+[2025-02-22 02:23:40] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:23:40] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:24:09] [info] Called https://www.silverandgem.com
+[2025-02-22 02:24:09] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:24:09] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:24:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:24:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:24:10] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:24:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:24:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:24:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:24:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:24:10] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:24:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:24:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:24:10] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:24:14] [info] Called https://www.silverandgem.com
+[2025-02-22 02:24:14] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:24:14] [info] Called https://www.silverandgem.com
+[2025-02-22 02:24:14] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:25:12] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-22 02:25:12] [debug] Not Valid Domain provided: 
+[2025-02-22 02:25:12] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:12] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:12] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 02:25:13] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:13] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:13] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 02:25:13] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:13] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:13] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-22 02:25:13] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:13] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:13] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-22 02:25:13] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-22 02:25:13] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:13] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:13] [debug] Page Analytic report jaipurroutes.com
+[2025-02-22 02:25:22] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:22] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:22] [debug] Page Insights report for jaipurroutes.com
+[2025-02-22 02:25:42] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:42] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:42] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-22 02:25:43] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:43] [debug] Site Cards for jaipurroutes.com
+[2025-02-22 02:25:43] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:43] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:43] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-22 02:25:43] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:43] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:43] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-22 02:25:54] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:54] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:25:54] [info] Called https://www.jaipurroutes.com
+[2025-02-22 02:25:54] [info] Called my_url: https://www.jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-22 02:34:58] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:34:59] [debug] Not Valid Domain provided: 
+[2025-02-22 02:34:59] [info] Called https://www.silverandgem.com
+[2025-02-22 02:34:59] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:34:59] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:34:59] [info] Called https://www.silverandgem.com
+[2025-02-22 02:34:59] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:34:59] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:34:59] [info] Called https://www.silverandgem.com
+[2025-02-22 02:34:59] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:34:59] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:34:59] [info] Called https://www.silverandgem.com
+[2025-02-22 02:34:59] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:34:59] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:34:59] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:34:59] [info] Called https://www.silverandgem.com
+[2025-02-22 02:34:59] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:34:59] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:35:01] [info] Called https://www.silverandgem.com
+[2025-02-22 02:35:01] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:35:01] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:35:31] [info] Called https://www.silverandgem.com
+[2025-02-22 02:35:31] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:35:31] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:35:32] [info] Called https://www.silverandgem.com
+[2025-02-22 02:35:32] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:35:32] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:35:32] [info] Called https://www.silverandgem.com
+[2025-02-22 02:35:32] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:35:32] [info] Called https://www.silverandgem.com
+[2025-02-22 02:35:32] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:35:32] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:35:32] [info] Called https://www.silverandgem.com
+[2025-02-22 02:35:32] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:35:32] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:35:36] [info] Called https://www.silverandgem.com
+[2025-02-22 02:35:36] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:35:36] [info] Called https://www.silverandgem.com
+[2025-02-22 02:35:36] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:20] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:41:20] [debug] Not Valid Domain provided: 
+[2025-02-22 02:41:21] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:21] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:21] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:41:21] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:21] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:21] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:41:21] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:21] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:21] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:41:21] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:21] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:21] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:41:21] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:41:21] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:21] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:21] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:41:23] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:23] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:23] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:41:53] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:53] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:53] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:41:54] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:54] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:54] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:41:54] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:54] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:54] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:54] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:54] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:41:54] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:54] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:54] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:41:58] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:58] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:41:58] [info] Called https://www.silverandgem.com
+[2025-02-22 02:41:58] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:10] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:44:10] [debug] Not Valid Domain provided: 
+[2025-02-22 02:44:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:10] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:44:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:10] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:44:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:10] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:44:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:10] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:44:10] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:44:10] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:10] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:10] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:44:12] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:12] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:12] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:44:42] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:42] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:42] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:44:43] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:43] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:43] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:44:43] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:43] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:43] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:43] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:43] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:44:43] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:43] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:43] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:44:47] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:47] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:44:47] [info] Called https://www.silverandgem.com
+[2025-02-22 02:44:47] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:03] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:46:03] [debug] Not Valid Domain provided: 
+[2025-02-22 02:46:03] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:03] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:03] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:46:03] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:03] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:03] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:46:03] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:03] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:03] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:46:03] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:03] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:03] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:46:03] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:46:03] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:03] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:03] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:46:06] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:06] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:06] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:46:36] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:36] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:36] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:46:36] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:36] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:36] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:46:36] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:36] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:36] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:36] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:36] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:46:36] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:36] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:36] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:46:41] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:41] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:46:41] [info] Called https://www.silverandgem.com
+[2025-02-22 02:46:41] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:07] [debug] Content Stored in Temp File C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-22 02:47:07] [debug] Not Valid Domain provided: 
+[2025-02-22 02:47:07] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:07] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:07] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:47:07] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:07] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:07] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:47:07] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:07] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:07] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-22 02:47:07] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:07] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:07] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-22 02:47:07] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-22 02:47:07] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:07] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:07] [debug] Page Analytic report silverandgem.com
+[2025-02-22 02:47:09] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:09] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:09] [debug] Page Insights report for silverandgem.com
+[2025-02-22 02:47:39] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:39] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:39] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-22 02:47:40] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:40] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:40] [debug] Site Cards for silverandgem.com
+[2025-02-22 02:47:40] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:40] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:40] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:40] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:40] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-22 02:47:40] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:40] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:40] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-22 02:47:44] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:44] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
+[2025-02-22 02:47:44] [info] Called https://www.silverandgem.com
+[2025-02-22 02:47:44] [info] Called my_url: https://www.silverandgem.com | Parsed host: silverandgem.com | domainStr: silverandgem.com
