@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             die();
         }
     }
- 
+
     /*
      * -----------------------------------------------------------------
      * HEADING DATA HANDLER - Used to generate heading tags.
@@ -137,35 +137,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             die();
         }
     }
+    
+
+/*
+ * -----------------------------------------------------------------
+ * KEYWORD CLOUD + CONSISTENCY MERGED
+ * -----------------------------------------------------------------
+ */
+
+ 
+if (isset($_POST['keycloudAll'])) { 
+    $htmlOutput = $seoTools->processKeyCloudAndConsistency();
+    echo $htmlOutput;
+    die();
+}
 
         /*
-     * -----------------------------------------------------------------
-     * KEYWORD CLOUD GENERATOR - Used to generate keyword cloud.
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['keycloud'])) {
-        log_message('debug', "Keyword Cloud Tag Call for URL {$my_url_host}");
-        $keyCloud = $seoTools->processKeyCloud();
-        if (isset($_POST['keycloudOut'])) {
-            echo $seoTools->showKeyCloud($keyCloud);
-            die();
-        }
-    }
+    //  * -----------------------------------------------------------------
+    //  * KEYWORD CLOUD GENERATOR - Used to generate keyword cloud.
+    //  * -----------------------------------------------------------------
+    //  */
+    // if (isset($_POST['keycloud'])) {
+    //     log_message('debug', "Keyword Cloud Tag Call for URL {$my_url_host}");
+    //     $htmlOutput = $seoTools->processKeyCloudAndConsistency();
+    //     echo $htmlOutput;
+    //     $keyCloud = $seoTools->processKeyCloud();
+    //     if (isset($_POST['keycloudOut'])) {
+    //         echo $seoTools->showKeyCloud($keyCloud);
+    //         die();
+    //     }
+    // }
 
-    /*
-     * -----------------------------------------------------------------
-     * KEYWORD CONSISTENCY CHECKER - Used to check keyword consistency.
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['keyConsistency'])) {
-        log_message('debug', "Keyword Consistency Tag Call for URL {$my_url_host}");
-        $metaData    = jsonDecode($seoTools->processMeta());
-        $headingData = jsonDecode($seoTools->processHeading());
-        $keyCloudResult = $seoTools->processKeyCloud();
-        $fullCloud = $keyCloudResult['fullCloud'] ?? [];
-        echo $seoTools->showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headingData[0]);
-        die();
-    }
+    // /*
+    //  * -----------------------------------------------------------------
+    //  * KEYWORD CONSISTENCY CHECKER - Used to check keyword consistency.
+    //  * -----------------------------------------------------------------
+    //  */
+    // if (isset($_POST['keyConsistency'])) {
+    //     // 1) Get the meta data in its full structure
+    //     $metaData    = jsonDecode($seoTools->processMeta()); 
+    //     // 2) Get the headings in their full structure
+    //     $headingData = jsonDecode($seoTools->processHeading()); 
+    
+    //     // 3) Get the full keyword cloud data
+    //     $keyCloudResult = $seoTools->processKeyCloud();
+    //     $fullCloud      = $keyCloudResult['fullCloud'] ?? [];
+    
+    //     // 4) Pass the entire $metaData and $headingData
+    //     //    NOT just $headingData['raw'] or $metaData['raw']
+    //     echo $seoTools->showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headingData);
+    //     die();
+    // }
 
     /*
      * -----------------------------------------------------------------
@@ -178,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $seoTools->showInPageLinks($linksData);
         die();
     }
-
+    
      /*
      * -----------------------------------------------------------------
      * Cards Function to show site card - Used to generate site cards.
@@ -190,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $seoTools->showCards($sitecardsData);
         die();
     }
-
+    
        /*
      * -----------------------------------------------------------------
      * Page Analytics Report - Used to generate page analytics.
@@ -202,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $seoTools->showPageAnalytics($pageAnalyticsJson);
         die();
     }
-
+    
     /*
      * -----------------------------------------------------------------
      * LOAD DOM LIBRARY (if needed)
@@ -226,7 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die();
     }
 
-   
+    
 
 
 
@@ -244,7 +266,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die();
     }
  
-
+    
     /*
      * -----------------------------------------------------------------
      * WWW RESOLVE CHECK
@@ -278,13 +300,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      * -----------------------------------------------------------------
      */
     if (isset($_POST['serverIP'])) {
-        // log_message('debug', "Server IP Tag Call for URL {$my_url_host}");
-        // $serverDataJson = $seoTools->processServerInfo();
-        // echo $seoTools->showServerInfo($serverDataJson);
+        log_message('debug', "Server IP Tag Call for URL {$my_url_host}");
+        $serverDataJson = $seoTools->processServerInfo();
+        echo $seoTools->showServerInfo($serverDataJson);
         die();
     } 
 
-
+    
 
 
     /*
@@ -297,7 +319,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $seoTools->showSchema($schemaJson);
         die();
     }
- 
+    
       /*
      * -----------------------------------------------------------------
      * SOCIAL URL  RETRIEVAL
@@ -308,20 +330,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $seoTools->showSocialUrls($socialURLs);
         die();
     }
-
+    
      /*
      * -----------------------------------------------------------------
      * Google PageSpeed Insights Report
      * -----------------------------------------------------------------
      */
     if (isset($_POST['PageSpeedInsights'])) { 
-        // log_message('debug', "Page Insights report for {$my_url_host}");
-        // // Process and store the PageSpeed Insights report concurrently.
-        // // This returns a JSON string.
-        // $jsonData = $seoTools->processPageSpeedInsightConcurrent();
+        log_message('debug', "Page Insights report for {$my_url_host}");
+        // Process and store the PageSpeed Insights report concurrently.
+        // This returns a JSON string.
+        $jsonData = $seoTools->processPageSpeedInsightConcurrent();
         
-        // // Then pass the JSON string to the show function.
-        // echo $seoTools->showPageSpeedInsightConcurrent($jsonData);
+        // Then pass the JSON string to the show function.
+        echo $seoTools->showPageSpeedInsightConcurrent($jsonData);
         die();
     }
 

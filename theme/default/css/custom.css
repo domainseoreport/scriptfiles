@@ -1913,7 +1913,9 @@ footer .copyright {
   font-size: 12px;
   color: #999;
 }
-
+.d-none {
+  display: none !important;
+}
 /* GENERIC */
 .generic-preview-card .gp-domain {
   font-size: 12px;

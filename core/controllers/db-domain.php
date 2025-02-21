@@ -20,78 +20,19 @@ $seoBoxLogin = '<div class="lowImpactBox">
 </div>
 </div>';
 $seoTools = new SeoTools($dummyHtml, $con, $domainStr, $lang, $urlParse, $sepUnique, $seoBoxLogin);   
-//Meta Data  
-$meta_data = jsonDecode($data['meta_data']);
-// echo "<pre>";
-// print_r($meta_data);
-// echo "</pre>";
+//Meta Data   
+
+$savedMetaJson = $data['meta_data'] ?? '';
+$meta_data = jsonDecode($savedMetaJson);
+
+if ($savedMetaJson) {
+    $metaHtml = $seoTools->showMeta($savedMetaJson);
+    $metaParts = explode($seoTools->getSeparator(), $metaHtml);
+}
  
-$metatitle = $meta_data["title"];
-$metadescription = $meta_data["description"];
-$metakeywords = $meta_data["keywords"];
-
-$lenTitle = mb_strlen($metatitle,'utf8');
-$lenDes = mb_strlen($metadescription,'utf8');
-
-//Check Empty Data
-$site_title = ($metatitle == '' ? $lang['AN11'] : $metatitle);
-$site_description = ($metadescription == '' ? $lang['AN12'] : $metadescription);
-$site_keywords = ($metakeywords == '' ? $lang['AN15'] : $metakeywords);
-
-$titleMsg = $lang['AN173'];
-$desMsg = $lang['AN174'];
-$keyMsg = $lang['AN175'];
-$googleMsg = $lang['AN177'];
-
-if($lenTitle < 10)
-    $classTitle = 'improveBox';
-elseif($lenTitle < 70)
-    $classTitle = 'passedBox';
-else
-    $classTitle = 'errorBox';
-
-if($lenDes < 70)
-    $classDes = 'improveBox';
-elseif($lenDes < 300)
-    $classDes = 'passedBox';
-else
-    $classDes = 'errorBox';
-    
-$classKey = 'lowImpactBox';
 
 
-$seoBox1 = '<div class="'.$classTitle.'">
-<div class="msgBox bottom10">       
-'.$site_title.'
-<br />
-<b>'.$lang['AN13'].':</b> '.$lenTitle.' '.$lang['AN14'].' 
-</div>
-<div class="seoBox1 suggestionBox">
-'.$titleMsg.'
-</div> 
-</div>';
-
-
-$seoBox2 = '<div class="'.$classDes.'">
-<div class="msgBox padRight10 bottom10">       
-'.$site_description.'
-<br />
-<b>'.$lang['AN13'].':</b> '.$lenDes.' '.$lang['AN14'].' 
-</div>
-<div class="seoBox2 suggestionBox">
-'.$desMsg.'
-</div> 
-</div>';
-
-$seoBox3 = '<div class="'.$classKey.'">
-<div class="msgBox padRight10">       
-'.$site_keywords.'
-<br /><br />
-</div>
-<div class="seoBox3 suggestionBox">
-'.$keyMsg.'
-</div> 
-</div>';
+ 
 
 
 
@@ -108,18 +49,18 @@ $seoBox5 = '<div class="'.$classKey.'">
                 <div class="col-md-6">
                     <div class="google-preview-box mobile-preview">
                         <h6>Mobile View</h6>
-                        <p class="google-title"><a href="#">'.$site_title.'</a></p>
+                        <p class="google-title"><a href="#">'.$meta_data["raw"]["title"].'</a></p>
                         <p class="google-url"><span class="bold">'.$my_url_parse['host'].'</span>/</p>
-                        <p class="google-desc">'.$site_description.'</p>
+                        <p class="google-desc">'.$meta_data["raw"]["description"].'</p>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="google-preview-box tablet-preview">
                         <h6>Tablet View</h6>
-                        <p class="google-title"><a href="#">'.$site_title.'</a></p>
+                        <p class="google-title"><a href="#">'.$meta_data["raw"]["title"].'</a></p>
                         <p class="google-url"><span class="bold">'.$my_url_parse['host'].'</span>/</p>
-                        <p class="google-desc">'.$site_description.'</p>
+                        <p class="google-desc">'.$meta_data["raw"]["description"].'</p>
                     </div>
                 </div>
             </div>
@@ -129,9 +70,9 @@ $seoBox5 = '<div class="'.$classKey.'">
                 <div class="col-12 ">
                     <div class="google-preview-box desktop-preview mt-5">
                         <h6>Desktop View</h6>
-                        <p class="google-title"><a href="#">'.$site_title.'</a></p>
+                        <p class="google-title"><a href="#">'.$meta_data["raw"]["title"].'</a></p>
                         <p class="google-url"><span class="bold">'.$my_url_parse['host'].'</span>/</p>
-                        <p class="google-desc">'.$site_description.'</p>
+                        <p class="google-desc">'.$meta_data["raw"]["description"].'</p>
                     </div>
                 </div>
             </div>
@@ -149,13 +90,14 @@ $seoBox4 = $seoTools->showHeading($headings);;
 $imageData =  $data['image_alt'] ;
 $seoBox6  = $seoTools->showImage($imageData);;
 
-//Keyword Cloud
-$keywords_cloud = jsonDecode($data['keywords_cloud']); 
-$seoBox7 = $seoTools->showKeyCloud($keywords_cloud);
+$savedKeywordsJson = $data['keywords_cloud'] ?? '';
 
-  
-$fullCloud = $keywords_cloud['fullCloud'] ?? [];
-$seoBox8 = $seoTools->showKeyConsistencyNgramsTabs($fullCloud, $meta_data, $headings[0]);;
+if ($savedKeywordsJson) {
+    // Use the new showKeyCloudAndConsistency() method to get the full HTML output.
+    $seoBox8 = $seoTools->showKeyCloudAndConsistency($savedKeywordsJson);
+} else {
+    $seoBox8 = '<div class="alert alert-warning">No keyword cloud data available.</div>';
+}
  
 //Text to HTML Ratio
 $textRatio =  $data['ratio_data'];  

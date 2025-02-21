@@ -40,19 +40,19 @@ function showSuggestion(sugBox) {
  *   scoreTxt (the label for the circle gauge).
  */
 function finalScore() {
-  // Update individual progress bars
+  // Update progress bars
   $("#passScore").css("width", passScore + '%');
   $("#improveScore").css("width", improveScore + '%');
   $("#errorScore").css("width", errorScore + '%');
 
-  // Use overallPercent for the circular gauge
+  // Circle gauge
   $('.second.circle').circleProgress({
-    value: overallPercent / 100,
+    value: passScore / 100,
     animation: false
   });
 
-  // Update overall score text with overallPercent instead of passScore
-  $("#overallscore").html(overallPercent + '<i class="newI">' + scoreTxt + '</i>');
+  // Overall text
+  $("#overallscore").html(passScore + '<i class="newI">' + scoreTxt + '</i>');
 }
 
 /*-------------------------------------------------------------------------

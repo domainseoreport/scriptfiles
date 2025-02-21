@@ -1,7 +1,7 @@
 <?php
 // Prevent direct access to this script
 defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
-
+ 
 /*
  * Author: Balaji
  * Theme: Default Style
@@ -206,37 +206,31 @@ if ($updateFound) {
 
                 <!-- SEO Analysis Sections -->
 
-                <div id="seo1">
-                    <h2 class="seoBox-title"><?php trans('SEO', $lang['35']); ?></h2>
+            <div id="seo1">
+    <h2 class="seoBox-title"><?php trans('SEO', $lang['35']); ?></h2>
 
-                    <!-- Meta Information Section (Title, Description, Keywords) -->
-                    <div class="card shadow seo-card mb-4">
-                        <div class="card-header border-bottom">
-                            <h5 class="card-title mb-0">Meta Information</h5>
-                        </div>
-                        <div class="card-body">
-                            <!-- Title Section -->
-                            <div class="row mb-3 align-items-center">
-                                 <div class="col-md-12" id="seoBox1">
-                                    <?php echo $seoBox1; ?>
-                                </div>
-                            </div>
-                            <hr>
-                            <!-- Description Section -->
-                            <div class="row mb-3 align-items-center">
-                                <div class="col-md-12" id="seoBox2">
-                                    <?php echo $seoBox2; ?>
-                                </div>
-                            </div>
-                            <hr>
-                            <!-- Keywords Section -->
-                            <div class="row align-items-center"> 
-                                <div class="col-md-12" id="seoBox3">
-                                    <?php echo $seoBox3; ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Meta Information Section (Title, Description, Keywords) -->
+    <div class="card shadow seo-card mb-4">
+        <div class="card-header border-bottom">
+            <h5 class="card-title mb-0">Meta Information</h5>
+        </div>
+        <div class="card-body">
+            <!-- Title Section -->
+            <!-- Title Section -->
+                <div class="col-md-12" id="seoBox1">
+                    <?php echo $metaParts[0] ?? ''; ?>
+                </div>
+                <!-- Description Section -->
+                <div class="col-md-12" id="seoBox2">
+                    <?php echo $metaParts[1] ?? ''; ?>
+                </div>
+                <!-- Keywords Section -->
+                <div class="col-md-12" id="seoBox3">
+                    <?php echo $metaParts[2] ?? ''; ?>
+                </div>
+        </div>
+    </div>
+</div>
 
                     <!-- Heading Tags Section -->
                     <div class="card shadow seo-card mb-4">
@@ -256,30 +250,21 @@ if ($updateFound) {
                     </div>
 
                     <!-- Keywords Cloud Section -->
-                    <div class="card shadow seo-card mb-4">
-                        <div class="card-body">
-                            <div class="row align-items-center mb-3">
-                                <div class="col-md-3">
-                                    <h5 class="fw-bold"><?php outHeadBox($lang['AN28'], $solveMsg, 4); ?></h5>
-                                </div>
-                                <div class="col-md-9" id="seoBox7">
-                                    <?php echo $seoBox7; ?>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="me-3">
-                                    <i class="fa fa-check-circle text-success" style="font-size:2rem;"></i>
-                                </div>
-                                <div>
-                                    <h5 class="fw-bold"><?php outHeadBox($lang['AN30'], $solveMsg, 1); ?></h5>
+                            <div class="card shadow seo-card mb-4">
+                                <div class="card-body"> 
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="me-3">
+                                            <i class="fa fa-check-circle text-success" style="font-size:2rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="fw-bold"><?php outHeadBox($lang['AN30'], $solveMsg, 1); ?></h5>
+                                        </div>
+                                    </div>
+                                    <div class="contentBox" id="seoBox8">
+                                        <?php echo $seoBox8; ?>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="contentBox" id="seoBox8">
-                                <?php echo $seoBox8; ?>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Link Analysis Section -->
                     <div id="link-analysis" class="container mt-4">

@@ -480,7 +480,9 @@ private function buildLengthBar(int $actualLen, int $min, int $max): array
 }
 
     
-
+public function getSeparator(): string {
+    return $this->sepUnique;
+}
 
 
 /**
@@ -702,6 +704,7 @@ private function buildGooglePreview(string $title, string $description, string $
                     $headingsList = '<ul class="list-unstyled mb-0">';
                     foreach ($rawHeadings[$tag] as $text) {
                         $warnings = [];
+                        // For H1, if too long, note it.
                         if ($tag === 'h1' && mb_strlen($text, 'utf8') > 70) {
                             $warnings[] = 'Too long';
                         }
@@ -713,13 +716,29 @@ private function buildGooglePreview(string $title, string $description, string $
                     $headingsList = '<em class="text-muted">None found.</em>';
                 }
     
-                // Build suggestion for this tag using a simple match logic
-                $suggestion = match (true) {
-                    $tag === 'h1' && $count === 0 => '<span class="text-danger">❌ Missing H1</span>',
-                    $tag === 'h1' && $count > 1  => '<span class="text-danger">❌ Multiple H1s detected</span>',
-                    $tag === 'h2' && $count < 2  => '<span class="text-warning">⚠️ Add more H2s for better structure</span>',
-                    default => '<span class="text-success">Looks good</span>',
-                };
+                // Build suggestion using our updated logic:
+                // For H1: exactly one is OK, none or more than one is an error.
+                // For H2: at least two are OK; otherwise, a warning.
+                // For other tags, we mark them as OK.
+                $suggestion = '';
+                if ($tag === 'h1') {
+                    if ($count === 1) {
+                        $suggestion = '<span class="text-success">OK</span>';
+                    } elseif ($count === 0) {
+                        $suggestion = '<span class="text-danger">❌ Missing H1</span>';
+                    } else {
+                        $suggestion = '<span class="text-danger">❌ Multiple H1s detected</span>';
+                    }
+                } elseif ($tag === 'h2') {
+                    if ($count >= 2) {
+                        $suggestion = '<span class="text-success">OK</span>';
+                    } else {
+                        $suggestion = '<span class="text-warning">⚠️ Add more H2s for better structure</span>';
+                    }
+                } else {
+                    // For other headings, simply mark as OK if present, else none found.
+                    $suggestion = ($count > 0) ? '<span class="text-success">OK</span>' : '<span class="text-muted">None found</span>';
+                }
     
                 $tableHTML .= '<tr>
                                 <td><strong>' . strtoupper($tag) . '</strong></td>
@@ -730,7 +749,8 @@ private function buildGooglePreview(string $title, string $description, string $
             }
             $tableHTML .= '</tbody></table>';
     
-            // Build a formatted list of recommendations
+            // Build a formatted summary of recommendations from the report,
+            // formatting each recommendation on a new line.
             $recommendations = $report['recommendations'] ?? [];
             $recomHTML = '';
             if (!empty($recommendations)) {
@@ -743,25 +763,27 @@ private function buildGooglePreview(string $title, string $description, string $
                 $recomHTML = '<em class="text-muted">No recommendations.</em>';
             }
     
-            // Build a summary card for the overall heading report
+            // Build a summary card for the overall heading report with recommendations below the table.
             $summaryHTML = '
             <div class="card my-3">
                <div class="card-header">
                  <h4>Heading Analysis Summary</h4>
                </div>
-               <div class="card-body"> 
+               <div class="card-body">
+                 <p><strong>Score:</strong> ' . ($report['score'] ?? 0) . ' (Percent: ' . ($report['percent'] ?? 0) . '%)</p>
                  <p><strong>Recommendations:</strong></p>
                  ' . $recomHTML . '
                </div>
             </div>';
     
-            return $tableHTML.$summaryHTML ;
+            return  $tableHTML . $summaryHTML ;
     
         } catch (Exception $e) {
             error_log("Error in showHeading: " . $e->getMessage());
             return '<div class="alert alert-danger">An error occurred while displaying heading data.</div>';
         }
     }
+    
     
     
     
@@ -1123,220 +1145,494 @@ private function toAbsoluteUrl(string $url): string
      * KEYWORD CLOUD HANDLER
      *=================================================================== 
      */
-    private function getStopWords(): array {
-        return [
-            "a","about","above","after","again","against","all","am","an","and","any","are","aren't",
-            "as","at","be","because","been","before","being","below","between","both","but","by","can",
-            "can't","cannot","could","couldn't","did","didn't","do","does","doesn't","doing","don't","down",
-            "during","each","few","for","from","further","had","hadn't","has","hasn't","have","haven't",
-            "having","he","he'd","he'll","he's","her","here","here's","hers","herself","him","himself",
-            "his","how","how's","i","i'd","i'll","i'm","i've","if","in","into","is","isn't","it","it's",
-            "its","itself","let's","me","more","most","mustn't","my","myself","no","nor","not","of","off",
-            "on","once","only","or","other","ought","our","ours","ourselves","out","over","own","same",
-            "shan't","she","she'd","she'll","she's","should","shouldn't","so","some","such","than","that",
-            "that's","the","their","theirs","them","themselves","then","there","there's","these","they",
-            "they'd","they'll","they're","they've","this","those","through","to","too","under","until","up",
-            "very","was","wasn't","we","we'd","we'll","we're","we've","were","weren't","what","what's",
-            "when","when's","where","where's","which","while","who","who's","whom","why","why's","with",
-            "won't","would","wouldn't","you","you'd","you'll","you're","you've","your","yours","yourself",
-            "yourselves"
+    /**
+ * -----------------------------------------------------------------
+ * HELPER FUNCTIONS (unchanged)
+ * -----------------------------------------------------------------
+ */
+private function getStopWords(): array {
+    return [
+        "a","about","above","after","again","against","all","am","an","and","any","are","aren't",
+        "as","at","be","because","been","before","being","below","between","both","but","by","can",
+        "can't","cannot","could","couldn't","did","didn't","do","does","doesn't","doing","don't","down",
+        "during","each","few","for","from","further","had","hadn't","has","hasn't","have","haven't",
+        "having","he","he'd","he'll","he's","her","here","here's","hers","herself","him","himself",
+        "his","how","how's","i","i'd","i'll","i'm","i've","if","in","into","is","isn't","it","it's",
+        "its","itself","let's","me","more","most","mustn't","my","myself","no","nor","not","of","off",
+        "on","once","only","or","other","ought","our","ours","ourselves","out","over","own","same",
+        "shan't","she","she'd","she'll","she's","should","shouldn't","so","some","such","than","that",
+        "that's","the","their","theirs","them","themselves","then","there","there's","these","they",
+        "they'd","they'll","they're","they've","this","those","through","to","too","under","until","up",
+        "very","was","wasn't","we","we'd","we'll","we're","we've","were","weren't","what","what's",
+        "when","when's","where","where's","which","while","who","who's","whom","why","why's","with",
+        "won't","would","wouldn't","you","you'd","you'll","you're","you've","your","yours","yourself",
+        "yourselves","comments","view"
+    ];
+}
+
+private function buildFrequencyData(array $tokens, int $minCount = 2): array {
+    $counts = array_count_values($tokens);
+    $counts = array_filter($counts, function($cnt) use ($minCount) {
+        return $cnt >= $minCount;
+    });
+    arsort($counts);
+    $total = array_sum($counts);
+    $result = [];
+    foreach ($counts as $phrase => $count) {
+        $density = ($total > 0) ? ($count / $total) * 100 : 0;
+        $result[] = [
+            'phrase'  => $phrase,
+            'count'   => $count,
+            'density' => round($density, 2)
         ];
     }
+    return $result;
+}
 
-    private function buildFrequencyData(array $tokens, int $minCount = 2): array {
-        $counts = array_count_values($tokens);
-        $counts = array_filter($counts, function($cnt) use ($minCount) {
-            return $cnt >= $minCount;
-        });
-        arsort($counts);
-        $total = array_sum($counts);
-        $result = [];
-        foreach ($counts as $phrase => $count) {
-            $density = $total > 0 ? ($count / $total) * 100 : 0;
-            $result[] = [
-                'phrase'  => $phrase,
-                'count'   => $count,
-                'density' => round($density, 2)
-            ];
+
+private function detectOveruse(array $data): array {
+    $overused = [];
+    foreach ($data as $d) {
+        if ($d['count'] > 5 || $d['density'] > 5) {
+            $overused[] = $d['phrase'];
         }
-        return $result;
+    }
+    return $overused;
+}
+
+private function generateKeywordCloud(DOMDocument $dom): array {
+    $html = $dom->saveHTML();
+    $html = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $html);
+    $html = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $html);
+    $html = preg_replace('/<!--(.*?)-->/', '', $html);
+    $html = html_entity_decode($html, ENT_QUOTES|ENT_HTML5, 'UTF-8');
+    $textContent = strip_tags($html);
+    $textContent = preg_replace('/&[A-Za-z0-9#]+;/', ' ', $textContent);
+    $textContent = strtolower($textContent);
+    $textContent = preg_replace('/[^a-z\s]/', ' ', $textContent);
+    $textContent = preg_replace('/\s+/', ' ', $textContent);
+    $textContent = trim($textContent);
+    $words = explode(' ', $textContent);
+    $words = array_filter($words);
+    $stopWords = $this->getStopWords();
+    $filtered = array_filter($words, function($w) use ($stopWords) {
+        return !in_array($w, $stopWords) && strlen($w) > 2;
+    });
+    $filtered = array_values($filtered);
+    $unigrams = $filtered;
+    $bigrams = [];
+    for ($i = 0; $i < count($filtered) - 1; $i++) {
+        $bigrams[] = $filtered[$i] . ' ' . $filtered[$i + 1];
+    }
+    $trigrams = [];
+    for ($i = 0; $i < count($filtered) - 2; $i++) {
+        $trigrams[] = $filtered[$i] . ' ' . $filtered[$i + 1] . ' ' . $filtered[$i + 2];
+    }
+    $uniCloud = $this->buildFrequencyData($unigrams);
+    $biCloud  = $this->buildFrequencyData($bigrams);
+    $triCloud = $this->buildFrequencyData($trigrams);
+    $overusedSingles  = $this->detectOveruse($uniCloud);
+    $overusedBigrams  = $this->detectOveruse($biCloud);
+    $overusedTrigrams = $this->detectOveruse($triCloud);
+    $allOverused = array_unique(array_merge($overusedSingles, $overusedBigrams, $overusedTrigrams));
+    $suggestions = [];
+    if (!empty($allOverused)) {
+        $suggestions[] = "Possible overuse of phrases: " . implode(', ', $allOverused);
+    }
+    return [
+        'unigrams'    => $uniCloud,
+        'bigrams'     => $biCloud,
+        'trigrams'    => $triCloud,
+        'suggestions' => $suggestions,
+    ];
+}
+
+/**
+ * -----------------------------------------------------------------
+ * KEYWORD CLOUD PROCESSING & REPORTING
+ * -----------------------------------------------------------------
+ */
+
+
+/**
+ * Merged function: Builds the keyword cloud + does n-gram consistency checks
+ * and returns a single HTML output that includes both the top unigrams cloud
+ * and the tabbed consistency tables (Trigrams/Bigrams/Unigrams).
+ *
+ * Also stores the combined data in the DB.
+ *
+ * @return string HTML output for immediate echo in domains.php
+ */
+public function processKeyCloudAndConsistency(): string {
+    // Generate the keyword cloud JSON and decode it.
+    $keyCloudJson = $this->processKeyCloud();
+    $keyCloudData = json_decode($keyCloudJson, true);
+
+    // Retrieve meta data and headings.
+    $metaData = json_decode($this->processMeta(), true);
+    $headingData = json_decode($this->processHeading(), true);
+    // If headings are stored under 'raw', use that.
+    $headings = isset($headingData['raw']) && is_array($headingData['raw'])
+                    ? $headingData['raw']
+                    : $headingData;
+
+    // Build keyword cloud HTML using your helper.
+    $keywordCloudHtml = $this->buildKeyCloudHtml($keyCloudData);
+    // Build the consistency report HTML.
+    $consistencyHtml = $this->showKeyConsistencyNgramsTabs($keyCloudData['fullCloud'], $metaData, $headings);
+
+    // Append the report comment (suggestion) if available.
+    $suggestionHtml = '';
+    if (isset($keyCloudData['report']['comment']) && !empty($keyCloudData['report']['comment'])) {
+        $suggestionHtml = '<div class="mt-3">
+            <div class="alert alert-secondary text-center" role="alert">
+                <strong>Suggestion:</strong> ' . htmlspecialchars($keyCloudData['report']['comment']) . '
+            </div>
+        </div>';
     }
 
-    private function detectOveruse(array $data): array {
-        $overused = [];
-        foreach ($data as $d) {
-            if ($d['count'] > 5 || $d['density'] > 5) {
-                $overused[] = $d['phrase'];
-            }
-        }
-        return $overused;
+    // Save metaData and headings along with the other data.
+    $completeKeyCloudData = [
+        'keyCloudData' => $keyCloudData['keyCloudData'] ?? [], // existing raw keywords data
+        'keyDataHtml'  => $keyCloudData['keyDataHtml'] ?? '',
+        'outCount'     => $keyCloudData['outCount'] ?? 0,
+        'fullCloud'    => $keyCloudData['fullCloud'] ?? [],
+        'report'       => $keyCloudData['report'] ?? [],
+        'metaData'     => $metaData,      // NEW: include meta data
+        'headings'     => $headingData    // NEW: include full heading data
+    ];
+    $completeKeyCloudJson = json_encode($completeKeyCloudData);
+
+    // Update DB (one call).
+    updateToDbPrepared($this->con, 'domains_data', ['keywords_cloud' => $completeKeyCloudJson], ['domain' => $this->domainStr]);
+
+    // Save complete data to session.
+    $_SESSION['keyCloudReport'] = $completeKeyCloudData;
+
+    // Return the complete HTML output.
+    return $keywordCloudHtml . $consistencyHtml . $suggestionHtml;
+}
+
+
+
+/**
+ * Helper to build the top unigrams “keyword cloud” HTML snippet
+ * from the array $keyCloudData.
+ */
+private function buildKeyCloudHtml(array $keyCloudData): string
+{
+    $outCount     = $keyCloudData['outCount']  ?? 0;
+    $keyDataHtml  = $keyCloudData['keyDataHtml'] ?? '';
+
+    if (!isset($_SESSION['twebUsername']) && !isAllowedStats($this->con, 'seoBox7')) {
+        return $this->seoBoxLogin; // or die($this->seoBoxLogin)
     }
 
-    private function generateKeywordCloud(DOMDocument $dom): array {
-        $html = $dom->saveHTML();
-        $html = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $html);
-        $html = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $html);
-        $html = preg_replace('/<!--(.*?)-->/', '', $html);
-        $html = html_entity_decode($html, ENT_QUOTES|ENT_HTML5, 'UTF-8');
-        $textContent = strip_tags($html);
-        $textContent = preg_replace('/&[A-Za-z0-9#]+;/', ' ', $textContent);
-        $textContent = strtolower($textContent);
-        $textContent = preg_replace('/[^a-z\s]/', ' ', $textContent);
-        $textContent = preg_replace('/\s+/', ' ', $textContent);
-        $textContent = trim($textContent);
-        $words = explode(' ', $textContent);
-        $words = array_filter($words);
-        $stopWords = $this->getStopWords();
-        $filtered = array_filter($words, function($w) use ($stopWords) {
-            return !in_array($w, $stopWords) && strlen($w) > 2;
-        });
-        $filtered = array_values($filtered);
-        $unigrams = $filtered;
-        $bigrams = [];
-        for ($i = 0; $i < count($filtered) - 1; $i++) {
-            $bigrams[] = $filtered[$i] . ' ' . $filtered[$i + 1];
-        }
-        $trigrams = [];
-        for ($i = 0; $i < count($filtered) - 2; $i++) {
-            $trigrams[] = $filtered[$i] . ' ' . $filtered[$i + 1] . ' ' . $filtered[$i + 2];
-        }
-        $uniCloud = $this->buildFrequencyData($unigrams);
-        $biCloud  = $this->buildFrequencyData($bigrams);
-        $triCloud = $this->buildFrequencyData($trigrams);
-        $overusedSingles  = $this->detectOveruse($uniCloud);
-        $overusedBigrams  = $this->detectOveruse($biCloud);
-        $overusedTrigrams = $this->detectOveruse($triCloud);
-        $allOverused = array_unique(array_merge($overusedSingles, $overusedBigrams, $overusedTrigrams));
-        $suggestions = [];
-        if (!empty($allOverused)) {
-            $suggestions[] = "Possible overuse of phrases: " . implode(', ', $allOverused);
-        }
-        return [
-            'unigrams'    => $uniCloud,
-            'bigrams'     => $biCloud,
-            'trigrams'    => $triCloud,
-            'suggestions' => $suggestions,
-        ];
+    $output = '<div class="row align-items-center mb-3 mt-5">';
+    $output .= '    <div class="col-md-3">';
+    $output .= '        <h5 class="fw-bold"><i class="fa fa-check me-2"></i>Keywords Cloud</h5>';
+    $output .= '    </div>';
+    $output .= '    <div class="col-md-9" id="seoBox7">';
+    if ($outCount > 0) {
+        $output .= '<ul class="keywordsTags">' . $keyDataHtml . '</ul>';
+    } else {
+        $output .= '<p>' . $this->lang['AN29'] . '</p>';
     }
+    $output .= '    </div>';
+    $output .= '</div><hr>';
+    
+    return $output;
+}
 
-    public function processKeyCloud() {
-        $dom = $this->getDom();
-        $cloudData = $this->generateKeywordCloud($dom);
-        $unigrams = $cloudData['unigrams'];
-        $keyDataHtml = '';
-        $outArr = [];
-        $keyCount = 0;
-        $maxKeywords = 15;
-        foreach ($unigrams as $data) {
-            if ($keyCount >= $maxKeywords) break;
-            $keyword = $data['phrase'];
-            $outArr[] = [$keyword, $data['count'], $data['density']];
-            $keyDataHtml .= '<li><span class="keyword">' . htmlspecialchars($keyword) . '</span><span class="number">' . $data['count'] . '</span></li>';
-            $keyCount++;
-        }
-        $outCount = count($outArr);
-        $updateStr = jsonEncode([
-            'keyCloudData' => $outArr,
-            'keyDataHtml'  => $keyDataHtml,
-            'outCount'     => $outCount,
-            'fullCloud'    => $cloudData
-        ]);
-        updateToDbPrepared($this->con, 'domains_data', ['keywords_cloud' => $updateStr], ['domain' => $this->domainStr]);
-        return [
-            'keyCloudData' => $outArr,
-            'keyDataHtml'  => $keyDataHtml,
-            'outCount'     => $outCount,
-            'fullCloud'    => $cloudData,
-        ];
+
+/**
+ * Processes the keyword cloud:
+ * - Generates the raw keyword cloud using unigrams (plus bigrams/trigrams).
+ * - Computes a score and report (using three conditions) based on the top keywords.
+ * - Combines the raw data with the computed report.
+ * - Saves the complete JSON in the DB (one call) and in a session variable.
+ *
+ * Returns the complete JSON string.
+ */
+public function processKeyCloud(): string {
+    $dom = $this->getDom();
+    $cloudData = $this->generateKeywordCloud($dom);
+    
+    // Use unigrams as the primary list; limit to top 15.
+    $unigrams = $cloudData['unigrams'];
+    $maxKeywords = 20;
+    $rawKeywords = array_slice($unigrams, 0, $maxKeywords);
+    
+    // Build HTML list and array for top keywords.
+    $keyDataHtml = '';
+    $outArr = [];
+    foreach ($rawKeywords as $data) {
+        $keyword = $data['phrase'];
+        $outArr[] = [$keyword, $data['count'], $data['density']];
+        $keyDataHtml .= '<li><span class="keyword">' . htmlspecialchars($keyword) . '</span><span class="number">' . $data['count'] . '</span></li>';
     }
-
-    public function showKeyCloud($data) {
-        $outCount = $data['outCount'];
-        $keyDataHtml = $data['keyDataHtml'];
-        $keycloudClass = 'lowImpactBox';
-        $keyMsg = $this->lang['AN179'];
-        if (!isset($_SESSION['twebUsername']) && !isAllowedStats($this->con, 'seoBox7')) {
-            die($this->seoBoxLogin);
-        }
-        $output = '<div class="">
-                        <div class="msgBox padRight10 bottom5">';
-        $output .= ($outCount != 0) ? '<ul class="keywordsTags">' . $keyDataHtml . '</ul>' : ' ' . $this->lang['AN29'];
-        $output .= '</div></div>';
-        return $output;
+    $outCount = count($outArr);
+    
+    // --- Scoring Logic (max score = 6) ---
+    $score = 0;
+    $passed = 0;
+    $improve = 0;
+    $errors = 0;
+    // Condition 1: At least one keyword exists.
+    if ($outCount > 0) {
+        $passed++;
+        $score += 2;
+    } else {
+        $errors++;
     }
+    // Condition 2: No overuse suggestions.
+    if (empty($cloudData['suggestions'])) {
+        $passed++;
+        $score += 2;
+    } else {
+        $improve++;
+    }
+    // Condition 3: Check density of top keyword (ideal if ≤ 5%).
+    if ($outCount > 0) {
+        if ($rawKeywords[0]['density'] <= 5) {
+            $passed++;
+            $score += 2;
+        } else {
+            $errors++;
+        }
+    }
+    $maxPossible = 6;
+    $percent = ($maxPossible > 0) ? round(($score / $maxPossible) * 100) : 0;
+    
+    // Build overall comment.
+    $comment = "";
+    if ($outCount == 0) {
+        $comment .= "No significant keywords found. ";
+    } else {
+        $comment .= "Keywords extracted successfully. ";
+    }
+    if (!empty($cloudData['suggestions'])) {
+        $comment .= implode(" ", $cloudData['suggestions']) . " ";
+    } else {
+        $comment .= "No overuse issues detected. ";
+    }
+    if ($outCount > 0) {
+        if ($rawKeywords[0]['density'] > 5) {
+            $comment .= "Top keyword density is high. ";
+        } else {
+            $comment .= "Top keyword density is within optimal range. ";
+        }
+    }
+    
+    // Build the report array.
+    $report = [
+        'score'   => $score,
+        'passed'  => $passed,
+        'improve' => $improve,
+        'errors'  => $errors,
+        'percent' => $percent,
+        'details' => [
+            'top_keyword'    => ($outCount > 0 ? $rawKeywords[0] : null),
+            'total_keywords' => $outCount
+        ],
+        'comment' => $comment
+    ];
+    
+    // Combine raw keyword cloud data and report.
+    $completeKeyCloudData = [
+        'keyCloudData' => $outArr,
+        'keyDataHtml'  => $keyDataHtml,
+        'outCount'     => $outCount,
+        'fullCloud'    => $cloudData,
+        'report'       => $report
+    ];
+    $completeKeyCloudJson = json_encode($completeKeyCloudData);
+    
+    // Update DB (one call).
+    updateToDbPrepared($this->con, 'domains_data', ['keywords_cloud' => $completeKeyCloudJson], ['domain' => $this->domainStr]);
+    
+    // Save complete data to session.
+    $_SESSION['keyCloudReport'] = $completeKeyCloudData;
+    
+    return $completeKeyCloudJson;
+}
 
-    public function processKeyConsistency($keyCloudData, $metaData, $headings) {
-        $result = [];
-        foreach ($keyCloudData as $item) {
-            $keyword = $item[0];
-            $inTitle = (stripos($metaData['title'], $keyword) !== false);
-            $inDesc  = (stripos($metaData['description'], $keyword) !== false);
-            $inHeading = false;
-            foreach ($headings as $tag => $texts) {
-                foreach ($texts as $text) {
-                    if (stripos($text, $keyword) !== false) {
-                        $inHeading = true;
-                        break 2;
-                    }
+/**
+ * Displays the top keyword cloud (raw view) using the prebuilt HTML.
+ */
+public function showKeyCloud($data): string {
+    $outCount = $data['outCount'] ?? 0;
+    $keyDataHtml = $data['keyDataHtml'] ?? '';
+    if (!isset($_SESSION['twebUsername']) && !isAllowedStats($this->con, 'seoBox7')) {
+        die($this->seoBoxLogin);
+    }
+    $output = '<div class="seoBox seoBox-keywords lowImpactBox">
+                    <div class="msgBox padRight10 bottom5">';
+    $output .= ($outCount != 0) ? '<ul class="keywordsTags">' . $keyDataHtml . '</ul>' : '<p>' . $this->lang['AN29'] . '</p>';
+    $output .= '</div></div>';
+    return $output;
+}
+
+/**
+ * Processes keyword consistency by checking for each top keyword whether it appears in the meta title, description, and headings.
+ * Returns a JSON string.
+ */
+public function processKeyConsistency($keyCloudData, $metaData, $headings): string {
+    $result = [];
+    foreach ($keyCloudData as $item) {
+        $keyword = $item[0];
+        $inTitle = (stripos($metaData['title'] ?? '', $phrase) !== false);
+        $inDesc  = (stripos($metaData['description'] ?? '', $phrase) !== false);
+        $inHeading = false;
+        foreach ($headings as $tag => $texts) {
+            foreach ($texts as $text) {
+                if (stripos($text, $keyword) !== false) {
+                    $inHeading = true;
+                    break 2;
                 }
             }
-            $result[] = [
-                'keyword'     => $keyword,
-                'count'       => $item[1],
-                'title'       => $inTitle,
-                'description' => $inDesc,
-                'heading'     => $inHeading
-            ];
         }
-        $resultJson = jsonEncode($result);
-        updateToDbPrepared($this->con, 'domains_data', ['key_consistency' => jsonEncode($resultJson)], ['domain' => $this->domainStr]);
-        return $resultJson;
+        $result[] = [
+            'keyword'     => $keyword,
+            'count'       => $item[1],
+            'title'       => $inTitle,
+            'description' => $inDesc,
+            'heading'     => $inHeading
+        ];
     }
+    $resultJson = json_encode($result);
+    updateToDbPrepared($this->con, 'domains_data', ['key_consistency' => $resultJson], ['domain' => $this->domainStr]);
+    return $resultJson;
+}
 
-    public function showKeyConsistency($consistencyData) {
-        $consistencyData = jsonDecode($consistencyData);
-        $rows = "";
-        $hideCount = 1;
-        foreach ($consistencyData as $item) {
-            $hideClass = ($hideCount > 4) ? 'hideTr hideTr3' : '';
-            $rows .= '<tr class="' . $hideClass . '">
-                        <td>' . htmlspecialchars($item['keyword']) . '</td>
-                        <td>' . $item['count'] . '</td>
-                        <td>' . ($item['title'] ? $this->true : $this->false) . '</td>
-                        <td>' . ($item['description'] ? $this->true : $this->false) . '</td>
-                        <td>' . ($item['heading'] ? $this->true : $this->false) . '</td>
-                      </tr>';
-            $hideCount++;
-        }
-        $output = '<div class="passedBox">
-                        <div class="msgBox">
-                            <table class="table table-striped table-responsive">
-                                <thead>
-                                    <tr>
-                                        <th>' . $this->lang['AN31'] . '</th>
-                                        <th>' . $this->lang['AN32'] . '</th>
-                                        <th>' . $this->lang['AN33'] . '</th>
-                                        <th>' . $this->lang['AN34'] . '</th>
-                                        <th>&lt;H&gt;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>' . $rows . '</tbody>
-                            </table>
-                        </div>
-                   </div>';
-        return $output;
+
+/**
+ * Displays keyword consistency data in a simple table.
+ */
+public function showKeyConsistency($consistencyData): string {
+    $consistencyData = json_decode($consistencyData, true);
+    if (!is_array($consistencyData)) {
+        return '<div class="alert alert-warning">No keyword consistency data available.</div>';
     }
+    $rows = "";
+    $hideCount = 1;
+    foreach ($consistencyData as $item) {
+        $hideClass = ($hideCount > 4) ? 'hideTr hideTr3' : '';
+        $rows .= '<tr class="' . $hideClass . '">
+                    <td>' . htmlspecialchars($item['keyword']) . '</td>
+                    <td>' . $item['count'] . '</td>
+                    <td>' . ($item['title'] ? $this->true : $this->false) . '</td>
+                    <td>' . ($item['description'] ? $this->true : $this->false) . '</td>
+                    <td>' . ($item['heading'] ? $this->true : $this->false) . '</td>
+                  </tr>';
+        $hideCount++;
+    }
+    $output = '<div class="passedBox">
+                    <div class="msgBox">
+                        <table class="table table-striped table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>' . $this->lang['AN31'] . '</th>
+                                    <th>' . $this->lang['AN32'] . '</th>
+                                    <th>' . $this->lang['AN33'] . '</th>
+                                    <th>' . $this->lang['AN34'] . '</th>
+                                    <th>&lt;H&gt;</th>
+                                </tr>
+                            </thead>
+                            <tbody>' . $rows . '</tbody>
+                        </table>
+                    </div>
+               </div>';
+    return $output;
+}
 
-   /**
- * Displays keyword consistency data in tabs for Trigrams, Bigrams, and Unigrams.
- * Also adds a suggestion area below the tabs.
+
+/**
+ * Computes a consistency report for a given n-gram type.
+ * Checks whether each n-gram phrase appears in the meta title,
+ * meta description, or in any of the headings (from the new JSON format).
  *
- * @param array $fullCloud The full keyword cloud data.
- * @param array $metaData  The meta data array.
- * @param array $headings  The headings array.
+ * @param string $type   (Not used in calculation; for reference only)
+ * @param array  $ngrams The list of n-grams (each is an array with keys: phrase, count, density)
+ * @param array  $metaData The meta data array, expected as decoded JSON with key "raw" (contains "title" and "description")
+ * @param array  $headings The headings array, expected as decoded JSON with key "raw" (contains "h1", "h2", etc.)
+ * @return array Returns an array with keys "score" and "recommendation"
+ */
+private function buildConsistencyReportForType(string $type, array $ngrams, array $metaData, array $headings): array {
+    // Extract meta title and description from the new format.
+    $metaTitle = $metaData['raw']['title'] ?? "";
+    $metaDesc  = $metaData['raw']['description'] ?? "";
+    
+    // Combine all heading texts from headings["raw"]
+    $allHeadings = [];
+    if (isset($headings['raw']) && is_array($headings['raw'])) {
+        foreach ($headings['raw'] as $tag => $texts) {
+            if (is_array($texts)) {
+                $allHeadings = array_merge($allHeadings, $texts);
+            }
+        }
+    }
+    
+    $total = count($ngrams);
+    $consistent = 0;
+    foreach ($ngrams as $item) {
+        $phrase = $item['phrase'];
+        $found = false;
+        // Check meta title and description.
+        foreach ([$metaTitle, $metaDesc] as $fieldText) {
+            if (!empty($fieldText) && stripos($fieldText, $phrase) !== false) {
+                $found = true;
+                break;
+            }
+        }
+        // If not found in meta, check in all headings.
+        if (!$found) {
+            foreach ($allHeadings as $text) {
+                if (stripos($text, $phrase) !== false) {
+                    $found = true;
+                    break;
+                }
+            }
+        }
+        if ($found) {
+            $consistent++;
+        }
+    }
+    $score = ($total > 0) ? round(($consistent / $total) * 100) : 0;
+    $recommendation = "";
+    if ($score >= 80) {
+       $recommendation = "High consistency.";
+    } elseif ($score >= 50) {
+       $recommendation = "Moderate consistency; some improvements recommended.";
+    } else {
+       $recommendation = "Low consistency; significant improvements needed.";
+    }
+    return [
+        'score' => $score,
+        'recommendation' => $recommendation
+    ];
+}
+
+/**
+ * Displays keyword consistency data in tabs for Trigrams, Bigrams, and Unigrams.
+ * Each tab shows a table of the n-gram data and, below the table, displays the computed consistency
+ * report (score and recommendation) for that n-gram type.
+ *
+ * @param array $fullCloud The full keyword cloud data (with keys "unigrams", "bigrams", "trigrams")
+ * @param array $metaData  The meta data array (new format)
+ * @param array $headings  The headings array (new format)
  * @return string The formatted HTML output.
  */
-public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings) {
+public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings): string {
+    // Ensure $headings is an array; if not, set to empty.
+    if (!is_array($headings)) {
+        $headings = [];
+    }
+    // If headings are stored in the new format, extract the raw headings.
+    if (isset($headings['raw']) && is_array($headings['raw'])) {
+        $headings = $headings['raw'];
+    }
+    
     // Set icons for true/false results.
     $this->true  = '<i class="fa fa-check text-success"></i>';
     $this->false = '<i class="fa fa-times text-danger"></i>';
@@ -1346,12 +1642,17 @@ public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings) {
     $bigrams  = $fullCloud['bigrams'] ?? [];
     $trigrams = $fullCloud['trigrams'] ?? [];
     
-    // Build individual tables.
-    $trigramTable = $this->buildConsistencyTable('Trigrams', $trigrams, $metaData, $headings);
-    $bigramTable  = $this->buildConsistencyTable('Bigrams', $bigrams, $metaData, $headings);
-    $unigramTable = $this->buildConsistencyTable('Unigrams', $unigrams, $metaData, $headings);
+    // Build individual tables using your existing buildConsistencyTable() helper.
+    $trigramTable = $this->buildConsistencyTable('Trigrams Keywords Analysis', $trigrams, $metaData, $headings);
+    $bigramTable  = $this->buildConsistencyTable('Bigrams Keywords Analysis', $bigrams, $metaData, $headings);
+    $unigramTable = $this->buildConsistencyTable('Unigrams Keywords Analysis', $unigrams, $metaData, $headings);
     
-    // Construct the tab layout (using simple Bootstrap buttons for tabs, not colourfully styled).
+    // Compute consistency report for each n-gram type.
+    $triReport = $this->buildConsistencyReportForType('Trigrams Keywords Analysis', $trigrams, $metaData, $headings);
+    $biReport  = $this->buildConsistencyReportForType('Bigrams Keywords Analysis', $bigrams, $metaData, $headings);
+    $uniReport = $this->buildConsistencyReportForType('Unigrams Keywords Analysis', $unigrams, $metaData, $headings);
+    
+    // Construct the tab layout.
     $output = <<<HTML
 <div class="keyword-consistency container-fluid"> 
     <ul class="nav nav-tabs" id="consistencyTabs" role="tablist">
@@ -1374,73 +1675,78 @@ public function showKeyConsistencyNgramsTabs($fullCloud, $metaData, $headings) {
     <div class="tab-content" id="consistencyTabsContent">
         <div class="tab-pane fade show active" id="trigrams-pane" role="tabpanel" aria-labelledby="trigrams-tab">
             {$trigramTable}
+            <div class="mt-2">
+                <strong>Trigrams Consistency Score:</strong> {$triReport['score']}%<br>
+                <em>Recommendation:</em> {$triReport['recommendation']}
+            </div>
         </div>
         <div class="tab-pane fade" id="bigrams-pane" role="tabpanel" aria-labelledby="bigrams-tab">
             {$bigramTable}
+            <div class="mt-2">
+                <strong>Bigrams Consistency Score:</strong> {$biReport['score']}%<br>
+                <em>Recommendation:</em> {$biReport['recommendation']}
+            </div>
         </div>
         <div class="tab-pane fade" id="unigrams-pane" role="tabpanel" aria-labelledby="unigrams-tab">
             {$unigramTable}
+            <div class="mt-2">
+                <strong>Unigrams Consistency Score:</strong> {$uniReport['score']}%<br>
+                <em>Recommendation:</em> {$uniReport['recommendation']}
+            </div>
         </div>
     </div>
-    <div class="mt-3">
-      <div class="alert alert-secondary text-center" role="alert">
-        <strong>Suggestion:</strong> Review your keyword usage and consistency in your title, description, and headings.
-      </div>
-    </div>
+    
 </div>
 HTML;
     return $output;
 }
 
-/**
- * Builds a Bootstrap-styled table for keyword consistency data.
- *
- * Rows beyond the first 5 are hidden by default (using Bootstrap's d-none).
- * "Show More" and "Show Less" buttons are added in a centered div.
- *
- * @param string $label    The label for the table (e.g., "Trigrams").
- * @param array  $ngrams   The n-gram data array.
- * @param array  $metaData The meta data for checking keyword presence.
- * @param array  $headings The headings data.
- * @return string The formatted table HTML.
- */
-private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
-    // Determine suffix for class names based on label.
-    $suffix = '';
-    if (strcasecmp($label, 'Trigrams') === 0) {
-        $suffix = 'Trigrams';
-    } elseif (strcasecmp($label, 'Bigrams') === 0) {
-        $suffix = 'Bigrams';
-    } elseif (strcasecmp($label, 'Unigrams') === 0) {
-        $suffix = 'Unigrams';
-    }
 
+
+private function buildConsistencyTable($label, $ngrams, $metaData, $headings): string {
+    // Extract meta title and description (using 'raw' if available)
+    $metaTitle = '';
+    $metaDesc  = '';
+    if (isset($metaData['raw'])) {
+        $metaTitle = $metaData['raw']['title'] ?? '';
+        $metaDesc  = $metaData['raw']['description'] ?? '';
+    } else {
+        $metaTitle = $metaData['title'] ?? '';
+        $metaDesc  = $metaData['description'] ?? '';
+    }
+    
+    // Define a suffix for the hide/show classes based on the n-gram type
+    $suffix = '';
+    if (stripos($label, 'Trigrams') !== false) {
+        $suffix = 'TrigramsKeywords';
+    } elseif (stripos($label, 'Bigrams') !== false) {
+        $suffix = 'BigramsKeywords';
+    } elseif (stripos($label, 'Unigrams') !== false) {
+        $suffix = 'UnigramsKeywords';
+    }
+    
     $rows = '';
     $hideCount = 1;
-
-    // Build table rows.
     foreach ($ngrams as $item) {
         $phrase  = $item['phrase'];
         $count   = $item['count'];
-        $density = $item['density'] ?? 0;  // Stored in DB
-
-        // Determine if the phrase exists in title, description, or any heading.
-        $inTitle   = (stripos($metaData['title'] ?? '', $phrase) !== false);
-        $inDesc    = (stripos($metaData['description'] ?? '', $phrase) !== false);
+        $density = $item['density'] ?? 0;
+        $inTitle   = (stripos($metaTitle, $phrase) !== false);
+        $inDesc    = (stripos($metaDesc, $phrase) !== false);
         $inHeading = false;
         foreach ($headings as $tag => $texts) {
             foreach ($texts as $text) {
+                if (!is_string($text)) {
+                    continue;
+                }
                 if (stripos($text, $phrase) !== false) {
                     $inHeading = true;
                     break 2;
                 }
             }
         }
-
-        // Hide rows after the first five.
-        $hideClass = ($hideCount > 20) ? 'd-none hideTr hideTr' . $suffix : '';
-
-        // Create the table row.
+        // Hide rows beyond the first 20 by adding CSS classes.
+        $hideClass = ($hideCount > 20) ? 'd-none hideTr' . $suffix : '';
         $rows .= '<tr class="' . $hideClass . '">
                     <td class="text-start">' . htmlspecialchars($phrase) . '</td>
                     <td>' . $count . '</td>
@@ -1451,12 +1757,8 @@ private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
                   </tr>';
         $hideCount++;
     }
-
-    // Define class names for the show/hide buttons.
-    $showMoreClass = 'showMore' . $suffix;
-    $showLessClass = 'showLess' . $suffix;
-
-    // Build the complete table.
+    
+    // Build the table HTML with a responsive container.
     $output = '<div class="passedBox">
         <div class="msgBox">
             <h4 class="mb-3">' . $label . '</h4>
@@ -1475,25 +1777,70 @@ private function buildConsistencyTable($label, $ngrams, $metaData, $headings) {
                     <tbody>' . $rows . '</tbody>
                 </table>
             </div>';
-
-    // Add Show More / Show Less buttons if needed.
-    if ($hideCount > 6) {
+    
+    // If more than 20 rows exist, add the "Show More" and "Show Less" buttons.
+    if ($hideCount > 20) {
         $output .= '<div class="mt-2 text-center">
-            <button type="button" class="' . $showMoreClass . ' btn btn-outline-secondary btn-sm">
+            <button type="button" class="showMore' . $suffix . ' btn btn-outline-secondary btn-sm">
                 Show More <i class="fa fa-angle-double-down"></i>
             </button>
-            <button type="button" class="' . $showLessClass . ' btn btn-outline-secondary btn-sm d-none">
+            <button type="button" class="showLess' . $suffix . ' btn btn-outline-secondary btn-sm d-none">
                 Show Less
             </button>
         </div>';
     }
-
+    
     $output .= '</div></div>';
+    
     return $output;
 }
 
- 
+
+
+/**
+ * Displays the keyword cloud and consistency report from the saved JSON data.
+ *
+ * @param string $savedJson JSON string saved in the DB.
+ * @return string HTML output for the keyword cloud and consistency report.
+ */
+public function showKeyCloudAndConsistency(string $savedJson): string {
+    // Decode the saved JSON data.
+    $data = json_decode($savedJson, true);
+    if (!is_array($data)) {
+        return '<div class="alert alert-warning">No keyword consistency data available.</div>';
+    }
     
+    // Build the keyword cloud part using the helper.
+    $keywordCloudHtml = $this->buildKeyCloudHtml([
+        'outCount'    => $data['outCount'] ?? 0,
+        'keyDataHtml' => $data['keyDataHtml'] ?? ''
+    ]);
+    
+    // Build the consistency report using your helper.
+    // We assume that you saved the meta data and headings with the cloud.
+    $consistencyHtml = $this->showKeyConsistencyNgramsTabs(
+        $data['fullCloud'] ?? [],
+        $data['metaData'] ?? [],
+        $data['headings'] ?? []
+    );
+    
+    // Retrieve the suggestion comment from the report if available.
+    $suggestion = '';
+    if (isset($data['report']) && isset($data['report']['comment'])) {
+        $suggestion = '<div class="mt-3">
+                          <div class="alert alert-secondary text-center" role="alert">
+                            <strong>Suggestion:</strong> ' . htmlspecialchars($data['report']['comment']) . '
+                          </div>
+                       </div>';
+    }
+    
+    // Concatenate the outputs.
+    return $keywordCloudHtml . $consistencyHtml . $suggestion;
+}
+
+    
+
+
 
     /*===================================================================
      * TEXT RATIO HANDLER
