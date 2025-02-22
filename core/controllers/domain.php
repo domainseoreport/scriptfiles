@@ -278,8 +278,7 @@ if (!isset($error)) {
         //New or Update the data
         
         if (!isset($_SESSION['twebAdminToken'])) {
-            //Free Users
-            log_message('debug', "This Place Done 2222222 $error");
+            //Free Users 
             if (!isset($_SESSION['twebUsername'])) {
                 if (isset($_SESSION['TWEB_FREE_LIMIT'])) {
                     $limitUsed = (int)$_SESSION['TWEB_FREE_LIMIT'];

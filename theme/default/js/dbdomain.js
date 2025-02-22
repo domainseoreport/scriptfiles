@@ -2,7 +2,7 @@
  * dbdomain.js
  *
  * Handles the show/hide toggles for SEO analysis sections and
- * updates the final scoreboard bars and circle gauge.
+ * updates the final scoreboard bars, circle gauge, and PageSpeed gauges.
  *
  * Global variables (defined server-side) that we rely on:
  *   passScore, improveScore, errorScore, scoreTxt
@@ -11,7 +11,11 @@
  * Date: 2023-xx-xx
  */
 
-var overScore = 0;             // Not used, but kept for compatibility
+// Global score variables. If window.seoReport is set (via PHP), initialize from it.
+var passScore = (window.seoReport && parseInt(window.seoReport.passScore, 10)) || 0;
+var improveScore = (window.seoReport && parseInt(window.seoReport.improveScore, 10)) || 0;
+var errorScore = (window.seoReport && parseInt(window.seoReport.errorScore, 10)) || 0;
+var scoreTxt = typeof scoreTxt !== "undefined" ? scoreTxt : '%'; // Provided via PHP inline JS
 var showSuggestionBox = null;  // Tracks which suggestion box is currently open
 
 /**
@@ -19,13 +23,9 @@ var showSuggestionBox = null;  // Tracks which suggestion box is currently open
  *
  * Slides the specified element (by ID) up/down.
  * @param {string} sugBox - The ID of the element to toggle (e.g. "seoBox8")
- *
- * NOTE: If your HTML says onclick="showSuggestion('seoBox8')",
- *       this function will do $('#seoBox8').slideToggle(100).
  */
 function showSuggestion(sugBox) {
   showSuggestionBox = sugBox;
-  // Toggle by ID instead of class:
   $('#' + sugBox).slideToggle(100);
 }
 
@@ -33,80 +33,223 @@ function showSuggestion(sugBox) {
  * finalScore()
  *
  * Updates the scoreboard bars (Passed, To Improve, Errors) and
- * initializes the circle gauge for the overall score.
+ * initializes the overall circle gauge.
  *
- * Relies on global variables:
- *   passScore, improveScore, errorScore (set by the server-side),
- *   scoreTxt (the label for the circle gauge).
+ * Relies on global variables: passScore, improveScore, errorScore, scoreTxt.
  */
 function finalScore() {
-  // Update progress bars
+  var pCount = parseInt(passScore, 10) || 0;
+  var iCount = parseInt(improveScore, 10) || 0;
+  var eCount = parseInt(errorScore, 10) || 0;
+  
+  var totalChecks = pCount + iCount + eCount;
+  var pBar = totalChecks > 0 ? Math.round((pCount / totalChecks) * 100) : 0;
+  var iBar = totalChecks > 0 ? Math.round((iCount / totalChecks) * 100) : 0;
+  var eBar = totalChecks > 0 ? Math.round((eCount / totalChecks) * 100) : 0;
+  
+  $("#passScore").css("width", pBar + '%').find(".scoreProgress-value").text(pBar + '%');
+  $("#improveScore").css("width", iBar + '%').find(".scoreProgress-value").text(iBar + '%');
+  $("#errorScore").css("width", eBar + '%').find(".scoreProgress-value").text(eBar + '%');
+  
+  // overallPercent is updated via the AJAX call, now use it here
+  var finalP = parseInt(overallPercent, 10) || 0;
+  $('.second.circle').circleProgress({
+    value: finalP / 100,
+    animation: false
+  });
+  $("#overallscore").html(finalP + '<i class="newI">' + scoreTxt + '</i>');
+}
+
+/**
+ * initPageSpeedGauges()
+ *
+ * Initializes the PageSpeed gauges (desktop and mobile) using the
+ * scores from the global window.pageSpeedReport variable.
+ */
+function initPageSpeedGauges() {
+  console.log("Initializing PageSpeed Gauges...");
+  // Initialize the Desktop Gauge
+  var desktopGauge = new Gauge({
+    renderTo: 'desktopPageSpeed',
+    width: 250,
+    height: 250,
+    glow: true,
+    units: 'Score',
+    title: 'Desktop',
+    minValue: 0,
+    maxValue: 100,
+    majorTicks: ['0', '20', '40', '60', '80', '100'],
+    minorTicks: 5,
+    strokeTicks: true,
+    valueFormat: { int: 2, dec: 0, text: '%' },
+    valueBox: { rectStart: '#888', rectEnd: '#666', background: '#CFCFCF' },
+    valueText: { foreground: '#CFCFCF' },
+    highlights: [
+      { from: 0, to: 40, color: '#EFEFEF' },
+      { from: 40, to: 60, color: 'LightSalmon' },
+      { from: 60, to: 80, color: 'Khaki' },
+      { from: 80, to: 100, color: 'PaleGreen' }
+    ],
+    animation: { delay: 10, duration: 300, fn: 'bounce' }
+  });
+  desktopGauge.draw();
+
+  // Initialize the Mobile Gauge
+  var mobileGauge = new Gauge({
+    renderTo: 'mobilePageSpeed',
+    width: 250,
+    height: 250,
+    glow: true,
+    units: 'Score',
+    title: 'Mobile',
+    minValue: 0,
+    maxValue: 100,
+    majorTicks: ['0', '20', '40', '60', '80', '100'],
+    minorTicks: 5,
+    strokeTicks: true,
+    valueFormat: { int: 2, dec: 0, text: '%' },
+    valueBox: { rectStart: '#888', rectEnd: '#666', background: '#CFCFCF' },
+    valueText: { foreground: '#CFCFCF' },
+    highlights: [
+      { from: 0, to: 40, color: '#EFEFEF' },
+      { from: 40, to: 60, color: 'LightSalmon' },
+      { from: 60, to: 80, color: 'Khaki' },
+      { from: 80, to: 100, color: 'PaleGreen' }
+    ],
+    animation: { delay: 10, duration: 300, fn: 'bounce' }
+  });
+  mobileGauge.draw();
+
+  // Get the scores from the global variable (set by PHP)
+  var desktopScore = parseInt(window.pageSpeedReport.desktop.score || '0', 10);
+  var mobileScore = parseInt(window.pageSpeedReport.mobile.score || '0', 10);
+  console.log("Desktop Score from global:", desktopScore);
+  console.log("Mobile Score from global:", mobileScore);
+
+  desktopGauge.setValue(desktopScore);
+  mobileGauge.setValue(mobileScore);
+}
+
+/**
+ * updateScore(scoreClass)
+ *
+ * Updates the score based on the CSS class passed (passedBox, improveBox, errorBox)
+ * and updates the overall circle gauge.
+ * @param {string} scoreClass - The CSS class indicating the score category.
+ */
+function updateScore(scoreClass) {
+  scoreClass = scoreClass.toLowerCase();
+  if (scoreClass === 'passedbox') {
+    passScore += 3;
+  } else if (scoreClass === 'improvebox') {
+    improveScore += 3;
+  } else {
+    errorScore += 3;
+  }
   $("#passScore").css("width", passScore + '%');
   $("#improveScore").css("width", improveScore + '%');
   $("#errorScore").css("width", errorScore + '%');
 
-  // Circle gauge
   $('.second.circle').circleProgress({
     value: passScore / 100,
     animation: false
   });
-
-  // Overall text
   $("#overallscore").html(passScore + '<i class="newI">' + scoreTxt + '</i>');
+  console.log("Score updated:", scoreClass, passScore, improveScore, errorScore);
 }
 
-/*-------------------------------------------------------------------------
- | 1. HEADINGS (seoBox4) - Show/Hide More for .hideTr1
- *------------------------------------------------------------------------*/
+/**
+ * toggleRows(suffix, show)
+ *
+ * Toggles the visibility of rows for a given suffix.
+ * @param {string} suffix - The suffix used in class names.
+ * @param {boolean} show - True to show, false to hide.
+ */
+function toggleRows(suffix, show) {
+  console.log("Toggle rows for suffix:", suffix, "Show:", show);
+  var rows = $(".hideTr" + suffix);
+  var showMoreBtn = $(".showMore" + suffix);
+  var showLessBtn = $(".showLess" + suffix);
+  console.log("Rows found:", rows.length);
+  if (show) {
+    rows.removeClass("d-none").hide().fadeIn();
+    showMoreBtn.hide();
+    showLessBtn.removeClass("d-none").show();
+  } else {
+    rows.fadeOut(function () {
+      $(this).addClass("d-none");
+    });
+    showLessBtn.hide();
+    showMoreBtn.removeClass("d-none").show();
+    $('html, body').animate({ scrollTop: $('.keyConsResult').offset().top }, 800);
+  }
+}
+
+/* ----- Generic "Show More"/"Show Less" Handlers ----- */
+$(document).on("click", "[class^='showMore']", function () {
+  var cls = $(this).attr("class");
+  console.log("Show More Button Class Name:", cls);
+  var match = cls.match(/showMore(\S+)/);
+  console.log("Regex Match Result:", match);
+  if (match && match[1]) {
+    toggleRows(match[1], true);
+  } else {
+    console.error("Failed to extract suffix from class name:", cls);
+  }
+  return false;
+});
+
+$(document).on("click", "[class^='showLess']", function () {
+  var cls = $(this).attr("class");
+  var match = cls.match(/showLess(\S+)/);
+  if (match && match[1]) {
+    toggleRows(match[1], false);
+  }
+  return false;
+});
+
+/* ----- Specific Handlers for Individual SEO Boxes ----- */
+// Headings (seoBox4)
 $("#seoBox4").on("click", ".showMore1", function () {
   $(".hideTr1").fadeIn();
   $(".showMore1").hide();
   $(".showLess1").show();
   return false;
 });
-
 $("#seoBox4").on("click", ".showLess1", function () {
   $(".hideTr1").fadeOut();
   $(".showLess1").hide();
   $(".showMore1").show();
-  // Optional scroll
   var pos = $('.headingResult').offset();
   $('html, body').animate({ scrollTop: pos.top }, 800);
   return false;
 });
 
-/*-------------------------------------------------------------------------
- | 2. ALT ATTRIBUTE (seoBox6) - Show/Hide More for .hideTr2
- *------------------------------------------------------------------------*/
+// Alt Attributes (seoBox6)
 $("#seoBox6").on("click", ".showMore2", function (event) {
-  event.stopPropagation(); // prevent parent click
+  event.stopPropagation();
   $(".hideTr2").fadeIn();
   $(".showMore2").hide();
   $(".showLess2").show();
   return false;
 });
-
 $("#seoBox6").on("click", ".showLess2", function (event) {
-  event.stopPropagation(); // prevent parent click
+  event.stopPropagation();
   $(".hideTr2").fadeOut();
   $(".showLess2").hide();
   $(".showMore2").show();
-  // Optionally, scroll back to the top of the section:
   var pos = $('.altImgResult').offset();
   $('html, body').animate({ scrollTop: pos.top }, 800);
   return false;
 });
 
-/*-------------------------------------------------------------------------
- | 3. KEYWORDS CLOUD (seoBox7) - Show/Hide More for .hideTr7
- *------------------------------------------------------------------------*/
+// Keywords Cloud (seoBox7)
 $("#seoBox7").on("click", ".showMore7", function () {
   $(".hideTr7").fadeIn();
   $(".showMore7").hide();
   $(".showLess7").show();
   return false;
 });
-
 $("#seoBox7").on("click", ".showLess7", function () {
   $(".hideTr7").fadeOut();
   $(".showLess7").hide();
@@ -114,158 +257,19 @@ $("#seoBox7").on("click", ".showLess7", function () {
   return false;
 });
 
-/*-------------------------------------------------------------------------
- | 4. KEYWORD CONSISTENCY (seoBox8)
- |    We have separate tabs (Trigrams, Bigrams, Unigrams) with classes:
- |      .showMoreTrigrams, .showLessTrigrams, .hideTrTrigrams
- |      .showMoreBigrams,  .showLessBigrams,  .hideTrBigrams
- |      .showMoreUnigrams, .showLessUnigrams, .hideTrUnigrams
- *------------------------------------------------------------------------*/
-$(document).on("click", ".showMoreTrigrams", function () {
-  $(".hideTrTrigrams").fadeIn();
-  $(".showMoreTrigrams").hide();
-  $(".showLessTrigrams").show();
-  return false;
+/* ----- Bootstrap Tab Handling: Reset toggles on tab switch ----- */
+$('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+  var targetPane = $(e.target).attr("href");
+  $(targetPane).find("[class^='hideTr']").hide();
+  $(targetPane).find("[class^='showLess']").hide();
+  $(targetPane).find("[class^='showMore']").show();
 });
 
-$(document).on("click", ".showLessTrigrams", function () {
-  $(".hideTrTrigrams").fadeOut();
-  $(".showLessTrigrams").hide();
-  $(".showMoreTrigrams").show();
-  return false;
-});
-
-$(document).on("click", ".showMoreBigrams", function () {
-  $(".hideTrBigrams").fadeIn();
-  $(".showMoreBigrams").hide();
-  $(".showLessBigrams").show();
-  return false;
-});
-
-$(document).on("click", ".showLessBigrams", function () {
-  $(".hideTrBigrams").fadeOut();
-  $(".showLessBigrams").hide();
-  $(".showMoreBigrams").show();
-  return false;
-});
-
-$(document).on("click", ".showMoreUnigrams", function () {
-  $(".hideTrUnigrams").fadeIn();
-  $(".showMoreUnigrams").hide();
-  $(".showLessUnigrams").show();
-  return false;
-});
-
-$(document).on("click", ".showLessUnigrams", function () {
-  $(".hideTrUnigrams").fadeOut();
-  $(".showLessUnigrams").hide();
-  $(".showMoreUnigrams").show();
-  return false;
-});
-
-/*-------------------------------------------------------------------------
- | 5. IN-PAGE LINKS (seoBox13) - Show/Hide More for .hideTr4
- *------------------------------------------------------------------------*/
-$("#seoBox13").on("click", ".showMore4", function () {
-  $(".hideTr4").fadeIn();
-  $(".showMore4").hide();
-  $(".showLess4").show();
-  return false;
-});
-
-$("#seoBox13").on("click", ".showLess4", function () {
-  $(".hideTr4").fadeOut();
-  $(".showLess4").hide();
-  $(".showMore4").show();
-  // Optional scroll
-  var pos = $('.inPage').offset();
-  $('html, body').animate({ scrollTop: pos.top }, 800);
-  return false;
-});
-
-/*-------------------------------------------------------------------------
- | 6. BROKEN LINKS (seoBox14) - Show/Hide More for .hideTr5
- *------------------------------------------------------------------------*/
-$("#seoBox14").on("click", ".showMore5", function () {
-  $(".hideTr5").fadeIn();
-  $(".showMore5").hide();
-  $(".showLess5").show();
-  return false;
-});
-
-$("#seoBox14").on("click", ".showLess5", function () {
-  $(".hideTr5").fadeOut();
-  $(".showLess5").hide();
-  $(".showMore5").show();
-  // Optional scroll
-  var pos = $('.brokenLinks').offset();
-  $('html, body').animate({ scrollTop: pos.top }, 800);
-  return false;
-});
-
-/*-------------------------------------------------------------------------
- | 7. WHOIS (seoBox22) - Show/Hide More for .hideTr6
- *------------------------------------------------------------------------*/
-$("#seoBox22").on("click", ".showMore6", function () {
-  $(".hideTr6").fadeIn();
-  $(".showMore6").hide();
-  $(".showLess6").show();
-  return false;
-});
-
-$("#seoBox22").on("click", ".showLess6", function () {
-  $(".hideTr6").fadeOut();
-  $(".showLess6").hide();
-  $(".showMore6").show();
-  // Optional scroll
-  var pos = $('.whois').offset();
-  $('html, body').animate({ scrollTop: pos.top }, 800);
-  return false;
-});
-
-/*-------------------------------------------------------------------------
- | 8.Keyword Density (seoBox23) - Show/Hide More for .hideTr7
- *------------------------------------------------------------------------*/
-
- $(document).on("click", "[class^='showMore']", function (e) {
-    e.preventDefault();
-    // Extract suffix from the button class (capture everything after "showMore")
-    let cls = $(this).attr("class");
-    let match = cls.match(/showMore(\S+)/);
-    if (match && match[1]) {
-      let suffix = match[1]; // e.g., "1", "2", "Trigrams", etc.
-      // Remove d-none, hide and fade in corresponding hidden rows
-      $(".hideTr" + suffix).removeClass("d-none").hide().fadeIn();
-      // Hide this button and show the corresponding "Show Less" button
-      $(this).hide();
-      $(".showLess" + suffix).removeClass("d-none").show();
-    }
-    return false;
-  });
-  
-  $(document).on("click", "[class^='showLess']", function (e) {
-    e.preventDefault();
-    // Extract suffix from the button class (capture everything after "showLess")
-    let cls = $(this).attr("class");
-    let match = cls.match(/showLess(\S+)/);
-    if (match && match[1]) {
-      let suffix = match[1];
-      // Fade out corresponding rows then add the d-none class
-      $(".hideTr" + suffix).fadeOut(function() {
-        $(this).addClass("d-none");
-      });
-      // Hide this button and show the corresponding "Show More" button
-      $(this).hide();
-      $(".showMore" + suffix).removeClass("d-none").show();
-      // Optional: scroll to a specific section if needed (adjust selector as required)
-      // $('html, body').animate({ scrollTop: $('.keyConsResult').offset().top }, 800);
-    }
-    return false;
-  });
-
-/*-------------------------------------------------------------------------
- | 8. Document Ready: Initialize finalScore
- *------------------------------------------------------------------------*/
+/* ----- Document Ready: Initialize finalScore and PageSpeed Gauges ----- */
 $(document).ready(function () {
   finalScore();
+  // If a global pageSpeedReport exists, initialize the PageSpeed gauges.
+  if (window.pageSpeedReport && window.pageSpeedReport.desktop && window.pageSpeedReport.mobile) {
+    initPageSpeedGauges();
+  }
 });

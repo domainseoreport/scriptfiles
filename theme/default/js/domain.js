@@ -1,5 +1,3 @@
-// domains.js
-
 (function () {
   // ---------------------------
   // Global Variables (IIFE scoped)
@@ -11,23 +9,22 @@
   let scoreTxt = '%'; // Customize as needed
   let showSuggestionBox = '';
 
+  // Ensure that your PHP code outputs a global variable "window.pageSpeedReport"
+  // containing the "report" object with desktop and mobile scores.
+  window.pageSpeedReport = window.pageSpeedReport || { 
+    desktop: { score: 0 },
+    mobile: { score: 0 }
+  };
+
   // ---------------------------
   // Utility Functions
   // ---------------------------
 
-  /**
-   * Toggle the suggestion box.
-   * @param {string} sugBox - The class name of the suggestion box to toggle.
-   */
   function showSuggestion(sugBox) {
     showSuggestionBox = sugBox;
-    $('.' + sugBox).slideToggle(100);
+    $('#' + sugBox).slideToggle(100);
   }
 
-  /**
-   * Update the progress bar instantly.
-   * @param {number} increment - The increment value.
-   */
   function updateProgress(increment) {
     progressLevel += increment * 2;
     if (progressLevel > 100) progressLevel = 100;
@@ -35,12 +32,6 @@
     $("#progress-label").html(progressLevel + "%");
   }
 
-  /**
-   * Animate the progress bar update while showing a step name.
-   * For the "Social Data Processed" step, a slower animation speed is used.
-   * @param {string} stepName - The name of the step.
-   * @param {number} increment - The increment value.
-   */
   function updateProgressStep(stepName, increment) {
     progressLevel += increment * 2;
     if (progressLevel > 100) progressLevel = 100;
@@ -49,20 +40,101 @@
     $("#progress-label").html(stepName + " (" + progressLevel + "%)");
   }
 
-  /**
-   * Initialize the score bars.
-   */
   function initialScore() {
     $("#passScore").css("width", passScore + '%');
     $("#improveScore").css("width", improveScore + '%');
     $("#errorScore").css("width", errorScore + '%');
   }
 
-  /**
-   * Update the score based on the provided CSS class (passedBox, improveBox, errorBox).
-   * Also updates the overall circle gauge and overall score text.
-   * @param {string} scoreClass - The CSS class indicating the score category.
-   */
+  // ---------------------------
+  // New finalScore() Function
+  // ---------------------------
+  function finalScore() {
+    // Calculate percentages based on current scores.
+    var pCount = parseInt(passScore, 10) || 0;
+    var iCount = parseInt(improveScore, 10) || 0;
+    var eCount = parseInt(errorScore, 10) || 0;
+    
+    var totalChecks = pCount + iCount + eCount;
+    var pBar = totalChecks > 0 ? Math.round((pCount / totalChecks) * 100) : 0;
+    var iBar = totalChecks > 0 ? Math.round((iCount / totalChecks) * 100) : 0;
+    var eBar = totalChecks > 0 ? Math.round((eCount / totalChecks) * 100) : 0;
+    
+    // Update progress bars
+    $("#passScore").css("width", pBar + '%').find(".scoreProgress-value").text(pBar + '%');
+    $("#improveScore").css("width", iBar + '%').find(".scoreProgress-value").text(iBar + '%');
+    $("#errorScore").css("width", eBar + '%').find(".scoreProgress-value").text(eBar + '%');
+    
+    // Use overallPercent (assumed updated elsewhere) to update the circle gauge.
+    var finalP = parseInt(overallPercent, 10) || 0;
+    $('.second.circle').circleProgress({
+      value: finalP / 100,
+      animation: false
+    });
+    $("#overallscore").html(finalP + '<i class="newI">' + scoreTxt + '</i>');
+  }
+
+  function initPageSpeedGauges() {
+    // Initialize the Desktop Gauge
+    var desktopGauge = new Gauge({
+      renderTo  : 'desktopPageSpeed',
+      width     : 250,
+      height    : 250,
+      glow      : true,
+      units     : 'Score',
+      title     : 'Desktop',
+      minValue  : 0,
+      maxValue  : 100,
+      majorTicks: ['0','20','40','60','80','100'],
+      minorTicks: 5,
+      strokeTicks: true,
+      valueFormat: { int: 2, dec: 0, text: '%' },
+      valueBox: { rectStart: '#888', rectEnd: '#666', background: '#CFCFCF' },
+      valueText: { foreground: '#CFCFCF' },
+      highlights: [
+        { from: 0,  to: 40, color: '#EFEFEF' },
+        { from: 40, to: 60, color: 'LightSalmon' },
+        { from: 60, to: 80, color: 'Khaki' },
+        { from: 80, to: 100, color: 'PaleGreen' }
+      ],
+      animation: { delay: 10, duration: 300, fn: 'bounce' }
+    });
+    desktopGauge.draw();
+  
+    // Initialize the Mobile Gauge
+    var mobileGauge = new Gauge({
+      renderTo  : 'mobilePageSpeed',
+      width     : 250,
+      height    : 250,
+      glow      : true,
+      units     : 'Score',
+      title     : 'Mobile',
+      minValue  : 0,
+      maxValue  : 100,
+      majorTicks: ['0','20','40','60','80','100'],
+      minorTicks: 5,
+      strokeTicks: true,
+      valueFormat: { int: 2, dec: 0, text: '%' },
+      valueBox: { rectStart: '#888', rectEnd: '#666', background: '#CFCFCF' },
+      valueText: { foreground: '#CFCFCF' },
+      highlights: [
+        { from: 0,  to: 40, color: '#EFEFEF' },
+        { from: 40, to: 60, color: 'LightSalmon' },
+        { from: 60, to: 80, color: 'Khaki' },
+        { from: 80, to: 100, color: 'PaleGreen' }
+      ],
+      animation: { delay: 10, duration: 300, fn: 'bounce' }
+    });
+    mobileGauge.draw();
+  
+    // Get the scores from the global variable
+    var desktopScore = parseInt(window.pageSpeedReport.desktop.score || '0', 10);
+    var mobileScore  = parseInt(window.pageSpeedReport.mobile.score || '0', 10);
+  
+    desktopGauge.setValue(desktopScore);
+    mobileGauge.setValue(mobileScore);
+  }
+
   function updateScore(scoreClass) {
     scoreClass = scoreClass.toLowerCase();
     if (scoreClass === 'passedbox') {
@@ -72,33 +144,33 @@
     } else {
       errorScore += 3;
     }
+    
+    // Update the visual progress bars.
     $("#passScore").css("width", passScore + '%');
     $("#improveScore").css("width", improveScore + '%');
     $("#errorScore").css("width", errorScore + '%');
-
-    // Update the circle gauge (using circleProgress plugin)
+  
+    // Update the overall circle gauge using circleProgress plugin.
     $('.second.circle').circleProgress({
       value: passScore / 100,
       animation: false
     });
+    
     $("#overallscore").html(passScore + '<i class="newI">' + scoreTxt + '</i>');
+    console.log("Score updated:", scoreClass, passScore, improveScore, errorScore);
+    
+    // Update the global session report object
+    window.seoReport = window.seoReport || {};
+    window.seoReport.passScore = passScore;
+    window.seoReport.improveScore = improveScore;
+    window.seoReport.errorScore = errorScore;
+    window.seoReport.overallScore = Math.round(passScore);
   }
 
-  /**
-   * Toggle rows for a given suffix.
-   * This function handles both showing and hiding rows.
-   * @param {string} suffix - The suffix for class names (e.g., "Trigrams", "Bigrams", "Unigrams").
-   * @param {boolean} show - Whether to show (true) or hide (false) the rows.
-   */
   function toggleRows(suffix, show) {
-    console.log("Suffix:", suffix);
     const rows = $(`.hideTr${suffix}`);
     const showMoreBtn = $(`.showMore${suffix}`);
     const showLessBtn = $(`.showLess${suffix}`);
-    console.log("Rows:", rows);
-    console.log("Show More Button:", showMoreBtn);
-    console.log("Show Less Button:", showLessBtn);
-
     if (show) {
         rows.removeClass("d-none").hide().fadeIn();
         showMoreBtn.hide();
@@ -111,51 +183,17 @@
         showMoreBtn.removeClass("d-none").show();
         $('html, body').animate({ scrollTop: $('.keyConsResult').offset().top }, 800);
     }
-}
-// Generic "Show More" handler using the toggleRows helper
-$(document).on("click", "[class^='showMore']", function () {
-  let className = $(this).attr("class");
-  console.log("Button Class Name:", className);
-
-  let match = className.match(/showMore([A-Za-z]+)/);
-  console.log("Regex Match Result:", match);
-
-  if (match && match[1]) {
-      console.log("Extracted Suffix:", match[1]);
-      toggleRows(match[1], true);
-  } else {
-      console.error("Failed to extract suffix from class name:", className);
   }
-  return false;
-});
 
-$(document).on("click", "[class^='showLess']", function () {
-  console.log("Show Less clicked");
-  let match = $(this).attr("class").match(/showLess([A-Za-z]+)/);
-  if (match && match[1]) {
-      toggleRows(match[1], false);
-  }
-  return false;
-});
-  // ---------------------------
-  // Event Handlers for Toggling Suggestion Boxes and Show More/Less
-  // ---------------------------
-
-  // Generic suggestion toggle (if any element within .seoBox is clicked)
-  $(".seoBox").on("click", "a", function () {
-    showSuggestion(showSuggestionBox);
-  });
-
-  // Generic "Show More" handler using the toggleRows helper
   $(document).on("click", "[class^='showMore']", function () {
-    let match = $(this).attr("class").match(/showMore([A-Za-z]+)/);
+    let className = $(this).attr("class");
+    let match = className.match(/showMore([A-Za-z]+)/);
     if (match && match[1]) {
       toggleRows(match[1], true);
     }
     return false;
   });
 
-  // Generic "Show Less" handler using the toggleRows helper
   $(document).on("click", "[class^='showLess']", function () {
     let match = $(this).attr("class").match(/showLess([A-Za-z]+)/);
     if (match && match[1]) {
@@ -164,11 +202,12 @@ $(document).on("click", "[class^='showLess']", function () {
     return false;
   });
 
-  // ---------------------------
-  // Bootstrap Tab Handling: Reset toggles when switching tabs.
-  // ---------------------------
+  $(".seoBox").on("click", "a", function () {
+    showSuggestion(showSuggestionBox);
+  });
+
   $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-    let targetPane = $(e.target).attr("href"); // e.g. "#trigrams-pane"
+    let targetPane = $(e.target).attr("href");
     $(targetPane).find("[class^='hideTr']").hide();
     $(targetPane).find("[class^='showLess']").hide();
     $(targetPane).find("[class^='showMore']").show();
@@ -178,43 +217,43 @@ $(document).on("click", "[class^='showLess']", function () {
   // Document Ready: Initialization and AJAX Calls
   // ---------------------------
   $(document).ready(function () {
-    // Initialize tooltips.
     $('[data-toggle="tooltip"]').tooltip();
 
-    // Load screenshot via AJAX GET.
     $.get(domainPath + '?getImage&site=' + inputHost, function (data) {
       $("#screenshotData").html('<img src="data:image/jpeg;base64,' + data + '"/>');
     });
-
-    // Initialize progress and score bars.
+    
     updateProgressStep("Initializing", 1);
     initialScore();
     $("a#pdfLink").attr("href", '#').prop("disabled", true);
 
-    // Helper: Wrap $.post in a Promise.
     function postAjax(params) {
       return new Promise((resolve, reject) => {
         $.post(domainPath, Object.assign({}, params, { hashcode: hashCode, url: inputHost }), function (data) {
           resolve(data);
         }).fail(function (err) {
-          console.error("AJAX call failed for params:", params, err);
           reject(err);
         });
       });
     }
 
-    // Async function to run all AJAX calls sequentially.
     async function runAjaxCalls() {
       try {
         // 1. Meta Data Processing
         let data = await postAjax({ meta: '1', metaOut: '1' });
         let myArr = data.split('!!!!8!!!!');
         $("#seoBox1").html(myArr[0]);
-        let cls = $("#seoBox1").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        let firstChild = $("#seoBox1").children().first();
+        if (firstChild.length) {
+          let cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         $("#seoBox2").html(myArr[1]);
-        cls = $("#seoBox2").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox2").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         $("#seoBox3").html(myArr[2]);
         $("#seoBox5").html(myArr[3]);
         updateProgressStep("Meta Data Processed", 5);
@@ -222,94 +261,155 @@ $(document).on("click", "[class^='showLess']", function () {
         // 2. Heading Data Processing
         data = await postAjax({ heading: '1', headingOut: '1' });
         $("#seoBox4").html(data);
-        cls = $("#seoBox4").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox4").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         updateProgressStep("Headings Processed", 5);
 
         // 3. Image Alt Tags Processing
         data = await postAjax({ image: '1', loaddom: '1' });
         $("#seoBox6").html(data);
-        cls = $("#seoBox6").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox6").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         updateProgressStep("Image Alt Tags Processed", 5);
 
-        // Combined Keyword Cloud and Consistency Processing in a single AJAX call
+        // 4. Combined Keyword Cloud and Consistency Processing
         data = await postAjax({ keycloudAll: '1', meta: '1', heading: '1' });
         $("#seoBox8").html(data);
-        cls = $("#seoBox8").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox8").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         updateProgressStep("Keyword Cloud & Consistency Processed", 10);
 
-        // 6. Page Analysis Report Processing
+        // 5. Page Analysis Report Processing
         data = await postAjax({ PageAnalytics: '1' });
         $("#seoBox54").html(data);
-        cls = $("#seoBox54").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox54").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         updateProgressStep("Page Analytics Processed", 5);
 
         // 6. Google PageSpeed Insights Processing
         data = await postAjax({ PageSpeedInsights: '1' });
         $("#seoBox55").html(data);
-        cls = $("#seoBox55").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox55").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         updateProgressStep("PageSpeed Insights Processed", 5);
+        initPageSpeedGauges();
 
-        // 6. Text-to-HTML Ratio Processing
+        // 7. Text-to-HTML Ratio Processing
         data = await postAjax({ textRatio: '1' });
         $("#seoBox9").html(data);
-        cls = $("#seoBox9").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox9").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         updateProgressStep("HTML Text Ratio Processed", 5);
 
-        // 6. Social Card Processing
+        // 8. Social Card Processing
         data = await postAjax({ sitecards: '1' });
         $("#seoBox51").html(data);
-        cls = $("#seoBox51").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox51").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         updateProgressStep("Social Card Processed", 5);
 
-        // 6. Social URL Processing
+        // 9. Social URL Processing
         data = await postAjax({ socialurls: '1' });
         $("#seoBox52").html(data);
-        cls = $("#seoBox52").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox52").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         updateProgressStep("Social URL Processed", 5);
 
-        // 7. In-Page Links Analysis
+        // 10. In-Page Links Analysis
         data = await postAjax({ linkanalysis: '1', loaddom: '1', inPageoutput: '1' });
         let arr2 = data.split('!!!!8!!!!');
         $("#seoBox13").html(arr2[0]);
-        cls = $("#seoBox13").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox13").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         $("#seoBox17").html(arr2[1]);
-        cls = $("#seoBox17").children(":first").attr("class");
-        if (cls) updateScore(cls);
+        firstChild = $("#seoBox17").children().first();
+        if (firstChild.length) {
+          cls = firstChild.attr("class");
+          if (cls) updateScore(cls);
+        }
         updateProgressStep("Link Analysis Processed", 5);
 
-        // 8. Server IP Information
+        // 11. Server IP Information
         data = await postAjax({ serverIP: '1' });
         $("#seoBox36").html(data);
         updateProgressStep("Server IP Info Processed", 10);
 
-        // 9. Schema Data Retrieval
+        // 12. Schema Data Retrieval
         data = await postAjax({ SchemaData: '1' });
         $("#seoBox44").html(data);
         updateProgressStep("Social Data Processed", 5);
 
-        // 10. Clean Out / Finalize Analysis
+        // 13. Clean Out / Finalize Analysis
         await postAjax({
           cleanOut: '1',
           passscore: passScore,
           improvescore: improveScore,
           errorscore: errorScore
         });
+        // Then: fetch the final score from the DB.
+        const finalScoreData = await postAjax({
+          getFinalScore: '1',
+          url: inputHost,
+          hashcode: hashCode
+        });
+
+        console.log("Final Score:", finalScoreData);
+        
+        // Parse the finalScoreData (if it's a string, otherwise it may already be an object)
+        let scoreObj = typeof finalScoreData === 'string' 
+            ? JSON.parse(finalScoreData) 
+            : finalScoreData;
+
+        // Update your global score variables with the returned data
+        passScore = scoreObj.passed;
+        improveScore = scoreObj.improve;
+        errorScore = scoreObj.errors;
+        overallPercent = scoreObj.percent;
+
+        // Now call finalScore() to update the DOM
+        finalScore();
+
+        // Optionally, update a debug element on the page (if you have one)
+        $("#debugOutput").text(
+          "Pass: " + passScore +
+          ", Improve: " + improveScore +
+          ", Errors: " + errorScore +
+          ", Overall: " + overallPercent
+        );
+
         $('#progress-bar').fadeOut();
       } catch (error) {
         console.error("Error in AJAX chain:", error);
       }
     }
 
-    // Start the AJAX call sequence.
     runAjaxCalls();
   });
 })();

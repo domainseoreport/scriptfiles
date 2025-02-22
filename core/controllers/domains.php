@@ -311,7 +311,7 @@ if (isset($_POST['keycloudAll'])) {
 
     /*
      * -----------------------------------------------------------------
-     * SOCIAL Cards RETRIEVAL
+     * Schema Data RETRIEVAL
      * -----------------------------------------------------------------
      */
     if (isset($_POST['SchemaData'])) { 
@@ -355,6 +355,25 @@ if (isset($_POST['keycloudAll'])) {
     if (isset($_POST['cleanOut'])) {
         $seoTools->cleanOut();
     }
+
+    if (isset($_POST['getFinalScore'])) {
+        $data = mysqliPreparedQuery(
+            $con,
+            "SELECT score FROM domains_data WHERE domain=?",
+            's',
+            [$domainStr]
+        );
+        if ($data !== false) {
+            // Output the score field as JSON. For example, if the stored score is a JSON string.
+            echo $data['score'];
+            $piyush=122;
+        } else {
+            echo json_encode(['passed' => 0, 'improve' => 0, 'errors' => 0, 'percent' => 0]);
+        }
+        die();
+    }
+
+
 }
 // End of AJAX Handler.
 die();

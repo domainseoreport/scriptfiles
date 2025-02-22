@@ -553,6 +553,7 @@ private function buildGooglePreview(string $title, string $description, string $
                 foreach ($elements as $element) {
                     $content = trim(strip_tags($element->textContent));
                     if ($content !== "") {
+                        // Use a trim that removes regular whitespace as well as non-breaking spaces.
                         $headings[$tag][] = trim($content, " \t\n\r\0\x0B\xc2\xa0");
                     }
                 }
@@ -573,13 +574,19 @@ private function buildGooglePreview(string $title, string $description, string $
             // Optionally update the overall score field (if combining with other tests)
             updateToDbPrepared($this->con, 'domains_data', ['score' => $report['score']], ['domain' => $this->domainStr]);
     
-            return $completeHeadingJson;
+            // --- Store the complete heading data in session for later use ---
+            if (session_status() !== PHP_SESSION_ACTIVE) {
+                session_start();
+            }
+            $_SESSION['report_data']['headingReport'] = $completeHeadingData;
     
+            return $completeHeadingJson;
         } catch (Exception $e) {
             error_log("Error in processHeading: " . $e->getMessage());
             return json_encode(['error' => 'An error occurred while processing headings.']);
         }
     }
+    
     
     private function computeHeadingReport(array $tags, array $headings): array {
         // Count headings for each tag
@@ -1025,7 +1032,7 @@ public function processImage(): string {
     
     $updateStr = jsonEncode($completeImageData);
     updateToDbPrepared($this->con, 'domains_data', ['image_alt' => $updateStr], ['domain' => $this->domainStr]);
-    $_SESSION['imageAltReport'] = $completeImageData;
+    $_SESSION['report_data']['imageAltReport'] = $completeImageData;
     
     return $updateStr;
 }
@@ -1444,7 +1451,7 @@ public function processKeyCloudAndConsistency(): string {
     updateToDbPrepared($this->con, 'domains_data', ['keywords_cloud' => $completeKeyCloudJson], ['domain' => $this->domainStr]);
 
     // Save complete data to session.
-    $_SESSION['keyCloudReport'] = $completeKeyCloudData;
+    $_SESSION['report_data']['keyCloudReport'] = $completeKeyCloudData;
 
     // Return the complete HTML output.
     return $keywordCloudHtml . $consistencyHtml . $suggestionHtml;
@@ -1589,7 +1596,7 @@ public function processKeyCloud(): string {
     updateToDbPrepared($this->con, 'domains_data', ['keywords_cloud' => $completeKeyCloudJson], ['domain' => $this->domainStr]);
     
     // Save complete data to session.
-    $_SESSION['keyCloudReport'] = $completeKeyCloudData;
+    $_SESSION['report_data']['keyCloudReport'] = $completeKeyCloudData;
     
     return $completeKeyCloudJson;
 }
@@ -2172,7 +2179,7 @@ public function processTextRatio(): string {
     if (!isset($_SESSION['seoReports'])) {
         $_SESSION['seoReports'] = [];
     }
-    $_SESSION['seoReports']['textRatio'] = $completeTextRatioData;
+    $_SESSION['report_data']['textRatio'] = $completeTextRatioData;
     
     return $textRatioJson;
 }
@@ -2815,7 +2822,7 @@ public function processInPageLinks(): string {
     
     $reportJson = json_encode($completeLinkData);
     updateToDbPrepared($this->con, 'domains_data', ['links_analyser' => $reportJson], ['domain' => $this->domainStr]);
-    $_SESSION['linksReport'] = $completeLinkData;
+    $_SESSION['report_data']['linksReport'] = $completeLinkData;
     return $reportJson;
 }
 
@@ -3481,7 +3488,7 @@ public function processSiteCards(): string {
     
     $jsonData = json_encode($completeCardsData);
     updateToDbPrepared($this->con, 'domains_data', ['sitecards' => $jsonData], ['domain' => $this->domainStr]);
-    $_SESSION['sitecardsReport'] = $completeCardsData;
+    $_SESSION['report_data']['sitecardsReport'] = $completeCardsData;
     
     return $jsonData;
 }
@@ -4170,11 +4177,11 @@ private function calculateCardScore(array $cardData, array $requiredTags): array
         return $output;
     }
 
-    /*===================================================================
-     * SERVER LOCATION HANDLER
-     *=================================================================== 
-     */
-    /**
+  /*===================================================================
+ * SERVER LOCATION HANDLER
+ *=================================================================== 
+ */
+/**
  * Processes and saves the server information into the DB field "server_loc".
  *
  * This method gathers:
@@ -4184,12 +4191,14 @@ private function calculateCardScore(array $cardData, array $requiredTags): array
  *   4. Technology used (from HTTP headers such as Server or X-Powered-By)
  *   5. Whois information
  *
- * It then encodes all this info as JSON and stores it.
+ * Then, it computes a score report (using six conditions – each worth 2 points, total max = 12)
+ * and combines the raw data and report into one JSON. This JSON is saved in the DB and stored
+ * in the session for later use.
  *
- * @return string JSON encoded server information.
+ * @return string JSON encoded array containing both raw data and the report.
  */
 public function processServerInfo(): string {
-    // Validate that URL components exist
+    // (A) Gather Raw Data (unchanged)
     $scheme = $this->scheme ?? 'http';
     $host = $this->urlParse['host'] ?? '';
     if ($host === '') {
@@ -4198,14 +4207,14 @@ public function processServerInfo(): string {
     $fullUrl = $scheme . "://" . $host;
     $serverIP = gethostbyname($host);
     $dnsRecords = $this->checkDNSRecords($host);
-    // checkIP() now returns both IPv4/IPv6 and also geo data (and an "ip_history" key if desired)
     $ipInfo = $this->checkIP($host);
     $headers = @get_headers($fullUrl, 1) ?: [];
     $serverSignature = isset($headers['Server']) ? $headers['Server'] : 'N/A';
     $sslInfo = $this->checkSSL($host);
     $technologyUsed = $this->detectFromHtml($this->html, $headers, $host);
     $whoisInfo = $this->fetchDomainRdap($host);
-    $serverInfo = [
+    
+    $rawData = [
         'dns_records'      => $dnsRecords,
         'server_ip'        => $serverIP,
         'ip_info'          => $ipInfo,
@@ -4214,9 +4223,101 @@ public function processServerInfo(): string {
         'technology_used'  => $technologyUsed,
         'whois_info'       => $whoisInfo
     ];
-    $updateStr = json_encode($serverInfo);
-    updateToDbPrepared($this->con, 'domains_data', ['server_loc' => $updateStr], ['domain' => $this->domainStr]);
-    return $updateStr;
+    
+    // (B) Compute Score Report
+    // We'll use six conditions (each worth 2 points; total max = 12)
+    $maxScore = 12;
+    $score = 0;
+    $details = [];
+    $suggestions = [];
+    
+    // Condition 1: DNS records exist.
+    if (!empty($dnsRecords)) {
+        $details['DNS Records'] = 'Pass';
+        $score += 2;
+    } else {
+        $details['DNS Records'] = 'Error';
+        $suggestions[] = 'No DNS records found. Verify your domain DNS settings.';
+    }
+    
+    // Condition 2: Valid Server IP detected.
+    if (filter_var($serverIP, FILTER_VALIDATE_IP)) {
+        $details['Server IP'] = 'Pass';
+        $score += 2;
+    } else {
+        $details['Server IP'] = 'Error';
+        $suggestions[] = 'A valid server IP was not detected.';
+    }
+    
+    // Condition 3: IP Geolocation data available.
+    if (!empty($ipInfo['geo']) && !isset($ipInfo['geo']['error'])) {
+        $details['IP Geolocation'] = 'Pass';
+        $score += 2;
+    } else {
+        $details['IP Geolocation'] = 'Error';
+        $suggestions[] = 'Unable to retrieve IP geolocation data.';
+    }
+    
+    // Condition 4: SSL enabled.
+    if (isset($sslInfo['has_ssl']) && $sslInfo['has_ssl'] === true) {
+        $details['SSL'] = 'Pass';
+        $score += 2;
+    } else {
+        $details['SSL'] = 'Error';
+        $suggestions[] = 'SSL is not enabled or certificate information is missing.';
+    }
+    
+    // Condition 5: Technology used detected.
+    if (!empty($technologyUsed) && is_array($technologyUsed)) {
+        $details['Technology'] = 'Pass';
+        $score += 2;
+    } else {
+        $details['Technology'] = 'Error';
+        $suggestions[] = 'No technologies were detected. Ensure your server sends standard headers.';
+    }
+    
+    // Condition 6: Whois info available.
+    if (!empty($whoisInfo)) {
+        $details['Whois'] = 'Pass';
+        $score += 2;
+    } else {
+        $details['Whois'] = 'Error';
+        $suggestions[] = 'Whois data is missing. Verify your domain registration details.';
+    }
+    
+    $percent = ($maxScore > 0) ? round(($score / $maxScore) * 100) : 0;
+    if ($score == $maxScore) {
+        $overallComment = "Excellent server configuration. All checks passed.";
+    } elseif ($score >= 8) {
+        $overallComment = "Good server configuration. Minor improvements can be made.";
+    } elseif ($score >= 4) {
+        $overallComment = "Server configuration needs improvement.";
+    } else {
+        $overallComment = "Poor server configuration. Immediate attention required.";
+    }
+    
+    $report = [
+        'score'       => $score,
+        'max_score'   => $maxScore,
+        'percent'     => $percent,
+        'details'     => $details,
+        'suggestions' => $suggestions,
+        'comment'     => $overallComment
+    ];
+    
+    // (C) Combine Raw Data and Report, then save
+    $combined = [
+        'raw'    => $rawData,
+        'report' => $report
+    ];
+    
+    $combinedJson = json_encode($combined);
+    updateToDbPrepared($this->con, 'domains_data', ['server_loc' => $combinedJson], ['domain' => $this->domainStr]);
+    
+    // Save to session for later use (e.g., in the cleanout process)
+    $_SESSION['report_data']['serverInfo'] = $combined;
+    
+    return $combinedJson;
 }
 
 private function getIpInfo(string $ip): array
@@ -4526,68 +4627,57 @@ public static function formatWhoisData($data): string
 
 
 /**
- * showServerInfo()
+ * Displays the server information stored in the "server_loc" JSON in a tabbed layout,
+ * and appends a Server Score Report based on the computed report.
  *
- * Displays the server information stored in the "server_loc" JSON in a tabbed layout.
- * (Tabs: Name Servers, DNS Info, Server Info, SSL Info, Technology, and Whois.)
- *
- * @param string $jsonData JSON-encoded server info from DB
- * @return string HTML output
+ * @param string $jsonData JSON-encoded server info (raw data + report) from DB.
+ * @return string HTML output.
  */
-public function showServerInfo(string $jsonData): string
-{
-    // Decode the JSON from the database
-    $data = json_decode($jsonData, true);
-    if (!is_array($data)) {
+public function showServerInfo(string $jsonData): string {
+    // Decode the combined JSON data (raw data + report)
+    $combined = json_decode($jsonData, true);
+    if (!is_array($combined)) {
         return '<div class="alert alert-danger">No server information available.</div>';
     }
-
-    // Helper functions for date formatting & domain age
+    
+    // Extract raw data and report.
+    $data = $combined['raw'] ?? [];
+    $report = $combined['report'] ?? [];
+    
+    // --- Existing Raw Data Tabs (unchanged) ---
+    // Helper functions for date formatting & domain age.
     $formatDateFriendly = function ($rawDate) {
         $ts = strtotime($rawDate);
-        return ($ts !== false)
-            ? date('M d, Y H:i:s', $ts)
-            : $rawDate; // fallback if strtotime fails
+        return ($ts !== false) ? date('M d, Y H:i:s', $ts) : $rawDate;
     };
-
     $computeDomainAge = function ($rawDate) {
         $ts = strtotime($rawDate);
         if ($ts === false) {
             return ['years' => 'N/A', 'days' => 'N/A'];
         }
         $daysDiff = floor((time() - $ts) / 86400);
-        $years    = round($daysDiff / 365, 1);
-        return [
-            'years' => $years,
-            'days'  => $daysDiff
-        ];
+        $years = round($daysDiff / 365, 1);
+        return ['years' => $years, 'days' => $daysDiff];
     };
-
-    /*--------------------------------------------------------
-     * 1) DNS Info (Accordion)
-     *-------------------------------------------------------*/
+    
+    // Build DNS Info Accordion.
     $dnsRecords = $data['dns_records'] ?? [];
     $dnsHtml = '<div class="alert alert-info">No DNS records found.</div>';
     if (!empty($dnsRecords)) {
-        // Group DNS records by type
         $dnsByType = [];
         foreach ($dnsRecords as $rec) {
             $type = isset($rec['type']) ? strtoupper($rec['type']) : 'UNKNOWN';
             $dnsByType[$type][] = $rec;
         }
-
-        // Build the accordion
         $dnsHtml = '<div class="accordion" id="dnsAccordion">';
         $i = 0;
         foreach ($dnsByType as $type => $records) {
             $i++;
-            $collapseId    = "collapseDns{$i}";
-            $expanded      = 'false';
+            $collapseId = "collapseDns{$i}";
+            $expanded = 'false';
             $collapseClass = 'accordion-collapse collapse';
-            $buttonClass   = 'accordion-button collapsed';
-
-            $dnsHtml .= '
-              <div class="accordion-item">
+            $buttonClass = 'accordion-button collapsed';
+            $dnsHtml .= '<div class="accordion-item">
                 <h2 class="accordion-header" id="headingDns' . $i . '">
                   <button class="' . $buttonClass . '" type="button" data-bs-toggle="collapse"
                           data-bs-target="#' . $collapseId . '" aria-expanded="' . $expanded . '"
@@ -4608,52 +4698,45 @@ public function showServerInfo(string $jsonData): string
                     if (is_array($fieldValue)) {
                         $fieldValue = implode(', ', $fieldValue);
                     }
-                    $dnsHtml .= '
-                        <tr>
+                    $dnsHtml .= '<tr>
                           <td>' . htmlspecialchars($fieldKey) . '</td>
                           <td>' . htmlspecialchars((string)$fieldValue) . '</td>
                         </tr>';
                 }
-                // Spacer row
                 $dnsHtml .= '<tr><td colspan="2" class="bg-light"></td></tr>';
             }
-            $dnsHtml .= '
-                      </tbody>
+            $dnsHtml .= '</tbody>
                     </table>
                   </div>
                 </div>
               </div>';
         }
-        $dnsHtml .= '</div>'; // end accordion
+        $dnsHtml .= '</div>';
     }
-
-    /*--------------------------------------------------------
-     * 2) WHOIS + Domain Info (Name Servers Tab is first)
-     *-------------------------------------------------------*/
+    
+    // Build WHOIS + Domain Info (Name Servers Tab).
     $whoisInfo = $data['whois_info'] ?? [];
-    $rawWhois  = '';
+    $rawWhois = '';
     if (is_array($whoisInfo) && isset($whoisInfo['raw_data'])) {
         $rawWhois = trim($whoisInfo['raw_data']);
     } elseif (is_string($whoisInfo)) {
         $rawWhois = trim($whoisInfo);
     }
-
-    // Defaults for WHOIS
-    $domainName       = $this->urlParse['host'] ?? 'N/A';
-    $registrar        = 'N/A';
-    $ianaID           = 'N/A';
-    $registrarUrl     = 'N/A';
-    $whoisServer      = 'N/A';
-    $abuseContact     = 'N/A';
-    $domainStatus     = 'N/A';
-    $createdDate      = 'N/A';
-    $expiryDate       = 'N/A';
-    $updatedDate      = 'N/A';
-    $hostedIP         = $data['server_ip'] ?? 'N/A';
-    $nsRecordsParsed  = [];
-    $domainAgeYears   = 'N/A';
-    $domainAgeDays    = 'N/A';
-
+    $domainName = $this->urlParse['host'] ?? 'N/A';
+    $registrar = 'N/A';
+    $ianaID = 'N/A';
+    $registrarUrl = 'N/A';
+    $whoisServer = 'N/A';
+    $abuseContact = 'N/A';
+    $domainStatus = 'N/A';
+    $createdDate = 'N/A';
+    $expiryDate = 'N/A';
+    $updatedDate = 'N/A';
+    $hostedIP = $data['server_ip'] ?? 'N/A';
+    $nsRecordsParsed = [];
+    $domainAgeYears = 'N/A';
+    $domainAgeDays = 'N/A';
+    
     if ($rawWhois !== '') {
         $lines = explode("\n", $rawWhois);
         foreach ($lines as $line) {
@@ -4697,10 +4780,9 @@ public function showServerInfo(string $jsonData): string
         }
         $age = $computeDomainAge($createdDate);
         $domainAgeYears = $age['years'];
-        $domainAgeDays  = $age['days'];
+        $domainAgeDays = $age['days'];
     }
-
-    // Fallback: if WHOIS didn't supply NS records, use DNS-based NS records
+    
     $nsRecordsDNS = array_filter($dnsRecords, function($r) {
         return (isset($r['type']) && strtoupper($r['type']) === 'NS');
     });
@@ -4712,11 +4794,11 @@ public function showServerInfo(string $jsonData): string
     } elseif (!empty($nsRecordsParsed)) {
         $finalNsList = $nsRecordsParsed;
     }
-
+    
     $createdDateFriendly = ($createdDate !== 'N/A') ? $formatDateFriendly($createdDate) : 'N/A';
-    $expiryDateFriendly  = ($expiryDate !== 'N/A') ? $formatDateFriendly($expiryDate) : 'N/A';
+    $expiryDateFriendly = ($expiryDate !== 'N/A') ? $formatDateFriendly($expiryDate) : 'N/A';
     $updatedDateFriendly = ($updatedDate !== 'N/A') ? $formatDateFriendly($updatedDate) : 'N/A';
-
+    
     $nsHtml = '<table class="table table-bordered table-sm mb-3">
         <tbody>
           <tr><th>Domain Name</th><td>' . htmlspecialchars($domainName) . '</td></tr>
@@ -4741,21 +4823,17 @@ public function showServerInfo(string $jsonData): string
         $nsHtml .= '<tr><th>Name Servers</th><td><div class="alert alert-info mb-0">No Name Server records found.</div></td></tr>';
     }
     $nsHtml .= '</tbody></table>';
-
-    /*--------------------------------------------------------
-     * 3) IP-API (Server Info Tab) – Now using stored data
-     *-------------------------------------------------------*/
+    
     $serverIP = $data['server_ip'] ?? null;
-    // Instead of making a new external call, retrieve stored IP info:
     $geo = $data['ip_info']['geo'] ?? [];
-    $city     = $geo['city']    ?? 'N/A';
-    $region   = $geo['region']  ?? 'N/A';
-    $country  = $geo['country'] ?? 'N/A';
-    $asn      = $geo['as']      ?? 'N/A';
-    $isp      = $geo['isp']     ?? 'N/A';
-    $org      = $geo['org']     ?? 'N/A';
+    $city = $geo['city'] ?? 'N/A';
+    $region = $geo['region'] ?? 'N/A';
+    $country = $geo['country'] ?? 'N/A';
+    $asn = $geo['as'] ?? 'N/A';
+    $isp = $geo['isp'] ?? 'N/A';
+    $org = $geo['org'] ?? 'N/A';
     $ipHistory = $data['ip_info']['ip_history'] ?? 'Not available';
-
+    
     $serverInfoHtml = '
       <table class="table table-bordered table-sm">
         <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
@@ -4768,24 +4846,21 @@ public function showServerInfo(string $jsonData): string
           <tr><td>IP History</td><td>' . htmlspecialchars($ipHistory) . '</td></tr>
         </tbody>
       </table>';
-
-    /*--------------------------------------------------------
-     * 4) SSL Info
-     *-------------------------------------------------------*/
+    
     $sslHtml = '<div class="alert alert-info">No SSL certificate details found.</div>';
     $sslInfo = $data['ssl_info'] ?? [];
     if (is_array($sslInfo) && !empty($sslInfo['ssl_info']) && is_array($sslInfo['ssl_info'])) {
         $sslCert = $sslInfo['ssl_info'];
-        $subject         = $sslCert['subject']          ?? [];
-        $issuer          = $sslCert['issuer']           ?? [];
-        $validFromUnix   = $sslCert['validFrom_time_t'] ?? null;
-        $validToUnix     = $sslCert['validTo_time_t']   ?? null;
-        $validFrom       = $validFromUnix ? date('M d, Y H:i:s', $validFromUnix) : 'N/A';
-        $validTo         = $validToUnix   ? date('M d, Y H:i:s', $validToUnix)   : 'N/A';
-        $san             = $sslCert['extensions']['subjectAltName']      ?? 'N/A';
-        $keyUsage        = $sslCert['extensions']['keyUsage']            ?? 'N/A';
-        $extendedKeyUsage= $sslCert['extensions']['extendedKeyUsage']    ?? 'N/A';
-        $certPolicies    = $sslCert['extensions']['certificatePolicies'] ?? 'N/A';
+        $subject = $sslCert['subject'] ?? [];
+        $issuer = $sslCert['issuer'] ?? [];
+        $validFromUnix = $sslCert['validFrom_time_t'] ?? null;
+        $validToUnix = $sslCert['validTo_time_t'] ?? null;
+        $validFrom = $validFromUnix ? date('M d, Y H:i:s', $validFromUnix) : 'N/A';
+        $validTo = $validToUnix ? date('M d, Y H:i:s', $validToUnix) : 'N/A';
+        $san = $sslCert['extensions']['subjectAltName'] ?? 'N/A';
+        $keyUsage = $sslCert['extensions']['keyUsage'] ?? 'N/A';
+        $extendedKeyUsage = $sslCert['extensions']['extendedKeyUsage'] ?? 'N/A';
+        $certPolicies = $sslCert['extensions']['certificatePolicies'] ?? 'N/A';
         $sslHtml = '<div style="font-family:Arial, sans-serif; border:1px solid #ccc; padding:15px; border-radius:5px; background:#f9f9f9;">';
         $sslHtml .= '<h3 style="margin-top:0;">SSL Certificate Details for ' . htmlspecialchars($this->urlParse['host']) . '</h3>';
         $sslHtml .= '<h4>Subject</h4><ul>';
@@ -4822,10 +4897,7 @@ public function showServerInfo(string $jsonData): string
         $sslHtml .= '<p style="font-size:0.9em; color:#555;">Other technical details (such as serial number, version, and extensions) are available for advanced troubleshooting and security audits.</p>';
         $sslHtml .= '</div>';
     }
-
-    /*--------------------------------------------------------
-     * 5) Technology
-     *-------------------------------------------------------*/
+    
     $techUsed = $data['technology_used'] ?? [];
     $techHtml = '<div class="alert alert-info">No technology information found.</div>';
     if (!empty($techUsed)) {
@@ -4835,10 +4907,7 @@ public function showServerInfo(string $jsonData): string
         }
         $techHtml .= '</ul>';
     }
-
-    /*--------------------------------------------------------
-     * 6) WHOIS Tab
-     *-------------------------------------------------------*/
+    
     $whoisHtml = '<div class="alert alert-info">No WHOIS data available.</div>';
     if ($rawWhois !== '') {
         $whoisFormatted = preg_replace(
@@ -4848,11 +4917,8 @@ public function showServerInfo(string $jsonData): string
         );
         $whoisHtml = '<div>' . $whoisFormatted . '</div>';
     }
-
-    /*--------------------------------------------------------
-     * Final Tabs Layout
-     *-------------------------------------------------------*/
-    $html = '
+    
+    $rawTabsHtml = '
 <div class="container my-3">
   <ul class="nav nav-tabs" id="serverInfoTab" role="tablist">
     <li class="nav-item" role="presentation">
@@ -4913,7 +4979,68 @@ public function showServerInfo(string $jsonData): string
     </div>
   </div>
 </div>';
-    return $html;
+    
+   // --- Build the Server Score Report Card (Updated Look) ---
+$score = $report['score'] ?? 0;
+$maxScore = $report['max_score'] ?? 12;
+$percent = $report['percent'] ?? 0;
+$overallComment = $report['comment'] ?? '';
+$detailsArr = $report['details'] ?? [];
+$suggestionsArr = $report['suggestions'] ?? [];
+
+// Build a progress bar color based on percentage
+$progressBarClass = ($percent >= 80) ? 'bg-success' : (($percent >= 50) ? 'bg-warning' : 'bg-danger');
+
+// Build condition details list with icons
+$conditionsHtml = '<ul class="list-group mb-3">';
+foreach ($detailsArr as $cond => $status) {
+    // Choose an icon based on the status value
+    $icon = '';
+    $statusLower = strtolower($status);
+    if ($statusLower === 'pass') {
+        $icon = '<i class="fa fa-check-circle text-success"></i>';
+    } elseif ($statusLower === 'error') {
+        $icon = '<i class="fa fa-times-circle text-danger"></i>';
+    } else {
+        $icon = '<i class="fa fa-info-circle text-warning"></i>';
+    }
+    $conditionsHtml .= '<li class="list-group-item d-flex justify-content-between align-items-center">'
+        . htmlspecialchars($cond)
+        . '<span>' . $icon . ' ' . htmlspecialchars($status) . '</span></li>';
+}
+$conditionsHtml .= '</ul>';
+
+// Build suggestions list if available
+$suggestionsHtml = '';
+if (!empty($suggestionsArr)) {
+    $suggestionsHtml .= '<div class="alert alert-warning">';
+    $suggestionsHtml .= '<h5 class="mb-1">Suggestions for Improvement:</h5>';
+    $suggestionsHtml .= '<ul class="mb-0">';
+    foreach ($suggestionsArr as $sug) {
+        $suggestionsHtml .= '<li>' . htmlspecialchars($sug) . '</li>';
+    }
+    $suggestionsHtml .= '</ul></div>';
+}
+
+// Final Server Score Report Card HTML
+$reportCard = '
+<div class="card my-3 shadow-sm">
+  <div class="card-header bg-primary text-white">
+    <h4 class="mb-0">Server Score Report: <strong>' . $score . ' / ' . $maxScore . '</strong> (' . $percent . '%)</h4>
+  </div>
+  <div class="card-body">
+    <div class="progress mb-3" style="height: 25px;">
+      <div class="progress-bar ' . $progressBarClass . '" role="progressbar" style="width: ' . $percent . '%;" aria-valuenow="' . $percent . '" aria-valuemin="0" aria-valuemax="100">' . $percent . '%</div>
+    </div>
+    <p><strong>Overall Comment:</strong> ' . htmlspecialchars($overallComment) . '</p>
+    <h5>Condition Details:</h5>
+    ' . $conditionsHtml . '
+    ' . $suggestionsHtml . '
+  </div>
+</div>';
+    
+$finalOutput = $rawTabsHtml . $reportCard;
+return $finalOutput;
 }
 
 
@@ -4929,10 +5056,17 @@ public function showServerInfo(string $jsonData): string
  *   - Microdata (elements with itemscope/itemtype)
  *   - RDFa (elements with attributes like typeof, property, vocab)
  *
- * It then encodes all the extracted data as JSON and updates the DB.
- * It also checks for errors (adding suggestions) for each type.
+ * It then computes a score report (with Pass, Error, or To Improve ratings)
+ * for:
+ *   • JSON‑LD Presence
+ *   • Microdata Presence
+ *   • RDFa Presence
+ *   • Organization Schema (in JSON‑LD)
+ *   • Markup Quality (based on suggestions)
  *
- * @return string JSON-encoded schema data.
+ * The complete result (raw data plus report) is stored in the DB.
+ *
+ * @return string JSON-encoded complete schema data (raw + report).
  */
 public function processSchema(): string
 {
@@ -4950,13 +5084,13 @@ public function processSchema(): string
         ]
     ];
 
-    // --- JSON-LD Extraction ---
+    // --- JSON‑LD Extraction ---
     $jsonLdScripts = $xpath->query('//script[@type="application/ld+json"]');
     foreach ($jsonLdScripts as $js) {
         $json = trim($js->nodeValue);
         $decoded = json_decode($json, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            $schemas['suggestions']['json_ld'][] = "Invalid JSON in an ld+json script.";
+            $schemas['suggestions']['json_ld'][] = "Invalid JSON found in one of the ld+json scripts.";
             continue;
         }
         if (isset($decoded['@graph']) && is_array($decoded['@graph'])) {
@@ -4985,8 +5119,12 @@ public function processSchema(): string
             }
         }
     }
+    if (empty($schemas['json_ld'])) {
+        // Provide a suggestion if no JSON‑LD found.
+        $schemas['suggestions']['json_ld'][] = "No JSON‑LD markup was detected. Google recommends using JSON‑LD for structured data.";
+    }
     if (empty($schemas['json_ld']['Organization'])) {
-        $schemas['suggestions']['json_ld'][] = "Organization schema is missing. Consider adding it to enhance your brand's structured data.";
+        $schemas['suggestions']['json_ld'][] = "Organization schema is missing. Adding organization details (e.g., your company name, logo, and contact info) can enhance your brand's presence in search results.";
     }
 
     // --- Microdata Extraction ---
@@ -4997,7 +5135,7 @@ public function processSchema(): string
         $schemas['microdata'][$type][] = $item->nodeName;
     }
     if (empty($schemas['microdata'])) {
-        $schemas['suggestions']['microdata'][] = "No microdata found. Adding microdata can improve structured data richness.";
+        $schemas['suggestions']['microdata'][] = "No microdata was found. Consider adding microdata to enrich your page's structured data.";
     }
 
     // --- RDFa Extraction ---
@@ -5014,15 +5152,106 @@ public function processSchema(): string
         $schemas['rdfa'][$type][] = $rdfaData;
     }
     if (empty($schemas['rdfa'])) {
-        $schemas['suggestions']['rdfa'][] = "No RDFa data found. Consider adding RDFa to provide additional context.";
+        $schemas['suggestions']['rdfa'][] = "No RDFa data was detected. Adding RDFa can provide extra context to search engines.";
     }
 
     if (empty($schemas['json_ld']) && empty($schemas['microdata']) && empty($schemas['rdfa'])) {
         $schemas = ['schema_data' => 'No schema data found.'];
     }
 
-    $schemaJson = json_encode($schemas);
+    // --- SCORE LOGIC ---
+    $details = [];
+    $score = 0;
+    $passedCount = 0;
+    $improveCount = 0;
+    $errorCount = 0;
+
+    // JSON‑LD Presence
+    if (!empty($schemas['json_ld']) && is_array($schemas['json_ld'])) {
+        $details['JSON‑LD Presence'] = "Pass – JSON‑LD markup is present.";
+        $score += 2; $passedCount++;
+    } else {
+        $details['JSON‑LD Presence'] = "Error – JSON‑LD markup is missing. It is highly recommended to include JSON‑LD.";
+        $errorCount++;
+    }
+    // Microdata Presence
+    if (!empty($schemas['microdata']) && is_array($schemas['microdata'])) {
+        $details['Microdata Presence'] = "Pass – Microdata markup is present.";
+        $score += 2; $passedCount++;
+    } else {
+        $details['Microdata Presence'] = "Error – No microdata was detected. Consider adding microdata for better structured data.";
+        $errorCount++;
+    }
+    // RDFa Presence
+    if (!empty($schemas['rdfa']) && is_array($schemas['rdfa'])) {
+        $details['RDFa Presence'] = "Pass – RDFa markup is present.";
+        $score += 2; $passedCount++;
+    } else {
+        $details['RDFa Presence'] = "Error – RDFa markup is missing. Including RDFa can help provide additional context.";
+        $errorCount++;
+    }
+    // Organization Schema (within JSON‑LD)
+    if (!empty($schemas['json_ld']['Organization'])) {
+        $details['Organization Schema'] = "Pass – Organization schema is present.";
+        $score += 2; $passedCount++;
+    } else {
+        $details['Organization Schema'] = "Error – Organization schema is missing. Adding organization details is important for brand recognition.";
+        $errorCount++;
+    }
+    // Markup Quality: if there are any suggestions, mark as "To Improve"
+    $markupSuggestions = array_merge(
+        $schemas['suggestions']['json_ld'] ?? [],
+        $schemas['suggestions']['microdata'] ?? [],
+        $schemas['suggestions']['rdfa'] ?? []
+    );
+    if (empty($markupSuggestions)) {
+        $details['Markup Quality'] = "Pass – Markup quality is excellent.";
+        $score += 2; $passedCount++;
+    } else {
+        $details['Markup Quality'] = "To Improve – Some issues were noted: " . implode(" ", $markupSuggestions);
+        $score += 1; $improveCount++;
+    }
+
+    $maxScore = 10;
+    $percent = round(($score / $maxScore) * 100);
+
+    // Build overall comment based on the scores
+    $comment = "";
+    if ($details['JSON‑LD Presence'] && strpos($details['JSON‑LD Presence'], 'Error') !== false) {
+        $comment .= "JSON‑LD markup is missing. ";
+    }
+    if ($details['Microdata Presence'] && strpos($details['Microdata Presence'], 'Error') !== false) {
+        $comment .= "Microdata is missing. ";
+    }
+    if ($details['RDFa Presence'] && strpos($details['RDFa Presence'], 'Error') !== false) {
+        $comment .= "RDFa markup is missing. ";
+    }
+    if ($details['Organization Schema'] && strpos($details['Organization Schema'], 'Error') !== false) {
+        $comment .= "Organization schema is missing. ";
+    }
+    if ($details['Markup Quality'] && strpos($details['Markup Quality'], 'To Improve') !== false) {
+        $comment .= "Overall, the structured data markup quality could be improved. ";
+    }
+
+    $report = [
+        'score'   => $score,
+        'passed'  => $passedCount,
+        'improve' => $improveCount,
+        'errors'  => $errorCount,
+        'percent' => $percent,
+        'details' => $details,
+        'comment' => trim($comment)
+    ];
+
+    $completeSchema = [
+        'raw'    => $schemas,
+        'report' => $report
+    ];
+
+    $schemaJson = json_encode($completeSchema);
     updateToDbPrepared($this->con, 'domains_data', ['schema_data' => $schemaJson], ['domain' => $this->domainStr]);
+    // Optionally, store the report in session for later use (if needed)
+    $_SESSION['report_data']['schemaReport'] = $completeSchema;
     return $schemaJson;
 }
 
@@ -5088,13 +5317,18 @@ private function renderOrganization(array $data): string
 }
 
 /**
- * Displays the stored schema data in a tabbed layout in a user-friendly, Google-like format.
- * - JSON‑LD: Shown with sub-tabs by type (with "Organization" appearing first if present).
- *   Each sub-tab shows its data rendered via renderGoogleStyle(), and Organization data uses a custom layout.
- *   Suggestions for JSON‑LD are shown at the bottom of the JSON‑LD tab.
- * - Microdata and RDFa are rendered similarly with suggestions appended at the bottom.
+ * Displays the stored schema data in a tabbed layout along with a score summary.
  *
- * @param string $jsonData JSON-encoded schema data from the database.
+ * The top section shows the overall schema report:
+ *   - JSON‑LD Presence
+ *   - Microdata Presence
+ *   - RDFa Presence
+ *   - Organization Schema
+ *   - Markup Quality
+ *
+ * Each is accompanied by a descriptive status message.
+ *
+ * @param string $jsonData JSON-encoded schema data (raw and report) from the database.
  * @return string HTML output.
  */
 public function showSchema(string $jsonData): string
@@ -5104,27 +5338,51 @@ public function showSchema(string $jsonData): string
         return '<div class="alert alert-danger">No schema data available.</div>';
     }
 
+    // Build the score summary card
+    $report = $data['report'] ?? [];
+    $scoreSummary = '<div class="card mb-4 border-info">';
+    $scoreSummary .= '<div class="card-header bg-info text-white"><h4>Schema Analysis Report</h4></div>';
+    $scoreSummary .= '<div class="card-body">';
+    if (!empty($report)) {
+        $scoreSummary .= '<p><strong>Score:</strong> ' . ($report['score'] ?? 0) . ' / 10 ';
+        $scoreSummary .= '(<strong>' . ($report['percent'] ?? 0) . '%</strong>)</p>';
+        $scoreSummary .= '<ul class="list-group">';
+        foreach ($report['details'] as $metric => $status) {
+            $icon = ($status === 'Pass' || strpos($status, 'Pass') !== false)
+                ? '<i class="fa fa-check text-success"></i>'
+                : ((strpos($status, 'To Improve') !== false)
+                    ? '<i class="fa fa-exclamation-triangle text-warning"></i>'
+                    : '<i class="fa fa-times text-danger"></i>');
+            $scoreSummary .= '<li class="list-group-item">' . $icon . ' <strong>' . htmlspecialchars($metric) . ':</strong> ' . htmlspecialchars($status) . '</li>';
+        }
+        $scoreSummary .= '</ul>';
+        $scoreSummary .= '<p class="mt-2"><em>' . htmlspecialchars($report['comment'] ?? '') . '</em></p>';
+    } else {
+        $scoreSummary .= '<div class="alert alert-warning">No score data available.</div>';
+    }
+    $scoreSummary .= '</div></div>';
+
     // -------------------------------------------------------------------------
-    // 1. Build JSON-LD Section
+    // 1. Build JSON‑LD Section
     // -------------------------------------------------------------------------
     $jsonLdContent = '';
-    if (!empty($data['json_ld']) && is_array($data['json_ld'])) {
+    if (!empty($data['raw']['json_ld']) && is_array($data['raw']['json_ld'])) {
         // Order types so that "Organization" is first if present.
-        $types = array_keys($data['json_ld']);
+        $types = array_keys($data['raw']['json_ld']);
         $ordered = [];
-        if (isset($data['json_ld']['Organization'])) {
+        if (isset($data['raw']['json_ld']['Organization'])) {
             $ordered[] = 'Organization';
         }
         $otherTypes = array_diff($types, ['Organization']);
         sort($otherTypes);
         $ordered = array_merge($ordered, $otherTypes);
 
-        // Build sub-tabs for JSON‑LD (remove "fade" class to fix refresh issues)
+        // Build sub-tabs for JSON‑LD
         $subTabNav = '<ul class="nav nav-pills mb-3" id="jsonLdSubTab" role="tablist">';
         $subTabContent = '<div class="tab-content" id="jsonLdSubTabContent">';
         $i = 0;
         foreach ($ordered as $type) {
-            $count = count($data['json_ld'][$type]);
+            $count = count($data['raw']['json_ld'][$type]);
             $activeClass = ($i === 0) ? 'active' : '';
             $paneId = 'jsonld-' . preg_replace('/\s+/', '-', strtolower($type));
             $subTabNav .= '
@@ -5134,7 +5392,7 @@ public function showSchema(string $jsonData): string
                 </button>
             </li>';
             $subTabContent .= '<div class="tab-pane show ' . $activeClass . '" id="' . $paneId . '" role="tabpanel" aria-labelledby="' . $paneId . '-tab">';
-            foreach ($data['json_ld'][$type] as $index => $node) {
+            foreach ($data['raw']['json_ld'][$type] as $index => $node) {
                 if ($type === 'Organization') {
                     $subTabContent .= $this->renderOrganization($node);
                 } else {
@@ -5153,9 +5411,9 @@ public function showSchema(string $jsonData): string
         $jsonLdContent .= '<div class="container mt-3"><h4>JSON‑LD Data</h4>';
         $jsonLdContent .= $subTabNav . $subTabContent;
         $jsonLdContent .= '</div>';
-        if (!empty($data['suggestions']['json_ld'])) {
+        if (!empty($data['raw']['suggestions']['json_ld'])) {
             $jsonLdContent .= '<div class="container mt-2"><div class="alert alert-warning">';
-            $jsonLdContent .= '<strong>Suggestions:</strong> ' . implode(" ", $data['suggestions']['json_ld']);
+            $jsonLdContent .= '<strong>Suggestions:</strong> ' . implode(" ", $data['raw']['suggestions']['json_ld']);
             $jsonLdContent .= '</div></div>';
         }
     } else {
@@ -5166,13 +5424,13 @@ public function showSchema(string $jsonData): string
     // 2. Microdata Section
     // -------------------------------------------------------------------------
     $microContent = '';
-    if (!empty($data['microdata']) && is_array($data['microdata'])) {
+    if (!empty($data['raw']['microdata']) && is_array($data['raw']['microdata'])) {
         $microContent .= '<div class="container mt-3"><h4>Microdata</h4>';
-        $microContent .= $this->renderGoogleStyle($data['microdata'], 'micro');
+        $microContent .= $this->renderGoogleStyle($data['raw']['microdata'], 'micro');
         $microContent .= '</div>';
-        if (!empty($data['suggestions']['microdata'])) {
+        if (!empty($data['raw']['suggestions']['microdata'])) {
             $microContent .= '<div class="container mt-2"><div class="alert alert-warning">';
-            $microContent .= '<strong>Suggestions:</strong> ' . implode(" ", $data['suggestions']['microdata']);
+            $microContent .= '<strong>Suggestions:</strong> ' . implode(" ", $data['raw']['suggestions']['microdata']);
             $microContent .= '</div></div>';
         }
     } else {
@@ -5183,13 +5441,13 @@ public function showSchema(string $jsonData): string
     // 3. RDFa Section
     // -------------------------------------------------------------------------
     $rdfaContent = '';
-    if (!empty($data['rdfa']) && is_array($data['rdfa'])) {
+    if (!empty($data['raw']['rdfa']) && is_array($data['raw']['rdfa'])) {
         $rdfaContent .= '<div class="container mt-3"><h4>RDFa</h4>';
-        $rdfaContent .= $this->renderGoogleStyle($data['rdfa'], 'rdfa');
+        $rdfaContent .= $this->renderGoogleStyle($data['raw']['rdfa'], 'rdfa');
         $rdfaContent .= '</div>';
-        if (!empty($data['suggestions']['rdfa'])) {
+        if (!empty($data['raw']['suggestions']['rdfa'])) {
             $rdfaContent .= '<div class="container mt-2"><div class="alert alert-warning">';
-            $rdfaContent .= '<strong>Suggestions:</strong> ' . implode(" ", $data['suggestions']['rdfa']);
+            $rdfaContent .= '<strong>Suggestions:</strong> ' . implode(" ", $data['raw']['suggestions']['rdfa']);
             $rdfaContent .= '</div></div>';
         }
     } else {
@@ -5220,30 +5478,21 @@ public function showSchema(string $jsonData): string
     </div>';
 
     // -------------------------------------------------------------------------
-    // 4. High-Level Suggestions (Global)
+    // 4. Global Suggestions
     // -------------------------------------------------------------------------
     $globalSuggestions = [];
-
-    // Example conditions:
-    if (empty($data['json_ld'])) {
-        $globalSuggestions[] = 'We found no JSON‑LD markup. Google recommends JSON‑LD for modern structured data.';
+    if (empty($data['raw']['json_ld'])) {
+        $globalSuggestions[] = 'No JSON‑LD markup was detected. Google recommends JSON‑LD for modern structured data.';
     }
-    if (empty($data['microdata'])) {
+    if (empty($data['raw']['microdata'])) {
         $globalSuggestions[] = 'No microdata found. While JSON‑LD is preferred, microdata can be useful on older systems.';
     }
-    if (empty($data['rdfa'])) {
-        $globalSuggestions[] = 'No RDFa found. RDFa can add inline semantics but is less common nowadays.';
+    if (empty($data['raw']['rdfa'])) {
+        $globalSuggestions[] = 'No RDFa markup was detected. RDFa can add inline semantics for additional context.';
     }
-
-    // If "Organization" is missing from JSON‑LD:
-    if (empty($data['json_ld']['Organization'])) {
-        $globalSuggestions[] = 'Consider adding "Organization" markup (e.g., your company name, logo, contact info) for better brand presence in search.';
+    if (empty($data['raw']['json_ld']['Organization'])) {
+        $globalSuggestions[] = 'Organization markup is missing. Consider adding organization details for better brand presence.';
     }
-
-    // If you want more advanced checks (like checking if "logo" or "contactPoint" is missing), you can do so here:
-    // e.g. if (!empty($data['json_ld']['Organization'])) { ... }
-
-    // Build the final suggestions block
     $suggestionHtml = '';
     if (!empty($globalSuggestions)) {
         $suggestionHtml .= '<div class="container mt-3">';
@@ -5256,12 +5505,14 @@ public function showSchema(string $jsonData): string
         $suggestionHtml .= '</ul></div></div>';
     }
 
-    return '<div class="container my-3">'
+    return '<div class="container my-3">' 
             . $tabs
             . $content
             . $suggestionHtml
+            . $scoreSummary
             . '</div>';
 }
+
 
  /*===================================================================
      * Page Analytics Handelers
@@ -5707,7 +5958,7 @@ public function processPageAnalytics(): string {
             'comment' => $overallComment
         ]
     ];
-    $_SESSION['pageAnalyticsReport'] = $finalReport;
+    $_SESSION['report_data']['pageAnalyticsReport'] = $finalReport;
     $jsonOutput = json_encode($finalReport);
     updateToDbPrepared($this->con, 'domains_data', ['page_analytics' => $jsonOutput], ['domain' => $this->domainStr]);
     
@@ -6104,19 +6355,20 @@ private function getFaviconUrl(): string {
      *=================================================================== 
      */
 
-     /**
+  /**
  * Processes social page URLs from the HTML.
  * Scans all anchor tags and extracts URLs that match common social network patterns.
- * Stores the results as a JSON-encoded associative array in the "social_urls" field.
+ * Ignores "base" URLs (like https://www.pinterest.com/) without additional path components.
+ * Computes a score report based on the presence of social URLs.
+ * Stores the results (raw data and score report) as a JSON-encoded associative array in the "social_urls" field.
  *
- * @return string JSON data of social URLs.
+ * @return string JSON data of social URLs (raw + report).
  */
 public function processSocialUrls(): string {
     $doc = $this->getDom();
     $xpath = new DOMXPath($doc);
     
     // Define social networks and regex patterns to match in the href attribute.
-    // The TripAdvisor pattern now handles various TLDs.
     $socialPatterns = [
         'facebook'    => '/facebook\.com/i',
         'x'           => '/(twitter\.com|x\.com)/i', // X (formerly Twitter)
@@ -6128,6 +6380,20 @@ public function processSocialUrls(): string {
         'whatsapp'    => '/(wa\.me|whatsapp\.com)/i',
         'tripadvisor' => '/tripadvisor\.[a-z]{2,6}/i',  // handles multiple TLDs
         'tiktok'      => '/tiktok\.com/i'
+    ];
+    
+    // Define "base" URLs for each network to ignore if no additional path exists.
+    $baseUrls = [
+        'facebook'    => ['https://facebook.com', 'https://www.facebook.com'],
+        'x'           => ['https://twitter.com', 'https://www.twitter.com', 'https://x.com', 'https://www.x.com'],
+        'instagram'   => ['https://instagram.com', 'https://www.instagram.com'],
+        'linkedin'    => ['https://linkedin.com', 'https://www.linkedin.com'],
+        'youtube'     => ['https://youtube.com', 'https://www.youtube.com'],
+        'pinterest'   => ['https://pinterest.com', 'https://www.pinterest.com'],
+        'discord'     => ['https://discord.com', 'https://www.discord.com'],
+        'whatsapp'    => ['https://wa.me', 'https://whatsapp.com', 'https://www.whatsapp.com'],
+        'tripadvisor' => ['https://tripadvisor.com', 'https://www.tripadvisor.com'],
+        'tiktok'      => ['https://tiktok.com', 'https://www.tiktok.com']
     ];
     
     $socialUrls = [];
@@ -6153,6 +6419,21 @@ public function processSocialUrls(): string {
                 if (!preg_match('#^(?:https?:)?//#i', $href)) {
                     $href = $this->toAbsoluteUrl($href);
                 }
+                // Remove trailing slash for comparison.
+                $normalizedHref = rtrim($href, '/');
+                // Check if the URL is exactly one of the base URLs for this network.
+                $skip = false;
+                if (isset($baseUrls[$network])) {
+                    foreach ($baseUrls[$network] as $base) {
+                        if ($normalizedHref === rtrim($base, '/')) {
+                            $skip = true;
+                            break;
+                        }
+                    }
+                }
+                if ($skip) {
+                    continue;
+                }
                 $urls[] = $href;
             }
         }
@@ -6161,22 +6442,63 @@ public function processSocialUrls(): string {
             $socialUrls[$network] = array_values(array_unique($urls));
         }
     }
-   
-    $jsonData = jsonEncode($socialUrls);
+    
+    // ----- SCORE LOGIC -----
+    // Award 2 points per network if at least one URL is found.
+    $details = [];
+    $totalScore = 0;
+    $maxScore = count($socialPatterns) * 2; // e.g. 10 networks * 2 points each = 20
+    foreach ($socialPatterns as $network => $pattern) {
+        if (!empty($socialUrls[$network])) {
+            $details[ucfirst($network) . " Presence"] = "Pass – " . ucfirst($network) . " URL(s) found.";
+            $totalScore += 2;
+        } else {
+            $details[ucfirst($network) . " Presence"] = "Error – No " . ucfirst($network) . " URL found.";
+        }
+    }
+    
+    // Compute overall percentage.
+    $percent = ($maxScore > 0) ? round(($totalScore / $maxScore) * 100) : 0;
+    
+    // Overall comment based on score.
+    $comment = "";
+    if ($totalScore == $maxScore) {
+        $comment = "Excellent – All social URLs are present.";
+    } elseif ($totalScore >= ($maxScore / 2)) {
+        $comment = "Some social URLs are missing. Consider adding the missing profiles for a more complete online presence.";
+    } else {
+        $comment = "Critical – Most social URLs are missing. It's highly recommended to include your social network profiles.";
+    }
+    
+    $report = [
+        'score'     => $totalScore,
+        'max_score' => $maxScore,
+        'percent'   => $percent,
+        'details'   => $details,
+        'comment'   => $comment
+    ];
+    
+    $completeSocialData = [
+        'raw'    => $socialUrls,
+        'report' => $report
+    ];
+    
+    $jsonData = jsonEncode($completeSocialData);
     updateToDbPrepared($this->con, 'domains_data', ['social_urls' => $jsonData], ['domain' => $this->domainStr]);
+    $_SESSION['report_data']['socialUrlsReport'] = $completeSocialData;
     return $jsonData;
 }
 
 /**
- * Displays the processed social page URLs in a nicely formatted card.
+ * Displays the processed social page URLs in a nicely formatted card along with the score report.
  * Uses Font Awesome icons for each social network.
  *
- * @param string $socialData JSON-encoded social URLs from DB.
+ * @param string $socialData JSON-encoded social URLs (raw + report) from DB.
  * @return string HTML output.
  */
 public function showSocialUrls($socialData): string {
     $data = jsonDecode($socialData, true);
-    if (!is_array($data) || empty($data)) {
+    if (!is_array($data) || empty($data['raw'])) {
         return '<div class="alert alert-info">No social URLs found.</div>';
     }
     
@@ -6194,12 +6516,35 @@ public function showSocialUrls($socialData): string {
         'tiktok'      => 'fa-tiktok'
     ];
     
+    // Build the score summary card.
+    $report = $data['report'] ?? [];
+    $scoreSummary = '<div class="card mb-4 border-primary">';
+    $scoreSummary .= '<div class="card-header bg-primary text-white"><h4>Social URLs Report</h4></div>';
+    $scoreSummary .= '<div class="card-body">';
+    if (!empty($report)) {
+        $scoreSummary .= '<p><strong>Score:</strong> ' . ($report['score'] ?? 0) . ' / ' . ($report['max_score'] ?? 0);
+        $scoreSummary .= ' (<strong>' . ($report['percent'] ?? 0) . '%</strong>)</p>';
+        $scoreSummary .= '<ul class="list-group">';
+        foreach ($report['details'] as $metric => $status) {
+            $icon = (strpos($status, 'Pass') !== false)
+                ? '<i class="fa fa-check text-success"></i>'
+                : '<i class="fa fa-times text-danger"></i>';
+            $scoreSummary .= '<li class="list-group-item">' . $icon . ' <strong>' . htmlspecialchars($metric) . ':</strong> ' . htmlspecialchars($status) . '</li>';
+        }
+        $scoreSummary .= '</ul>';
+        $scoreSummary .= '<p class="mt-2"><em>' . htmlspecialchars($report['comment'] ?? '') . '</em></p>';
+    } else {
+        $scoreSummary .= '<div class="alert alert-warning">No score data available.</div>';
+    }
+    $scoreSummary .= '</div></div>';
+    
+    // Build the social URLs card.
     $output = '<div class="card my-3 shadow-sm">
                     <div class="card-header"><strong>Social Page URLs</strong></div>
                     <div class="card-body">';
     
     // Loop through each network found.
-    foreach ($data as $network => $urls) {
+    foreach ($data['raw'] as $network => $urls) {
         $icon = $icons[$network] ?? 'fa-globe';
         $output .= '<div class="social-url-group mb-3">';
         $output .= '<h5><i class="fa ' . $icon . '"></i> ' . ucfirst($network) . '</h5>';
@@ -6214,9 +6559,9 @@ public function showSocialUrls($socialData): string {
                 <div class="card-footer"><small>Social page URLs extracted from the site.</small></div>
                 </div>';
     
-    return $output;
+    // Return the combined output with the score summary at the top.
+    return '<div class="container my-3">'  . $output . $scoreSummary. '</div>';
 }
-
 
 
     /*===================================================================
@@ -6541,27 +6886,24 @@ public function showSocialUrls($socialData): string {
      * PAGE SPEED INSIGHT HANDLER
      *=================================================================== 
      */
-   /**
- * processPageSpeedInsightConcurrent()
+  /**
+ * Processes PageSpeed Insights data concurrently for desktop and mobile.
  *
- * Fetches Google PageSpeed Insights data concurrently for desktop and mobile using curl_multi.
- * It extracts the performance score, filters the API response to include only the necessary fields
- * for detailed SEO analysis (and removes extraneous information such as the full audits), and removes
- * the screenshot data. The filtered report is then stored in the "page_speed_insight" field in the DB,
- * while screenshots are stored separately in "desktop_screenshot" and "mobile_screenshot".
+ * Fetches data from Google PageSpeed Insights, filters the response to extract only
+ * the necessary fields, computes a performance score report based on:
+ *   - Score ≥ 90: Pass
+ *   - Score 70–89: To Improve
+ *   - Score < 70: Error
  *
- * The consolidated report structure is as follows:
- * [
- *   'pagespeed' => [
- *       'mobile'    => [ filtered mobile report ],
- *       'desktop'   => [ filtered desktop report ],
- *       'timestamp' => <timestamp>,
- *       'url'       => <target url>,
- *       'cache_hit' => <cache hit info>
- *   ]
- * ]
+ * The consolidated report structure now includes:
+ *   - 'desktop' and 'mobile': Filtered reports.
+ *   - 'raw': The full filtered reports (raw data) for each platform.
+ *   - 'report': The computed score report.
+ *   - Other meta data (timestamp, url, cache_hit).
  *
- * @return string JSON encoded array with keys: desktopScore, mobileScore.
+ * This JSON is stored in the DB (field "page_speed_insight") and in session (for later use).
+ *
+ * @return string JSON encoded array with keys: pagespeed (including raw and report keys).
  */
 public function processPageSpeedInsightConcurrent(): string {
     // Get API key from DB settings or use a default key.
@@ -6644,12 +6986,59 @@ public function processPageSpeedInsightConcurrent(): string {
     
     // Build the consolidated report structure.
     $pagespeedReport = [
-        'mobile'    => isset($rawReports['mobile']) ? $rawReports['mobile'] : [],
         'desktop'   => isset($rawReports['desktop']) ? $rawReports['desktop'] : [],
+        'mobile'    => isset($rawReports['mobile']) ? $rawReports['mobile'] : [],
+        'raw'       => $rawReports, // Include the full filtered raw reports.
         'timestamp' => date('c'),
         'url'       => $targetUrl,
         'cache_hit' => isset($rawReports['mobile']['fetchTime']) ? $rawReports['mobile']['fetchTime'] : ''
     ];
+    
+    // ----- SCORE LOGIC -----
+    $evaluateScore = function($score) {
+        if ($score >= 90) {
+            return ['status' => 'Pass', 'message' => 'Excellent performance.'];
+        } elseif ($score >= 70) {
+            return ['status' => 'To Improve', 'message' => 'Performance is acceptable, but there is room for improvement.'];
+        } else {
+            return ['status' => 'Error', 'message' => 'Performance is poor. Immediate improvements are needed.'];
+        }
+    };
+    
+    $desktopScore = $scores['desktopScore'] ?? 0;
+    $mobileScore  = $scores['mobileScore']  ?? 0;
+    
+    $desktopEval = $evaluateScore($desktopScore);
+    $mobileEval  = $evaluateScore($mobileScore);
+    
+    $overallComment = "";
+    if ($desktopEval['status'] === 'Pass' && $mobileEval['status'] === 'Pass') {
+        $overallComment = "Outstanding! Both desktop and mobile performance are excellent.";
+    } elseif ($desktopEval['status'] === 'Error' && $mobileEval['status'] === 'Error') {
+        $overallComment = "Critical issues detected on both desktop and mobile. Immediate optimizations are necessary.";
+    } else {
+        $overallComment = "Mixed results. Review the detailed diagnostics for opportunities to improve performance.";
+    }
+    
+    $scoreReport = [
+        'desktop' => [
+            'score'   => $desktopScore,
+            'status'  => $desktopEval['status'],
+            'message' => $desktopEval['message']
+        ],
+        'mobile'  => [
+            'score'   => $mobileScore,
+            'status'  => $mobileEval['status'],
+            'message' => $mobileEval['message']
+        ],
+        'overall' => [
+            'comment' => $overallComment,
+            'percent' => round((($desktopScore + $mobileScore) / 2), 0)
+        ]
+    ];
+    
+    // Add the score report to the consolidated structure.
+    $pagespeedReport['report'] = $scoreReport;
     
     // Encode the consolidated report as JSON.
     $jsonOutput = jsonEncode(['pagespeed' => $pagespeedReport]);
@@ -6665,90 +7054,139 @@ public function processPageSpeedInsightConcurrent(): string {
         updateToDbPrepared($this->con, 'domains_data', ['mobile_screenshot' => $screenshots['mobileScreenshot']], ['domain' => $this->domainStr]);
     }
     
-    // Return the scores for display (e.g., in your UI).
-    return   $jsonOutput;
+    // Store the complete report in session for later use.
+    $_SESSION['report_data']['pageSpeedReport'] = ['pagespeed' => $pagespeedReport];
+    
+    return $jsonOutput;
 }
 
+/**
+ * Displays the PageSpeed Insights report including the performance score report.
+ * This updated function expects that the JSON output from processPageSpeedInsightConcurrent()
+ * contains a "pagespeed" key with a "report" sub‐object that holds desktop and mobile scores.
+ *
+ * It also embeds an inline script to update the global window.pageSpeedReport variable
+ * so that the gauge initialization function (initPageSpeedGauges) picks up the correct scores.
+ *
+ * @param string $jsonData JSON-encoded PageSpeed Insights data.
+ * @return string HTML output.
+ */
 public function showPageSpeedInsightConcurrent(string $jsonData): string
 {
+    // Attempt to decode the JSON data.
     $data = json_decode($jsonData, true);
-
-    if (!isset($data['pagespeed']) || !is_array($data['pagespeed'])) {
+    if (!is_array($data) || !isset($data['pagespeed'])) {
         return '<div class="alert alert-warning">No PageSpeed Insights data available.</div>';
     }
 
-    $report    = $data['pagespeed'];
+    $report = $data['pagespeed'];
+    
+    // Extract scores from the score report; default to 0 if not set.
+    $scoreReport = isset($report['report']) && is_array($report['report']) ? $report['report'] : [];
+    $desktopScore = isset($scoreReport['desktop']['score']) ? intval($scoreReport['desktop']['score']) : 0;
+    $mobileScore  = isset($scoreReport['mobile']['score'])  ? intval($scoreReport['mobile']['score'])  : 0;
+    
+    // Prepare the HTML for the detailed report.
+    // (This is your original HTML output for the PageSpeed report.)
     $timestamp = htmlspecialchars($report['timestamp'] ?? '');
     $url       = htmlspecialchars($report['url'] ?? '');
     $cacheHit  = htmlspecialchars($report['cache_hit'] ?? '');
+    
+    // Build the Score Report section.
+    $scoreSection = '
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0">Performance Score Report</h5>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Platform</th>
+              <th>Score (%)</th>
+              <th>Status</th>
+              <th>Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Desktop</td>
+              <td>' . $desktopScore . '</td>
+              <td>' . (isset($scoreReport['desktop']['status']) ? htmlspecialchars($scoreReport['desktop']['status']) : 'N/A') . '</td>
+              <td>' . (isset($scoreReport['desktop']['message']) ? htmlspecialchars($scoreReport['desktop']['message']) : '') . '</td>
+            </tr>
+            <tr>
+              <td>Mobile</td>
+              <td>' . $mobileScore . '</td>
+              <td>' . (isset($scoreReport['mobile']['status']) ? htmlspecialchars($scoreReport['mobile']['status']) : 'N/A') . '</td>
+              <td>' . (isset($scoreReport['mobile']['message']) ? htmlspecialchars($scoreReport['mobile']['message']) : '') . '</td>
+            </tr>
+            <tr>
+              <th colspan="3">Overall Average Score</th>
+              <td>' . (isset($scoreReport['overall']['percent']) ? intval($scoreReport['overall']['percent']) . '% - ' . htmlspecialchars($scoreReport['overall']['comment']) : 'N/A') . '</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>';
 
-    // We'll define which metrics to show and how to label them.
-    $allowedMetrics = [
-        'timeToFirstByte'       => 'Time to First Byte',
-        'firstContentfulPaint'  => 'First Contentful Paint',
-        'speedIndex'            => 'Speed Index',
-        'largestContentfulPaint'=> 'Largest Contentful Paint',
-        'interactive'           => 'Time to Interactive',
-        'totalBlockingTime'     => 'Total Blocking Time',
-        'cumulativeLayoutShift' => 'Cumulative Layout Shift',
-    ];
-
-    // Convert ms to s for certain metrics
-    $metricsInMilliseconds = [
-        'timeToFirstByte',
-        'firstContentfulPaint',
-        'speedIndex',
-        'largestContentfulPaint',
-        'interactive',
-        'totalBlockingTime',
-    ];
-
-    // Helper to format metric values
-    $formatMetricValue = function($key, $value) use ($metricsInMilliseconds) {
-        if (!is_numeric($value)) {
-            return $value; // Return as-is if not numeric
-        }
-        // Convert from ms -> s if in the list
-        if (in_array($key, $metricsInMilliseconds, true)) {
-            return round($value / 1000, 2) . ' s';
-        }
-        // For CLS, just round to 2 decimals
-        if ($key === 'cumulativeLayoutShift') {
-            return round($value, 2);
-        }
-        return $value;
-    };
-
-    // Renders the platform's report
-    $renderPlatformReport = function(string $platform, array $reportData) use ($allowedMetrics, $formatMetricValue) {
-        $score       = $reportData['score'] ?? 0;
-        $metrics     = $reportData['metrics'] ?? [];
-        $diagnostics = $reportData['diagnostics'] ?? [];
-
-        // Build table rows for selected metrics
+    // Build the detailed reports for Desktop and Mobile.
+    // (This part uses your existing code to render the lab metrics and diagnostics.)
+    $renderPlatformReport = function(string $platform, array $reportData) {
+        $allowedMetrics = [
+            'timeToFirstByte'        => 'Time to First Byte',
+            'firstContentfulPaint'   => 'First Contentful Paint',
+            'speedIndex'             => 'Speed Index',
+            'largestContentfulPaint' => 'Largest Contentful Paint',
+            'interactive'            => 'Time to Interactive',
+            'totalBlockingTime'      => 'Total Blocking Time',
+            'cumulativeLayoutShift'  => 'Cumulative Layout Shift'
+        ];
+        $metricsInMilliseconds = [
+            'timeToFirstByte',
+            'firstContentfulPaint',
+            'speedIndex',
+            'largestContentfulPaint',
+            'interactive',
+            'totalBlockingTime'
+        ];
+        $formatMetricValue = function($key, $value) use ($metricsInMilliseconds) {
+            if (!is_numeric($value)) return $value;
+            if (in_array($key, $metricsInMilliseconds, true)) {
+                return round($value / 1000, 2) . ' s';
+            }
+            if ($key === 'cumulativeLayoutShift') {
+                return round($value, 2);
+            }
+            return $value;
+        };
+        
+        $score = isset($reportData['score']) ? intval($reportData['score']) : 0;
+        $metrics = isset($reportData['metrics']) && is_array($reportData['metrics']) ? $reportData['metrics'] : [];
+        $diagnostics = isset($reportData['diagnostics']) && is_array($reportData['diagnostics']) ? $reportData['diagnostics'] : [];
+        
+        // Build the metrics table.
         $rows = '';
         $foundMetric = false;
         foreach ($allowedMetrics as $key => $label) {
             if (isset($metrics[$key])) {
                 $foundMetric = true;
                 $displayVal = $formatMetricValue($key, $metrics[$key]);
-                $rows .= "<tr><td>{$label}</td><td>{$displayVal}</td></tr>";
+                $rows .= "<tr><td>" . htmlspecialchars($label) . "</td><td>" . htmlspecialchars($displayVal) . "</td></tr>";
             }
         }
         if (!$foundMetric) {
             $rows = '<tr><td colspan="2">No key metrics available.</td></tr>';
         }
-
-        // Build diagnostic list
+        
+        // Build diagnostics accordion.
         $diagHtml = '';
         if (!empty($diagnostics)) {
             foreach ($diagnostics as $i => $item) {
-                $title          = htmlspecialchars($item['title'] ?? '');
-                $description    = htmlspecialchars($item['description'] ?? '');
-                // If your data doesn't contain these, they'll be blank:
-                $impact         = htmlspecialchars($item['impact'] ?? '');
-                $recommendation = htmlspecialchars($item['recommendation'] ?? '');
-
+                $title = isset($item['title']) ? htmlspecialchars($item['title']) : 'N/A';
+                $description = isset($item['description']) ? htmlspecialchars($item['description']) : '';
+                $impact = isset($item['impact']) ? htmlspecialchars($item['impact']) : '';
+                $recommendation = isset($item['recommendation']) ? htmlspecialchars($item['recommendation']) : '';
                 $diagHtml .= <<<HTML
 <div class="accordion-item">
   <h2 class="accordion-header" id="{$platform}Heading{$i}">
@@ -6759,8 +7197,7 @@ public function showPageSpeedInsightConcurrent(string $jsonData): string
     </button>
   </h2>
   <div id="{$platform}Collapse{$i}" class="accordion-collapse collapse"
-       aria-labelledby="{$platform}Heading{$i}"
-       data-bs-parent="#{$platform}DiagnosticsAccordion">
+       aria-labelledby="{$platform}Heading{$i}" data-bs-parent="#{$platform}DiagnosticsAccordion">
     <div class="accordion-body">
       <strong>Description:</strong> {$description}<br>
       <strong>Impact:</strong> {$impact}<br>
@@ -6773,18 +7210,16 @@ HTML;
         } else {
             $diagHtml = '<p>No diagnostic opportunities found.</p>';
         }
-
-        // We'll use a <canvas> for the gauge, with an ID for each platform
+        
+        // Gauge canvas ID (for your gauge script)
         $canvasId = ($platform === 'Desktop') ? 'desktopPageSpeed' : 'mobilePageSpeed';
-
         return <<<HTML
 <div class="card mb-4">
   <div class="card-header">
-    <h5 class="mb-0">{$platform} Performance</h5>
+    <h5 class="mb-0">{$platform} Detailed Report</h5>
   </div>
   <div class="card-body">
     <div class="row mb-3">
-      <!-- Place your existing gauge code here -->
       <div class="col-md-4 text-center">
         <canvas id="{$canvasId}" width="250" height="250"></canvas>
       </div>
@@ -6809,143 +7244,60 @@ HTML;
 HTML;
     };
 
-    // Render desktop & mobile
-    $desktopHtml = $renderPlatformReport('Desktop', $report['desktop'] ?? []);
-    $mobileHtml  = $renderPlatformReport('Mobile',  $report['mobile']  ?? []);
+    $desktopHtml = $renderPlatformReport('Desktop', isset($report['desktop']) ? $report['desktop'] : []);
+    $mobileHtml  = $renderPlatformReport('Mobile',  isset($report['mobile']) ? $report['mobile'] : []);
 
-    // Now build the final HTML with tabs
-    $html = <<<HTML
+    // Build top-level tabs for Desktop and Mobile.
+    $tabs = '
+    <ul class="nav nav-tabs" id="pagespeedReportTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="desktop-tab" data-bs-toggle="tab" data-bs-target="#desktopReportTab" type="button" role="tab" aria-controls="desktopReportTab" aria-selected="true">Desktop</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="mobile-tab" data-bs-toggle="tab" data-bs-target="#mobileReportTab" type="button" role="tab" aria-controls="mobileReportTab" aria-selected="false">Mobile</button>
+      </li>
+    </ul>';
+
+    $tabContent = '
+    <div class="tab-content" id="pagespeedReportTabContent">
+      <div class="tab-pane fade show active" id="desktopReportTab" role="tabpanel" aria-labelledby="desktop-tab">
+        ' . $desktopHtml . '
+      </div>
+      <div class="tab-pane fade" id="mobileReportTab" role="tabpanel" aria-labelledby="mobile-tab">
+        ' . $mobileHtml . '
+      </div>
+    </div>';
+
+    // Build an inline script to update the global pageSpeedReport variable and reinitialize gauges.
+    $globalScript = '<script type="text/javascript">
+      window.pageSpeedReport = {
+        desktop: { score: ' . $desktopScore . ' },
+        mobile: { score: ' . $mobileScore . ' }
+      };
+      console.log("Updated global pageSpeedReport:", window.pageSpeedReport);
+      if (typeof initPageSpeedGauges === "function") {
+          initPageSpeedGauges();
+      }
+    </script>';
+
+    // Assemble the final HTML.
+    $html = '
 <div class="container my-4">
   <h3>PageSpeed Insights Detailed Report</h3>
-  <p><strong>URL:</strong> {$url}</p>
-  <p><strong>Report Generated:</strong> {$timestamp}</p>
-  <p><strong>Cache Hit Timestamp:</strong> {$cacheHit}</p>
-
-  <ul class="nav nav-tabs" id="pagespeedReportTab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="desktop-tab"
-              data-bs-toggle="tab" data-bs-target="#desktopReportTab"
-              type="button" role="tab" aria-controls="desktopReportTab"
-              aria-selected="true">Desktop</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="mobile-tab"
-              data-bs-toggle="tab" data-bs-target="#mobileReportTab"
-              type="button" role="tab" aria-controls="mobileReportTab"
-              aria-selected="false">Mobile</button>
-    </li>
-  </ul>
-
-  <div class="tab-content" id="pagespeedReportTabContent">
-    <div class="tab-pane fade show active" id="desktopReportTab"
-         role="tabpanel" aria-labelledby="desktop-tab">
-      {$desktopHtml}
-    </div>
-    <div class="tab-pane fade" id="mobileReportTab"
-         role="tabpanel" aria-labelledby="mobile-tab">
-      {$mobileHtml}
-    </div>
-  </div>
+  <p><strong>URL:</strong> ' . $url . '</p>
+  <p><strong>Report Generated:</strong> ' . $timestamp . '</p>
+  <p><strong>Cache Hit Timestamp:</strong> ' . $cacheHit . '</p>
+  ' . $scoreSection . '
+  ' . $tabs . '
+  ' . $tabContent . '
 </div>
+' . $globalScript;
 
-<!-- GAUGE SCRIPT: Desktop & Mobile -->
-<script type="text/javascript">
-// Make sure the Gauge constructor is already loaded on the page.
-
-document.addEventListener('DOMContentLoaded', function() {
-  // 1) Desktop gauge
-  var desktopGauge = new Gauge({
-    renderTo  : 'desktopPageSpeed',
-    width     : 250,
-    height    : 250,
-    glow      : true,
-    units     : 'Speed',
-    title     : 'Desktop',
-    minValue  : 0,
-    maxValue  : 100,
-    majorTicks: ['0','20','40','60','80','100'],
-    minorTicks: 5,
-    strokeTicks: true,
-    valueFormat: {
-      int : 2,
-      dec : 0,
-      text: '%'
-    },
-    valueBox: {
-      rectStart: '#888',
-      rectEnd: '#666',
-      background: '#CFCFCF'
-    },
-    valueText: {
-      foreground: '#CFCFCF'
-    },
-    highlights : [
-      { from: 0,  to: 40, color: '#EFEFEF' },
-      { from: 40, to: 60, color: 'LightSalmon' },
-      { from: 60, to: 80, color: 'Khaki' },
-      { from: 80, to: 100,color: 'PaleGreen' }
-    ],
-    animation : {
-      delay : 10,
-      duration: 300,
-      fn : 'bounce'
-    }
-  });
-  desktopGauge.draw();
-
-  // 2) Mobile gauge
-  var mobileGauge = new Gauge({
-    renderTo  : 'mobilePageSpeed',
-    width     : 250,
-    height    : 250,
-    glow      : true,
-    units     : 'Speed',
-    title     : 'Mobile',
-    minValue  : 0,
-    maxValue  : 100,
-    majorTicks: ['0','20','40','60','80','100'],
-    minorTicks: 5,
-    strokeTicks: true,
-    valueFormat: {
-      int : 2,
-      dec : 0,
-      text: '%'
-    },
-    valueBox: {
-      rectStart: '#888',
-      rectEnd: '#666',
-      background: '#CFCFCF'
-    },
-    valueText: {
-      foreground: '#CFCFCF'
-    },
-    highlights : [
-      { from: 0,  to: 40, color: '#EFEFEF' },
-      { from: 40, to: 60, color: 'LightSalmon' },
-      { from: 60, to: 80, color: 'Khaki' },
-      { from: 80, to: 100,color: 'PaleGreen' }
-    ],
-    animation : {
-      delay : 10,
-      duration: 300,
-      fn : 'bounce'
-    }
-  });
-  mobileGauge.draw();
-
-  // Set gauge values
-  // We have them in your filtered data:
-  var desktopScore = parseInt('{$report['desktop']['score']}' || '0', 10);
-  var mobileScore  = parseInt('{$report['mobile']['score']}'  || '0', 10);
-
-  desktopGauge.setValue(desktopScore);
-  mobileGauge.setValue(mobileScore);
-});
-</script>
-HTML;
-
+// Return the final assembled HTML.
     return $html;
 }
+
+
 
 
 
@@ -7018,70 +7370,145 @@ private function filterReport(array $data): array {
      * CLEAN OUT HANDLER
      *=================================================================== 
      */
-    public function cleanOut()
+ 
+/**
+ * cleanOut()
+ *
+ * Consolidates all individual SEO reports stored in session into one JSON report.
+ * It calculates the overall score by aggregating the "passed", "improve", and "errors"
+ * values from each module's report. (Each "Pass" earns 2 points, each "To Improve" earns 1 point,
+ * and errors earn 0.)
+ * Then, it updates the database with the final score, the consolidated report, and marks the analysis as completed.
+ * Finally, it adds this domain to the recent sites list.
+ *
+ * @return void
+ */
+/**
+ * cleanOut()
+ *
+ * Consolidates all individual SEO reports stored in session into one JSON report.
+ * It calculates the overall score by summing each module's pass/improve/errors.
+ * Then, it updates the database with the final scoreboard, the consolidated report,
+ * and marks the analysis as completed. Finally, it adds this domain to the recent sites list.
+ *
+ * @return void
+ */
+/**
+ * cleanOut()
+ *
+ * Consolidates each module’s final “one pass/improve/error” into a single scoreboard.
+ * That way, if we have 12 modules, we only have 12 total checks in the final scoreboard.
+ * Then, it updates the database with the scoreboard, final report, and marks analysis as completed.
+ */
+public function cleanOut(): void
 {
-    // 1) Retrieve the scores from POST data and convert them to integers.
-    $passscore    = (int) raino_trim($_POST['passscore']);
-    $improvescore = (int) raino_trim($_POST['improvescore']);
-    $errorscore   = (int) raino_trim($_POST['errorscore']);
+    // List the module keys that produce a single pass/improve/error in their 'report'.
+    // Each module sets 'passed'=1 or 0, 'improve'=1 or 0, 'errors'=1 or 0.
+    $moduleKeys = [
+        'meta',
+        'headingReport',
+        'keyCloudReport',
+        'linksReport',
+        'sitecardsReport',
+        'imageAltReport',
+        'textRatio',
+        'serverInfo',
+        'schemaReport',
+        'socialUrlsReport',
+        'pageAnalyticsReport',
+        'pageSpeedReport',
+    ];
 
-    // 2) Calculate the overall percentage.
-    // Each passed check earns 2 points, each "to improve" earns 1 point, errors earn 0.
-    $totalChecks   = $passscore + $improvescore + $errorscore;
-    $maxPoints     = $totalChecks * 2;  // Maximum possible if every check passed.
-    $currentPoints = ($passscore * 2) + ($improvescore * 1);
+    $totalPassed  = 0;
+    $totalImprove = 0;
+    $totalErrors  = 0;
+
+    // For each module, read the single pass/improve/error from session.
+    foreach ($moduleKeys as $key) {
+        if (!isset($_SESSION['report_data'][$key]['report'])) {
+            continue;
+        }
+        $rpt = $_SESSION['report_data'][$key]['report'];
+        // If the module says "passed" => 1, that means the entire module is "pass."
+        $passed  = (int) ($rpt['passed']  ?? 0);
+        $improve = (int) ($rpt['improve'] ?? 0);
+        $errors  = (int) ($rpt['errors']  ?? 0);
+
+        // We assume each module can only produce exactly one of these as "1."
+        $totalPassed  += $passed;
+        $totalImprove += $improve;
+        $totalErrors  += $errors;
+    }
+
+    // totalChecks is how many modules actually reported anything
+    $totalChecks = $totalPassed + $totalImprove + $totalErrors;
+    // Each "Pass" is 2 points, each "Improve" is 1 point, "Error" is 0
+    $maxPoints = $totalChecks * 2;
+    $currentPoints = ($totalPassed * 2) + ($totalImprove * 1);
     $overallPercent = ($maxPoints > 0) ? round(($currentPoints / $maxPoints) * 100) : 0;
 
-    // 3) Package the scores into an associative array.
+    // Final scoreboard
     $scoreData = [
-        'passed'  => $passscore,
-        'improve' => $improvescore,
-        'errors'  => $errorscore,
-        'percent' => $overallPercent
+        'passed'  => $totalPassed,
+        'improve' => $totalImprove,
+        'errors'  => $totalErrors,
+        'percent' => $overallPercent,
     ];
-    // Convert the score array to JSON.
-    $scoreEncoded = json_encode($scoreData);
 
-    // 4) Update the domains_data table with the new score and mark as complete.
+    // Combine all modules into one final array
+    $consolidatedReports = [
+        'overallScore'        => $scoreData,
+        'meta'                => $_SESSION['report_data']['meta']                ?? [],
+        'headingReport'       => $_SESSION['report_data']['headingReport']       ?? [],
+        'keyCloudReport'      => $_SESSION['report_data']['keyCloudReport']      ?? [],
+        'linksReport'         => $_SESSION['report_data']['linksReport']         ?? [],
+        'sitecardsReport'     => $_SESSION['report_data']['sitecardsReport']     ?? [],
+        'imageAltReport'      => $_SESSION['report_data']['imageAltReport']      ?? [],
+        'textRatio'           => $_SESSION['report_data']['textRatio']           ?? [],
+        'serverInfo'          => $_SESSION['report_data']['serverInfo']          ?? [],
+        'schemaReport'        => $_SESSION['report_data']['schemaReport']        ?? [],
+        'socialUrlsReport'    => $_SESSION['report_data']['socialUrlsReport']    ?? [],
+        'pageAnalyticsReport' => $_SESSION['report_data']['pageAnalyticsReport'] ?? [],
+        'pageSpeedReport'     => $_SESSION['report_data']['pageSpeedReport']     ?? [],
+    ];
+
+    // Encode final
+    $finalReportJson = json_encode($consolidatedReports);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        error_log("JSON encoding error in cleanOut(): " . json_last_error_msg());
+    }
+
+    // Update DB
     updateToDbPrepared(
         $this->con,
         'domains_data',
-        ['score' => $scoreEncoded, 'completed' => 'yes'],
+        [
+            'score'        => json_encode($scoreData),
+            'final_report' => $finalReportJson,
+            'completed'    => 'yes'
+        ],
         ['domain' => $this->domainStr]
     );
 
-    // 5) Retrieve the updated domain record.
+    // Optionally add to recent sites
     $data = mysqliPreparedQuery(
         $this->con,
         "SELECT * FROM domains_data WHERE domain=?",
         's',
         [$this->domainStr]
     );
-
     if ($data !== false) {
-        // 6) Retrieve page speed insight data and extract the first element as page speed.
-        $pageSpeedInsightData = jsonDecode($data['page_speed_insight']);
-        $pageSpeed = (empty($pageSpeedInsightData[0]) || $pageSpeedInsightData[0] === '') ? '0' : $pageSpeedInsightData[0];
+        // e.g. get desktop score from page_speed_insight
+        $pageSpeedInsightData = json_decode($data['page_speed_insight'] ?? '', true);
+        $desktopScore = (empty($pageSpeedInsightData['pagespeed']['report']['desktop']['score']))
+            ? 0
+            : $pageSpeedInsightData['pagespeed']['report']['desktop']['score'];
 
-        // For recent sites, we use the passscore as the final score.
-        $finalScore = ($passscore == '') ? '0' : $passscore;
-
-        // 7) Determine the username.
-        if (!isset($_SESSION['twebUsername'])) {
-            $username = trans('Guest', $this->lang['11'], true);
-        } else {
-            $username = $_SESSION['twebUsername'];
-        }
-
-        // 8) Package additional info (for example, final score and page speed) using your helper.
-        $other = serBase([$finalScore, $pageSpeed]);
-
-        // 9) Add this domain to the recent sites list.
-        // (Make sure $ip is defined in your context; if not, retrieve it accordingly.)
+        $username = $_SESSION['twebUsername'] ?? 'Guest';
+        $ip = $data['server_ip'] ?? 'N/A';
+        $other = json_encode([$overallPercent, $desktopScore]);
         addToRecentSites($this->con, $this->domainStr, $ip, $username, $other);
     }
-
-    // 10) Optionally perform any cleanup, such as deleting temporary files.
 }
 
 }

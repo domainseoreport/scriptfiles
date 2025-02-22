@@ -1,0 +1,1540 @@
+
+<!DOCTYPE HTML>
+
+<html lang="en-US">
+
+
+
+	<!-- START head -->
+
+	<head>
+
+    
+
+   
+
+    
+
+	<meta charset="UTF-8">
+
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<link rel="pingback" href="https://www.websitexnetwork.com/xmlrpc.php" />
+
+
+
+	
+	<link rel="shortcut icon" href="https://www.websitexnetwork.com/wp-content/uploads/2015/09/favicon.png" />
+
+	
+
+
+	
+	
+	
+	
+
+
+	
+	<meta name="apple-mobile-web-app-title" content="Highend WordPress Theme">
+
+	
+
+
+	<!--[if IE 8 ]>
+
+	<link href="https://www.websitexnetwork.com/wp-content/themes/HighendWP/css/ie8.css" media="screen" rel="stylesheet" type="text/css">
+
+	<![endif]-->
+
+
+
+	<!--[if lte IE 9]>
+
+	<script src="https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/html5shiv.js" type="text/javascript"></script>
+
+	<![endif]-->
+
+
+
+	<title>Website X Network &#8211; Online Publishing, Advertising and Promotion</title>
+<link rel='dns-prefetch' href='//www.google.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Website X Network &raquo; Feed" href="https://www.websitexnetwork.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Website X Network &raquo; Comments Feed" href="https://www.websitexnetwork.com/comments/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.websitexnetwork.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.6.1"}};
+			!function(a,b,c){function d(a){var c,d,e,f,g,h=b.createElement("canvas"),i=h.getContext&&h.getContext("2d"),j=String.fromCharCode;if(!i||!i.fillText)return!1;switch(i.textBaseline="top",i.font="600 32px Arial",a){case"flag":return i.fillText(j(55356,56806,55356,56826),0,0),!(h.toDataURL().length<3e3)&&(i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,65039,8205,55356,57096),0,0),c=h.toDataURL(),i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,55356,57096),0,0),d=h.toDataURL(),c!==d);case"diversity":return i.fillText(j(55356,57221),0,0),e=i.getImageData(16,16,1,1).data,f=e[0]+","+e[1]+","+e[2]+","+e[3],i.fillText(j(55356,57221,55356,57343),0,0),e=i.getImageData(16,16,1,1).data,g=e[0]+","+e[1]+","+e[2]+","+e[3],f!==g;case"simple":return i.fillText(j(55357,56835),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode8":return i.fillText(j(55356,57135),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode9":return i.fillText(j(55358,56631),0,0),0!==i.getImageData(16,16,1,1).data[0]}return!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i;for(i=Array("simple","flag","unicode8","diversity","unicode9"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='layerslider-css'  href='https://www.websitexnetwork.com/wp-content/plugins/LayerSlider/static/css/layerslider.css?ver=5.5.1' type='text/css' media='all' />
+<link rel='stylesheet' id='ls-google-fonts-css'  href='https://fonts.googleapis.com/css?family=Lato:100,300,regular,700,900%7COpen+Sans:300%7CIndie+Flower:regular%7COswald:300,regular,700&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://www.websitexnetwork.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=4.6' type='text/css' media='all' />
+<link rel='stylesheet' id='essential-grid-plugin-settings-css'  href='https://www.websitexnetwork.com/wp-content/plugins/essential-grid/public/assets/css/settings.css?ver=2.0.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='tp-open-sans-css'  href='https://fonts.googleapis.com/css?family=Open+Sans%3A300%2C400%2C600%2C700%2C800&#038;ver=4.6.1' type='text/css' media='all' />
+<link rel='stylesheet' id='tp-raleway-css'  href='https://fonts.googleapis.com/css?family=Raleway%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900&#038;ver=4.6.1' type='text/css' media='all' />
+<link rel='stylesheet' id='tp-droid-serif-css'  href='https://fonts.googleapis.com/css?family=Droid+Serif%3A400%2C700&#038;ver=4.6.1' type='text/css' media='all' />
+<link rel='stylesheet' id='rs-plugin-settings-css'  href='https://www.websitexnetwork.com/wp-content/plugins/revslider/public/assets/css/settings.css?ver=5.0.7' type='text/css' media='all' />
+<style id='rs-plugin-settings-inline-css' type='text/css'>
+#rs-demo-id {}
+</style>
+<link rel='stylesheet' id='highend-parent-style-css'  href='https://www.websitexnetwork.com/wp-content/themes/HighendWP/style.css?ver=4.6.1' type='text/css' media='all' />
+<link rel='stylesheet' id='highend-child-style-css'  href='https://www.websitexnetwork.com/wp-content/themes/HighendWP-child/style.css?ver=4.6.1' type='text/css' media='all' />
+<link rel='stylesheet' id='hb_styles-css'  href='https://www.websitexnetwork.com/wp-content/themes/HighendWP-child/style.css?ver=2.4.8' type='text/css' media='all' />
+<link rel='stylesheet' id='hb_responsive-css'  href='https://www.websitexnetwork.com/wp-content/themes/HighendWP/css/responsive.css?ver=2.4.8' type='text/css' media='all' />
+<link rel='stylesheet' id='hb_icomoon-css'  href='https://www.websitexnetwork.com/wp-content/themes/HighendWP/css/icomoon.css?ver=2.4.8' type='text/css' media='all' />
+<link rel='stylesheet' id='js_composer_front-css'  href='https://www.websitexnetwork.com/wp-content/plugins/js_composer/assets/css/js_composer.min.css?ver=5.1' type='text/css' media='all' />
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/LayerSlider/static/js/greensock.js?ver=1.11.8'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/LayerSlider/static/js/layerslider.kreaturamedia.jquery.js?ver=5.5.1'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/LayerSlider/static/js/layerslider.transitions.js?ver=5.5.1'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/essential-grid/public/assets/js/lightbox.js?ver=2.0.9.1'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/essential-grid/public/assets/js/jquery.themepunch.tools.min.js?ver=2.0.9.1'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/essential-grid/public/assets/js/jquery.themepunch.essential.min.js?ver=2.0.9.1'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/revslider/public/assets/js/jquery.themepunch.revolution.min.js?ver=5.0.7'></script>
+<link rel='https://api.w.org/' href='https://www.websitexnetwork.com/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.websitexnetwork.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.websitexnetwork.com/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 4.6.1" />
+<link rel="canonical" href="https://www.websitexnetwork.com/" />
+<link rel='shortlink' href='https://www.websitexnetwork.com/' />
+<link rel="alternate" type="application/json+oembed" href="https://www.websitexnetwork.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.websitexnetwork.com%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.websitexnetwork.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.websitexnetwork.com%2F&#038;format=xml" />
+		<script type="text/javascript">
+			jQuery(document).ready(function() {
+				// CUSTOM AJAX CONTENT LOADING FUNCTION
+				var ajaxRevslider = function(obj) {
+				
+					// obj.type : Post Type
+					// obj.id : ID of Content to Load
+					// obj.aspectratio : The Aspect Ratio of the Container / Media
+					// obj.selector : The Container Selector where the Content of Ajax will be injected. It is done via the Essential Grid on Return of Content
+					
+					var content = "";
+
+					data = {};
+					
+					data.action = 'revslider_ajax_call_front';
+					data.client_action = 'get_slider_html';
+					data.token = 'b8f4549392';
+					data.type = obj.type;
+					data.id = obj.id;
+					data.aspectratio = obj.aspectratio;
+					
+					// SYNC AJAX REQUEST
+					jQuery.ajax({
+						type:"post",
+						url:"https://www.websitexnetwork.com/wp-admin/admin-ajax.php",
+						dataType: 'json',
+						data:data,
+						async:false,
+						success: function(ret, textStatus, XMLHttpRequest) {
+							if(ret.success == true)
+								content = ret.data;								
+						},
+						error: function(e) {
+							console.log(e);
+						}
+					});
+					
+					 // FIRST RETURN THE CONTENT WHEN IT IS LOADED !!
+					 return content;						 
+				};
+				
+				// CUSTOM AJAX FUNCTION TO REMOVE THE SLIDER
+				var ajaxRemoveRevslider = function(obj) {
+					return jQuery(obj.selector+" .rev_slider").revkill();
+				};
+
+				// EXTEND THE AJAX CONTENT LOADING TYPES WITH TYPE AND FUNCTION
+				var extendessential = setInterval(function() {
+					if (jQuery.fn.tpessential != undefined) {
+						clearInterval(extendessential);
+						if(typeof(jQuery.fn.tpessential.defaults) !== 'undefined') {
+							jQuery.fn.tpessential.defaults.ajaxTypes.push({type:"revslider",func:ajaxRevslider,killfunc:ajaxRemoveRevslider,openAnimationSpeed:0.3});   
+							// type:  Name of the Post to load via Ajax into the Essential Grid Ajax Container
+							// func: the Function Name which is Called once the Item with the Post Type has been clicked
+							// killfunc: function to kill in case the Ajax Window going to be removed (before Remove function !
+							// openAnimationSpeed: how quick the Ajax Content window should be animated (default is 0.3)
+						}
+					}
+				},30);
+			});
+		</script>
+				<style type="text/css">
+		
+		::selection { background:#2980b9; color:#FFF; }
+		::-moz-selection { background:#2980b9; color:#FFF; }
+
+		a:hover, .user-entry a,
+		#lang_sel_footer a:hover,
+		.widget_calendar tbody a,
+		#header-bar a:hover,
+		.minimal-skin #main-nav > li a:hover,
+		#header-inner.stuck .second-skin #main-nav > li > a:hover,
+		.minimal-skin #main-nav li.current-menu-item > a,
+		.minimal-skin #main-nav li.sfHover > a, 
+		.minimal-skin #main-nav > li.current-menu-ancestor > a,
+		#close-fancy-search,
+		article.search-entry a.search-thumb:hover,
+		.map-info-section .minimize-section:hover,
+		.hb-blog-small h3.title a:hover,
+		.post-header .post-meta-info a:hover,
+		.post-content h2.title a,
+		.like-holder:hover i,
+		.comments-holder:hover i,
+		.share-holder:hover i,
+		.comments-holder a:hover,
+		.hb-blog-grid .comments-holder:hover, 
+		.hb-blog-grid .like-holder:hover,
+		.most-liked-list li:hover .like-count,
+		.simple-read-more:hover,
+		.team-member-box:hover .team-member-name,
+		.testimonial-author .testimonial-company:hover,
+		.close-modal:hover,
+		.hb-tabs-wrapper .nav-tabs li.active a,
+		.hb-icon,
+		.hb-logout-box small a:hover,
+		.hb-gallery-sort li.hb-dd-header:hover strong,
+		.filter-tabs li a:hover,
+		ul.social-list li a:hover,
+		div.pp_default .pp_close:hover,
+		#main-wrapper .hb-woo-product.sale .price,
+		.woocommerce .star-rating span, .woocommerce-page .star-rating span,
+		.woocommerce-page div.product p.price, .hb-focus-color { color:#2980b9; }
+
+		.hb-focus-color, 
+		.light-text a:hover, 
+		#header-bar.style-1 .top-widget .active,
+		#header-bar.style-2 .top-widget .active, 
+		.top-widget:hover > a,
+		#header-bar.style-2 .top-widget:hover > a,
+		.top-widget.social-list a:hover,
+		#main-wrapper .hb-dropdown-box a:hover,
+		.social-list ul li a:hover,
+		.light-menu-dropdown #main-nav ul.sub-menu li a:hover,
+		.light-menu-dropdown #main-nav ul.sub-menu li.sfHover > a,
+		.light-menu-dropdown #main-nav ul.sub-menu li.current-menu-item > a,
+		.light-menu-dropdown #main-nav ul.sub-menu li.current-menu-ancestor > a,
+		#fancy-search .ui-autocomplete li a:hover,
+		#fancy-search .ui-autocomplete li:hover span.search-title,
+		#fancy-search .ui-autocomplete li a,
+		.share-holder .hb-dropdown-box ul li a:hover,
+		.share-holder .hb-dropdown-box ul li a:hover i,
+		.share-holder.active,
+		.share-holder.active i,
+		.author-box .social-list li a:hover,
+		#respond small a:hover,
+		.commentmetadata a:hover time,
+		.comments-list .reply a,
+		#footer.dark-style a:hover,
+		.feature-box i.ic-holder-1,
+		.feature-box.alternative i.ic-holder-1,
+		.portfolio-simple-wrap .standard-gallery-item:hover .portfolio-description h3 a,
+		#copyright-wrapper a:hover,
+		.hb-effect-1 #main-nav > li > a::before, 
+		.hb-effect-1 a::after,
+		.third-skin.hb-effect-1 #main-nav > li > a:hover, 
+		.third-skin.hb-effect-1 #main-nav > li.current-menu-item > a, 
+		.third-skin.hb-effect-1 #main-nav > li.sfHover > a,
+		.second-skin.hb-effect-9 #main-nav #nav-search > a:hover,
+		.hb-effect-10 #main-nav > li > a:hover, 
+		.hb-effect-10 #main-nav > li #nav-search a:hover, 
+		.hb-effect-10 #main-nav > li.current-menu-item > a,
+		.like-holder:hover,
+		.comments-holder:hover,
+		.share-holder:hover,
+		#main-nav ul.sub-menu li a:hover,
+		.hb-side-nav li.menu-item-has-children:hover > a,
+		.hb-side-nav li a:hover, .hb-side-nav li.current-menu-item > a, .hb-side-nav li.current-menu-ancestor > a { color: #2980b9!important; }
+
+		.light-style .feature-box i.ic-holder-1,
+		.light-style .feature-box.alternative i.ic-holder-1,
+		.light-style .feature-box h4.bold {
+			color: #f9f9f9 !important;
+		}
+
+		.light-style .feature-box-content p {
+			color: #ccc;
+		}
+
+		.like-holder.like-active i, .like-holder.like-active { color: #da4c26 !important; }
+
+		.hb-icon-container,
+		.feature-box i.ic-holder-1 {
+			border-color: #2980b9;
+		}
+
+		.main-navigation.default-skin #main-nav > li > a:hover > span, 
+		.main-navigation.default-skin #main-nav > li.current-menu-item > a > span, 
+		.main-navigation.default-skin #main-nav > li.sfHover > a > span,
+		.simple-read-more,
+		.team-member-box.tmb-2:hover .team-member-description,
+		.hb-logout-box small a:hover,
+		#pre-footer-area,
+		span[rel="tooltip"] { border-bottom-color: #2980b9; }
+
+		.hb-pricing-item:hover,
+		.hb-process-steps ul:before,
+		.pace .pace-activity,
+		.wpb_tabs .nav-tabs li.active a,
+		#hb-preloader .spinner, .default-loading-icon:before {
+			border-top-color: #2980b9;
+		}
+
+		blockquote.pullquote,
+		.author-box,
+		#main-wrapper .widget_nav_menu ul.menu li.current-menu-item > a,
+		.hb-callout-box h3,
+		.pace .pace-activity,
+		.hb-non-transparent .hb-side-nav > li > a:hover,
+		.hb-non-transparent .hb-side-nav > li.current-menu-item > a, 
+		.hb-non-transparent .hb-side-nav > li.current-menu-ancestor > a, 
+		.hb-non-transparent .hb-side-nav > li.sfHover > a,
+		.hb-tabs-wrapper.tour-style.left-tabs > .nav-tabs > li.active a,
+		.light-menu-dropdown #main-nav ul.sub-menu li a:hover,.light-menu-dropdown #main-nav ul.sub-menu li.sfHover > a,.light-menu-dropdown #main-nav ul.sub-menu li.current-menu-item > a, .light-menu-dropdown #main-nav ul.sub-menu li.current-menu-ancestor > a, .light-menu-dropdown #main-nav ul.sub-menu li.sfHover > a {
+			border-left-color: #2980b9;
+		}
+
+		#main-wrapper .right-sidebar .widget_nav_menu ul.menu li.current-menu-item > a,
+		.hb-tabs-wrapper.tour-style.right-tabs > .nav-tabs > li.active a{
+			border-right-color: #2980b9;
+		}
+
+		#to-top:hover,
+		#contact-button:hover, 
+		#contact-button.active-c-button,
+		.pagination ul li span, 
+		.single .pagination span,
+		.single-post-tags a:hover,
+		div.overlay,
+		.portfolio-simple-wrap .standard-gallery-item:hover .hb-gallery-item-name:before,
+		.progress-inner,
+		.woocommerce .wc-new-badge,
+		#main-wrapper .coupon-code input.button:hover,
+		.woocommerce-page #main-wrapper button.button:hover,
+		#main-wrapper input.checkout-button,
+		.side-nav-bottom-part ul li a:hover,
+		#main-wrapper #place_order,
+		#mobile-menu.interactive .open-submenu.active,
+		#mobile-menu.interactive .open-submenu:hover { background-color:#2980b9; }
+
+		#header-dropdown .close-map:hover,
+		#sticky-shop-button:hover,
+		#sticky-shop-button span,
+		.quote-post-format .quote-post-wrapper a,
+		.link-post-format .quote-post-wrapper a,
+		.status-post-format .quote-post-wrapper a,
+		span.highlight,
+		mark,
+		.feature-box:hover:not(.standard-icon-box) .hb-small-break,
+		.content-box i.box-icon,
+		.hb-button, input[type=submit], a.read-more,
+		.hb-effect-2 #main-nav > li > a > span::after,
+		.hb-effect-3 #main-nav > li > a::before,
+		.hb-effect-4 #main-nav > li > a::before,
+		.hb-effect-6 #main-nav > li > a::before,
+		.hb-effect-7 #main-nav > li > a span::after,
+		.hb-effect-8 #main-nav > li > a:hover span::before,
+		.hb-effect-9 #main-nav > li > a > span::before,
+		.hb-effect-9 #main-nav > li > a > span::after,
+		.hb-effect-10 #main-nav > li > a:hover span::before, 
+		.hb-effect-10 #main-nav > li.current-menu-item > a span::before, 
+		#main-nav > li.sfHover > a span::before, 
+		#main-nav > li.current-menu-ancestor > a span::before,
+		.pace .pace-progress,
+		#main-wrapper .hb-bag-buttons a.checkout-button {background: #2980b9;}
+
+		.filter-tabs li.selected a, #main-wrapper .single_add_to_cart_button:hover {
+			background: #2980b9 !important;
+		}
+
+		table.focus-header th,
+		.second-skin #main-nav > li a:hover,
+		.second-skin #main-nav > li.current-menu-item > a,
+		.second-skin #main-nav > li.sfHover > a,
+		#header-inner.stuck .second-skin #main-nav > li > a:hover,
+		.second-skin #main-nav > li.current-menu-item > a,
+		.crsl-nav a:hover,
+		.feature-box:hover i.ic-holder-1 {
+			background: #2980b9;
+			color: #FFF;
+		}
+
+
+		.load-more-posts:hover,
+		.dropcap.fancy,
+		.tagcloud > a:hover,
+		.hb-icon.hb-icon-medium.hb-icon-container:hover {
+			background-color: #2980b9;
+			color: #FFF;
+		}
+
+		.filter-tabs li.selected a {
+			border-color: #2980b9 !important;
+		}
+
+		.hb-second-light:hover {background:#FFF!important;color:#2980b9!important;}
+
+		.hb-effect-11 #main-nav > li > a:hover::before,
+		.hb-effect-11 #main-nav > li.sfHover > a::before,
+		.hb-effect-11 #main-nav > li.current-menu-item > a::before,
+		.hb-effect-11 #main-nav > li.current-menu-ancestor > a::before  {
+			color: #2980b9;
+			text-shadow: 7px 0 #2980b9, -7px 0 #2980b9;
+		}
+
+		#main-wrapper .product-loading-icon {
+			background: rgba(41,128,185,0.85);
+		}
+
+		.hb-single-next-prev a:hover {
+			background: #2980b9;	
+		}
+
+		.hb-more-details:hover, .hb-buy-button:hover {
+			color:#FFF;
+			background: rgba(41,128,185,0.8);
+		}
+
+		.hb-button, input[type=submit]{
+			box-shadow: 0 3px 0 0 #004e87;
+		}
+
+		.hb-button.special-icon i,
+		.hb-button.special-icon i::after {
+			background:#004e87;
+		}
+
+		#main-wrapper a.active-language, #main-wrapper a.active-language:hover {color: #aaa !important; }
+		.feature-box:hover:not(.standard-icon-box):not(.alternative) i, #main-wrapper .hb-bag-buttons a:hover, #main-wrapper .hb-dropdown-box .hb-bag-buttons a:hover,
+		#main-wrapper .social-icons.dark li a:hover i, #main-wrapper #footer .social-icons.dark li a i, 
+		#footer.dark-style ul.social-icons.light li a:hover,
+		#main-wrapper .hb-single-next-prev a:hover {color: #FFF !important;}		</style>
+		<script type="text/javascript">var ajaxurl = "https://www.websitexnetwork.com/wp-admin/admin-ajax.php"</script><meta name="generator" content="Powered by Visual Composer - drag and drop page builder for WordPress."/>
+<!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="https://www.websitexnetwork.com/wp-content/plugins/js_composer/assets/css/vc_lte_ie9.min.css" media="screen"><![endif]--><meta name="generator" content="Powered by Slider Revolution 5.0.7 - responsive, Mobile-Friendly Slider Plugin for WordPress with comfortable drag and drop interface." />
+<style type="text/css" data-type="vc_custom-css">#pre-footer-area:after { display: none }</style><style type="text/css" data-type="vc_shortcodes-custom-css">.vc_custom_1493360610413{padding-top: 50px !important;padding-bottom: 50px !important;}.vc_custom_1493361057882{margin-bottom: 0px !important;}.vc_custom_1493362893168{margin-bottom: 0px !important;padding-top: 50px !important;padding-bottom: 50px !important;}.vc_custom_1493361742952{padding-right: 15px !important;}</style><noscript><style type="text/css"> .wpb_animate_when_almost_visible { opacity: 1; }</style></noscript>
+    
+
+    
+
+
+
+	<!-- Theme Options Font Settings -->
+
+	<style type="text/css">
+
+	
+	</style>
+
+
+
+	<title></title>
+
+
+
+
+
+ 
+
+
+
+
+	</head>
+
+	<!-- END head -->
+
+
+
+	
+
+
+	<!-- START body -->
+
+	<body class="home page page-id-119 page-template-default  hb-stretched-layout wpb-js-composer js-comp-ver-5.1 vc_responsive" data-fixed-footer="0" itemscope="itemscope" itemtype="https://schema.org/WebPage">
+
+
+
+	
+
+
+	
+
+
+	
+
+
+	<div id="mobile-menu-wrap">
+<div class="hb-top-holder"></div><a class="mobile-menu-close"><i class="hb-icon-x"></i></a>
+<nav id="mobile-menu" class="clearfix interactive">
+<div class="menu-nav-menu-container"><ul id="menu-nav-menu" class="menu"><li id="menu-item-3748" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-119 current_page_item menu-item-3748"><a href="https://www.websitexnetwork.com/">Home</a></li>
+<li id="menu-item-3752" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3752"><a href="https://www.websitexnetwork.com/refer-a-colleague/">Refer a Colleague</a></li>
+<li id="menu-item-3749" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3749"><a href="https://www.websitexnetwork.com/comapny-review/">Company Review</a></li>
+<li id="menu-item-3855" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3855"><a href="https://www.websitexnetwork.com/contacts/">Contact</a></li>
+</ul></div></nav>
+</div>
+
+
+
+
+
+	
+
+
+
+
+	<!-- BEGIN #hb-wrap -->
+
+	<div id="hb-wrap">
+
+
+
+	<!-- BEGIN #main-wrapper -->
+
+	<div id="main-wrapper" class="hb-stretched-layout with-footer-separators hb_boxed_layout_regular with-shadow width-1140 hb-responsive nav-type-1" data-cart-url="" data-cart-count=""  data-search-header=0>
+
+
+
+		
+
+
+		
+				<!-- BEGIN #hb-header -->
+
+				<header id="hb-header" class="">
+
+
+
+					   
+<!-- BEGIN #header-bar -->
+<div id="header-bar" class="style-1 clearfix">
+
+    <!-- BEGIN .container or .container-wide -->
+    <div class="container">
+
+            <!-- BEGIN .top-widget Information -->
+        <div id="top-info-widget" class="top-widget float-left ">
+            <p><i class="hb-moon-arrow-right-5"></i>Call us today! <strong>586-445-0488</strong></p>
+        </div>
+        <!-- END .top-widget -->
+            <!-- BEGIN .top-widget Email -->
+        <div class="top-widget float-left clear-r-margin">
+            <a href="mailto:info@websitexnetwork.com"><i class="hb-moon-envelop"></i>info@websitexnetwork.com</a>
+        </div>
+        <!-- END .top-widget -->
+        
+    
+        <!-- BEGIN .top-widget -->
+        <div id="top-socials-widget" class="top-widget float-right social-list">
+            <ul class="clearfix">
+                                                            <li>
+                                <a href="https://www.facebook.com/WebsiteXNetwork/" original-title="Facebook" target="_self"><i class="hb-moon-facebook"></i></a> 
+                            </li>
+                                                                        <li>
+                                <a href="#" original-title="Twitter" target="_self"><i class="hb-moon-twitter"></i></a> 
+                            </li>
+                                                                        <li>
+                                <a href="#" original-title="Linkedin" target="_self"><i class="hb-moon-linkedin"></i></a> 
+                            </li>
+                                                                        <li>
+                                <a href="#" original-title="Instagram" target="_self"><i class="hb-moon-instagram"></i></a> 
+                            </li>
+                                        
+            </ul>
+        </div>
+        <!-- END .top-widget -->
+
+    
+    </div>
+    <!-- END .container or .container-wide -->
+
+</div>
+<!-- END #header-bar -->
+
+<div id="header-dropdown">
+    <div id="contact-map" data-map-buttons="1" data-map-level="15" data-map-lat="51.473391" data-map-lng="-0.252922" data-map-img="https://hb-themes.com/themes/highend_wp/wp-content/uploads/2014/03/custom_map_pin.png" data-overlay-color="none"></div>
+    <div class="close-map"><i class="hb-moon-close-2"></i></div>
+</div>
+					
+        <!-- BEGIN #header-inner -->
+        <div id="header-inner" class="sticky-nav nav-type-1 clearfix" style="height: 80px; line-height: 80px;" data-height="80" data-sticky-height="60" role="banner" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+
+            <!-- BEGIN #header-inner-bg -->
+            <div id="header-inner-bg">
+                
+                <!-- BEGIN .container or .container-wide -->
+                <div class="container">
+                    
+                    <!-- BEGIN #logo -->
+                    <div id="logo" style="height:80px; line-height: 80px;">
+                                                <a href="https://www.websitexnetwork.com" class="image-logo">
+
+                            
+                            <span class="hb-dark-logo hb-visible-logo hb-logo-wrap">
+                                <img src="https://www.websitexnetwork.com/wp-content/uploads/2020/06/wxn-logo-new.png" width="318" height="72" class="default" alt="Website X Network"/>
+                                
+                                                                        <img src="https://www.websitexnetwork.com/wp-content/uploads/2020/06/wxn-logo-new.png" class="retina" width="636" height="144" alt="Website X Network"/>
+                                                                </span>
+
+                                                    </a>
+
+                                            </div>
+                    <!-- END #logo -->
+
+                    
+                    
+                    
+                    
+                    <!-- BEGIN .main-navigation -->
+                    <nav class="main-navigation minimal-skin hb-effect-4 light-menu-dropdown clearfix" style="height: 80px; line-height: 80px;" data-height="80" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+
+                        
+                        <ul id="main-nav" class="sf-menu "><li id="menu-item-3748" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-119 current_page_item no-megamenu"><a href="https://www.websitexnetwork.com/"><span>Home</span></a></li>
+<li id="menu-item-3752" class="menu-item menu-item-type-post_type menu-item-object-page no-megamenu"><a href="https://www.websitexnetwork.com/refer-a-colleague/"><span>Refer a Colleague</span></a></li>
+<li id="menu-item-3749" class="menu-item menu-item-type-post_type menu-item-object-page no-megamenu"><a href="https://www.websitexnetwork.com/comapny-review/"><span>Company Review</span></a></li>
+<li id="menu-item-3855" class="menu-item menu-item-type-post_type menu-item-object-page no-megamenu"><a href="https://www.websitexnetwork.com/contacts/"><span>Contact</span></a></li>
+</ul>
+                                                <!-- BEGIN #fancy-search -->
+                        <div id="fancy-search">
+                            <form id="fancy-search-form" action="https://www.websitexnetwork.com/" novalidate="" autocomplete="off">
+                                <input type="text" name="s" id="s" placeholder="Type keywords and press enter" autocomplete="off">
+                            </form>
+                        <a href="#" id="close-fancy-search" class="no-transition"><i class="hb-icon-x"></i></a>
+                        <span class="spinner"></span>
+                        </div>
+                        <!-- END #fancy-serach -->
+                        
+
+                                                <a href="#" id="show-nav-menu"><i class="icon-bars"></i></a>
+                        
+
+                        
+                    </nav>
+                    <!-- END .main-navigation -->
+                    
+                                                </div>
+                        <!-- END .container or .container-wide -->
+                                    </div>
+            <!-- END #header-inner-bg -->
+
+        </div>
+        <!-- END #header-inner -->
+
+
+
+
+				</header>
+
+				<!-- END #hb-header -->
+
+
+
+				
+			
+
+<!-- BEGIN #slider-section -->
+<div id="slider-section" class="clearfix " style="">
+			<canvas id="hb-canvas-effect"></canvas>
+	<link href=&#039;https://fonts.googleapis.com/css?family=Raleway:400,700&#039; rel=&#039;stylesheet&#039; type=&#039;text/css&#039;>
+<div id="rev_slider_4_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container" style="margin:0px auto;background-color:#222;padding:0px;margin-top:0px;margin-bottom:0px;">
+<!-- START REVOLUTION SLIDER 5.0.7 auto mode -->
+	<div id="rev_slider_4_1" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.0.7">
+<ul>	<!-- SLIDE  -->
+	<li data-index="rs-14" data-transition="slotfade-horizontal,slotfade-vertical,notransition" data-slotamount="7,7,default"  data-easein="default,default,default" data-easeout="default,default,default" data-masterspeed="600,600,default"  data-delay="10500"  data-rotate="0,0,0"  data-saveperformance="off"  data-title="Last Theme" data-description="">
+		<!-- MAIN IMAGE -->
+		<img src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/bg1.jpg"  alt=""  width="1400" height="550" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+		<!-- LAYERS -->
+
+		<!-- LAYER NR. 1 -->
+		<div class="tp-caption highend_bold_white   tp-resizeme" 
+			 id="slide-14-layer-1" 
+			 data-x="567" 
+			 data-y="139" 
+						data-width="['646']"
+			data-height="['auto']"
+			data-transform_idle="o:1;rZ:inherit;"
+ 
+			 data-transform_in="y:50px;opacity:0;s:700;e:Power2.easeInOut;" 
+			 data-transform_out="auto:auto;s:300;" 
+			data-start="500" 
+			data-splitin="lines" 
+			data-splitout="none" 
+			data-responsive_offset="on" 
+
+			data-elementdelay="0.1" 
+			
+			style="z-index: 5; min-width: 646px; max-width: 646px; white-space: normal; line-height: 50px;border-color:rgba(255, 214, 88, 1.00);">Brand Development, Managed Solutions, Publishing and Promotion 
+		</div>
+
+		<!-- LAYER NR. 2 -->
+		<div class="tp-caption hb-custom-title-3   tp-resizeme" 
+			 id="slide-14-layer-2" 
+			 data-x="570" 
+			 data-y="297" 
+						data-width="['511']"
+			data-height="['146']"
+			data-transform_idle="o:1;rZ:inherit;"
+ 
+			 data-transform_in="x:-200px;skX:85px;opacity:0;s:600;e:Back.easeOut;" 
+			 data-transform_out="auto:auto;s:300;" 
+			data-start="1100" 
+			data-splitin="none" 
+			data-splitout="none" 
+			data-responsive_offset="on" 
+
+			
+			style="z-index: 6; min-width: 511px; max-width: 511px; max-width: 146px; max-width: 146px; white-space: normal;border-color:rgba(255, 255, 255, 1.00);">
+				<div class="rs-looped rs-slideloop"  data-easing="linearEaseNone" data-speed="2" data-xs="0" data-xe="0" data-ys="0" data-ye="0">"We're the folks who can't rest until we find the perfect 
+creative solution" 
+				</div>
+		</div>
+
+		<!-- LAYER NR. 3 -->
+		<div class="tp-caption highend_bold_white   tp-resizeme" 
+			 id="slide-14-layer-3" 
+			 data-x="576" 
+			 data-y="387" 
+						data-width="['514']"
+			data-height="['auto']"
+			data-transform_idle="o:1;"
+ 
+			 data-transform_in="y:50px;opacity:0;s:700;e:Power2.easeInOut;" 
+			 data-transform_out="auto:auto;s:300;" 
+			data-start="1100" 
+			data-splitin="lines" 
+			data-splitout="none" 
+			data-responsive_offset="on" 
+
+			data-elementdelay="0.1" 
+			
+			style="z-index: 7; min-width: 514px; max-width: 514px; white-space: normal; font-size: 48px; line-height: 52px;text-align:center;background-color:rgba(10, 0, 0, 0.50);padding:20px 20px 20px 20px;border-color:rgba(255, 214, 88, 1.00);border-radius:5px 5px 5px 5px;">The way of the future 
+		</div>
+	</li>
+</ul>
+<div class="tp-bannertimer tp-bottom" style="height: 5px; background-color: rgba(0, 0, 0, 0.15);"></div>	</div>
+<script>var htmlDiv = document.getElementById("rs-plugin-settings-inline-css"); var htmlDivCss=".tp-caption.highend_bold_white,.highend_bold_white{font-size:45px;line-height:43px;font-weight:700;font-family:Raleway;color:#ffffff;text-decoration:none;background-color:transparent;padding:0px 0px 0px 0px;border-width:0px;border-color:rgb(255,214,88);border-style:none}.tp-caption.hb-custom-title-3,.hb-custom-title-3{font-size:20px;line-height:31px;color:#ffffff;font-weight:400;font-family:\"Open Sans\",Arial,sans-serif;background-color:transparent;text-decoration:none;border-width:0px;border-color:rgb(255,255,255);border-style:none}";
+				if(htmlDiv) {
+					htmlDiv.innerHTML = htmlDiv.innerHTML + htmlDivCss;
+				}
+				else{
+					var htmlDiv = document.createElement("div");
+					htmlDiv.innerHTML = "<style>" + htmlDivCss + "</style>";
+					document.getElementsByTagName("head")[0].appendChild(htmlDiv.childNodes[0]);
+				}
+			</script>
+		<script type="text/javascript">
+						/******************************************
+				-	PREPARE PLACEHOLDER FOR SLIDER	-
+			******************************************/
+
+			var setREVStartSize=function(){
+				try{var e=new Object,i=jQuery(window).width(),t=9999,r=0,n=0,l=0,f=0,s=0,h=0;
+					e.c = jQuery('#rev_slider_4_1');
+					e.gridwidth = [1140];
+					e.gridheight = [540];
+							
+					e.sliderLayout = "auto";
+					if(e.responsiveLevels&&(jQuery.each(e.responsiveLevels,function(e,f){f>i&&(t=r=f,l=e),i>f&&f>r&&(r=f,n=e)}),t>r&&(l=n)),f=e.gridheight[l]||e.gridheight[0]||e.gridheight,s=e.gridwidth[l]||e.gridwidth[0]||e.gridwidth,h=i/s,h=h>1?1:h,f=Math.round(h*f),"fullscreen"==e.sliderLayout){var u=(e.c.width(),jQuery(window).height());if(void 0!=e.fullScreenOffsetContainer){var c=e.fullScreenOffsetContainer.split(",");if (c) jQuery.each(c,function(e,i){u=jQuery(i).length>0?u-jQuery(i).outerHeight(!0):u}),e.fullScreenOffset.split("%").length>1&&void 0!=e.fullScreenOffset&&e.fullScreenOffset.length>0?u-=jQuery(window).height()*parseInt(e.fullScreenOffset,0)/100:void 0!=e.fullScreenOffset&&e.fullScreenOffset.length>0&&(u-=parseInt(e.fullScreenOffset,0))}f=u}else void 0!=e.minHeight&&f<e.minHeight&&(f=e.minHeight);e.c.closest(".rev_slider_wrapper").css({height:f})
+				}catch(d){console.log("Failure at Presize of Slider:"+d)}
+			};
+						
+				
+			setREVStartSize();
+			function revslider_showDoubleJqueryError(sliderID) {
+					var errorMessage = "Revolution Slider Error: You have some jquery.js library include that comes after the revolution files js include.";
+					errorMessage += "<br> This includes make eliminates the revolution slider libraries, and make it not work.";
+					errorMessage += "<br><br> To fix it you can:<br>&nbsp;&nbsp;&nbsp; 1. In the Slider Settings -> Troubleshooting set option:  <strong><b>Put JS Includes To Body</b></strong> option to true.";
+					errorMessage += "<br>&nbsp;&nbsp;&nbsp; 2. Find the double jquery.js include and remove it.";
+					errorMessage = "<span style='font-size:16px;color:#BC0C06;'>" + errorMessage + "</span>"
+						jQuery(sliderID).show().html(errorMessage);
+				}
+						var tpj=jQuery;
+			tpj.noConflict();
+			var revapi4;
+			tpj(document).ready(function() {
+				if(tpj("#rev_slider_4_1").revolution == undefined){
+					revslider_showDoubleJqueryError("#rev_slider_4_1");
+				}else{
+					revapi4 = tpj("#rev_slider_4_1").show().revolution({
+						sliderType:"standard",
+						jsFileLocation:"https://www.websitexnetwork.com/wp-content/plugins/revslider/public/assets/js/",
+						sliderLayout:"auto",
+						dottedOverlay:"none",
+						delay:10500,
+						navigation: {
+							keyboardNavigation:"off",
+							keyboard_direction: "horizontal",
+							mouseScrollNavigation:"off",
+							onHoverStop:"on",
+							touch:{
+								touchenabled:"on",
+								swipe_threshold: 0.7,
+								swipe_min_touches: 1,
+								swipe_direction: "horizontal",
+								drag_block_vertical: false
+							}
+						},
+						gridwidth:1140,
+						gridheight:540,
+						lazyType:"none",
+						shadow:0,
+						spinner:"spinner3",
+						stopLoop:"off",
+						stopAfterLoops:-1,
+						stopAtSlide:-1,
+						shuffle:"off",
+						autoHeight:"off",
+						hideThumbsOnMobile:"off",
+						hideSliderAtLimit:0,
+						hideCaptionAtLimit:0,
+						hideAllCaptionAtLilmit:0,
+						debugMode:false,
+						fallbacks: {
+							simplifyAll:"off",
+							nextSlideOnWindowFocus:"off",
+							disableFocusListener:false,
+						}
+					});
+				}
+			});	/*ready*/
+		</script>
+		<script>
+					var htmlDivCss = '	#rev_slider_4_1_wrapper .tp-loader.spinner3 div { background-color: #464646 !important; } ';
+					var htmlDiv = document.getElementById('rs-plugin-settings-inline-css');
+					if(htmlDiv) {
+						htmlDiv.innerHTML = htmlDiv.innerHTML + htmlDivCss;
+					}
+					else{
+						var htmlDiv = document.createElement('div');
+						htmlDiv.innerHTML = '<style>' + htmlDivCss + '</style>';
+						document.getElementsByTagName('head')[0].appendChild(htmlDiv.childNodes[0]);
+					}
+					</script>
+					</div><!-- END REVOLUTION SLIDER --></div>
+<!-- END #slider-section -->
+		 
+<!-- BEGIN #main-content -->
+<div id="main-content">
+
+	<div class="container">
+	
+		
+		<div class="row fullwidth main-row">
+
+			<div id="page-119" class="post-119 page type-page status-publish hentry">
+			
+				<!-- BEGIN .hb-main-content -->
+								<div class="col-12 hb-main-content">
+				
+				<div class="vc_row element-row row">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="shortcode-wrapper shortcode-title clearfix hb-animate-element scale-up"><div class="aligncenter"><h1 class="hb-bordered-heading aligncenter">Website X Network</h1></div></div><div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer" style="height:20px;"></div></div>
+		</div> 
+	</div> 
+</div><div class="vc_row element-row row">
+	<div class="vc_col-sm-6 wpb_column vc_column_container vc_custom_1493361742952">
+		<div class="wpb_wrapper">
+			
+	<div class="wpb_text_column wpb_content_element " >
+		<div class="wpb_wrapper">
+			<p><strong>Website X Network (WXN)</strong> Enhances the Internet experience for all visitors, advertisers and partners. Providing the most up to date subject matter information by industry segment.</p>
+<p>Website X Network Develops, Publishes and Promotes online business, using the latest techniques and highly skilled teams.</p>
+<p>Website X Network (WXN) works in the following Industries, Online Shopping, Gaming Reviews, Global Trade, Industrial Commercial, Trust Select, Job Boards, Health and Fitness, Money and Finance, Living Simple Network, Travel, Tech and Gadgets, Autos, Entertainment, Real Estate, News and Photos.</p>
+<p>Because of the continuing development of (WXN) software Websoft. Website X Network has been able to monetize it’s business promoting products and services on the world wide web.</p>
+<p>Website X Network is unlike most other sales channels. Promoting on the internet allows us to distribute the latest information at the speed of light at a reduced cost, with a worldwide reach.</p>
+<p>Our innovated business model, reduces cost and generates ease of purchase for all network users. Website X Network.com an American electronic commerce company that was founded in 2019 by Joe Martin and is based in Detroit Michigan.</p>
+
+		</div>
+	</div>
+
+		</div> 
+	</div> 
+
+	<div class="vc_col-sm-6 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			
+	<div  class="wpb_single_image wpb_content_element vc_align_center  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<div class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="555" height="495" src="https://www.websitexnetwork.com/wp-content/uploads/2014/03/welcome1.jpg" class="vc_single_image-img attachment-full" alt="welcome" srcset="https://www.websitexnetwork.com/wp-content/uploads/2014/03/welcome1.jpg 555w, https://www.websitexnetwork.com/wp-content/uploads/2014/03/welcome1-300x268.jpg 300w, https://www.websitexnetwork.com/wp-content/uploads/2014/03/welcome1-392x350.jpg 392w, https://www.websitexnetwork.com/wp-content/uploads/2014/03/welcome1-100x89.jpg 100w" sizes="(max-width: 555px) 100vw, 555px" /></div>
+		</figure>
+	</div>
+
+		</div> 
+	</div> 
+</div><div class="vc_row element-row row">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer" style="height:20px;"></div></div>
+		</div> 
+	</div> 
+</div><div class="fw-section hb-fw-66a79ba39980e with-border no-overlay" style="background-color:#ffffff;margin-bottom:0px !important;margin-top:0px !important;"><div class="vc_row element-row row vc_custom_1493360610413 fw-content-wrap">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="shortcode-wrapper shortcode-title clearfix hb-animate-element scale-up"><h2 class="aligncenter">Website X Network is a United States of America E-Commerce company providing Business-To-Consumer,Business- to -Business, Consumer- to -Consumer Sales Services through web Portal’s</h2></div><div class="shortcode-wrapper shortcode-separator clearfix" ><div class="hb-separator-25"  style="margin-top:30px;margin-bottom:30px;"></div></div>
+	<div class="wpb_text_column wpb_content_element " >
+		<div class="wpb_wrapper">
+			<p style="text-align: center;">WXN a global e-commerce company is focused on making the engagement between merchants and users worldwide, user friendly with the complete information needed to make informed decisions.<br />
+Our review and search engine sites by business segment respond to all purchase request showing information needed to make the best buying decisions.<br />
+Our team is constantly looking for ways to make Electronic Commerce a better experience.<br />
+Website X Network.com business segments are available worldwide and our search engine technologies allow for immediate supply of required information.</p>
+
+		</div>
+	</div>
+<div class="vc_btn3-container  wpb_animate_when_almost_visible wpb_flipInY flipInY vc_btn3-center" >
+	<a class="vc_general vc_btn3 vc_btn3-size-md vc_btn3-shape-rounded vc_btn3-style-3d vc_btn3-color-primary" href="https://www.websitexnetwork.com/online-technology-business-services-solutions/" title="More Online Technology &amp; Business Services Solutions">More Online Technology &amp; Business Services Solutions</a></div>
+
+		</div> 
+	</div> 
+</div><div class="video-overlay no-overlay"></div></div><div class="vc_row element-row row">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer" style="height:20px;"></div></div>
+		</div> 
+	</div> 
+</div><div class="vc_row element-row row" style="margin-bottom: 0px;">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="shortcode-wrapper shortcode-title clearfix hb-animate-element scale-up"><div class="aligncenter"><h2 class="hb-bordered-heading aligncenter">Our Brands</h2></div></div><div class="shortcode-wrapper shortcode-separator clearfix" ><div class="hb-small-break"  style="margin-top:30px;margin-bottom:30px;"></div></div>
+		</div> 
+	</div> 
+</div><div class="vc_row element-row row">
+	<div class="vc_col-sm-3 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/online-shopping/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/merchants-mk-logo2.jpg" class="vc_single_image-img attachment-medium" alt="merchants-mk-logo2" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/merchants-mk-logo2.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/merchants-mk-logo2-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/jobs-career/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2014/03/job-boards-logo2.jpg" class="vc_single_image-img attachment-medium" alt="job-boards-logo2" srcset="https://www.websitexnetwork.com/wp-content/uploads/2014/03/job-boards-logo2.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2014/03/job-boards-logo2-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/tech-gadgets/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/tech-gadgets-logo.jpg" class="vc_single_image-img attachment-medium" alt="tech-gadgets-logo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/tech-gadgets-logo.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/tech-gadgets-logo-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/money-finance/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/money-finance-logo.jpg" class="vc_single_image-img attachment-medium" alt="money-finance-logo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/money-finance-logo.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/money-finance-logo-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+		</div> 
+	</div> 
+
+	<div class="vc_col-sm-3 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.trustselect.com/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2016/07/trust-select-seal-logo.png" class="vc_single_image-img attachment-medium" alt="trust-select-seal-logo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2016/07/trust-select-seal-logo.png 285w, https://www.websitexnetwork.com/wp-content/uploads/2016/07/trust-select-seal-logo-100x32.png 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/global-tradewin/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/global-tradewin-logo.jpg" class="vc_single_image-img attachment-medium" alt="global-tradewin-logo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/global-tradewin-logo.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/global-tradewin-logo-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/travel/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/travel-logo.jpg" class="vc_single_image-img attachment-medium" alt="travel-logo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/travel-logo.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/travel-logo-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/living-simple-network/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/living-simple-network-logo.jpg" class="vc_single_image-img attachment-medium" alt="living-simple-network-logo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/living-simple-network-logo.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/living-simple-network-logo-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+		</div> 
+	</div> 
+
+	<div class="vc_col-sm-3 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.chiefbrand.com/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2016/01/chiefbrand-logo.jpg" class="vc_single_image-img attachment-medium" alt="chiefbrand-logo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2016/01/chiefbrand-logo.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2016/01/chiefbrand-logo-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/autos/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/autos-logo.jpg" class="vc_single_image-img attachment-medium" alt="autos-logo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/autos-logo.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/autos-logo-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/real-state/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/real-estate-logo.jpg" class="vc_single_image-img attachment-medium" alt="real-estate-logo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/real-estate-logo.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/real-estate-logo-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/photos-2/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/photos.jpg" class="vc_single_image-img attachment-medium" alt="photos" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/photos.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/photos-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+		</div> 
+	</div> 
+
+	<div class="vc_col-sm-3 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/3586-2/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2014/03/industrial-commercial-logo2.jpg" class="vc_single_image-img attachment-medium" alt="industrial-commercial-logo2" srcset="https://www.websitexnetwork.com/wp-content/uploads/2014/03/industrial-commercial-logo2.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2014/03/industrial-commercial-logo2-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/health-fitness/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/health-fitness-logo.png" class="vc_single_image-img attachment-medium" alt="health-fitness-logo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/health-fitness-logo.png 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/health-fitness-logo-100x32.png 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.websitexnetwork.com/entertainment/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/centerstage.jpg" class="vc_single_image-img attachment-medium" alt="centerstage" srcset="https://www.websitexnetwork.com/wp-content/uploads/2015/09/centerstage.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2015/09/centerstage-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+	<div  class="wpb_single_image wpb_content_element vc_align_left  wpb_animate_when_almost_visible wpb_flipInY flipInY">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<a href="https://www.headinass.com/" target="_self" class="vc_single_image-wrapper vc_box_shadow  vc_box_border_grey"><img width="285" height="92" src="https://www.websitexnetwork.com/wp-content/uploads/2014/03/headinasslogo.jpg" class="vc_single_image-img attachment-medium" alt="headinasslogo" srcset="https://www.websitexnetwork.com/wp-content/uploads/2014/03/headinasslogo.jpg 285w, https://www.websitexnetwork.com/wp-content/uploads/2014/03/headinasslogo-100x32.jpg 100w" sizes="(max-width: 285px) 100vw, 285px" /></a>
+		</figure>
+	</div>
+
+		</div> 
+	</div> 
+</div><div class="fw-section hb-fw-66a79ba3a6cd7 with-border no-overlay" style="margin-bottom:0px !important;margin-top:0px !important;"><div class="vc_row element-row row vc_custom_1493361057882 fw-content-wrap">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="fw-section hb-fw-66a79ba3a72a2 without-border no-overlay dark-text-color" style="background-color:#ffffff;padding-top:50px;padding-bottom:50px;"><div class="row fw-content-wrap"><div class="col-12 nbm"><div class="hb-aligncenter"><div class="shortcode-wrapper shortcode-title clearfix hb-animate-element scale-up"><div class=""><h2 style="color:#000000!important;border-color:#000000" class="hb-bordered-heading ">Industry Segments</h2></div></div></div>
+<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer" style="height:10px;"></div></div>
+<div class="shortcode-wrapper shortcode-separator clearfix" ><div class="hb-small-break"  style="margin-top:30px;margin-bottom:30px;"></div></div>
+<div class="row clearfix">
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/online-shopping/" target="_self"><i class="hb-moon-cart-plus hb-icon-float-left hb-icon-medium hb-icon"></i></a>Merchants MK &#8211; WXN is the premier comprehensive online shopping search engine and network on the web. Linking consumers to merchants using innovative proprietary software.</div>
+<div class="col-4 ">
+<a href="https://www.chiefbrand.com/" target="_self"><i class="hb-moon-clubs hb-icon-float-left hb-icon-medium hb-icon"></i></a>Chief Brand.com &#8211; WXN is the recognized world leader for Online Gaming, Reviews and News. See complete reviews of all Gaming sectors, products and services.</div>
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/global-tradewin/" target="_self"><i class="hb-moon-globe-2 hb-icon-float-left hb-icon-medium hb-icon"></i></a>
+Global Trade Win &#8211; WXN network supports companies worldwide making it easy to do business anywhere. Reviews of products and services leverage the power of the internet to engage with buyers worldwide.</div>
+</div>
+<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer"></div></div>
+<div class="row clearfix">
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/3586-2/" target="_self"><i class="icon-building hb-icon-float-left hb-icon-medium hb-icon"></i></a>Depot Brand &#8211; WXN Industrial and Commercial  (B2B) Brand. Our Network is measured by our ability to deliver MRO critical leading products and services. Our find It engines work to keep you up and running.</div>
+<div class="col-4 ">
+<a href="https://www.trustselect.com" target="_self"><i class="hb-moon-users-4 hb-icon-float-left hb-icon-medium hb-icon"></i></a>Trust Select &#8211; WXN  wants all merchants to become a certified member. Displaying the Trust Select seal on your website. Help build the trust needed to improve your sales.</div>
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/jobs-career/" target="_self"><i class="icon-briefcase hb-icon-float-left hb-icon-medium hb-icon"></i></a>Job Boards &#8211; WXN our mission is to be a global leader in online recruiting and advertising. We offer Job Seekers job search advice, tools, networking, Job Search and Employment Opportunities.</div>
+</div>
+<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer"></div></div>
+<div class="row clearfix">
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/health-fitness/" target="_self"><i class="icon-user-md hb-icon-float-left hb-icon-medium hb-icon"></i></a>Health &amp; Fitness &#8211; WXN Offers help in finding the leading products and services when it’s needed most. Our ongoing mission is to assist you in managing your health.</div>
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/money-finance/" target="_self"><i class="icon-usd hb-icon-float-left hb-icon-medium hb-icon"></i></a>Money &amp; Finance &#8211; WXN is a comprehensive source for a user’s  money and personal finance needs. Be smart with your money use WXN money and Finance reviews.</div>
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/living-simple-network/" target="_self"><i class="hb-moon-tree-5 hb-icon-float-left hb-icon-medium hb-icon"></i></a>
+Living Simple Network &#8211; WXN offers visitors the opportunity to connect and share by topic.Meet people with the same interest and stay informed.</div>
+</div>
+<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer"></div></div>
+<div class="row clearfix">
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/travel/" target="_self"><i class="hb-moon-airplane hb-icon-float-left hb-icon-medium hb-icon"></i></a>Travel Planning &#8211; WXN delivers consumers what they need to plan and book a trip. We provide access to the broadest selections in travel.</div>
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/tech-gadgets/" target="_self"><i class="hb-moon-cogs hb-icon-float-left hb-icon-medium hb-icon"></i></a>Tech &amp; Gadgets &#8211; WXN Network delivers the top current Tech news, product information and services. We review the industry standard keeping users up to date.</div>
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/autos/" target="_self"><i class="hb-moon-car hb-icon-float-left hb-icon-medium hb-icon"></i></a>Autos &#8211; WXN Network offers  buyers and sellers a new  experience. The network attracts customers for sellers that sell cars.Our innovated approach. Maintains the edge over competitors.</div>
+</div>
+<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer"></div></div>
+<div class="row clearfix">
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/entertainment/" target="_self"><i class="hb-moon-tv hb-icon-float-left hb-icon-medium hb-icon"></i></a>Center Stage &#8211; WXN Offers a broad range of entertainment information which holds the attention and interest of the audience. We cover film, television, music, Photos.</div>
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/real-state/" target="_self"><i class="icon-home hb-icon-float-left hb-icon-medium hb-icon"></i></a>Realestate &#8211; WXN Real Estate information engines offers latest information required for buying, selling, financing and repair of Real Estate.</div>
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/news/" target="_self"><i class="hb-moon-newspaper hb-icon-float-left hb-icon-medium hb-icon"></i></a>News &#8211; WXN is among the world leaders in online news and information delivery to a global audience. Website X Network news websites feature the latest multimedia technologies</div>
+</div>
+<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer"></div></div>
+<div class="row clearfix">
+<div class="col-4 ">
+<a href="https://www.websitexnetwork.com/photos-2/" target="_self"><i class="icon-camera hb-icon-float-left hb-icon-medium hb-icon"></i></a>Photos &#8211; WXN  operates a leading Photo sharing Portal. We cover the professional Photographic Industry for the entertainment and use of our visitors.</div>
+</div></div></div><div class="video-overlay no-overlay"></div></div>
+		</div> 
+	</div> 
+</div><div class="video-overlay no-overlay"></div></div><div class="vc_row element-row row">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer" style="height:40px;"></div></div>
+		</div> 
+	</div> 
+</div><div class="fw-section hb-fw-66a79ba3a9078 without-border no-overlay" style="margin-bottom:0px !important;margin-top:0px !important;"><div class="vc_row element-row row fw-content-wrap">
+	<div class="vc_col-sm-6 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			
+	<div  class="wpb_single_image wpb_content_element vc_align_left">
+		
+		<figure class="wpb_wrapper vc_figure">
+			<div class="vc_single_image-wrapper   vc_box_border_grey"><img class="vc_single_image-img " src="https://www.websitexnetwork.com/wp-content/uploads/2014/03/front-back-page-450x508.png" width="450" height="508" alt="front-back-page" title="front-back-page" /></div>
+		</figure>
+	</div>
+
+		</div> 
+	</div> 
+
+	<div class="vc_col-sm-6 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			
+	<div class="wpb_text_column wpb_content_element " >
+		<div class="wpb_wrapper">
+			<h1>How To Master Affiliate Marketing</h1>
+<p>&#8211; Writen By Joseph Martin</p>
+<p>In this detailed guide, seasoned affiliate marketer Joseph Martin of Website X Network walks new marketers and would-be affiliates through the ins and outs of starting a successful affiliate marketing business. Use this book to avoid the pitfalls that catch most novices unawares, and to expedite the process of making your affiliate site profitable.</p>
+
+		</div>
+	</div>
+<div class="vc_row element-row vc_inner row"><div class="wpb_column vc_column_container vc_col-sm-6"><div class="vc_column-inner "><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element " >
+		<div class="wpb_wrapper">
+			<h2 style="text-align: center;">$99</h2>
+<p style="text-align: center;">Printed Book</p>
+
+		</div>
+	</div>
+<div class="vc_btn3-container  wpb_animate_when_almost_visible wpb_flipInY flipInY vc_btn3-center" >
+	<a class="vc_general vc_btn3 vc_btn3-size-md vc_btn3-shape-rounded vc_btn3-style-3d vc_btn3-color-primary" href="http://superaffiliateebook.com/product/how-to-master-affiliate-marketing/" title="">Purchase Now</a></div>
+</div></div></div><div class="wpb_column vc_column_container vc_col-sm-6"><div class="vc_column-inner "><div class="wpb_wrapper">
+	<div class="wpb_text_column wpb_content_element " >
+		<div class="wpb_wrapper">
+			<h2 style="text-align: center;">$29</h2>
+<p style="text-align: center;">e-book</p>
+
+		</div>
+	</div>
+<div class="vc_btn3-container  wpb_animate_when_almost_visible wpb_flipInY flipInY vc_btn3-center" >
+	<a class="vc_general vc_btn3 vc_btn3-size-md vc_btn3-shape-rounded vc_btn3-style-3d vc_btn3-color-primary" href="http://superaffiliateebook.com/product/how-to-master-affiliate-marketing-ebook/" title="">Purchase Now</a></div>
+</div></div></div></div>
+		</div> 
+	</div> 
+</div><div class="video-overlay no-overlay"></div></div><div class="vc_row element-row row">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer" style="height:20px;"></div></div>
+		</div> 
+	</div> 
+</div><div class="fw-section hb-fw-66a79ba3ac5eb with-border no-overlay" style="background-color:#ffffff;margin-bottom:0px !important;margin-top:0px !important;"><div class="vc_row element-row row vc_custom_1493362893168 fw-content-wrap">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="shortcode-wrapper shortcode-title clearfix hb-animate-element scale-up"><div class="aligncenter"><h2 class="hb-bordered-heading aligncenter">Website X Network Supports</h2></div></div><div class="shortcode-wrapper shortcode-separator clearfix" ><div class="hb-small-break"  style="margin-top:30px;margin-bottom:30px;"></div></div><div class="shortcode-wrapper shortcode-client-carousel client-carousel-wrapper"><div id="carousel-nav-6527" class="crsl-nav"><a href="#" class="previous"><i class="icon-angle-left"></i></a><a href="#" class="next"><i class="icon-angle-right"></i></a></div><ul class="hb-client-list crsl-items init-carousel columns-4 simple clearfix" id="carousel-6527" data-navigation="carousel-nav-6527" data-visible="4" data-speed="5000" data-auto-rotate="true"><div class="crsl-wrap"><li class="crsl-item"><a href="#"><img src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/DSA_logo.jpg" alt="DSA" data-title="Optional Caption Here"/></a></li><li class="crsl-item"><a href="#"><img src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/IEAWS_logo.jpg" alt="IEAWS" data-title="Optional Caption Here"/></a></li><li class="crsl-item"><a href="#"><img src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/opaLogo.jpg" alt="OPAL" data-title="Optional Caption Here"/></a></li><li class="crsl-item"><a href="#"><img src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/USCIB-HP-Rev_03.jpg" alt="USCIB" data-title="Optional Caption Here"/></a></li><li class="crsl-item"><a href="#"><img src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/retailing_logo.jpg" alt="RETAILING" data-title="Optional Caption Here"/></a></li><li class="crsl-item"><a href="#"><img src="https://www.websitexnetwork.com/wp-content/uploads/2015/09/DMA_logo.jpg" alt="DMA" data-title="Optional Caption Here"/></a></li></div></ul></div>
+		</div> 
+	</div> 
+</div><div class="video-overlay no-overlay"></div></div><div class="vc_row element-row row">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="shortcode-wrapper shortcode-portfolio-fullwidth gallery-carousel-wrapper-2"><div class="fw-section without-border light-text"><div class="content-total-fw"><div class="hb-fw-elements columns-4"><div class="hb-fw-element"><a href="https://www.websitexnetwork.com/portfolio/cube/"><div class="item-overlay-text"><div class="item-overlay-text-wrap"><h4><span class="hb-gallery-item-name">Cube</span></h4><div class="hb-small-separator"></div><span class="item-count-text">2 Apr 2014</span></div></div></a></div><div class="hb-fw-element"><a href="https://www.websitexnetwork.com/portfolio/kj-reality/"><div class="item-overlay-text"><div class="item-overlay-text-wrap"><h4><span class="hb-gallery-item-name">K&amp;J Reality</span></h4><div class="hb-small-separator"></div><span class="item-count-text">2 Apr 2014</span></div></div></a></div><div class="hb-fw-element"><a href="https://www.websitexnetwork.com/portfolio/retro-bike/"><div class="item-overlay-text"><div class="item-overlay-text-wrap"><h4><span class="hb-gallery-item-name">Retro Bike</span></h4><div class="hb-small-separator"></div><span class="item-count-text">2 Apr 2014</span></div></div></a></div><div class="hb-fw-element"><a href="https://www.websitexnetwork.com/portfolio/umbrella-design/"><div class="item-overlay-text"><div class="item-overlay-text-wrap"><h4><span class="hb-gallery-item-name">Umbrella Design</span></h4><div class="hb-small-separator"></div><span class="item-count-text">2 Apr 2014</span></div></div></a></div></div></div></div></div>
+		</div> 
+	</div> 
+</div><div class="vc_row element-row row" style="margin-bottom: 0px;">
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			<div class="fw-section hb-fw-66a79ba3b440b without-border no-overlay light-style overflow-hidden" style="background-color:#335567;margin-top:-20px;margin-bottom:-60px;padding-top:20px;padding-bottom:0px;"><div class="row fw-content-wrap"><div class="col-12 nbm"><div class="shortcode-wrapper shortcode-title clearfix"><h3 class="hb-heading hb-center-heading "><span>Latest Projects</span></h3></div>
+<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer" style="height:50px;"></div></div>
+<div class="row clearfix nbm">
+<div class="col-6 nbm light-medium-text">
+<div class="shortcode-wrapper shortcode-title clearfix"><h6 style="color:#FFF!important;border-color:#FFF" class="special ">Catalog System</h6></div>
+<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer" style="height:10px;"></div></div>
+Feature rich user friendly web based catalog system for the control and management of custom product and services promotion communication and supply between the buyers of products and services and suppliers. <a href="https://www.websitexnetwork.com/catalog-system/">Read More&#8230;</a></p>
+<p>&nbsp;</p>
+<p><img class="aligncenter size-full wp-image-3549" src="https://www.websitexnetwork.com/wp-content/uploads/2014/03/catelog-system.jpg" alt="catelog-system" width="450" height="216" srcset="https://www.websitexnetwork.com/wp-content/uploads/2014/03/catelog-system.jpg 450w, https://www.websitexnetwork.com/wp-content/uploads/2014/03/catelog-system-300x144.jpg 300w, https://www.websitexnetwork.com/wp-content/uploads/2014/03/catelog-system-100x48.jpg 100w" sizes="(max-width: 450px) 100vw, 450px" /></p>
+</div>
+<div class="col-6 nbm light-medium-text">
+<div class="shortcode-wrapper shortcode-title clearfix"><h6 style="color:#FFF!important;border-color:#FFF" class="special ">Comparison Shop Network</h6></div>
+<div class="shortcode-wrapper shortcode-spacer clearfix"><div class="spacer" style="height:10px;"></div></div>
+Website X Network is a Search Engine Development, Publishing and Promotion of proprietary website networks by industry category. Website X Network used most advanced tools. <a href="https://www.websitexnetwork.com/online-shopping/">Read More&#8230;</a></p>
+<p>&nbsp;</p>
+<p><img class="aligncenter size-full wp-image-3547" src="https://www.websitexnetwork.com/wp-content/uploads/2014/03/comarison-shop-network1.jpg" alt="comarison-shop-network" width="450" height="216" srcset="https://www.websitexnetwork.com/wp-content/uploads/2014/03/comarison-shop-network1.jpg 450w, https://www.websitexnetwork.com/wp-content/uploads/2014/03/comarison-shop-network1-300x144.jpg 300w, https://www.websitexnetwork.com/wp-content/uploads/2014/03/comarison-shop-network1-100x48.jpg 100w" sizes="(max-width: 450px) 100vw, 450px" /></p>
+</div>
+</div></div></div><div class="video-overlay no-overlay"></div></div>
+		</div> 
+	</div> 
+</div>
+	<div class="vc_col-sm-12 wpb_column vc_column_container">
+		<div class="wpb_wrapper">
+			
+		</div> 
+	</div> 
+
+												</div>
+				<!-- END .hb-main-content -->
+
+							
+			</div>
+			<!-- END #page-ID -->
+
+		</div>
+		<!-- END .row -->
+
+	</div>
+	<!-- END .container -->
+
+</div>
+<!-- END #main-content -->
+
+
+
+
+
+
+<!-- Back to Top Button -->
+
+<a id="to-top"><i class="hb-moon-arrow-up-4"></i></a>
+
+<!-- END #to-top -->
+
+
+
+
+
+<!-- BEGIN #contact-panel -->
+
+<aside id="contact-panel">
+
+	<h4 class="hb-focus-color">Contact Us</h4>
+
+	<p>We're not around right now. But you can send us an email and we'll get back to you, asap.</p>
+
+
+
+	<form id="contact-panel-form">
+
+		<p><input type="text" placeholder="Name" name="hb_contact_name" id="hb_contact_name_id" class="required requiredField" tabindex="33"/></p>
+
+		<p><input type="email" placeholder="Email" name="hb_contact_email" id="hb_contact_email_id" class="required requiredField" tabindex="34"/></p>
+
+		<p><input type="text" placeholder="Subject" name="hb_contact_subject" id="hb_contact_subject_id"/></p>
+
+		<p><textarea placeholder="Your message..." name="hb_contact_message" id="hb_contact_message_id" class="required requiredField" tabindex="35"></textarea></p>
+
+		<a href="#" id="hb-submit-contact-panel-form" class="hb-button no-three-d hb-push-button hb-asbestos hb-small-button">
+
+			<span class="hb-push-button-icon">
+
+				<i class="hb-moon-paper-plane"></i>
+
+			</span>
+
+			<span class="hb-push-button-text">Send Message</span>
+
+		</a>
+
+		<input type="hidden" id="success_text" value="Message Sent!"/>
+
+	</form>
+
+
+
+</aside>
+
+<!-- END #contact-panel -->
+
+
+
+<!-- BEGIN #hb-contact-button -->
+
+<a id="contact-button"><i class="hb-moon-envelop"></i></a>
+
+<!-- END #hb-contact-button -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- BEGIN #footer OPTION light-style -->
+
+<footer id="footer" class="dark-style background-image" >
+
+	
+
+	<!-- BEGIN .container -->
+
+	<div class="container">
+
+		<div class="row footer-row">
+
+
+
+	<div class="col-3 widget-column"><div id="nav_menu-2" class="widget-item widget_nav_menu"><h4>Company Review</h4><div class="menu-footer-1-container"><ul id="menu-footer-1" class="menu"><li id="menu-item-3758" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3758"><a href="https://www.websitexnetwork.com/management-team/">Management Team</a></li>
+<li id="menu-item-3759" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3759"><a href="https://www.websitexnetwork.com/company-ownership/">Company Ownership</a></li>
+<li id="menu-item-3760" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3760"><a href="https://www.websitexnetwork.com/investor-relationship/">Investor Relationship</a></li>
+<li id="menu-item-3762" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3762"><a href="https://www.websitexnetwork.com/press-release/">Press Release</a></li>
+<li id="menu-item-3763" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3763"><a href="https://www.websitexnetwork.com/mission-statement/">Mission Statement</a></li>
+<li id="menu-item-3764" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3764"><a href="https://www.websitexnetwork.com/milestones/">Milestones</a></li>
+<li id="menu-item-4377" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4377"><a href="https://www.websitexnetwork.com/our-partners/">Our Partners</a></li>
+</ul></div></div></div><div class="col-3 widget-column"><div id="nav_menu-3" class="widget-item widget_nav_menu"><h4>Quick Link</h4><div class="menu-footer-2-container"><ul id="menu-footer-2" class="menu"><li id="menu-item-3765" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3765"><a href="https://www.websitexnetwork.com/media-center/">Media Center</a></li>
+<li id="menu-item-3766" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3766"><a href="https://www.websitexnetwork.com/employment/">Employment</a></li>
+<li id="menu-item-3767" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3767"><a href="https://www.websitexnetwork.com/feedback/">Feedback</a></li>
+<li id="menu-item-3768" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3768"><a href="https://www.websitexnetwork.com/mobile-icon/">Mobile Icon</a></li>
+<li id="menu-item-3769" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3769"><a href="https://www.websitexnetwork.com/advertise/">Advertise</a></li>
+<li id="menu-item-3774" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3774"><a href="https://www.websitexnetwork.com/aims-and-objectives/">Aims and Objectives</a></li>
+<li id="menu-item-3775" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3775"><a href="https://www.websitexnetwork.com/our-customer/">Our Customer</a></li>
+</ul></div></div></div><div class="col-3 widget-column"><div id="nav_menu-5" class="widget-item widget_nav_menu"><h4>About Company</h4><div class="menu-bottom-menu-container"><ul id="menu-bottom-menu" class="menu"><li id="menu-item-3777" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3777"><a href="https://www.websitexnetwork.com/about-us/">About us</a></li>
+<li id="menu-item-3532" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3532"><a href="https://www.websitexnetwork.com/privacy-policy/">Privacy Policy</a></li>
+<li id="menu-item-3531" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3531"><a href="https://www.websitexnetwork.com/terms-of-use/">Terms Of Use</a></li>
+<li id="menu-item-3533" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3533"><a href="https://www.websitexnetwork.com/advertise-with-us/">Advertise With Us</a></li>
+</ul></div></div><div id="text-3" class="widget-item widget_text">			<div class="textwidget"><img style="width:auto; border-radius:3px; margin-top:20px;" src="https://www.websitexnetwork.com/wp-content/uploads/2017/09/mobile-device-seal.jpg"></div>
+		</div></div><div class="col-3 widget-column"><div id="hb_contact_info_widget-2" class="widget-item hb_contact_info_widget"><h4>Contact Info</h4>
+		<ul>
+				
+			<li><i class="hb-moon-office"></i><span>Website X Network</span></li>						<li><i class="hb-moon-phone-2"></i><span><a href="tel:+1 586-445-0488">+1 586-445-0488</a></span></li>						<li><i class="icon-envelope-alt"></i><span><a href="mailto:i&#110;&#102;o&#64;&#119;&#101;bsi&#116;&#101;x&#110;e&#116;w&#111;&#114;&#107;.c&#111;m">&#105;n&#102;o&#64;we&#98;&#115;&#105;&#116;exn&#101;&#116;&#119;o&#114;&#107;&#46;&#99;om</a></span></li>			<li><i class="hb-moon-earth"></i><span><a href="https://websitexnetwork.com" target="_blank">https://websitexnetwork.com</a></span></li>					</ul>
+
+		</div><div id="hb_soc_net_widget-4" class="widget-item hb-socials-widget">
+		<ul class="social-icons light small clearfix">
+                                                    <li class="facebook">
+                        <a href="https://www.facebook.com/WebsiteXNetwork/" original-title="Facebook" target="_self">
+                        	<i class="hb-moon-facebook"></i>
+                        	<i class="hb-moon-facebook"></i>
+                        </a> 
+                    </li>
+                                                            <li class="twitter">
+                        <a href="#" original-title="Twitter" target="_self">
+                        	<i class="hb-moon-twitter"></i>
+                        	<i class="hb-moon-twitter"></i>
+                        </a> 
+                    </li>
+                                                            <li class="linkedin">
+                        <a href="#" original-title="Linkedin" target="_self">
+                        	<i class="hb-moon-linkedin"></i>
+                        	<i class="hb-moon-linkedin"></i>
+                        </a> 
+                    </li>
+                                                            <li class="instagram">
+                        <a href="#" original-title="Instagram" target="_self">
+                        	<i class="hb-moon-instagram"></i>
+                        	<i class="hb-moon-instagram"></i>
+                        </a> 
+                    </li>
+                            
+		</ul>
+
+		</div><div id="text-2" class="widget-item widget_text">			<div class="textwidget"><a href="https://www.trustselect.com/online-business-practices/" target="_blank">
+<img src="https://www.websitexnetwork.com/wp-content/uploads/2016/07/trust-select-seal-logo.png" style="border-radius:5px; width:210px;">
+</a></div>
+		</div></div>
+		</div>		
+
+	</div>
+
+	<!-- END .container -->
+
+
+
+</footer>
+
+<!-- END #footer -->
+
+
+
+
+
+<!-- BEGIN #copyright-wrapper -->
+
+<div id="copyright-wrapper" class="normal-copyright  clearfix"> <!-- Simple copyright opcija light style opcija-->
+
+
+
+	<!-- BEGIN .container -->
+
+	<div class="container">
+
+
+
+		<!-- BEGIN #copyright-text -->
+
+		<div id="copyright-text">
+
+			<p>© 2021 ® Registered Website X Network INC. All Rights Reserved.
+
+
+			
+
+
+			</p>
+
+		</div>
+
+		<!-- END #copyright-text -->
+
+
+
+		
+        
+
+        
+
+        
+
+        
+
+ 
+
+	
+
+ 
+
+<a href="https://www.websitexnetwork.com/">
+
+	<img src="https://www.websitexnetwork.com/wp-content/themes/HighendWP/images/websitexnetwork-logo3-new.png" style="background:#fff; border-radius:5px; width:230px; float:right;">
+
+</a>
+
+        
+
+        
+
+        
+
+
+
+	</div> 
+
+	<!-- END .container -->
+
+
+
+</div>
+
+<!-- END #copyright-wrapper -->
+
+
+
+
+
+
+
+</div>
+
+<!-- END #main-wrapper -->
+
+
+
+</div>
+
+<!-- END #hb-wrap -->
+
+
+
+
+
+
+
+
+
+
+
+<!-- BEGIN #hb-modal-overlay -->
+
+<div id="hb-modal-overlay"></div>
+
+<!-- END #hb-modal-overlay -->
+
+
+
+<link rel='stylesheet' id='animate-css-css'  href='https://www.websitexnetwork.com/wp-content/plugins/js_composer/assets/lib/bower/animate-css/animate.min.css?ver=5.1' type='text/css' media='all' />
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js?ver=3.51.0-2014.06.20'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}},"cached":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=4.6'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/scripts.js?ver=2.4.8'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/jquery.scrollTo.js?ver=2.4.8'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/jquery.countdown.js?ver=2.4.8'></script>
+<script type='text/javascript' src='https://www.google.com/jsapi?ver=2.4.8'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var hb_gmap = {"1":{"lat":"51.472001","lng":"-0.252621","ibx":"Every infowindow can have unique content!"},"2":{"lat":"51.468499","lng":"-0.283456","ibx":"Add up to 5 locations on the map!"},"3":{"lat":"51.475342","lng":"-0.269895","ibx":"Upload your own map pin image."},"4":{"lat":"51.471867","lng":"-0.235949","ibx":"Enter your info here or leave it empty."},"5":{"lat":"51.475610","lng":"-0.218868","ibx":"Just another info box."}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/map.js?ver=2.4.8'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/mediaelement/mediaelement.js?ver=2.4.8'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/jquery.flexslider.js?ver=2.4.8'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/jquery.validate.js?ver=2.4.8'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/jquery.easychart.js?ver=2.4.8'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/responsivecarousel.min.js?ver=2.4.8'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/themes/HighendWP/scripts/jquery.custom.js?ver=2.4.8'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-includes/js/wp-embed.min.js?ver=4.6.1'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/js_composer/assets/js/dist/js_composer_front.min.js?ver=5.1'></script>
+<script type='text/javascript' src='https://www.websitexnetwork.com/wp-content/plugins/js_composer/assets/lib/waypoints/waypoints.min.js?ver=5.1'></script>
+
+</body>
+
+<!-- END body -->
+
+
+
+</html>
+
+<!-- END html -->
+
+<!-- Cache Enabler by KeyCDN @ 29.07.2024 13:39:47 (html) -->

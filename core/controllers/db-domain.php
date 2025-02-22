@@ -4,6 +4,11 @@ defined('DB_DOMAIN') or die(header('HTTP/1.1 403 Forbidden'));
 
 require_once(LIB_DIR . 'SeoTools.php');
  
+
+// echo "<pre>";
+// print_r($_SESSION);
+// echo "<pre>";
+// die();
 /*
  * @author Balaji
  * @name Turbo Website Reviewer - PHP Script
@@ -380,10 +385,13 @@ $seoBox47 = '<div class="'.$visitorsClass.'">
  
 
 //Get Final Score Data
-$score = decSerBase($data['score']); 
-$passScore = $score[0];
-$improveScore = $score[1];
-$errorScore = $score[2];
+$score = json_decode(($data['score']), true); 
+
+$passScore = $score["passed"];
+$improveScore = $score["improve"];
+$errorScore = $score["errors"];
+$overallPercent = $score["percent"];
+
 
 //Get the data
 $date_raw = date_create(Trim($data['date']));

@@ -19,7 +19,7 @@ $loadingBar = '
          <div class="spinner-border text-primary" role="status">
             <span class="sr-only">' . $lang['33'] . '</span>
          </div>
-         <br /><br /> 
+         <br /><br />   
     </div>
 ';
 
@@ -28,15 +28,22 @@ if ($updateFound) {
     for ($i = 1; $i <= 49; $i++) {
         ${'seoBox' . $i} = $loadingBar;
     }
+   
 } else {
+
     ?>
     <!-- Define JavaScript variables for non-update scenario -->
     <script>
-        var passScore    = '<?php echo makeJavascriptStr($passScore); ?>';
-        var improveScore = '<?php echo makeJavascriptStr($improveScore); ?>';
-        var errorScore   = '<?php echo makeJavascriptStr($errorScore); ?>';
-        var overallPercent = '<?php echo makeJavascriptStr($overallPercent); ?>'; // New overall percentage
-    </script>
+           var passScore = parseInt('<?php echo makeJavascriptStr($passScore); ?>', 10) || 0;
+            var improveScore = parseInt('<?php echo makeJavascriptStr($improveScore); ?>', 10) || 0;
+            var errorScore = parseInt('<?php echo makeJavascriptStr($errorScore); ?>', 10) || 0;
+            var overallPercent = parseInt('<?php echo makeJavascriptStr($overallPercent); ?>', 10) || 0;
+            console.log("JS passScore =", passScore);
+            console.log("JS improveScore =", improveScore);
+            console.log("JS errorScore =", errorScore);
+            console.log("JS overallPercent =", overallPercent);
+</script>
+
 <?php } ?>
  
 <script>
@@ -449,9 +456,9 @@ if ($updateFound) {
        
                 
                 <div class="seoBox hide">
-                    <?php outHeadBox($lang['AN115'],$solveMsg,4); ?>ddddddddddddddddddddddddddddddd
+                    <?php outHeadBox($lang['AN115'],$solveMsg,4); ?> 
                     <div class="contentBox" id="seoBox47">
-                        <?php echo $seoBox47; ?>wwwwwwwwwwwwwwwwwwwww
+                        <?php echo $seoBox47; ?> 
                     </div>
                     <?php outQuestionBox($lang['AN4']); ?>
 	            </div>
@@ -481,7 +488,18 @@ if ($updateFound) {
         </div>
     </div>
 </div>
- 
+<?php if (!$updateFound) { ?>
+<script>
+  window.seoReport = {
+    passScore: <?php echo json_encode($passScore); ?>,
+    improveScore: <?php echo json_encode($improveScore); ?>,
+    errorScore: <?php echo json_encode($errorScore); ?>
+  };
+  console.log("DB session seoReport:", window.seoReport);
+</script>
+<?php } ?><?php
+
+?>
 <!-- Conditionally include JavaScript based on update status -->
 <?php if ($updateFound) { ?>
     <script src="<?php themeLink('js/domain.js?v6'); ?>" type="text/javascript"></script>
