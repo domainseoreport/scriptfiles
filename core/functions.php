@@ -1091,4 +1091,73 @@ function extractMetaData($html) {
         return "Looks good for {$tagUpper}.";
     }
 
+
+    function processUrlInput($input) {
+        $input = raino_trim($input);
+        log_message('debug', "Received URL input: $input");
+        // Clean and enforce lowercase (clean_url removes protocol and www)
+        $cleaned = clean_url($input);
+        // If protocol is missing, prepend http://
+        if (!preg_match('#^https?://#i', $input)) {
+            $fullUrl = 'http://' . $cleaned;
+        } else {
+            $fullUrl = $input;
+        }
+        log_message('debug', "Full URL after cleaning: $fullUrl");
+        if (!filter_var($fullUrl, FILTER_VALIDATE_URL)) {
+            return false;
+        }
+        $parsed = parse_url($fullUrl);
+        if (empty($parsed['host'])) {
+            return false;
+        }
+        // Normalize host: remove www and force lowercase.
+        $host = strtolower(str_replace('www.', '', $parsed['host']));
+        return [
+            'fullUrl' => $fullUrl,
+            'parsed'  => $parsed,
+            'host'    => $host
+        ];
+    }
+    
+    /**
+     * Checks for banned or restricted domains.
+     */
+    function enforceDomainRestrictions($domainStr, $restrictionList) {
+        // $restrictionList[4] contains banned domains.
+        if (in_array($domainStr, $restrictionList[4])) {
+            log_message('error', "Domain restricted (banned): $domainStr");
+            redirectTo(createLink('warning/restricted-domains/' . $domainStr, true));
+            die();
+        }
+        // Check for restricted words.
+        foreach ($restrictionList[0] as $badWord) {
+            if (check_str_contains($domainStr, trim($badWord), true)) {
+                log_message('error', "Domain contains restricted word: $badWord in $domainStr");
+                redirectTo(createLink('warning/restricted-words', true));
+                die();
+            }
+        }
+    }
+    
+    /**
+     * Fetch the HTML content using robustFetchHtml() with a fallback to getMyData().
+     */
+    function fetchHtmlContent($url) {
+        $html = robustFetchHtml($url);
+        if ($html === false || empty($html)) {
+            $html = getMyData($url);
+        }
+        return $html;
+    }
+    
+    /**
+     * Centralized error handler.
+     */
+    function handleErrorAndRedirect($msg, $langKey) {
+        log_message('error', $msg);
+        $_SESSION['TWEB_CALLBACK_ERR'] = trans('Input Site is not valid!', $langKey, true);
+        redirectTo(createLink('', true));
+        die();
+    }
     

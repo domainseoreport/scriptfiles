@@ -37,7 +37,7 @@ if ($savedMetaJson) {
  
 
 
- 
+ $screenshot = $data['desktop_screenshot'];
 
 
 

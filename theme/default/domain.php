@@ -105,20 +105,8 @@ if ($updateFound) {
                         <!-- Screenshot Column -->
                         <div class="col-md-4 screenBox">
                             <div id="screenshot">
-                                <div id="screenshotData">
-                                    <div class="loader">
-                                        <div class="side"></div>
-                                        <div class="side"></div>
-                                        <div class="side"></div>
-                                        <div class="side"></div>
-                                        <div class="side"></div>
-                                        <div class="side"></div>
-                                        <div class="side"></div>
-                                        <div class="side"></div>
-                                    </div>
-                                    <div class="loaderLabel">
-                                        <?php trans('Loading...', $lang['23']); ?>
-                                    </div>
+                                <div id="screenshotData"> 
+                                    <img src="<?php echo $screenshot;?>" alt="screenshot" />
                                 </div>
                                 <div class="computer"></div>
                             </div>

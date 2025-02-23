@@ -795,7 +795,7 @@ textarea.uneditable-input {
 .headturbo {
     background: #3498db none repeat scroll 0 0;
     height: 500px;
-    min-height: 680px;
+    min-height: 400px;
     overflow: hidden;
 }
 .headturbo-img img {

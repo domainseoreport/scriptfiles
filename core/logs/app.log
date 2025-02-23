@@ -994,3 +994,1357 @@
 [2025-02-22 20:38:26] [info] Called my_url: https://jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
 [2025-02-22 20:38:26] [info] Called https://jaipurroutes.com
 [2025-02-22 20:38:26] [info] Called my_url: https://jaipurroutes.com | Parsed host: jaipurroutes.com | domainStr: jaipurroutes.com
+[2025-02-23 08:43:35] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:43:35] [debug] Retrieved domain restriction list.
+[2025-02-23 08:43:35] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:43:35] [debug] User logged in as: naveensingh
+[2025-02-23 08:43:35] [debug] Screenshot API configured.
+[2025-02-23 08:43:35] [debug] New domain detected: silverandgem.com
+[2025-02-23 08:43:35] [debug] Checked: Array
+(
+    [0] => https://silverandgem.com
+    [1] => https://www.silverandgem.com
+)
+
+[2025-02-23 08:43:35] [debug] Checked: https://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-23 08:43:36] [debug] Checked: https://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-23 08:43:36] [debug] Checked: Array
+(
+    [0] => http://silverandgem.com
+    [1] => http://www.silverandgem.com
+)
+
+[2025-02-23 08:43:36] [debug] Checked: http://silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-23 08:43:37] [debug] Checked: http://www.silverandgem.com => https://www.silverandgem.com/ [200]
+[2025-02-23 08:43:37] [debug] Selected best URL: https://www.silverandgem.com
+[2025-02-23 08:43:37] [debug] New domain accessible URL: https://www.silverandgem.com
+[2025-02-23 08:43:37] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:43:37] [info] Content stored in temp file C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata for URL https://www.silverandgem.com
+[2025-02-23 08:43:37] [info] New domain record created for: silverandgem.com
+[2025-02-23 08:43:37] [debug] SeoAnalyzer instantiated for domain: silverandgem.com
+[2025-02-23 08:43:41] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:43:41] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:43:41] [info] Called http://silverandgem.com
+[2025-02-23 08:43:41] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:43:41] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:43:41] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:43:41] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:43:41] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-23 08:43:41] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:43:41] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:43:41] [info] Called http://silverandgem.com
+[2025-02-23 08:43:41] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:43:41] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:43:41] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:43:41] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:43:41] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-23 08:43:41] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:43:41] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:43:41] [info] Called http://silverandgem.com
+[2025-02-23 08:43:41] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:43:41] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:43:41] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:43:41] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:43:41] [debug] Image Tag Call for URL silverandgem.com
+[2025-02-23 08:43:41] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:43:41] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:43:41] [info] Called http://silverandgem.com
+[2025-02-23 08:43:41] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:43:41] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:43:41] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:43:41] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:43:41] [debug] Meta Tag Call for URL silverandgem.com
+[2025-02-23 08:43:41] [debug] Heading Tag Call for URL silverandgem.com
+[2025-02-23 08:43:41] [debug] Keyword Cloud + Consistency Call for URL silverandgem.com
+[2025-02-23 08:43:41] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:43:41] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:43:41] [info] Called http://silverandgem.com
+[2025-02-23 08:43:41] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:43:41] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:43:41] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:43:41] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:43:41] [debug] Page Analytics Report Call for URL silverandgem.com
+[2025-02-23 08:43:43] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:43:43] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:43:43] [info] Called http://silverandgem.com
+[2025-02-23 08:43:43] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:43:43] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:43:43] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:43:43] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:43:43] [debug] Page Insights Report Call for URL silverandgem.com
+[2025-02-23 08:44:13] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:44:13] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:44:13] [info] Called http://silverandgem.com
+[2025-02-23 08:44:13] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:13] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:44:13] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:44:13] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:44:13] [debug] Text Ratio Tag Call for URL silverandgem.com
+[2025-02-23 08:44:14] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:44:14] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:44:14] [info] Called http://silverandgem.com
+[2025-02-23 08:44:14] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:14] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:44:14] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:44:14] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:44:14] [debug] Site Cards Call for URL silverandgem.com
+[2025-02-23 08:44:14] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:44:14] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:44:14] [info] Called http://silverandgem.com
+[2025-02-23 08:44:14] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:14] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:44:14] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:44:14] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:44:14] [debug] Social URL Call for URL silverandgem.com
+[2025-02-23 08:44:14] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:44:14] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:44:14] [info] Called http://silverandgem.com
+[2025-02-23 08:44:14] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:14] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:44:14] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:44:14] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:44:14] [debug] In-Page Links Tag Call for URL silverandgem.com
+[2025-02-23 08:44:14] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:44:14] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:44:14] [info] Called http://silverandgem.com
+[2025-02-23 08:44:14] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:14] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:44:14] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:44:14] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:44:14] [debug] Server IP Tag Call for URL silverandgem.com
+[2025-02-23 08:44:18] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:44:18] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:44:18] [info] Called http://silverandgem.com
+[2025-02-23 08:44:18] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:18] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:44:18] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:44:18] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:44:18] [debug] Schema Data Call for URL silverandgem.com
+[2025-02-23 08:44:18] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:44:18] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:44:18] [info] Called http://silverandgem.com
+[2025-02-23 08:44:18] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:18] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:44:18] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:44:18] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:44:18] [debug] Clean Out Call for URL silverandgem.com
+[2025-02-23 08:44:18] [debug] POST Request: Received URL input: silverandgem.com
+[2025-02-23 08:44:18] [debug] URL missing scheme. Prepended http://: http://silverandgem.com
+[2025-02-23 08:44:18] [info] Called http://silverandgem.com
+[2025-02-23 08:44:18] [debug] Hash code received: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:18] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\7a6a24e22e3abc38f7288eb2f5c28294.tdata
+[2025-02-23 08:44:18] [info] Parsed URL: http://silverandgem.com | Host: silverandgem.com | Domain String: silverandgem.com
+[2025-02-23 08:44:18] [info] Processed HTML for URL: http://silverandgem.com
+[2025-02-23 08:44:18] [info] Final score retrieved for domain silverandgem.com
+[2025-02-23 08:44:22] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:22] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:22] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:22] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:22] [debug] Screenshot API configured.
+[2025-02-23 08:44:22] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:22] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:22] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:22] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:24] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:24] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:24] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:24] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:24] [debug] Screenshot API configured.
+[2025-02-23 08:44:24] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:24] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:24] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:24] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:25] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:25] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:25] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:25] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:25] [debug] Screenshot API configured.
+[2025-02-23 08:44:25] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:25] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:25] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:25] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:26] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:26] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:26] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:26] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:26] [debug] Screenshot API configured.
+[2025-02-23 08:44:26] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:26] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:26] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:26] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:27] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:27] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:27] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:27] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:27] [debug] Screenshot API configured.
+[2025-02-23 08:44:27] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:27] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:27] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:27] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:28] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:28] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:28] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:28] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:28] [debug] Screenshot API configured.
+[2025-02-23 08:44:28] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:28] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:28] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:28] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:29] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:29] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:29] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:29] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:29] [debug] Screenshot API configured.
+[2025-02-23 08:44:29] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:29] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:29] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:29] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:30] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:30] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:30] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:30] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:30] [debug] Screenshot API configured.
+[2025-02-23 08:44:30] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:30] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:30] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:30] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:31] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:31] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:31] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:31] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:31] [debug] Screenshot API configured.
+[2025-02-23 08:44:31] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:31] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:31] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:31] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:32] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:32] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:32] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:32] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:32] [debug] Screenshot API configured.
+[2025-02-23 08:44:32] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:32] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:32] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:32] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:34] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:34] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:34] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:34] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:34] [debug] Screenshot API configured.
+[2025-02-23 08:44:34] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:34] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:34] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:34] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:58] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:58] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:58] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:58] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:58] [debug] Screenshot API configured.
+[2025-02-23 08:44:58] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:58] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:58] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:58] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:44:59] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:44:59] [debug] Retrieved domain restriction list.
+[2025-02-23 08:44:59] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:44:59] [debug] User logged in as: naveensingh
+[2025-02-23 08:44:59] [debug] Screenshot API configured.
+[2025-02-23 08:44:59] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:44:59] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:44:59] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:44:59] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:45:01] [debug] Final URL to process: http://silverandgem.com
+[2025-02-23 08:45:01] [debug] Retrieved domain restriction list.
+[2025-02-23 08:45:01] [debug] Reviewer settings loaded for domain: silverandgem.com
+[2025-02-23 08:45:01] [debug] User logged in as: naveensingh
+[2025-02-23 08:45:01] [debug] Screenshot API configured.
+[2025-02-23 08:45:01] [info] Domain already processed: silverandgem.com
+[2025-02-23 08:45:01] [debug] Using stored domain access URL: https://www.silverandgem.com
+[2025-02-23 08:45:01] [debug] Hash code generated: 7a6a24e22e3abc38f7288eb2f5c28294
+[2025-02-23 08:45:01] [info] Domain already processed. Loading DB data for silverandgem.com
+[2025-02-23 08:45:25] [debug] Update check parameter set.
+[2025-02-23 08:45:25] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 08:45:25] [debug] Retrieved domain restriction list.
+[2025-02-23 08:45:25] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 08:45:25] [debug] User logged in as: naveensingh
+[2025-02-23 08:45:25] [debug] Screenshot API configured.
+[2025-02-23 08:45:25] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 08:45:25] [debug] Using stored domain access URL: https://jaipurroutes.com
+[2025-02-23 08:45:25] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:28] [info] Content stored in temp file C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://jaipurroutes.com
+[2025-02-23 08:45:28] [debug] SeoAnalyzer instantiated for domain: jaipurroutes.com
+[2025-02-23 08:45:28] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:28] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:28] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:28] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:28] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:29] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-23 08:45:29] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:29] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:29] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:29] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:29] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-23 08:45:29] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:29] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:29] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:29] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:29] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-23 08:45:29] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:29] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:29] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:29] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:29] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Keyword Cloud + Consistency Call for URL jaipurroutes.com
+[2025-02-23 08:45:29] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:29] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:29] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:29] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:29] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:29] [debug] Page Analytics Report Call for URL jaipurroutes.com
+[2025-02-23 08:45:33] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:33] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:33] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:33] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:33] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:33] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:33] [debug] Page Insights Report Call for URL jaipurroutes.com
+[2025-02-23 08:45:55] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:55] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:55] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:55] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:55] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:55] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:55] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-23 08:45:57] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:57] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:57] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:57] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:57] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:57] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:57] [debug] Site Cards Call for URL jaipurroutes.com
+[2025-02-23 08:45:57] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:57] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:57] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:57] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:57] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:57] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:57] [debug] Social URL Call for URL jaipurroutes.com
+[2025-02-23 08:45:57] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:57] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:57] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:57] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:57] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:57] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:57] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-23 08:45:57] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:45:57] [info] Called https://jaipurroutes.com
+[2025-02-23 08:45:57] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:45:57] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:45:57] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:45:57] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:45:57] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-23 08:46:01] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:46:01] [info] Called https://jaipurroutes.com
+[2025-02-23 08:46:01] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:46:01] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:46:01] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:46:01] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:46:01] [debug] Schema Data Call for URL jaipurroutes.com
+[2025-02-23 08:46:01] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:46:01] [info] Called https://jaipurroutes.com
+[2025-02-23 08:46:01] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:46:01] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:46:01] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:46:01] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:46:01] [debug] Clean Out Call for URL jaipurroutes.com
+[2025-02-23 08:46:01] [debug] POST Request: Received URL input: https://jaipurroutes.com
+[2025-02-23 08:46:01] [info] Called https://jaipurroutes.com
+[2025-02-23 08:46:01] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 08:46:01] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 08:46:01] [info] Parsed URL: https://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 08:46:01] [info] Processed HTML for URL: https://jaipurroutes.com
+[2025-02-23 08:46:01] [info] Final score retrieved for domain jaipurroutes.com
+[2025-02-23 08:52:31] [debug] Received URL input: indiatraveletc.com
+[2025-02-23 08:52:31] [debug] Full URL after cleaning: http://indiatraveletc.com
+[2025-02-23 08:52:31] [debug] Final URL to process: http://indiatraveletc.com
+[2025-02-23 08:52:31] [debug] Retrieved domain restriction list.
+[2025-02-23 08:52:31] [debug] Reviewer settings loaded for domain: indiatraveletc.com
+[2025-02-23 08:52:31] [debug] User logged in as: naveensingh
+[2025-02-23 08:52:31] [debug] Screenshot API configured.
+[2025-02-23 08:52:31] [debug] New domain detected: indiatraveletc.com
+[2025-02-23 08:52:31] [debug] Checked: Array
+(
+    [0] => https://indiatraveletc.com
+    [1] => https://www.indiatraveletc.com
+)
+
+[2025-02-23 08:52:33] [debug] Checked: https://indiatraveletc.com => https://indiatraveletc.com/ [200]
+[2025-02-23 08:52:36] [debug] Checked: https://www.indiatraveletc.com => https://indiatraveletc.com/ [200]
+[2025-02-23 08:52:36] [debug] Checked: Array
+(
+    [0] => http://indiatraveletc.com
+    [1] => http://www.indiatraveletc.com
+)
+
+[2025-02-23 08:52:38] [debug] Checked: http://indiatraveletc.com => http://indiatraveletc.com/ [200]
+[2025-02-23 08:52:40] [debug] Checked: http://www.indiatraveletc.com => https://indiatraveletc.com/wp-login.php?redirect_to=https%3A%2F%2Findiatraveletc.com%2Fwp-admin%2F&reauth=1 [200]
+[2025-02-23 08:52:40] [debug] Selected best URL: http://indiatraveletc.com
+[2025-02-23 08:52:40] [debug] New domain accessible URL: http://indiatraveletc.com
+[2025-02-23 08:52:40] [debug] Hash code generated: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:52:42] [info] Content stored in temp file C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata for URL http://indiatraveletc.com
+[2025-02-23 08:52:42] [info] New domain record created for: indiatraveletc.com
+[2025-02-23 08:52:42] [debug] SeoAnalyzer instantiated for domain: indiatraveletc.com
+[2025-02-23 08:52:42] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:52:42] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:52:42] [info] Called http://indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:52:42] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:52:42] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:52:42] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Meta Tag Call for URL indiatraveletc.com
+[2025-02-23 08:52:42] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:52:42] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:52:42] [info] Called http://indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:52:42] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:52:42] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:52:42] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Heading Tag Call for URL indiatraveletc.com
+[2025-02-23 08:52:42] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:52:42] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:52:42] [info] Called http://indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:52:42] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:52:42] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:52:42] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Image Tag Call for URL indiatraveletc.com
+[2025-02-23 08:52:42] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:52:42] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:52:42] [info] Called http://indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:52:42] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:52:42] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:52:42] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Meta Tag Call for URL indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Heading Tag Call for URL indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Keyword Cloud + Consistency Call for URL indiatraveletc.com
+[2025-02-23 08:52:42] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:52:42] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:52:42] [info] Called http://indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:52:42] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:52:42] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:52:42] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:52:42] [debug] Page Analytics Report Call for URL indiatraveletc.com
+[2025-02-23 08:52:52] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:52:52] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:52:52] [info] Called http://indiatraveletc.com
+[2025-02-23 08:52:52] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:52:52] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:52:52] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:52:52] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:52:52] [debug] Page Insights Report Call for URL indiatraveletc.com
+[2025-02-23 08:53:22] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:53:22] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:53:22] [info] Called http://indiatraveletc.com
+[2025-02-23 08:53:22] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:53:22] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:53:22] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:53:22] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:53:22] [debug] Text Ratio Tag Call for URL indiatraveletc.com
+[2025-02-23 08:53:24] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:53:24] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:53:24] [info] Called http://indiatraveletc.com
+[2025-02-23 08:53:24] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:53:24] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:53:24] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:53:24] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:53:24] [debug] Site Cards Call for URL indiatraveletc.com
+[2025-02-23 08:53:24] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:53:24] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:53:24] [info] Called http://indiatraveletc.com
+[2025-02-23 08:53:24] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:53:24] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:53:24] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:53:24] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:53:24] [debug] Social URL Call for URL indiatraveletc.com
+[2025-02-23 08:53:24] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:53:24] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:53:24] [info] Called http://indiatraveletc.com
+[2025-02-23 08:53:24] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:53:24] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:53:24] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:53:24] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:53:24] [debug] In-Page Links Tag Call for URL indiatraveletc.com
+[2025-02-23 08:53:24] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:53:24] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:53:24] [info] Called http://indiatraveletc.com
+[2025-02-23 08:53:24] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:53:24] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:53:24] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:53:24] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:53:24] [debug] Server IP Tag Call for URL indiatraveletc.com
+[2025-02-23 08:53:29] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:53:29] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:53:29] [info] Called http://indiatraveletc.com
+[2025-02-23 08:53:29] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:53:29] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:53:29] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:53:29] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:53:29] [debug] Schema Data Call for URL indiatraveletc.com
+[2025-02-23 08:53:29] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:53:29] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:53:29] [info] Called http://indiatraveletc.com
+[2025-02-23 08:53:29] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:53:29] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:53:29] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:53:29] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:53:29] [debug] Clean Out Call for URL indiatraveletc.com
+[2025-02-23 08:53:29] [debug] POST Request: Received URL input: indiatraveletc.com
+[2025-02-23 08:53:29] [debug] URL missing scheme. Prepended http://: http://indiatraveletc.com
+[2025-02-23 08:53:29] [info] Called http://indiatraveletc.com
+[2025-02-23 08:53:29] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:53:29] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:53:29] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:53:29] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:53:29] [info] Final score retrieved for domain indiatraveletc.com
+[2025-02-23 08:56:49] [debug] Update check parameter set.
+[2025-02-23 08:56:49] [debug] Final URL to process: http://indiatraveletc.com
+[2025-02-23 08:56:49] [debug] Retrieved domain restriction list.
+[2025-02-23 08:56:49] [debug] Reviewer settings loaded for domain: indiatraveletc.com
+[2025-02-23 08:56:49] [debug] User logged in as: naveensingh
+[2025-02-23 08:56:49] [debug] Screenshot API configured.
+[2025-02-23 08:56:49] [info] Domain already processed: indiatraveletc.com
+[2025-02-23 08:56:49] [debug] Using stored domain access URL: http://indiatraveletc.com
+[2025-02-23 08:56:49] [debug] Hash code generated: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:56:50] [info] Content stored in temp file C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata for URL http://indiatraveletc.com
+[2025-02-23 08:56:50] [debug] SeoAnalyzer instantiated for domain: indiatraveletc.com
+[2025-02-23 08:56:50] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:56:50] [info] Called http://indiatraveletc.com
+[2025-02-23 08:56:50] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:56:50] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:56:50] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:56:51] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Meta Tag Call for URL indiatraveletc.com
+[2025-02-23 08:56:51] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:56:51] [info] Called http://indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:56:51] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:56:51] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:56:51] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Heading Tag Call for URL indiatraveletc.com
+[2025-02-23 08:56:51] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:56:51] [info] Called http://indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:56:51] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:56:51] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:56:51] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Image Tag Call for URL indiatraveletc.com
+[2025-02-23 08:56:51] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:56:51] [info] Called http://indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:56:51] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:56:51] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:56:51] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Meta Tag Call for URL indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Heading Tag Call for URL indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Keyword Cloud + Consistency Call for URL indiatraveletc.com
+[2025-02-23 08:56:51] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:56:51] [info] Called http://indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:56:51] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:56:51] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:56:51] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:56:51] [debug] Page Analytics Report Call for URL indiatraveletc.com
+[2025-02-23 08:57:02] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:57:02] [info] Called http://indiatraveletc.com
+[2025-02-23 08:57:02] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:57:02] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:57:02] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:57:02] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:57:02] [debug] Page Insights Report Call for URL indiatraveletc.com
+[2025-02-23 08:57:32] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:57:32] [info] Called http://indiatraveletc.com
+[2025-02-23 08:57:32] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:57:32] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:57:32] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:57:32] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:57:32] [debug] Text Ratio Tag Call for URL indiatraveletc.com
+[2025-02-23 08:57:34] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:57:34] [info] Called http://indiatraveletc.com
+[2025-02-23 08:57:34] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:57:34] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:57:34] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:57:34] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:57:34] [debug] Site Cards Call for URL indiatraveletc.com
+[2025-02-23 08:57:34] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:57:34] [info] Called http://indiatraveletc.com
+[2025-02-23 08:57:34] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:57:34] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:57:34] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:57:34] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:57:34] [debug] Social URL Call for URL indiatraveletc.com
+[2025-02-23 08:57:34] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:57:34] [info] Called http://indiatraveletc.com
+[2025-02-23 08:57:34] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:57:34] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:57:34] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:57:34] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:57:34] [debug] In-Page Links Tag Call for URL indiatraveletc.com
+[2025-02-23 08:57:34] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:57:34] [info] Called http://indiatraveletc.com
+[2025-02-23 08:57:34] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:57:34] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:57:34] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:57:34] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:57:34] [debug] Server IP Tag Call for URL indiatraveletc.com
+[2025-02-23 08:57:41] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:57:41] [info] Called http://indiatraveletc.com
+[2025-02-23 08:57:41] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:57:41] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:57:41] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:57:41] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:57:41] [debug] Schema Data Call for URL indiatraveletc.com
+[2025-02-23 08:57:41] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:57:41] [info] Called http://indiatraveletc.com
+[2025-02-23 08:57:41] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:57:41] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:57:41] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:57:41] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:57:41] [debug] Clean Out Call for URL indiatraveletc.com
+[2025-02-23 08:57:41] [debug] POST Request: Received URL input: http://indiatraveletc.com
+[2025-02-23 08:57:41] [info] Called http://indiatraveletc.com
+[2025-02-23 08:57:41] [debug] Hash code received: 13bf152173afec18ae75770b82aa12ae
+[2025-02-23 08:57:41] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\13bf152173afec18ae75770b82aa12ae.tdata
+[2025-02-23 08:57:41] [info] Parsed URL: http://indiatraveletc.com | Host: indiatraveletc.com | Domain String: indiatraveletc.com
+[2025-02-23 08:57:41] [info] Processed HTML for URL: http://indiatraveletc.com
+[2025-02-23 08:57:41] [info] Final score retrieved for domain indiatraveletc.com
+[2025-02-23 09:00:28] [debug] Received URL input: electricbikerental.net/
+[2025-02-23 09:00:28] [debug] Full URL after cleaning: http://electricbikerental.net/
+[2025-02-23 09:00:28] [debug] Final URL to process: http://electricbikerental.net
+[2025-02-23 09:00:28] [debug] Retrieved domain restriction list.
+[2025-02-23 09:00:28] [debug] Reviewer settings loaded for domain: electricbikerental.net
+[2025-02-23 09:00:28] [debug] User logged in as: naveensingh
+[2025-02-23 09:00:28] [debug] Screenshot API configured.
+[2025-02-23 09:00:28] [debug] New domain detected: electricbikerental.net
+[2025-02-23 09:00:28] [debug] Checked: Array
+(
+    [0] => https://electricbikerental.net
+    [1] => https://www.electricbikerental.net
+)
+
+[2025-02-23 09:00:39] [debug] Checked: https://electricbikerental.net => https://www.excursions-playa-del-carmen.com/ [200]
+[2025-02-23 09:00:46] [debug] Checked: https://www.electricbikerental.net => https://www.excursions-playa-del-carmen.com/ [200]
+[2025-02-23 09:00:46] [debug] Checked: Array
+(
+    [0] => http://electricbikerental.net
+    [1] => http://www.electricbikerental.net
+)
+
+[2025-02-23 09:00:53] [debug] Checked: http://electricbikerental.net => https://www.excursions-playa-del-carmen.com/ [200]
+[2025-02-23 09:01:00] [debug] Checked: http://www.electricbikerental.net => https://www.excursions-playa-del-carmen.com/ [200]
+[2025-02-23 09:01:00] [debug] Selected best URL: https://www.excursions-playa-del-carmen.com
+[2025-02-23 09:01:00] [debug] New domain accessible URL: https://www.excursions-playa-del-carmen.com
+[2025-02-23 09:01:00] [debug] Hash code generated: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:01] [info] Content stored in temp file C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata for URL https://www.excursions-playa-del-carmen.com
+[2025-02-23 09:01:01] [info] New domain record created for: electricbikerental.net
+[2025-02-23 09:01:01] [debug] SeoAnalyzer instantiated for domain: electricbikerental.net
+[2025-02-23 09:01:01] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:01] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:01] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:01] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:01] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:01] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:02] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:02] [debug] Meta Tag Call for URL electricbikerental.net
+[2025-02-23 09:01:02] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:02] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:02] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:02] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:02] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:02] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:02] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:02] [debug] Heading Tag Call for URL electricbikerental.net
+[2025-02-23 09:01:02] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:02] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:02] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:02] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:02] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:02] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:02] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:02] [debug] Image Tag Call for URL electricbikerental.net
+[2025-02-23 09:01:02] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:02] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:02] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:02] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:02] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:02] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:02] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:02] [debug] Meta Tag Call for URL electricbikerental.net
+[2025-02-23 09:01:02] [debug] Heading Tag Call for URL electricbikerental.net
+[2025-02-23 09:01:02] [debug] Keyword Cloud + Consistency Call for URL electricbikerental.net
+[2025-02-23 09:01:02] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:02] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:02] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:02] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:02] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:02] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:02] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:02] [debug] Page Analytics Report Call for URL electricbikerental.net
+[2025-02-23 09:01:24] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:24] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:24] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:24] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:24] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:24] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:24] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:24] [debug] Page Insights Report Call for URL electricbikerental.net
+[2025-02-23 09:01:54] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:54] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:54] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:54] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:54] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:54] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:54] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:54] [debug] Text Ratio Tag Call for URL electricbikerental.net
+[2025-02-23 09:01:58] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:58] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:58] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:58] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:58] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:58] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:58] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:58] [debug] Site Cards Call for URL electricbikerental.net
+[2025-02-23 09:01:58] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:58] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:58] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:58] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:58] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:58] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:58] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:58] [debug] Social URL Call for URL electricbikerental.net
+[2025-02-23 09:01:58] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:58] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:58] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:58] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:58] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:58] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:58] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:58] [debug] In-Page Links Tag Call for URL electricbikerental.net
+[2025-02-23 09:01:58] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:01:58] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:01:58] [info] Called http://electricbikerental.net
+[2025-02-23 09:01:58] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:01:58] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:01:58] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:01:58] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:01:58] [debug] Server IP Tag Call for URL electricbikerental.net
+[2025-02-23 09:02:08] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:02:08] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:02:08] [info] Called http://electricbikerental.net
+[2025-02-23 09:02:08] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:02:08] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:02:08] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:02:08] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:02:08] [debug] Schema Data Call for URL electricbikerental.net
+[2025-02-23 09:02:08] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:02:08] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:02:08] [info] Called http://electricbikerental.net
+[2025-02-23 09:02:08] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:02:08] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:02:08] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:02:08] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:02:08] [debug] Clean Out Call for URL electricbikerental.net
+[2025-02-23 09:02:08] [debug] POST Request: Received URL input: electricbikerental.net
+[2025-02-23 09:02:08] [debug] URL missing scheme. Prepended http://: http://electricbikerental.net
+[2025-02-23 09:02:08] [info] Called http://electricbikerental.net
+[2025-02-23 09:02:08] [debug] Hash code received: d0822425fda31bca0b725ee90a0bba73
+[2025-02-23 09:02:08] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\d0822425fda31bca0b725ee90a0bba73.tdata
+[2025-02-23 09:02:08] [info] Parsed URL: http://electricbikerental.net | Host: electricbikerental.net | Domain String: electricbikerental.net
+[2025-02-23 09:02:08] [info] Processed HTML for URL: http://electricbikerental.net
+[2025-02-23 09:02:08] [info] Final score retrieved for domain electricbikerental.net
+[2025-02-23 09:49:04] [debug] Received URL input: jaipurroutes.com
+[2025-02-23 09:49:04] [debug] Full URL after cleaning: http://jaipurroutes.com
+[2025-02-23 09:49:04] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 09:49:04] [debug] Retrieved domain restriction list.
+[2025-02-23 09:49:04] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 09:49:04] [debug] User logged in as: naveensingh
+[2025-02-23 09:49:04] [debug] Screenshot API configured.
+[2025-02-23 09:49:04] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 09:49:04] [debug] Using stored domain access URL: https://jaipurroutes.com
+[2025-02-23 09:49:04] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:49:04] [info] Domain already processed. Loading DB data for jaipurroutes.com
+[2025-02-23 09:49:09] [debug] Update check parameter set.
+[2025-02-23 09:49:09] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 09:49:09] [debug] Retrieved domain restriction list.
+[2025-02-23 09:49:09] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 09:49:09] [debug] User logged in as: naveensingh
+[2025-02-23 09:49:09] [debug] Screenshot API configured.
+[2025-02-23 09:49:09] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 09:49:09] [debug] Using stored domain access URL: https://jaipurroutes.com
+[2025-02-23 09:49:09] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:49:24] [debug] Update check parameter set.
+[2025-02-23 09:49:24] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 09:49:24] [debug] Retrieved domain restriction list.
+[2025-02-23 09:49:24] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 09:49:24] [debug] User logged in as: naveensingh
+[2025-02-23 09:49:24] [debug] Screenshot API configured.
+[2025-02-23 09:49:24] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 09:49:24] [debug] Using stored domain access URL: https://jaipurroutes.com
+[2025-02-23 09:49:24] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:49:47] [debug] Update check parameter set.
+[2025-02-23 09:49:47] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 09:49:47] [debug] Retrieved domain restriction list.
+[2025-02-23 09:49:47] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 09:49:47] [debug] User logged in as: naveensingh
+[2025-02-23 09:49:47] [debug] Screenshot API configured.
+[2025-02-23 09:49:47] [debug] New domain detected: jaipurroutes.com
+[2025-02-23 09:49:47] [debug] Checked: Array
+(
+    [0] => https://jaipurroutes.com
+    [1] => https://www.jaipurroutes.com
+)
+
+[2025-02-23 09:49:49] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:49:50] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:49:50] [debug] Checked: Array
+(
+    [0] => http://jaipurroutes.com
+    [1] => http://www.jaipurroutes.com
+)
+
+[2025-02-23 09:49:51] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:49:52] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:49:52] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-23 09:49:52] [debug] New domain accessible URL: https://www.jaipurroutes.com
+[2025-02-23 09:49:52] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:50:33] [debug] Update check parameter set.
+[2025-02-23 09:50:33] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 09:50:33] [debug] Retrieved domain restriction list.
+[2025-02-23 09:50:33] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 09:50:33] [debug] User logged in as: naveensingh
+[2025-02-23 09:50:33] [debug] Screenshot API configured.
+[2025-02-23 09:50:33] [debug] New domain detected: jaipurroutes.com
+[2025-02-23 09:50:33] [debug] Checked: Array
+(
+    [0] => https://jaipurroutes.com
+    [1] => https://www.jaipurroutes.com
+)
+
+[2025-02-23 09:50:34] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:50:35] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:50:35] [debug] Checked: Array
+(
+    [0] => http://jaipurroutes.com
+    [1] => http://www.jaipurroutes.com
+)
+
+[2025-02-23 09:50:36] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:50:37] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:50:37] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-23 09:50:37] [debug] New domain accessible URL: https://www.jaipurroutes.com
+[2025-02-23 09:50:37] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:50:37] [info] Content stored in temp file C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-23 09:50:37] [info] New domain record created for: jaipurroutes.com
+[2025-02-23 09:50:37] [debug] SeoAnalyzer instantiated for domain: jaipurroutes.com
+[2025-02-23 09:50:38] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:50:38] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:50:38] [info] Called http://jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:50:38] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:50:38] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:50:38] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-23 09:50:38] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:50:38] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:50:38] [info] Called http://jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:50:38] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:50:38] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:50:38] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-23 09:50:38] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:50:38] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:50:38] [info] Called http://jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:50:38] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:50:38] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:50:38] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-23 09:50:38] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:50:38] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:50:38] [info] Called http://jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:50:38] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:50:38] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:50:38] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Keyword Cloud + Consistency Call for URL jaipurroutes.com
+[2025-02-23 09:50:38] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:50:38] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:50:38] [info] Called http://jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:50:38] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:50:38] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:50:38] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:50:38] [debug] Page Analytics Report Call for URL jaipurroutes.com
+[2025-02-23 09:50:42] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:50:42] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:50:42] [info] Called http://jaipurroutes.com
+[2025-02-23 09:50:42] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:50:42] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:50:42] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:50:42] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:50:42] [debug] Page Insights Report Call for URL jaipurroutes.com
+[2025-02-23 09:51:01] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:51:01] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:51:01] [info] Called http://jaipurroutes.com
+[2025-02-23 09:51:01] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:51:01] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:51:01] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:51:01] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:51:01] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-23 09:51:03] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:51:03] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:51:03] [info] Called http://jaipurroutes.com
+[2025-02-23 09:51:03] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:51:03] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:51:03] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:51:03] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:51:03] [debug] Site Cards Call for URL jaipurroutes.com
+[2025-02-23 09:51:03] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:51:03] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:51:03] [info] Called http://jaipurroutes.com
+[2025-02-23 09:51:03] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:51:03] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:51:03] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:51:03] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:51:03] [debug] Social URL Call for URL jaipurroutes.com
+[2025-02-23 09:51:03] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:51:03] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:51:03] [info] Called http://jaipurroutes.com
+[2025-02-23 09:51:03] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:51:03] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:51:03] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:51:03] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:51:03] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-23 09:51:03] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:51:03] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:51:03] [info] Called http://jaipurroutes.com
+[2025-02-23 09:51:03] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:51:03] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:51:03] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:51:03] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:51:03] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-23 09:51:07] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:51:07] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:51:07] [info] Called http://jaipurroutes.com
+[2025-02-23 09:51:07] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:51:07] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:51:07] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:51:07] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:51:07] [debug] Schema Data Call for URL jaipurroutes.com
+[2025-02-23 09:51:07] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:51:07] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:51:07] [info] Called http://jaipurroutes.com
+[2025-02-23 09:51:07] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:51:07] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:51:07] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:51:07] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:51:07] [debug] Clean Out Call for URL jaipurroutes.com
+[2025-02-23 09:51:07] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:51:07] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:51:07] [info] Called http://jaipurroutes.com
+[2025-02-23 09:51:07] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:51:07] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:51:07] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:51:07] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:51:07] [info] Final score retrieved for domain jaipurroutes.com
+[2025-02-23 09:52:11] [debug] Update check parameter set.
+[2025-02-23 09:52:11] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 09:52:11] [debug] Retrieved domain restriction list.
+[2025-02-23 09:52:11] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 09:52:11] [debug] User logged in as: naveensingh
+[2025-02-23 09:52:11] [debug] Screenshot API configured.
+[2025-02-23 09:52:11] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 09:52:11] [debug] Using stored domain access URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:11] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:12] [info] Content stored in temp file C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] SeoAnalyzer instantiated for domain: jaipurroutes.com
+[2025-02-23 09:52:12] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [info] Called https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:12] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:12] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:12] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:12] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [info] Called https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:12] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:12] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:12] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:12] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [info] Called https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:12] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:12] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:12] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:12] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [info] Called https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:12] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:12] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:12] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Keyword Cloud + Consistency Call for URL jaipurroutes.com
+[2025-02-23 09:52:12] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [info] Called https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:12] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:12] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:12] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:12] [debug] Page Analytics Report Call for URL jaipurroutes.com
+[2025-02-23 09:52:19] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 09:52:19] [info] Called https://www.jaipurroutes.com
+[2025-02-23 09:52:19] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:19] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:19] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:19] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:19] [debug] Page Insights Report Call for URL jaipurroutes.com
+[2025-02-23 09:52:43] [debug] Received URL input: www.jaipurroutes.com
+[2025-02-23 09:52:43] [debug] Full URL after cleaning: http://jaipurroutes.com
+[2025-02-23 09:52:43] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 09:52:43] [info] Called https://www.jaipurroutes.com
+[2025-02-23 09:52:43] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:43] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:43] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:43] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:43] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:44] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 09:52:44] [debug] Retrieved domain restriction list.
+[2025-02-23 09:52:44] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 09:52:44] [debug] User logged in as: naveensingh
+[2025-02-23 09:52:44] [debug] Screenshot API configured.
+[2025-02-23 09:52:44] [debug] New domain detected: jaipurroutes.com
+[2025-02-23 09:52:44] [debug] Checked: Array
+(
+    [0] => https://jaipurroutes.com
+    [1] => https://www.jaipurroutes.com
+)
+
+[2025-02-23 09:52:45] [debug] Checked: https://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:52:46] [debug] Checked: https://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:52:46] [debug] Checked: Array
+(
+    [0] => http://jaipurroutes.com
+    [1] => http://www.jaipurroutes.com
+)
+
+[2025-02-23 09:52:47] [debug] Checked: http://jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:52:49] [debug] Checked: http://www.jaipurroutes.com => https://www.jaipurroutes.com/ [200]
+[2025-02-23 09:52:49] [debug] Selected best URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:49] [debug] New domain accessible URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:49] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:49] [info] Content stored in temp file C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-23 09:52:49] [info] New domain record created for: jaipurroutes.com
+[2025-02-23 09:52:49] [debug] SeoAnalyzer instantiated for domain: jaipurroutes.com
+[2025-02-23 09:52:49] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 09:52:49] [info] Called https://www.jaipurroutes.com
+[2025-02-23 09:52:49] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:49] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:49] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:50] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Site Cards Call for URL jaipurroutes.com
+[2025-02-23 09:52:50] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:52:50] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:52:50] [info] Called http://jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:50] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:50] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:50] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:50] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:52:50] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:52:50] [info] Called http://jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:50] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:50] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:50] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:50] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:52:50] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:52:50] [info] Called http://jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:50] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:50] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:50] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:50] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:52:50] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:52:50] [info] Called http://jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:50] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:50] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:50] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Keyword Cloud + Consistency Call for URL jaipurroutes.com
+[2025-02-23 09:52:50] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:52:50] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:52:50] [info] Called http://jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:50] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:50] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:50] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:52:50] [debug] Page Analytics Report Call for URL jaipurroutes.com
+[2025-02-23 09:52:54] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:52:54] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:52:54] [info] Called http://jaipurroutes.com
+[2025-02-23 09:52:54] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:52:54] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:52:54] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:52:54] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:52:54] [debug] Page Insights Report Call for URL jaipurroutes.com
+[2025-02-23 09:53:17] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:53:17] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:53:17] [info] Called http://jaipurroutes.com
+[2025-02-23 09:53:17] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:53:17] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:53:17] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:53:17] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:53:17] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-23 09:53:19] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:53:19] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:53:19] [info] Called http://jaipurroutes.com
+[2025-02-23 09:53:19] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:53:19] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:53:19] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:53:19] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:53:19] [debug] Site Cards Call for URL jaipurroutes.com
+[2025-02-23 09:53:19] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:53:19] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:53:19] [info] Called http://jaipurroutes.com
+[2025-02-23 09:53:19] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:53:19] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:53:19] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:53:19] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:53:19] [debug] Social URL Call for URL jaipurroutes.com
+[2025-02-23 09:53:19] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:53:19] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:53:19] [info] Called http://jaipurroutes.com
+[2025-02-23 09:53:19] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:53:19] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:53:19] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:53:19] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:53:19] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-23 09:53:19] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:53:19] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:53:19] [info] Called http://jaipurroutes.com
+[2025-02-23 09:53:19] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:53:19] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:53:19] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:53:19] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:53:19] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-23 09:53:24] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:53:24] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:53:24] [info] Called http://jaipurroutes.com
+[2025-02-23 09:53:24] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:53:24] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:53:24] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:53:24] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:53:24] [debug] Schema Data Call for URL jaipurroutes.com
+[2025-02-23 09:53:24] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:53:24] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:53:24] [info] Called http://jaipurroutes.com
+[2025-02-23 09:53:24] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:53:24] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:53:24] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:53:24] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:53:24] [debug] Clean Out Call for URL jaipurroutes.com
+[2025-02-23 09:53:24] [debug] POST Request: Received URL input: jaipurroutes.com
+[2025-02-23 09:53:24] [debug] URL missing scheme. Prepended http://: http://jaipurroutes.com
+[2025-02-23 09:53:24] [info] Called http://jaipurroutes.com
+[2025-02-23 09:53:24] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:53:24] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 09:53:24] [info] Parsed URL: http://jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 09:53:24] [info] Processed HTML for URL: http://jaipurroutes.com
+[2025-02-23 09:53:24] [info] Final score retrieved for domain jaipurroutes.com
+[2025-02-23 09:58:56] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 09:58:56] [debug] Retrieved domain restriction list.
+[2025-02-23 09:58:56] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 09:58:56] [debug] User logged in as: naveensingh
+[2025-02-23 09:58:56] [debug] Screenshot API configured.
+[2025-02-23 09:58:56] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 09:58:56] [debug] Using stored domain access URL: https://www.jaipurroutes.com
+[2025-02-23 09:58:56] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:58:56] [info] Domain already processed. Loading DB data for jaipurroutes.com
+[2025-02-23 09:59:11] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 09:59:11] [debug] Retrieved domain restriction list.
+[2025-02-23 09:59:11] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 09:59:11] [debug] User logged in as: naveensingh
+[2025-02-23 09:59:11] [debug] Screenshot API configured.
+[2025-02-23 09:59:11] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 09:59:11] [debug] Using stored domain access URL: https://www.jaipurroutes.com
+[2025-02-23 09:59:11] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:59:11] [info] Domain already processed. Loading DB data for jaipurroutes.com
+[2025-02-23 09:59:36] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 09:59:36] [debug] Retrieved domain restriction list.
+[2025-02-23 09:59:36] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 09:59:36] [debug] User logged in as: naveensingh
+[2025-02-23 09:59:36] [debug] Screenshot API configured.
+[2025-02-23 09:59:36] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 09:59:36] [debug] Using stored domain access URL: https://www.jaipurroutes.com
+[2025-02-23 09:59:36] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 09:59:36] [info] Domain already processed. Loading DB data for jaipurroutes.com
+[2025-02-23 10:00:04] [debug] Update check parameter set.
+[2025-02-23 10:00:04] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 10:00:04] [debug] Retrieved domain restriction list.
+[2025-02-23 10:00:04] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 10:00:04] [debug] User logged in as: naveensingh
+[2025-02-23 10:00:04] [debug] Screenshot API configured.
+[2025-02-23 10:00:04] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 10:00:04] [debug] Using stored domain access URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:04] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:05] [info] Content stored in temp file C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata for URL https://www.jaipurroutes.com
+[2025-02-23 10:00:05] [debug] SeoAnalyzer instantiated for domain: jaipurroutes.com
+[2025-02-23 10:00:05] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:05] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:05] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:05] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:05] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:05] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:05] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-23 10:00:05] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:05] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:05] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:05] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:05] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:05] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:05] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-23 10:00:06] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:06] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:06] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:06] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:06] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:06] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:06] [debug] Image Tag Call for URL jaipurroutes.com
+[2025-02-23 10:00:06] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:06] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:06] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:06] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:06] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:06] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:06] [debug] Meta Tag Call for URL jaipurroutes.com
+[2025-02-23 10:00:06] [debug] Heading Tag Call for URL jaipurroutes.com
+[2025-02-23 10:00:06] [debug] Keyword Cloud + Consistency Call for URL jaipurroutes.com
+[2025-02-23 10:00:06] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:06] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:06] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:06] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:06] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:06] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:06] [debug] Page Analytics Report Call for URL jaipurroutes.com
+[2025-02-23 10:00:15] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:15] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:15] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:15] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:15] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:15] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:15] [debug] Page Insights Report Call for URL jaipurroutes.com
+[2025-02-23 10:00:38] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:38] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:38] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:38] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:38] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:38] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:38] [debug] Text Ratio Tag Call for URL jaipurroutes.com
+[2025-02-23 10:00:40] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:40] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:40] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:40] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:40] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:40] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:40] [debug] Site Cards Call for URL jaipurroutes.com
+[2025-02-23 10:00:41] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:41] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:41] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:41] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:41] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:41] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:41] [debug] Social URL Call for URL jaipurroutes.com
+[2025-02-23 10:00:41] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:41] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:41] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:41] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:41] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:41] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:41] [debug] In-Page Links Tag Call for URL jaipurroutes.com
+[2025-02-23 10:00:43] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:43] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:43] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:43] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:43] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:43] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:43] [debug] Server IP Tag Call for URL jaipurroutes.com
+[2025-02-23 10:00:52] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:52] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:52] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:52] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:52] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:52] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:52] [debug] Schema Data Call for URL jaipurroutes.com
+[2025-02-23 10:00:52] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:52] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:52] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:52] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:52] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:52] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:52] [debug] Clean Out Call for URL jaipurroutes.com
+[2025-02-23 10:00:52] [debug] POST Request: Received URL input: https://www.jaipurroutes.com
+[2025-02-23 10:00:52] [info] Called https://www.jaipurroutes.com
+[2025-02-23 10:00:52] [debug] Hash code received: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:00:52] [debug] Filename for cached data: C:\seowebdevelopment\htdocs\scriptfiles\core\temp\fa5edac4660305d5a49f5c8187ca85b3.tdata
+[2025-02-23 10:00:52] [info] Parsed URL: https://www.jaipurroutes.com | Host: jaipurroutes.com | Domain String: jaipurroutes.com
+[2025-02-23 10:00:52] [info] Processed HTML for URL: https://www.jaipurroutes.com
+[2025-02-23 10:00:52] [info] Final score retrieved for domain jaipurroutes.com
+[2025-02-23 10:01:49] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 10:01:49] [debug] Retrieved domain restriction list.
+[2025-02-23 10:01:49] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 10:01:49] [debug] User logged in as: naveensingh
+[2025-02-23 10:01:49] [debug] Screenshot API configured.
+[2025-02-23 10:01:49] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 10:01:49] [debug] Using stored domain access URL: https://www.jaipurroutes.com
+[2025-02-23 10:01:49] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:01:49] [info] Domain already processed. Loading DB data for jaipurroutes.com
+[2025-02-23 10:01:55] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 10:01:55] [debug] Retrieved domain restriction list.
+[2025-02-23 10:01:55] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 10:01:55] [debug] User logged in as: naveensingh
+[2025-02-23 10:01:55] [debug] Screenshot API configured.
+[2025-02-23 10:01:55] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 10:01:55] [debug] Using stored domain access URL: https://www.jaipurroutes.com
+[2025-02-23 10:01:55] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:01:55] [info] Domain already processed. Loading DB data for jaipurroutes.com
+[2025-02-23 10:01:57] [debug] Final URL to process: http://jaipurroutes.com
+[2025-02-23 10:01:57] [debug] Retrieved domain restriction list.
+[2025-02-23 10:01:57] [debug] Reviewer settings loaded for domain: jaipurroutes.com
+[2025-02-23 10:01:57] [debug] User logged in as: naveensingh
+[2025-02-23 10:01:57] [debug] Screenshot API configured.
+[2025-02-23 10:01:57] [info] Domain already processed: jaipurroutes.com
+[2025-02-23 10:01:57] [debug] Using stored domain access URL: https://www.jaipurroutes.com
+[2025-02-23 10:01:57] [debug] Hash code generated: fa5edac4660305d5a49f5c8187ca85b3
+[2025-02-23 10:01:57] [info] Domain already processed. Loading DB data for jaipurroutes.com
