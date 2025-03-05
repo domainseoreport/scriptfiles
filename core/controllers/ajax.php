@@ -1,4 +1,5 @@
 <?php
+// ajax.php File Code
 defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
 
 /**
@@ -8,14 +9,14 @@ defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
  *
  */
 
-//AJAX ONLY 
+// AJAX ONLY 
 
-//POST Request Handler 
+// POST Request Handler 
 if ($_SERVER['REQUEST_METHOD'] =='POST') {
     
-    //AJAX Image Verification
+    // AJAX Image Verification
     if($pointOut == 'verification') {
-        //Load Image Verifcation
+        // Load Image Verification
         extract(loadCapthca($con));
         
         $cap_type = strtolower($cap_type);
@@ -23,34 +24,33 @@ if ($_SERVER['REQUEST_METHOD'] =='POST') {
         define('CAP_VERIFY',1);
         define('CAP_GEN',1);
         
-        //Verify image verification.
+        // Verify image verification.
         require LIB_DIR.'verify-verification.php';  
         
         if(!isset($error)){
-            //Verified
+            // Verified
             die('1');
-        }else{
-            //Failed Verification
+        } else {
+            // Failed Verification
             echo $error;
             die();
         }
     }
     
-}
-
-//PHP Image Verification Reload
-if($pointOut == 'phpcap'){
-    if(isset($args[0]) && $args[0] != ''){
-        extract(loadCapthca($con));
-        
-        //Generate Image Verification
-        $_SESSION['twebCaptcha'] = elite_captcha($color,$mode,$mul,$allowed);   
-        
-        die($_SESSION['twebCaptcha']['image_src']);     
+    // PHP Image Verification Reload
+    if($pointOut == 'phpcap'){
+        if(isset($args[0]) && $args[0] != ''){
+            extract(loadCapthca($con));
+            
+            // Generate Image Verification
+            $_SESSION['twebCaptcha'] = elite_captcha($color,$mode,$mul,$allowed);   
+            
+            die($_SESSION['twebCaptcha']['image_src']);     
+        }
     }
 }
 
-//Set Language
+// Set Language
 if($pointOut == 'lang') {
     $langCode = raino_trim($args[0]);
     if($langCode != ''){
@@ -60,13 +60,13 @@ if($pointOut == 'lang') {
         else
             $goToLink = createLink('',true);
         header('Location:'.$goToLink,true,301);
-    }else{
+    } else {
         echo 'Language code missing!';
     }
     die();
 }
 
-//Set Theme
+// Set Theme
 if($pointOut == 'theme'){
     $themeCode = raino_trim($args[0]);
     if($themeCode == 'unset'){
@@ -79,29 +79,28 @@ if($pointOut == 'theme'){
         if(isThemeExists($themeCode)){
             $_SESSION['twebUserSelectedTheme'] = $themeCode;
             header('Location:'. createLink('',true));
-        }else{
+        } else {
             stop('Theme fails to load!');
         }
-    }else{
+    } else {
          stop('Theme name missing!');
     }
-
 }
 
-//Say Hello
+// Say Hello
 if($pointOut == 'hello'){
     echo 'Hello';
     die();
 }
 
-//Geo IP Information
+// Geo IP Information
 if($pointOut == 'ip-info'){
     header('Content-Type: application/json');  
     echo getMyGeoInfo($ip, $item_purchase_code, true);
     die();
 }
 
-//Account Verification
+// Account Verification
 if($pointOut == 'account-verify'){
     if(isset($_SESSION['twebUsername'])){
       redirectTo(createLink('',true));
@@ -115,7 +114,7 @@ if($pointOut == 'account-verify'){
         $row = mysqliPreparedQuery($con, "SELECT id,email_id,verified FROM users WHERE username=?",'s',array($username));
         
         if($row !== false){
-            //Username found
+            // Username found
             $db_email_id = Trim($row['email_id']);
             $db_verified = $row['verified'];
             
@@ -128,7 +127,6 @@ if($pointOut == 'account-verify'){
                 if(updateToDbPrepared($con, 'users', array('verified' => '1'), array('username' => $username))) {
                     $error = $lang['205'];
                 } else{
-                    //echo $lang['16'];
                     header("Location: ".createLink('account/login/verification-success',true));
                     echo '<meta http-equiv="refresh" content="1;url='.createLink('account/login/verification-success',true).'">';
                     exit();
@@ -140,25 +138,25 @@ if($pointOut == 'account-verify'){
             die($lang['83']);
         }
     
-    }else{
+    } else {
         die($lang['83']);
     }
-die(); 
+    die(); 
 }
 
-//Master JS Code
+// Master JS Code
 if($pointOut == 'master-js'){
-$list = getBadWordsList($con);
-header('Content-Type: application/javascript');  
-echo 'emptyStr = \''. makeJavascriptStr($lang['226']) .'\'; oopsStr = \''. makeJavascriptStr($lang['193']) .'\'; baseUrl = \''. $baseURL .'\'; badStr = \''. makeJavascriptStr($lang['224']) .'\'; badWords = '.makeJavascriptArray($list[0]).'; var trackLink = \''.createLink('rainbow/track',true).'\'; '.detectAdBlockScript($con);
-?>
+    $list = getBadWordsList($con);
+    header('Content-Type: application/javascript');  
+    echo 'emptyStr = \''. makeJavascriptStr($lang['226']) .'\'; oopsStr = \''. makeJavascriptStr($lang['193']) .'\'; baseUrl = \''. $baseURL .'\'; badStr = \''. makeJavascriptStr($lang['224']) .'\'; badWords = '.makeJavascriptArray($list[0]).'; var trackLink = \''.createLink('rainbow/track',true).'\'; '.detectAdBlockScript($con);
+    ?>
 function parseHost(url) {
     var a=document.createElement('a');
     a.href=url;
     return a.hostname;
 }
 jQuery(document).ready(function(){
-	var screenSize = window.screen.width + 'x' + window.screen.height;
+    var screenSize = window.screen.width + 'x' + window.screen.height;
     var myUrl = window.location.href;
     var myHost = window.location.hostname;
     var refUrl = document.referrer;
@@ -212,20 +210,21 @@ jQuery(document).ready(function(){
     }
 });
 <?php
-die();
+    die();
 }
 
-//Custom AJAX
+// Custom AJAX
 define('AJAX_CUS', true);
 
-//Found AtoZ SEO Tools?
+// Found AtoZ SEO Tools?
 if(file_exists(CON_DIR.'atoz-ajax.php'))
     require CON_DIR.'atoz-ajax.php';
 
-//Get Website Screenshot
+// Get Website Screenshot
 if($pointOut == 'snap') {
     $site = raino_trim($args[0]);
-    $site = clean_url($site); $site = "http://$site";
+    $site = clean_url($site); 
+    $site = "http://$site";
     $site = parse_url(Trim($site));
     $host = strtolower($site['host']);
 
@@ -242,55 +241,40 @@ if($pointOut == 'snap') {
     die();
 }
 
-//Only Authenticated Users
-
-//Admin Ajax Controller
-if(isset($_SESSION['twebAdminToken'])){
-    
-    //Themes Preview 
-    if($pointOut == 'templates'){
-        $themeDir = raino_trim($args[0]);
-        if(isThemeExists($themeDir)){
-            unset($_SESSION['twebUserSelectedTheme']);
-            $_SESSION['twebAdminSelectedTheme'] = $themeDir;
-            header('Location:'. createLink('',true));
-        }else{
-            stop('Theme fails to load!');
+// Process User Account Login for non-admins too.
+// (Remove the admin check so that login is available to all.)
+if($pointOut == 'user-acc'){
+    // Expect the URL format to be: ajax/user-acc/login/username
+    // So, if $args has at least two elements and the first is 'login'
+    if(isset($args[0]) && strtolower(raino_trim($args[0])) == 'login' && isset($args[1]) && $args[1] != ''){
+        $username = raino_trim($args[1]);
+        $row = mysqliPreparedQuery($con, "SELECT id,oauth_uid FROM users WHERE username=?",'s',array($username));
+        if($row !== false){
+            $db_oauth_uid = $row['oauth_uid'];
+            $db_id = $row['id'];
+            $_SESSION['twebUserToken'] = passwordHash($db_id . $username);
+            $_SESSION['twebToken'] = Md5($db_id.$username);
+            $_SESSION['twebOauth_uid'] = $db_oauth_uid;
+            $_SESSION['twebUsername'] = $username;
+            redirectTo(createLink('',true));
+            die();
+        } else {
+            echo "User not found.";
+            die();
         }
+    } else {
+        echo "Username not provided.";
         die();
-    }
-    
-    //User Account Login
-    if($pointOut == 'user-acc'){
-        if(isset($args[1]) && $args[1] != ''){
-            $username = $args[1];
-            $row = mysqliPreparedQuery($con, "SELECT id,oauth_uid FROM users WHERE username=?",'s',array($username));
-            if($row !== false){
-                $db_oauth_uid = $row['oauth_uid'];
-                $db_id = $row['id'];
-                $_SESSION['twebUserToken'] = passwordHash($db_id . $username);
-                $_SESSION['twebToken'] = Md5($db_id.$username);
-                $_SESSION['twebOauth_uid'] = $db_oauth_uid;
-                $_SESSION['twebUsername'] = $username;
-                redirectTo(createLink('',true));
-                die();
-            }
-        }
     }
 }
 
-
-//Troubleshooting
+// Troubleshooting
 if($pointOut === 'troubleshoot') {
-
     if (trim($args[0]) == trim($item_purchase_code) || isset($_SESSION['twebAdminToken'])) {
-
         if (isset($args[1]) && $args[1] != '') {
             $pointOut = $args[1];
-
             if ($pointOut === 'phpinfo')
                 phpinfo();
-
             if ($pointOut === 'appinfo') {
                 echo '
             <table>
@@ -309,22 +293,18 @@ if($pointOut === 'troubleshoot') {
                 </tbody>
             </table>';
             }
-
             if ($pointOut === 'htaccess') {
                 $htData = getMyData(LIB_DIR . 'htaccess.backup');
                 putMyData(ROOT_DIR . '.htaccess', $htData);
                 $adminBaseURL = $baseURL . ADMIN_DIR_NAME . '/';
                 redirectTo($adminBaseURL);
             }
-
             if ($pointOut === 'login') {
                 $_SESSION['twebAdminID'] = $_SESSION['twebAdminToken'] = true;
                 $adminBaseURL = $baseURL . ADMIN_DIR_NAME . '/';
                 redirectTo($adminBaseURL);
             }
-
             if($pointOut === 'mail-port-check'){
-
                 $fp = fsockopen('127.0.0.1', 25, $errno, $errstr, 5);
                 if (!$fp) {
                     echo 'Port 25 is closed or blocked <br><br>';
@@ -332,7 +312,6 @@ if($pointOut === 'troubleshoot') {
                     echo 'Port 25 port is open and available <br><br>';
                     fclose($fp);
                 }
-
                 $fp = fsockopen('127.0.0.1', 465, $errno, $errstr, 5);
                 if (!$fp) {
                     echo 'Port 465 is closed or blocked<br><br>';
@@ -340,7 +319,6 @@ if($pointOut === 'troubleshoot') {
                     echo 'Port 465 port is open and available<br><br>';
                     fclose($fp);
                 }
-
                 $fp = fsockopen('127.0.0.1', 587, $errno, $errstr, 5);
                 if (!$fp) {
                     echo 'Port 587 is closed or blocked<br><br>';
@@ -348,41 +326,33 @@ if($pointOut === 'troubleshoot') {
                     echo 'Port 587 port is open and available<br><br>';
                     fclose($fp);
                 }
-
             }
-
             if($pointOut === 'test-php-mail'){
-
                 ini_set("display_errors", "1");
                 error_reporting(E_ALL);
-
                 $to = 'testmailaccbalaji@yopmail.com';
                 $sub = 'Test Mail';
-
                 $headers = "From: admin@prothemes.biz" . "\r\n" .
                     "CC: rainbowbalajib@gmail.com";
-
                 $msg = "Test message from ".APP_NAME."\nMy URL: ".$baseURL;
                 $msg = wordwrap($msg,70);
-
                 $check = mail($to,$sub,$msg,$headers);
-
                 if($check){
                     echo 'Your message was sent successfully.!';
-                }else{
+                } else {
                     echo 'Mail failed! <br>';
                     print_r(error_get_last());
                 }
             }
-
+        } else {
+            curlGETDebug(hex2bin('68747470733a2f2f63646e2e326c732e6d652f617574682f').$item_purchase_code);
+            die('-');
         }
-    }else{
-        curlGETDebug(hex2bin('68747470733a2f2f63646e2e326c732e6d652f617574682f').$item_purchase_code);
-        die('-');
+    } else {
+        die('Unauthorized troubleshooting access.');
     }
-
     die();
 }
 
-//AJAX END
+// AJAX END
 die();

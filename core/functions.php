@@ -1161,3 +1161,19 @@ function extractMetaData($html) {
         die();
     }
     
+    function getDomainBySlug($con, $slug) {
+        $sql = "SELECT * FROM domains_data WHERE slug = ? LIMIT 1";
+        $stmt = mysqli_prepare($con, $sql);
+        mysqli_stmt_bind_param($stmt, 's', $slug);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $domainRecord = mysqli_fetch_assoc($result);
+        mysqli_stmt_close($stmt);
+        return $domainRecord;
+    }
+    
+    function getDomainByHost($con, $host) {
+        $query = "SELECT * FROM domains_data WHERE domain = ? LIMIT 1";
+        $result = mysqliPreparedQuery($con, $query, 's', array($host));
+        return $result !== false ? $result : false;
+    }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+ <url>
+  <loc>http://localhost/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/"/>
+  <priority>1.0</priority>
+  <changefreq>daily</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/domain/silverandgem.com</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/domain/silverandgem.com"/>
+  <priority>0.5</priority>
+  <changefreq>daily</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/domain/jaipurroutes.com</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/domain/jaipurroutes.com"/>
+  <priority>0.7</priority>
+  <changefreq>weekly</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/domain/indiatraveletc.com</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/domain/indiatraveletc.com"/>
+  <priority>0.6</priority>
+  <changefreq>hourly</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/domain/jaipurtravels.com</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/domain/jaipurtravels.com"/>
+  <priority>0.6</priority>
+  <changefreq>hourly</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/domain/voyageinindia.fr</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/domain/voyageinindia.fr"/>
+  <priority>0.9</priority>
+  <changefreq>daily</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/site-vs-site</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/site-vs-site"/>
+  <priority>0.6</priority>
+  <changefreq>weekly</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/recent</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/recent"/>
+  <priority>0.7</priority>
+  <changefreq>weekly</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/contact</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/contact"/>
+  <priority>0.8</priority>
+  <changefreq>weekly</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/page/about-us</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/page/about-us"/>
+  <priority>0.5</priority>
+  <changefreq>weekly</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/page/terms-and-conditions</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/page/terms-and-conditions"/>
+  <priority>0.7</priority>
+  <changefreq>hourly</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/page/privacy-policy</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/page/privacy-policy"/>
+  <priority>0.6</priority>
+  <changefreq>daily</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/page/advertisers</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/page/advertisers"/>
+  <priority>0.9</priority>
+  <changefreq>weekly</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+ <url>
+  <loc>http://localhost/page/whats-new</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost/en/page/whats-new"/>
+  <priority>0.7</priority>
+  <changefreq>daily</changefreq>
+  <lastmod>2025-03-05</lastmod>
+ </url>
+</urlset>

@@ -385,7 +385,7 @@ return true;
         
 <div class="navigation">
     <span style="display:none">
-        05-03-2025 13:38:23
+        06-03-2025 00:35:43
     </span>
     <div class="container">
         <div class="navigation_inner">
@@ -2017,20 +2017,135 @@ return true;
                         <div class="span3 homeblocks">
                             <div class="product_mainbox">
                                 <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl00$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_hdnproid" value="R1002495" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl00$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_hdnprice" value="252.0000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002495/beautiful-prong-setting-around-black-onyx-pear-shape-925-sterling-solid-silver-ring-r1002495-6-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_hrfprod">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl00$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_hdnproid" value="R2400532" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl00$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_hdnprice" value="1742.4000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-bracelets/cabochon-bracelets/r2400532/stunning-rawa-between-larimar-round-shape-925-sterling-solid-silver-bracelet-r2400532-1" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_hrfprod">
+                                        <img org-src="https://www.silverandgem.com/readystock1/products/R2400532-1.jpg" alt="Stunning Rawa Between Larimar Round Shape 925 Sterling Solid Silver Bracelet" title="Stunning Rawa Between Larimar Round Shape 925 Sterling Solid Silver Bracelet" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
+                                       <div style="height:85px;"> <span class="product_title" >Stunning Rawa Between Larimar Round Shape 925 Sterling Solid Silver Bracelet</span></div>
+                                    </a></div>
+                                    <div class="price">
+                                        <div class="product_price" style="padding-bottom:7px;">
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_lblWasPrice" style=" text-decoration:line-through; color:grey;">$22.73</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_lblPrice">$20.46</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_litDiscount" style="color:green; ">10.00% off</span>
+                                        </div>
+                                        <div class="product_cart" style="float:RIGHT;">
+                                            <a href="https://www.silverandgem.com/silver-bracelets/cabochon-bracelets/r2400532/stunning-rawa-between-larimar-round-shape-925-sterling-solid-silver-bracelet-r2400532-1" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="span3 homeblocks">
+                            <div class="product_mainbox">
+                                <div class="product_mainbox_inner">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl01$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_hdnproid" value="R2300421" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl01$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_hdnprice" value="552.5000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-bracelets/cut-stone-bracelets/r2300421/stunning-rawa-between-rainbow-moonstone-round-shape-925-sterling-solid-silver-bracelet-r2300421-672" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_hrfprod">
+                                        <img org-src="https://www.silverandgem.com/readystock1/products/R2300421-672.jpg" alt="Stunning Rawa Between Rainbow Moonstone Round Shape 925 Sterling Solid Silver Bracelet" title="Stunning Rawa Between Rainbow Moonstone Round Shape 925 Sterling Solid Silver Bracelet" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
+                                       <div style="height:85px;"> <span class="product_title" >Stunning Rawa Between Rainbow Moonstone Round Shape 925 Sterling Solid Silver Bracelet</span></div>
+                                    </a></div>
+                                    <div class="price">
+                                        <div class="product_price" style="padding-bottom:7px;">
+                                            
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_lblPrice">$6.49</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_litDiscount" style="color:green; "></span>
+                                        </div>
+                                        <div class="product_cart" style="float:RIGHT;">
+                                            <a href="https://www.silverandgem.com/silver-bracelets/cut-stone-bracelets/r2300421/stunning-rawa-between-rainbow-moonstone-round-shape-925-sterling-solid-silver-bracelet-r2300421-672" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="span3 homeblocks">
+                            <div class="product_mainbox">
+                                <div class="product_mainbox_inner">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl02$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_hdnproid" value="R2400266" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl02$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_hdnprice" value="552.0000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-bracelets/cabochon-bracelets/r2400266/stunning-rawa-between-moonstone-round-shape-925-sterling-solid-silver-bracelet-r2400266-99" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_hrfprod">
+                                        <img org-src="https://www.silverandgem.com/readystock1/products/R2400266-99.jpg" alt="Stunning Rawa Between Moonstone Round Shape 925 Sterling Solid Silver Bracelet" title="Stunning Rawa Between Moonstone Round Shape 925 Sterling Solid Silver Bracelet" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
+                                       <div style="height:85px;"> <span class="product_title" >Stunning Rawa Between Moonstone Round Shape 925 Sterling Solid Silver Bracelet</span></div>
+                                    </a></div>
+                                    <div class="price">
+                                        <div class="product_price" style="padding-bottom:7px;">
+                                            
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_lblPrice">$6.48</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_litDiscount" style="color:green; "></span>
+                                        </div>
+                                        <div class="product_cart" style="float:RIGHT;">
+                                            <a href="https://www.silverandgem.com/silver-bracelets/cabochon-bracelets/r2400266/stunning-rawa-between-moonstone-round-shape-925-sterling-solid-silver-bracelet-r2400266-99" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="span3 homeblocks">
+                            <div class="product_mainbox">
+                                <div class="product_mainbox_inner">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl03$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_hdnproid" value="R2300416" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl03$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_hdnprice" value="2187.3600" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-bracelets/cut-stone-bracelets/r2300416/beautiful-rawa-work-in-between-blue-topaz-round-shape-925-sterling-solid-silver-ring-r2300416-8" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_hrfprod">
+                                        <img org-src="https://www.silverandgem.com/readystock1/products/R2300416-8.jpg" alt="Beautiful Rawa Work in Between Blue Topaz Round Shape 925 Sterling Solid Silver Bracelet" title="Beautiful Rawa Work in Between Blue Topaz Round Shape 925 Sterling Solid Silver Bracelet" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
+                                       <div style="height:85px;"> <span class="product_title" >Beautiful Rawa Work in Between Blue Topaz Round Shape 925 Sterling Solid Silver Bracelet</span></div>
+                                    </a></div>
+                                    <div class="price">
+                                        <div class="product_price" style="padding-bottom:7px;">
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_lblWasPrice" style=" text-decoration:line-through; color:grey;">$28.54</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_lblPrice">$25.68</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_litDiscount" style="color:green; ">10.00% off</span>
+                                        </div>
+                                        <div class="product_cart" style="float:RIGHT;">
+                                            <a href="https://www.silverandgem.com/silver-bracelets/cut-stone-bracelets/r2300416/beautiful-rawa-work-in-between-blue-topaz-round-shape-925-sterling-solid-silver-ring-r2300416-8" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="span3 homeblocks">
+                            <div class="product_mainbox">
+                                <div class="product_mainbox_inner">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl04$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_hdnproid" value="R102059" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl04$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_hdnprice" value="425.5000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r102059/alluring-pattern-around-gemstone-blue-chalcedony-round-shape-925-sterling-solid-silver-pendant-r102059-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_hrfprod">
+                                        <img org-src="https://www.silverandgem.com/readystock1/products/R102059-9.jpg" alt="Alluring Pattern Around Gemstone Blue Chalcedony Round Shape 925 Sterling Solid Silver Pendant" title="Alluring Pattern Around Gemstone Blue Chalcedony Round Shape 925 Sterling Solid Silver Pendant" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
+                                       <div style="height:85px;"> <span class="product_title" >Alluring Pattern Around Gemstone Blue Chalcedony Round Shape 925 Sterling Solid Silver Pendant</span></div>
+                                    </a></div>
+                                    <div class="price">
+                                        <div class="product_price" style="padding-bottom:7px;">
+                                            
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_lblPrice">$5.00</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_litDiscount" style="color:green; "></span>
+                                        </div>
+                                        <div class="product_cart" style="float:RIGHT;">
+                                            <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r102059/alluring-pattern-around-gemstone-blue-chalcedony-round-shape-925-sterling-solid-silver-pendant-r102059-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="span3 homeblocks">
+                            <div class="product_mainbox">
+                                <div class="product_mainbox_inner">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl05$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_hdnproid" value="R1002495" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl05$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_hdnprice" value="252.0000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002495/beautiful-prong-setting-around-black-onyx-pear-shape-925-sterling-solid-silver-ring-r1002495-6-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_hrfprod">
                                         <img org-src="https://www.silverandgem.com/readystock1/products/R1002495-6.jpg" alt="Beautiful Prong Setting Around Black Onyx Pear Shape 925 Sterling Solid Silver Ring" title="Beautiful Prong Setting Around Black Onyx Pear Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
                                        <div style="height:85px;"> <span class="product_title" >Beautiful Prong Setting Around Black Onyx Pear Shape 925 Sterling Solid Silver Ring</span></div>
                                     </a></div>
                                     <div class="price">
                                         <div class="product_price" style="padding-bottom:7px;">
                                             
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_lblPrice">$2.96</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_litDiscount" style="color:green; "></span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_lblPrice">$2.96</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_litDiscount" style="color:green; "></span>
                                         </div>
                                         <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002495/beautiful-prong-setting-around-black-onyx-pear-shape-925-sterling-solid-silver-ring-r1002495-6-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl00_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                            <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002495/beautiful-prong-setting-around-black-onyx-pear-shape-925-sterling-solid-silver-ring-r1002495-6-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
                                         </div>
                                     </div>
                                 </div>
@@ -2040,20 +2155,43 @@ return true;
                         <div class="span3 homeblocks">
                             <div class="product_mainbox">
                                 <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl01$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_hdnproid" value="R1501964" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl01$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_hdnprice" value="486.0000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-earrings/cabochon-earrings/r1501964/beautiful-rawa-work-around-black-onyx-oval-shape-925-sterling-solid-silver-dangle-earrings-r1501964-64" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_hrfprod">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl06$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_hdnproid" value="R1501926" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl06$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_hdnprice" value="388.5000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-earrings/cabochon-earrings/r1501926/alluring-rawa-work-around-black-onyx-round-shape-925-sterling-solid-silver-dangle-earrings-r1501926-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_hrfprod">
+                                        <img org-src="https://www.silverandgem.com/readystock1/products/R1501926-9.jpg" alt="Alluring Rawa Work Around Black Onyx Round Shape 925 Sterling Solid Silver Dangle Earrings" title="Alluring Rawa Work Around Black Onyx Round Shape 925 Sterling Solid Silver Dangle Earrings" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
+                                       <div style="height:85px;"> <span class="product_title" >Alluring Rawa Work Around Black Onyx Round Shape 925 Sterling Solid Silver Dangle Earrings</span></div>
+                                    </a></div>
+                                    <div class="price">
+                                        <div class="product_price" style="padding-bottom:7px;">
+                                            
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_lblPrice">$4.56</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_litDiscount" style="color:green; "></span>
+                                        </div>
+                                        <div class="product_cart" style="float:RIGHT;">
+                                            <a href="https://www.silverandgem.com/silver-earrings/cabochon-earrings/r1501926/alluring-rawa-work-around-black-onyx-round-shape-925-sterling-solid-silver-dangle-earrings-r1501926-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="span3 homeblocks">
+                            <div class="product_mainbox">
+                                <div class="product_mainbox_inner">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl07$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_hdnproid" value="R1501964" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl07$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_hdnprice" value="486.0000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-earrings/cabochon-earrings/r1501964/beautiful-rawa-work-around-black-onyx-oval-shape-925-sterling-solid-silver-dangle-earrings-r1501964-64" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_hrfprod">
                                         <img org-src="https://www.silverandgem.com/readystock1/products/R1501964-64.jpg" alt="Beautiful Rawa Work Around Black Onyx Oval Shape 925 Sterling Solid Silver Dangle Earrings" title="Beautiful Rawa Work Around Black Onyx Oval Shape 925 Sterling Solid Silver Dangle Earrings" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
                                        <div style="height:85px;"> <span class="product_title" >Beautiful Rawa Work Around Black Onyx Oval Shape 925 Sterling Solid Silver Dangle Earrings</span></div>
                                     </a></div>
                                     <div class="price">
                                         <div class="product_price" style="padding-bottom:7px;">
                                             
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_lblPrice">$5.71</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_litDiscount" style="color:green; "></span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_lblPrice">$5.71</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_litDiscount" style="color:green; "></span>
                                         </div>
                                         <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-earrings/cabochon-earrings/r1501964/beautiful-rawa-work-around-black-onyx-oval-shape-925-sterling-solid-silver-dangle-earrings-r1501964-64" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl01_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                            <a href="https://www.silverandgem.com/silver-earrings/cabochon-earrings/r1501964/beautiful-rawa-work-around-black-onyx-oval-shape-925-sterling-solid-silver-dangle-earrings-r1501964-64" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
                                         </div>
                                     </div>
                                 </div>
@@ -2063,20 +2201,43 @@ return true;
                         <div class="span3 homeblocks">
                             <div class="product_mainbox">
                                 <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl02$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_hdnproid" value="R102058" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl02$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_hdnprice" value="573.5000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r102058/gorgeous-gemstone-rawa-wire-work-around-blue-chalcedony-round-shape-925-sterling-solid-silver-pendant-r102058-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_hrfprod">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl08$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_hdnproid" value="R1501618" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl08$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_hdnprice" value="407.0000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-earrings/cabochon-earrings/r1501618/25gram-garnet-cabochon-stone-earrings-r1501618-8" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_hrfprod">
+                                        <img org-src="https://www.silverandgem.com/readystock1/products/R1501618-7.jpg" alt="Gorgeous Rawa Work at Bottom Garnet Round Shape 925 Sterling Solid Silver Dangle Earrings" title="Gorgeous Rawa Work at Bottom Garnet Round Shape 925 Sterling Solid Silver Dangle Earrings" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
+                                       <div style="height:85px;"> <span class="product_title" >Gorgeous Rawa Work at Bottom Garnet Round Shape 925 Sterling Solid Silver Dangle Earrings</span></div>
+                                    </a></div>
+                                    <div class="price">
+                                        <div class="product_price" style="padding-bottom:7px;">
+                                            
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_lblPrice">$4.78</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_litDiscount" style="color:green; "></span>
+                                        </div>
+                                        <div class="product_cart" style="float:RIGHT;">
+                                            <a href="https://www.silverandgem.com/silver-earrings/cabochon-earrings/r1501618/25gram-garnet-cabochon-stone-earrings-r1501618-8" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="span3 homeblocks">
+                            <div class="product_mainbox">
+                                <div class="product_mainbox_inner">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl09$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_hdnproid" value="R102058" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl09$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_hdnprice" value="573.5000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r102058/gorgeous-gemstone-rawa-wire-work-around-blue-chalcedony-round-shape-925-sterling-solid-silver-pendant-r102058-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_hrfprod">
                                         <img org-src="https://www.silverandgem.com/readystock1/products/R102058-9.jpg" alt="Gorgeous Gemstone Rawa & Wire Work Around Blue Chalcedony Round Shape 925 Sterling Solid Silver Pendant" title="Gorgeous Gemstone Rawa & Wire Work Around Blue Chalcedony Round Shape 925 Sterling Solid Silver Pendant" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
                                        <div style="height:85px;"> <span class="product_title" >Gorgeous Gemstone Rawa & Wire Work Around Blue Chalcedony Round Shape 925 Sterling Solid Silver Pendant</span></div>
                                     </a></div>
                                     <div class="price">
                                         <div class="product_price" style="padding-bottom:7px;">
                                             
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_lblPrice">$6.73</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_litDiscount" style="color:green; "></span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_lblPrice">$6.73</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_litDiscount" style="color:green; "></span>
                                         </div>
                                         <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r102058/gorgeous-gemstone-rawa-wire-work-around-blue-chalcedony-round-shape-925-sterling-solid-silver-pendant-r102058-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl02_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                            <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r102058/gorgeous-gemstone-rawa-wire-work-around-blue-chalcedony-round-shape-925-sterling-solid-silver-pendant-r102058-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
                                         </div>
                                     </div>
                                 </div>
@@ -2086,66 +2247,20 @@ return true;
                         <div class="span3 homeblocks">
                             <div class="product_mainbox">
                                 <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl03$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_hdnproid" value="R1002499" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl03$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_hdnprice" value="546.0000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002499/beautiful-rawa-work-around-tsavorite-pear-shape-925-sterling-solid-silver-ring-r1002499-3-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_hrfprod">
-                                        <img org-src="https://www.silverandgem.com/readystock1/products/R1002499-3.jpg" alt="Beautiful Rawa Work Around Tsavorite Pear Shape 925 Sterling Solid Silver Ring" title="Beautiful Rawa Work Around Tsavorite Pear Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
-                                       <div style="height:85px;"> <span class="product_title" >Beautiful Rawa Work Around Tsavorite Pear Shape 925 Sterling Solid Silver Ring</span></div>
-                                    </a></div>
-                                    <div class="price">
-                                        <div class="product_price" style="padding-bottom:7px;">
-                                            
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_lblPrice">$6.41</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_litDiscount" style="color:green; "></span>
-                                        </div>
-                                        <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002499/beautiful-rawa-work-around-tsavorite-pear-shape-925-sterling-solid-silver-ring-r1002499-3-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl03_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="span3 homeblocks">
-                            <div class="product_mainbox">
-                                <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl04$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_hdnproid" value="R1002500" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl04$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_hdnprice" value="500.0000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002500/minimal-tsavorite-square-shape-925-sterling-solid-silver-ring-r1002500-6-55" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_hrfprod">
-                                        <img org-src="https://www.silverandgem.com/readystock1/products/R1002500-6.jpg" alt="Minimal Tsavorite Square Shape 925 Sterling Solid Silver Ring" title="Minimal Tsavorite Square Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
-                                       <div style="height:85px;"> <span class="product_title" >Minimal Tsavorite Square Shape 925 Sterling Solid Silver Ring</span></div>
-                                    </a></div>
-                                    <div class="price">
-                                        <div class="product_price" style="padding-bottom:7px;">
-                                            
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_lblPrice">$5.87</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_litDiscount" style="color:green; "></span>
-                                        </div>
-                                        <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002500/minimal-tsavorite-square-shape-925-sterling-solid-silver-ring-r1002500-6-55" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl04_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="span3 homeblocks">
-                            <div class="product_mainbox">
-                                <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl05$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_hdnproid" value="R1002498" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl05$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_hdnprice" value="500.5000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002498/authentic-wire-work-around-tsavorite-oval-shape-925-sterling-solid-silver-ring-r1002498-1-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_hrfprod">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl10$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_hdnproid" value="R1002498" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl10$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_hdnprice" value="500.5000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002498/authentic-wire-work-around-tsavorite-oval-shape-925-sterling-solid-silver-ring-r1002498-1-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_hrfprod">
                                         <img org-src="https://www.silverandgem.com/readystock1/products/R1002498-1.jpg" alt="Authentic Wire Work Around Tsavorite Oval Shape 925 Sterling Solid Silver Ring" title="Authentic Wire Work Around Tsavorite Oval Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
                                        <div style="height:85px;"> <span class="product_title" >Authentic Wire Work Around Tsavorite Oval Shape 925 Sterling Solid Silver Ring</span></div>
                                     </a></div>
                                     <div class="price">
                                         <div class="product_price" style="padding-bottom:7px;">
                                             
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_lblPrice">$5.88</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_litDiscount" style="color:green; "></span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_lblPrice">$5.88</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_litDiscount" style="color:green; "></span>
                                         </div>
                                         <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002498/authentic-wire-work-around-tsavorite-oval-shape-925-sterling-solid-silver-ring-r1002498-1-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl05_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                            <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002498/authentic-wire-work-around-tsavorite-oval-shape-925-sterling-solid-silver-ring-r1002498-1-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
                                         </div>
                                     </div>
                                 </div>
@@ -2155,20 +2270,43 @@ return true;
                         <div class="span3 homeblocks">
                             <div class="product_mainbox">
                                 <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl06$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_hdnproid" value="R3403294" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl06$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_hdnprice" value="304.0000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403294/beautifully-handcrafted-work-around-blue-chalcedony-pear-shape-925-sterling-solid-silver-ring-r3403294-9-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_hrfprod">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl11$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_hdnproid" value="R1002499" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl11$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_hdnprice" value="491.4000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002499/beautiful-rawa-work-around-tsavorite-pear-shape-925-sterling-solid-silver-ring-r1002499-3-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_hrfprod">
+                                        <img org-src="https://www.silverandgem.com/readystock1/products/R1002499-3.jpg" alt="Beautiful Rawa Work Around Tsavorite Pear Shape 925 Sterling Solid Silver Ring" title="Beautiful Rawa Work Around Tsavorite Pear Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
+                                       <div style="height:85px;"> <span class="product_title" >Beautiful Rawa Work Around Tsavorite Pear Shape 925 Sterling Solid Silver Ring</span></div>
+                                    </a></div>
+                                    <div class="price">
+                                        <div class="product_price" style="padding-bottom:7px;">
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_lblWasPrice" style=" text-decoration:line-through; color:grey;">$6.41</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_lblPrice">$5.77</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_litDiscount" style="color:green; ">10.00% off</span>
+                                        </div>
+                                        <div class="product_cart" style="float:RIGHT;">
+                                            <a href="https://www.silverandgem.com/silver-rings/cut-stone-rings/r1002499/beautiful-rawa-work-around-tsavorite-pear-shape-925-sterling-solid-silver-ring-r1002499-3-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="span3 homeblocks">
+                            <div class="product_mainbox">
+                                <div class="product_mainbox_inner">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl12$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_hdnproid" value="R3403294" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl12$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_hdnprice" value="304.0000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403294/beautifully-handcrafted-work-around-blue-chalcedony-pear-shape-925-sterling-solid-silver-ring-r3403294-9-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_hrfprod">
                                         <img org-src="https://www.silverandgem.com/readystock1/products/R3403294-9.jpg" alt="Beautifully Handcrafted Work Around Blue Chalcedony Pear Shape 925 Sterling Solid Silver Ring" title="Beautifully Handcrafted Work Around Blue Chalcedony Pear Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
                                        <div style="height:85px;"> <span class="product_title" >Beautifully Handcrafted Work Around Blue Chalcedony Pear Shape 925 Sterling Solid Silver Ring</span></div>
                                     </a></div>
                                     <div class="price">
                                         <div class="product_price" style="padding-bottom:7px;">
                                             
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_lblPrice">$3.57</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_litDiscount" style="color:green; "></span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_lblPrice">$3.57</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_litDiscount" style="color:green; "></span>
                                         </div>
                                         <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403294/beautifully-handcrafted-work-around-blue-chalcedony-pear-shape-925-sterling-solid-silver-ring-r3403294-9-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl06_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403294/beautifully-handcrafted-work-around-blue-chalcedony-pear-shape-925-sterling-solid-silver-ring-r3403294-9-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
                                         </div>
                                     </div>
                                 </div>
@@ -2178,20 +2316,20 @@ return true;
                         <div class="span3 homeblocks">
                             <div class="product_mainbox">
                                 <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl07$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_hdnproid" value="R3402677" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl07$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_hdnprice" value="370.0000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3402677/21gram-turquoise-cabochon-stone-rings-r3402677-8" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_hrfprod">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl13$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_hdnproid" value="R3402677" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl13$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_hdnprice" value="370.0000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3402677/21gram-turquoise-cabochon-stone-rings-r3402677-8" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_hrfprod">
                                         <img org-src="https://www.silverandgem.com/readystock1/products/R3402677-7.jpg" alt="Handmade Wirework Turquoise Round Shape 925 Sterling Solid Silver Ring" title="Handmade Wirework Turquoise Round Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
                                        <div style="height:85px;"> <span class="product_title" >Handmade Wirework Turquoise Round Shape 925 Sterling Solid Silver Ring</span></div>
                                     </a></div>
                                     <div class="price">
                                         <div class="product_price" style="padding-bottom:7px;">
                                             
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_lblPrice">$4.34</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_litDiscount" style="color:green; "></span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_lblPrice">$4.34</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_litDiscount" style="color:green; "></span>
                                         </div>
                                         <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3402677/21gram-turquoise-cabochon-stone-rings-r3402677-8" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl07_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3402677/21gram-turquoise-cabochon-stone-rings-r3402677-8" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
                                         </div>
                                     </div>
                                 </div>
@@ -2201,20 +2339,20 @@ return true;
                         <div class="span3 homeblocks">
                             <div class="product_mainbox">
                                 <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl08$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_hdnproid" value="R3403533" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl08$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_hdnprice" value="490.0000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403533/gorgeous-handcrafted-work-around-blue-chalcedony-round-shape-925-sterling-solid-silver-ring-r3403533-9-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_hrfprod">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl14$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_hdnproid" value="R3403533" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl14$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_hdnprice" value="490.0000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403533/gorgeous-handcrafted-work-around-blue-chalcedony-round-shape-925-sterling-solid-silver-ring-r3403533-9-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_hrfprod">
                                         <img org-src="https://www.silverandgem.com/readystock1/products/R3403533-9.jpg" alt="Gorgeous Handcrafted Work Around Blue Chalcedony Round Shape 925 Sterling Solid Silver Ring" title="Gorgeous Handcrafted Work Around Blue Chalcedony Round Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
                                        <div style="height:85px;"> <span class="product_title" >Gorgeous Handcrafted Work Around Blue Chalcedony Round Shape 925 Sterling Solid Silver Ring</span></div>
                                     </a></div>
                                     <div class="price">
                                         <div class="product_price" style="padding-bottom:7px;">
                                             
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_lblPrice">$5.75</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_litDiscount" style="color:green; "></span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_lblPrice">$5.75</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_litDiscount" style="color:green; "></span>
                                         </div>
                                         <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403533/gorgeous-handcrafted-work-around-blue-chalcedony-round-shape-925-sterling-solid-silver-ring-r3403533-9-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl08_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403533/gorgeous-handcrafted-work-around-blue-chalcedony-round-shape-925-sterling-solid-silver-ring-r3403533-9-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
                                         </div>
                                     </div>
                                 </div>
@@ -2224,158 +2362,20 @@ return true;
                         <div class="span3 homeblocks">
                             <div class="product_mainbox">
                                 <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl09$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_hdnproid" value="R3401425" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl09$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_hdnprice" value="351.5000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3401425/22gram-turquoise-silver-rings-r3401425-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_hrfprod">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl15$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_hdnproid" value="R3401425" />
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl15$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_hdnprice" value="351.5000" />
+                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3401425/22gram-turquoise-silver-rings-r3401425-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_hrfprod">
                                         <img org-src="https://www.silverandgem.com/readystock1/products/R3401425-6.jpg" alt="Stunning Work & Rawa Work Around Turquoise Round Shape 925 Sterling Solid Silver Ring" title="Stunning Work & Rawa Work Around Turquoise Round Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
                                        <div style="height:85px;"> <span class="product_title" >Stunning Work & Rawa Work Around Turquoise Round Shape 925 Sterling Solid Silver Ring</span></div>
                                     </a></div>
                                     <div class="price">
                                         <div class="product_price" style="padding-bottom:7px;">
                                             
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_lblPrice">$4.13</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_litDiscount" style="color:green; "></span>
-                                        </div>
-                                        <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3401425/22gram-turquoise-silver-rings-r3401425-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl09_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="span3 homeblocks">
-                            <div class="product_mainbox">
-                                <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl10$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_hdnproid" value="R101976" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl10$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_hdnprice" value="560.0000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r101976/alluring-handcrafted-w-multiple-gemstones-rainbow-moonstonesmoky-topaz-pearround-shape-925-sterling-solid-silver-pendant-r101976-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_hrfprod">
-                                        <img org-src="https://www.silverandgem.com/readystock1/products/R101976-6.jpg" alt="Alluring Handcrafted w/ multiple gemstones Rainbow Moonstone,Smoky Topaz Pear,Round Shape 925 Sterling Solid Silver Pendant" title="Alluring Handcrafted w/ multiple gemstones Rainbow Moonstone,Smoky Topaz Pear,Round Shape 925 Sterling Solid Silver Pendant" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
-                                       <div style="height:85px;"> <span class="product_title" >Alluring Handcrafted w/ multiple gemstones Rainbow Moonstone,Smoky Topaz Pear,Round Shape 925 Sterling Solid Silver Pendant</span></div>
-                                    </a></div>
-                                    <div class="price">
-                                        <div class="product_price" style="padding-bottom:7px;">
-                                            
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_lblPrice">$6.58</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_litDiscount" style="color:green; "></span>
-                                        </div>
-                                        <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r101976/alluring-handcrafted-w-multiple-gemstones-rainbow-moonstonesmoky-topaz-pearround-shape-925-sterling-solid-silver-pendant-r101976-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl10_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="span3 homeblocks">
-                            <div class="product_mainbox">
-                                <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl11$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_hdnproid" value="R3403477" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl11$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_hdnprice" value="407.0000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403477/beautiful-multiple-gemstone-blue-chalcedony-pear-shape-925-sterling-solid-silver-ring-r3403477-9-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_hrfprod">
-                                        <img org-src="https://www.silverandgem.com/readystock1/products/R3403477-9.jpg" alt="Beautiful Multiple Gemstone Blue Chalcedony Pear Shape 925 Sterling Solid Silver Ring" title="Beautiful Multiple Gemstone Blue Chalcedony Pear Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
-                                       <div style="height:85px;"> <span class="product_title" >Beautiful Multiple Gemstone Blue Chalcedony Pear Shape 925 Sterling Solid Silver Ring</span></div>
-                                    </a></div>
-                                    <div class="price">
-                                        <div class="product_price" style="padding-bottom:7px;">
-                                            
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_lblPrice">$4.78</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_litDiscount" style="color:green; "></span>
-                                        </div>
-                                        <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403477/beautiful-multiple-gemstone-blue-chalcedony-pear-shape-925-sterling-solid-silver-ring-r3403477-9-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl11_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="span3 homeblocks">
-                            <div class="product_mainbox">
-                                <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl12$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_hdnproid" value="R101574" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl12$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_hdnprice" value="1102.5000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r101574/authentic-wire-work-around-lapis-oval-shape-925-sterling-solid-silver-pendant-r101574-98" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_hrfprod">
-                                        <img org-src="https://www.silverandgem.com/readystock1/products/R101574-98.jpg" alt="Authentic Wire Work Around Lapis Oval Shape 925 Sterling Solid Silver Pendant" title="Authentic Wire Work Around Lapis Oval Shape 925 Sterling Solid Silver Pendant" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
-                                       <div style="height:85px;"> <span class="product_title" >Authentic Wire Work Around Lapis Oval Shape 925 Sterling Solid Silver Pendant</span></div>
-                                    </a></div>
-                                    <div class="price">
-                                        <div class="product_price" style="padding-bottom:7px;">
-                                            
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_lblPrice">$12.94</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_litDiscount" style="color:green; "></span>
-                                        </div>
-                                        <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r101574/authentic-wire-work-around-lapis-oval-shape-925-sterling-solid-silver-pendant-r101574-98" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl12_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="span3 homeblocks">
-                            <div class="product_mainbox">
-                                <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl13$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_hdnproid" value="R100317" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl13$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_hdnprice" value="744.6000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r100317/stunning-gemstone-black-onyx-oval-shape-925-sterling-solid-silver-pendant-r100317-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_hrfprod">
-                                        <img org-src="https://www.silverandgem.com/readystock1/products/R100317-9.jpg" alt="Stunning Gemstone Black Onyx Oval Shape 925 Sterling Solid Silver Pendant" title="Stunning Gemstone Black Onyx Oval Shape 925 Sterling Solid Silver Pendant" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
-                                       <div style="height:85px;"> <span class="product_title" >Stunning Gemstone Black Onyx Oval Shape 925 Sterling Solid Silver Pendant</span></div>
-                                    </a></div>
-                                    <div class="price">
-                                        <div class="product_price" style="padding-bottom:7px;">
-                                            
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_lblPrice">$8.74</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_litDiscount" style="color:green; "></span>
-                                        </div>
-                                        <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-pendants/cabochon-pendants/r100317/stunning-gemstone-black-onyx-oval-shape-925-sterling-solid-silver-pendant-r100317-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl13_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="span3 homeblocks">
-                            <div class="product_mainbox">
-                                <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl14$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_hdnproid" value="R3402632" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl14$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_hdnprice" value="306.0000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3402632/beautiful-gemstone-green-onyx-oval-shape-925-sterling-solid-silver-ring-r3402632-9-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_hrfprod">
-                                        <img org-src="https://www.silverandgem.com/readystock1/products/R3402632-9.jpg" alt="Beautiful Gemstone Green Onyx Oval Shape 925 Sterling Solid Silver Ring" title="Beautiful Gemstone Green Onyx Oval Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
-                                       <div style="height:85px;"> <span class="product_title" >Beautiful Gemstone Green Onyx Oval Shape 925 Sterling Solid Silver Ring</span></div>
-                                    </a></div>
-                                    <div class="price">
-                                        <div class="product_price" style="padding-bottom:7px;">
-                                            
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_lblPrice">$3.59</span>
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_litDiscount" style="color:green; "></span>
-                                        </div>
-                                        <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3402632/beautiful-gemstone-green-onyx-oval-shape-925-sterling-solid-silver-ring-r3402632-9-9" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl14_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="span3 homeblocks">
-                            <div class="product_mainbox">
-                                <div class="product_mainbox_inner">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl15$hdnproid" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_hdnproid" value="R3403443" />
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$latestproduct1$rptLatest$ctl15$hdnprice" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_hdnprice" value="402.5000" />
-                                   <div align="center"> <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403443/beautiful-double-shank-blue-chalcedony-oval-shape-925-sterling-solid-silver-ring-r3403443-9-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_hrfprod">
-                                        <img org-src="https://www.silverandgem.com/readystock1/products/R3403443-9.jpg" alt="Beautiful Double Shank Blue Chalcedony Oval Shape 925 Sterling Solid Silver Ring" title="Beautiful Double Shank Blue Chalcedony Oval Shape 925 Sterling Solid Silver Ring" class="img pro_image" src="images/sge-watermart.jpg" width="220PX" height="220PX"  display:none;" />
-                                       <div style="height:85px;"> <span class="product_title" >Beautiful Double Shank Blue Chalcedony Oval Shape 925 Sterling Solid Silver Ring</span></div>
-                                    </a></div>
-                                    <div class="price">
-                                        <div class="product_price" style="padding-bottom:7px;">
-                                            
-                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_lblPrice">$4.73</span>
+                                            <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_lblsign" class="sign"></span><span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_lblPrice">$4.13</span>
                                             <span id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_litDiscount" style="color:green; "></span>
                                         </div>
                                         <div class="product_cart" style="float:RIGHT;">
-                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3403443/beautiful-double-shank-blue-chalcedony-oval-shape-925-sterling-solid-silver-ring-r3403443-9-6" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
+                                            <a href="https://www.silverandgem.com/silver-rings/cabochon-rings/r3401425/22gram-turquoise-silver-rings-r3401425-7" id="ctl00_ContentPlaceHolder1_latestproduct1_rptLatest_ctl15_hrfprod1" class="view_details"><img src="images/BUY-NOW-HOME.png" alt="Buy Now" /></a>
                                         </div>
                                     </div>
                                 </div>

@@ -9,8 +9,10 @@
  *
  * All functions from the original version are retained.
  */
+
 require_once __DIR__ . '/../../vendor/autoload.php';
-require_once   'ServerInfoHelper.php';
+require_once 'ServerInfoHelper.php';
+
 class SeoTools {
     // Global properties used by all handlers.
     protected string $html;         // Normalized HTML source (with meta tag names in lowercase)
@@ -24,13 +26,14 @@ class SeoTools {
     protected string $false;        // Icon for "false"
     protected string $scheme;
     protected string $host;
+
     /**
      * Constructor.
      *
      * @param string|null $html       The normalized HTML source.
      * @param mixed       $con        The database connection.
      * @param string      $domainStr  The normalized domain string.
-     * @param array       $lang       The language strings array.
+     * @param array|null  $lang       The language strings array. If not provided, defaults to an empty array.
      * @param array|null  $urlParse   The parsed URL (via parse_url()).
      * @param string|null $sepUnique  A unique separator string. Defaults to '!!!!8!!!!'.
      * @param string|null $seoBoxLogin HTML snippet for a login box.
@@ -39,11 +42,14 @@ class SeoTools {
         ?string $html, 
         $con, 
         string $domainStr, 
-        array $lang, 
+        ?array $lang = null, 
         ?array $urlParse, 
         ?string $sepUnique = null, 
         ?string $seoBoxLogin = null
     ) {
+        // If no language array is provided, default to an empty array (or a default set of language strings)
+        $this->lang = $lang ?? [];
+        
         $this->html = $this->normalizeHtml($html);
         $this->con = $con;
         
@@ -52,7 +58,6 @@ class SeoTools {
             $domainStr = strtolower($urlParse['host']);
         }
         $this->domainStr = $domainStr;
-        $this->lang = $lang;
     
         // If no parsed URL is provided, try creating one using the domain string.
         if (!$urlParse && !empty($domainStr)) {

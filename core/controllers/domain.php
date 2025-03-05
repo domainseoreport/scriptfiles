@@ -2,11 +2,7 @@
 defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
 define('TEMP_DIR', APP_DIR . 'temp' . D_S);
 
- 
-
-
 /* ------------------------- Main POST Handler ------------------------- */
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!isset($_POST['url']) || trim($_POST['url']) == '') {
         handleErrorAndRedirect("No URL provided in POST request.", $lang['8']);
@@ -16,8 +12,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($urlData === false) {
         handleErrorAndRedirect("Invalid URL format provided: " . $_POST['url'], $lang['8']);
     }
-    // Immediately redirect to a controller URL based on the normalized host.
-    redirectTo(createLink($controller . '/' . $urlData['host'], true));
+    
+    // Query the database for a record matching the normalized host.
+    // (Make sure getDomainByHost() is implemented to return a row from domains_data.)
+    $domainRecord = getDomainByHost($con, $urlData['host']);
+    if ($domainRecord && isset($domainRecord['slug']) && !empty($domainRecord['slug'])) {
+         // Domain exists in DB and has a slug; redirect to the subdomain URL.
+         $subdomainUrl = "http://" . $domainRecord['slug'] . ".localhost";
+         redirectTo($subdomainUrl);
+    } else {
+         // Otherwise, fallback to the existing behavior.
+         redirectTo(createLink($controller . '/' . $urlData['host'], true));
+    }
     die();
 }
 
@@ -83,7 +89,8 @@ if ($enable_reg) {
         $username = trans('Guest', $lang['11'], true);
         $reviewerSettings['reviewer_list'] = unserialize($reviewerSettings['reviewer_list']);
         $freeLimit = (int)$reviewerSettings['free_limit'];
-        $pdfUrl = $updateUrl = createLink('account/login', true);
+        $pdfUrl =createLink('account/login', true);
+        //$pdfUrl = $updateUrl = createLink('account/login', true);
     } else {
         $username = $_SESSION['twebUsername'];
     }
@@ -145,9 +152,7 @@ log_message('debug', "Hash code generated: $hashCode");
 
 // If update is needed, fetch and cache the HTML.
 if ($updateFound) {
-    
     $sourceData = fetchHtmlContent($my_url);
-   
     if ($sourceData === false) {
         log_message('error', "Failed to fetch content for URL: {$my_url}");
         die("Failed to fetch content.");
