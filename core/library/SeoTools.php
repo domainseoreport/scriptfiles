@@ -7056,6 +7056,7 @@ public function processPageSpeedInsightConcurrent(): string {
     
     // Store the complete report in session for later use.
     $_SESSION['report_data']['pageSpeedReport'] = ['pagespeed' => $pagespeedReport];
+ 
     
     return $jsonOutput;
 }
@@ -7371,145 +7372,149 @@ private function filterReport(array $data): array {
      *=================================================================== 
      */
  
-/**
- * cleanOut()
- *
- * Consolidates all individual SEO reports stored in session into one JSON report.
- * It calculates the overall score by aggregating the "passed", "improve", and "errors"
- * values from each module's report. (Each "Pass" earns 2 points, each "To Improve" earns 1 point,
- * and errors earn 0.)
- * Then, it updates the database with the final score, the consolidated report, and marks the analysis as completed.
- * Finally, it adds this domain to the recent sites list.
- *
- * @return void
- */
-/**
- * cleanOut()
- *
- * Consolidates all individual SEO reports stored in session into one JSON report.
- * It calculates the overall score by summing each module's pass/improve/errors.
- * Then, it updates the database with the final scoreboard, the consolidated report,
- * and marks the analysis as completed. Finally, it adds this domain to the recent sites list.
- *
- * @return void
- */
-/**
- * cleanOut()
- *
- * Consolidates each module’s final “one pass/improve/error” into a single scoreboard.
- * That way, if we have 12 modules, we only have 12 total checks in the final scoreboard.
- * Then, it updates the database with the scoreboard, final report, and marks analysis as completed.
- */
-public function cleanOut(): void
-{
-    // List the module keys that produce a single pass/improve/error in their 'report'.
-    // Each module sets 'passed'=1 or 0, 'improve'=1 or 0, 'errors'=1 or 0.
-    $moduleKeys = [
-        'meta',
-        'headingReport',
-        'keyCloudReport',
-        'linksReport',
-        'sitecardsReport',
-        'imageAltReport',
-        'textRatio',
-        'serverInfo',
-        'schemaReport',
-        'socialUrlsReport',
-        'pageAnalyticsReport',
-        'pageSpeedReport',
-    ];
+     public function cleanOut(): void
+     {
+         // Ensure that the session is active
+         if (session_status() !== PHP_SESSION_ACTIVE) {
+             session_start();
+             log_message('debug', "Session started in cleanOut().");
+         } else {
+             log_message('debug', "Session already active in cleanOut().");
+         }
+     
+         log_message('debug', "CleanOut Function Called");
+     
+         // List the module keys that produce a single pass/improve/error in their 'report'.
+         $moduleKeys = [
+             'meta',
+             'headingReport',
+             'keyCloudReport',
+             'linksReport',
+             'sitecardsReport',
+             'imageAltReport',
+             'textRatio',
+             'serverInfo',
+             'schemaReport',
+             'socialUrlsReport',
+             'pageAnalyticsReport',
+             'pageSpeedReport',
+         ];
+     
+         $totalPassed  = 0;
+         $totalImprove = 0;
+         $totalErrors  = 0;
+     
+         // Log the entire session data for debugging purposes
+         log_message('debug', "Session report_data: " . print_r($_SESSION['report_data'], true));
+     
+         // Loop over each module and add up the scores.
+         foreach ($moduleKeys as $key) {
+             if (!isset($_SESSION['report_data'][$key]['report'])) {
+                 log_message('debug', "Module key '$key' not found in session.");
+                 continue;
+             }
+             $rpt = $_SESSION['report_data'][$key]['report'];
+     
+             $passed  = (int) ($rpt['passed']  ?? 0);
+             $improve = (int) ($rpt['improve'] ?? 0);
+             $errors  = (int) ($rpt['errors']  ?? 0);
+     
+             log_message('debug', "Module '$key' values: passed=$passed, improve=$improve, errors=$errors");
+     
+             $totalPassed  += $passed;
+             $totalImprove += $improve;
+             $totalErrors  += $errors;
+         }
+     
+         $totalChecks = $totalPassed + $totalImprove + $totalErrors;
+         $maxPoints = $totalChecks * 2;
+         $currentPoints = ($totalPassed * 2) + ($totalImprove * 1);
+         $overallPercent = ($maxPoints > 0) ? round(($currentPoints / $maxPoints) * 100) : 0;
+     
+         log_message('debug', "Total Passed: $totalPassed, Improve: $totalImprove, Errors: $totalErrors");
+         log_message('debug', "Total Checks: $totalChecks, Max Points: $maxPoints, Current Points: $currentPoints, Overall Percent: $overallPercent");
+     
+         $scoreData = [
+             'passed'  => $totalPassed,
+             'improve' => $totalImprove,
+             'errors'  => $totalErrors,
+             'percent' => $overallPercent,
+         ];
+     
+         $consolidatedReports = [
+             'overallScore'        => $scoreData,
+             'meta'                => $_SESSION['report_data']['meta']                ?? [],
+             'headingReport'       => $_SESSION['report_data']['headingReport']       ?? [],
+             'keyCloudReport'      => $_SESSION['report_data']['keyCloudReport']      ?? [],
+             'linksReport'         => $_SESSION['report_data']['linksReport']         ?? [],
+             'sitecardsReport'     => $_SESSION['report_data']['sitecardsReport']     ?? [],
+             'imageAltReport'      => $_SESSION['report_data']['imageAltReport']      ?? [],
+             'textRatio'           => $_SESSION['report_data']['textRatio']           ?? [],
+             'serverInfo'          => $_SESSION['report_data']['serverInfo']          ?? [],
+             'schemaReport'        => $_SESSION['report_data']['schemaReport']        ?? [],
+             'socialUrlsReport'    => $_SESSION['report_data']['socialUrlsReport']    ?? [],
+             'pageAnalyticsReport' => $_SESSION['report_data']['pageAnalyticsReport'] ?? [],
+             'pageSpeedReport'     => $_SESSION['report_data']['pageSpeedReport']     ?? [],
+         ];
+     
+         $finalReportJson = json_encode($consolidatedReports);
+         if (json_last_error() !== JSON_ERROR_NONE) {
+             error_log("JSON encoding error in cleanOut(): " . json_last_error_msg());
+         } else {
+             log_message('debug', "Final report JSON: " . $finalReportJson);
+         }
+     
+         // Prepare update parameters and where clause
+         $updateData = [
+             'score'        => json_encode($scoreData), 
+             'completed'    => 'yes' // Ensure that your DB schema accepts this value
+         ];
+         $whereClause = ['domain' => $this->domainStr];
+     
+         // Log the update data
+         log_message('debug', "CleanOut: Updating domains_data with: " . print_r($updateData, true) . " WHERE " . print_r($whereClause, true));
+     
+         // Update the database with the final consolidated report and mark the analysis as complete.
+         $error = updateToDbPrepared(
+             $this->con,
+             'domains_data',
+             $updateData,
+             $whereClause,
+             false,   // Use default type definitions (all strings)
+             '',      // No custom type definition string
+             true     // Enable debug mode to output SQL query details
+         );
+     
+         if (!empty($error)) {
+             log_message('debug', "Error updating domains_data: " . $error);
+         } else {
+             log_message('debug', "Update successful. Domain " . $this->domainStr . " marked as completed with score.");
+         }
+     
+         // Optionally add to recent sites.
+         $data = mysqliPreparedQuery(
+             $this->con,
+             "SELECT * FROM domains_data WHERE domain=?",
+             's',
+             [$this->domainStr]
+         );
+         if ($data !== false) {
+             $pageSpeedInsightData = json_decode($data['page_speed_insight'] ?? '', true);
+             $desktopScore = (empty($pageSpeedInsightData['pagespeed']['report']['desktop']['score']))
+                 ? 0
+                 : $pageSpeedInsightData['pagespeed']['report']['desktop']['score'];
+     
+             $username = $_SESSION['twebUsername'] ?? 'Guest';
+             $ip = $data['server_ip'] ?? 'N/A';
+             $other = json_encode([$overallPercent, $desktopScore]);
+             addToRecentSites($this->con, $this->domainStr, $ip, $username, $other);
+             log_message('debug', "Added domain to recent sites: " . $this->domainStr);
+         } else {
+             log_message('debug', "No data found in DB for domain: " . $this->domainStr);
+         }
+     }
+     
 
-    $totalPassed  = 0;
-    $totalImprove = 0;
-    $totalErrors  = 0;
-
-    // For each module, read the single pass/improve/error from session.
-    foreach ($moduleKeys as $key) {
-        if (!isset($_SESSION['report_data'][$key]['report'])) {
-            continue;
-        }
-        $rpt = $_SESSION['report_data'][$key]['report'];
-        // If the module says "passed" => 1, that means the entire module is "pass."
-        $passed  = (int) ($rpt['passed']  ?? 0);
-        $improve = (int) ($rpt['improve'] ?? 0);
-        $errors  = (int) ($rpt['errors']  ?? 0);
-
-        // We assume each module can only produce exactly one of these as "1."
-        $totalPassed  += $passed;
-        $totalImprove += $improve;
-        $totalErrors  += $errors;
-    }
-
-    // totalChecks is how many modules actually reported anything
-    $totalChecks = $totalPassed + $totalImprove + $totalErrors;
-    // Each "Pass" is 2 points, each "Improve" is 1 point, "Error" is 0
-    $maxPoints = $totalChecks * 2;
-    $currentPoints = ($totalPassed * 2) + ($totalImprove * 1);
-    $overallPercent = ($maxPoints > 0) ? round(($currentPoints / $maxPoints) * 100) : 0;
-
-    // Final scoreboard
-    $scoreData = [
-        'passed'  => $totalPassed,
-        'improve' => $totalImprove,
-        'errors'  => $totalErrors,
-        'percent' => $overallPercent,
-    ];
-
-    // Combine all modules into one final array
-    $consolidatedReports = [
-        'overallScore'        => $scoreData,
-        'meta'                => $_SESSION['report_data']['meta']                ?? [],
-        'headingReport'       => $_SESSION['report_data']['headingReport']       ?? [],
-        'keyCloudReport'      => $_SESSION['report_data']['keyCloudReport']      ?? [],
-        'linksReport'         => $_SESSION['report_data']['linksReport']         ?? [],
-        'sitecardsReport'     => $_SESSION['report_data']['sitecardsReport']     ?? [],
-        'imageAltReport'      => $_SESSION['report_data']['imageAltReport']      ?? [],
-        'textRatio'           => $_SESSION['report_data']['textRatio']           ?? [],
-        'serverInfo'          => $_SESSION['report_data']['serverInfo']          ?? [],
-        'schemaReport'        => $_SESSION['report_data']['schemaReport']        ?? [],
-        'socialUrlsReport'    => $_SESSION['report_data']['socialUrlsReport']    ?? [],
-        'pageAnalyticsReport' => $_SESSION['report_data']['pageAnalyticsReport'] ?? [],
-        'pageSpeedReport'     => $_SESSION['report_data']['pageSpeedReport']     ?? [],
-    ];
-
-    // Encode final
-    $finalReportJson = json_encode($consolidatedReports);
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        error_log("JSON encoding error in cleanOut(): " . json_last_error_msg());
-    }
-
-    // Update DB
-    updateToDbPrepared(
-        $this->con,
-        'domains_data',
-        [
-            'score'        => json_encode($scoreData),
-            'final_report' => $finalReportJson,
-            'completed'    => 'yes'
-        ],
-        ['domain' => $this->domainStr]
-    );
-
-    // Optionally add to recent sites
-    $data = mysqliPreparedQuery(
-        $this->con,
-        "SELECT * FROM domains_data WHERE domain=?",
-        's',
-        [$this->domainStr]
-    );
-    if ($data !== false) {
-        // e.g. get desktop score from page_speed_insight
-        $pageSpeedInsightData = json_decode($data['page_speed_insight'] ?? '', true);
-        $desktopScore = (empty($pageSpeedInsightData['pagespeed']['report']['desktop']['score']))
-            ? 0
-            : $pageSpeedInsightData['pagespeed']['report']['desktop']['score'];
-
-        $username = $_SESSION['twebUsername'] ?? 'Guest';
-        $ip = $data['server_ip'] ?? 'N/A';
-        $other = json_encode([$overallPercent, $desktopScore]);
-        addToRecentSites($this->con, $this->domainStr, $ip, $username, $other);
-    }
-}
 
 }
 ?>
