@@ -7477,7 +7477,7 @@ private function filterReport(array $data): array {
          $whereClause = ['domain' => $this->domainStr];
      
          // Log the update data
-       //  log_message('debug', "CleanOut: Updating domains_data with: " . print_r($updateData, true) . " WHERE " . print_r($whereClause, true));
+         log_message('debug', "CleanOut: Updating domains_data with: " . print_r($updateData, true) . " WHERE " . print_r($whereClause, true));
      
          // Update the database with the final consolidated report and mark the analysis as complete.
          $error = updateToDbPrepared(
