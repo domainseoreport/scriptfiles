@@ -762,7 +762,15 @@ function slugify($text)
  * @return string|null
  */
 function isDomainAccessible($domain)
-{ 
+{
+    // If a full URL is passed, extract the host.
+    if (filter_var($domain, FILTER_VALIDATE_URL)) {
+        $parsedUrl = parse_url($domain);
+        if (isset($parsedUrl['host'])) {
+            $domain = $parsedUrl['host'];
+        }
+    }
+
     // Use checkdnsrr to verify that the domain has either an A or AAAA record.
     if (!checkdnsrr($domain, 'A') && !checkdnsrr($domain, 'AAAA')) {
         log_message('debug', "DNS resolution failed for domain: {$domain}");
@@ -790,7 +798,7 @@ function isDomainAccessible($domain)
             $variations[] = $protocol . 'www.' . $domain;
         }
 
-        log_message('debug', "Checked: " . print_r($variations, true));
+        log_message('debug', "Checked variations: " . print_r($variations, true));
         foreach ($variations as $url) {
             if (in_array($url, $checkedUrls)) {
                 continue;
@@ -857,6 +865,7 @@ function isDomainAccessible($domain)
     log_message('debug', "No accessible URL found for domain: {$domain}");
     return null;
 }
+
 
 
 if (!function_exists('log_message')) {

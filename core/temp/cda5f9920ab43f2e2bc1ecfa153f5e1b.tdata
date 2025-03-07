@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Jaipur Tour Travles</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="images/fav.ico">
+    <link href="https://fonts.googleapis.com/css?family=Poppins%7CQuicksand:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/mob.css">
+    <link rel="stylesheet" href="css/animate.css">
+
+    <style>
+
+        .submenu 
+        {
+            display: none;
+        }
+
+        .submenu.active {
+            display: block;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div id="status">&nbsp;</div>
+    </div>
+    <div class="pop-bg"></div>
+
+    <!-- MOBILE MENU -->
+    <section>
+        <div class="ed-mob-menu">
+            <div class="ed-mob-menu-con">
+                <div class="ed-mm-left">
+                    <div class="wed-logo">
+                        <a href="index.html"><img src="images/logo.png" alt="" /></a>
+                    </div>
+                </div>
+                <div class="ed-mm-right">
+                    <div class="ed-mm-menu">
+                        <a href="#!" class="ed-micon"><i class="fa fa-bars"></i></a>
+                        <div class="ed-mm-inn">
+                            <a href="#!" class="ed-mi-close"><i class="fa fa-times"></i></a>
+                            <ul>
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                <li class="ed-has-submenu"><a href="#">Tour Packages</a>
+                                    <ul class="submenu">
+                                        <li><a href="taj-details.html">Taj Mahal</a></li>
+                                        <li><a href="jaipur-local.html">Jaipur Local Sight Seen</a></li>
+                                        <li><a href="jhalana-leopard.html">Jhalana Leopard Safari Tour</a></li>
+                                        <li><a href="pushkar-details.html">Ajmer Pushkar One Day Trip</a></li>
+                                        <li><a href="ranthomber.html">Jaipur Ranthomber Tour</a></li>
+                                        <li><a href="bundi.html">Day Trip Bundi From Jaipur</a></li>
+                                        <li><a href="taj-sunrise.html">Taj Mahal Sunrise Tour</a></li>
+                                        <li><a href="golden-triangle-tours.html">Golden Triangle Tours</a></li>
+                                        <li><a href="classical-india-tours.html">Classical Rajasthan Short Tours </a></li>
+                                        <li><a href="village-tours.html">Village Tour</a></li>
+                                        <li><a href="one-day-tours.html">One Day Exploring</a></li>
+                                        <li><a href="#">Indian Wildlife Tour Packages</a></li>
+                                        <li><a href="#">Nepal Special Tour Packages</a></li>
+                                        <li><a href="group-tour-package.html">Group Tour Packages</a></li>
+                                        <li><a href="family-tour-packages.html">Family Tour Packages</a></li>
+
+                                    </ul>
+                                </li>
+                                <li><a href="galleries.html">Galleries</a></li>
+                                <li><a href="booking-car-rentals.html">Taxi Services</a></li>
+                                <li><a href="blog.html">Blogs</a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!--HEADER SECTION-->
+    <section>
+        <!-- TOP BAR -->
+        <div class="ed-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ed-com-t1-left">
+                            <ul>
+                                <li><a href="#">Contact: 79, Kalwar Scheme, Gopalbari, Jaipur, Rajasthan 302001</a>
+                                </li>
+                                <li><a href="#">Phone: 8890602986</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ed-com-t1-right">
+                            <ul>
+                                <!-- <li><span class="sear-pop pop-ini" data-pop="pop-search"><i class="fa fa-search aria-hidden="true"></i></span></li>
+                                <li><a href="login.html" class="top-sign">Sign In</a>
+                                </li>
+                                <li><a href="register.html" class="top-regi">Sign Up</a>
+                                </li>
+                                <li><a href="dashboard.html" class="top-prof">Profile</a>
+                                </li> -->
+                                <!-- <li><a href="#" class="top-prof">Email :- jaipurtourt@gmail.com</a>
+                                </li> -->
+                                <li><a href="#">Email: jaipurtourt@gmail.com</a>
+                            </ul>
+                        </div>
+                        <div class="ed-com-t1-social">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOGO AND MENU SECTION -->
+        <div class="top-logo" data-spy="affix" data-offset-top="250">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="wed-logo">
+                            <a href="index.html"><img src="images/logo.png" alt="" />
+                            </a>
+                        </div>
+                        <div class="main-menu">
+                            <ul>
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                <li class="about-menu">
+                                    <a href="destinations.html" class="mm-arr">Tour Packages</a>
+                                    <!-- MEGA MENU 1 -->
+                                    <div class="mm-pos">
+                                        <div class="about-mm m-menu">
+                                            <div class="m-menu-inn">
+                                                <div class="mm1-com mm1-s1">
+                                                    <div class="ed-course-in">
+                                                        <a class="course-overlay menu-about" href="#">
+                                                            <img src="images/jaipur/a5.jpg" alt="">
+                                                            <span>Popular Package</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="mm1-com mm1-s2">
+                                                    <p>Book your tour plan with <strong> jaipur tour travels </strong> and enjoy your trip with best offers. you will get wonderfull experience and enojy with us. <strong> Jaipur Tour Travles </strong> have more then 50+ packages and type with 100+ hotels.</p>
+                                                    <a href="destinations.html" class="mm-r-m-btn">Read more</a>
+                                                </div>
+                                                <div class="mm1-com mm1-s3">
+                                                    <ul>
+                                                        <li><a href="taj-details.html">Taj Mahal</a></li>
+                                                        <li><a href="jaipur-local.html">Jaipur Local Sight Seen</a></li>
+                                                        <li><a href="jhalana-leopard.html">Jhalana Leopard Safari Tour</a></li>
+                                                        <li><a href="pushkar-details.html">Ajmer Pushkar One Day Trip</a></li>
+                                                        <li><a href="ranthomber.html">Jaipur Ranthomber Tour</a></li>
+                                                        <li><a href="bundi.html">Day Trip Bundi From Jaipur</a></li>
+                                                        <li><a href="taj-sunrise.html">Taj Mahal Sunrise Tour</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="mm1-com mm1-s4">
+                                                    <ul>
+                                                        <li><a href="golden-triangle-tours.html">Golden Triangle Tours</a></li>
+                                                        <li><a href="classical-india-tours.html">Classical Rajasthan Short Tours </a></li>
+                                                        <li><a href="village-tours.html">Village Tour</a></li>
+                                                        <li><a href="one-day-tours.html">One Day Exploring</a></li>
+                                                        <li><a href="#">Indian Wildlife Tour Packages</a></li>
+                                                        <li><a href="#">Nepal Special Tour Packages</a></li>
+                                                        <li><a href="group-tour-package.html">Group Tour Packages</a></li>
+                                                        <li><a href="family-tour-packages.html">Family Tour Packages</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="admi-menu"><a href="galleries.html" class="mm-arr">Galleries</a></li>
+                                <li><a href="booking-car-rentals.html">Taxi Service</a></li>
+                                <li><a href="blog.html">Blogs</a></li>
+                                <li><a href="contact.html">Contact us</a></li>
+                            </ul>
+                        </div>
+                        <div class="al">
+                            <div class="head-pro pop-ini" data-pop="pop-advi">
+                                <img src="images/ad1.png" alt="" loading="imran">
+                                <div>
+                                    <b>Advisor</b>
+                                    <h4>Imran Khan</h4>
+                                </div>
+                                <span class="fclick"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <!-- HEADER & MENU -->
+        <div class="menu-pop menu-pop2 pop pop-advi">
+            <span class="menu-pop-clo pop-clo"><i class="fa fa-times" aria-hidden="true"></i></span>
+            <div class="inn">
+                <div class="menu-pop-help">
+                    <h4>Support Team</h4>
+                    <div class="user-pro">
+                        <img src="images/ad1.png" alt="" loading="imran">
+                    </div>
+                    <div class="user-bio">
+                        <h5>Imran Khan</h5>
+                        <span>Senior trip advisor</span>
+                        <a href="enquiry.html" class="btn btn-primary btn-sm">Ask your doubts</a>
+                    </div>
+                </div>
+                <div class="menu-pop-soci">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+
+                <ul class="menu-pop-info">
+                    <li><a href="#!"><i class="fa fa-phone" aria-hidden="true"></i>+91 8890602986</a></li>
+                    <li><a href="#!"><i class="fa fa-whatsapp" aria-hidden="true"></i>+91 8890602986</a></li>
+                    <li><a href="#!"><i class="fa fa-envelope-o" aria-hidden="true"></i>jaipurtourt@gmail.com</a></li>
+                    <li><a href="#!"><i class="fa fa-map-marker" aria-hidden="true"></i>79, Kalwar Scheme, Gopalbari, Jaipur, Rajasthan 302001</a></li>
+                </ul>
+
+                <div class="late-news">
+                    <h4>Latest news</h4>
+                    <ul>
+                        <li>
+                            <div class="rel-pro-img">
+                                <img src="images/rooms/01.jpg" alt="" loading="lazy">
+                            </div>
+                            <div class="rel-pro-con">
+                                <h5>Long established fact that a reader distracted</h5>
+                                <span class="ic-date">12 Dec 2023</span>
+                            </div>
+                            <a href="hotel-detail.html" class="fclick"></a>
+                        </li>
+                        <li>
+                            <div class="rel-pro-img">
+                                <img src="images/rooms/02.jpg" alt="" loading="lazy">
+                            </div>
+                            <div class="rel-pro-con">
+                                <h5>Long established fact that a reader distracted</h5>
+                                <span class="ic-date">12 Dec 2023</span>
+                            </div>
+                            <a href="hotel-detail.html" class="fclick"></a>
+                        </li>
+                        <li>
+                            <div class="rel-pro-img">
+                                <img src="images/rooms/04.jpg" alt="" loading="lazy">
+                            </div>
+                            <div class="rel-pro-con">
+                                <h5>Long established fact that a reader distracted</h5>
+                                <span class="ic-date">12 Dec 2023</span>
+                            </div>
+                            <a href="hotel-detail.html" class="fclick"></a>
+                        </li>
+                        <li>
+                            <div class="rel-pro-img">
+                                <img src="images/rooms/05.jpg" alt="" loading="lazy">
+                            </div>
+                            <div class="rel-pro-con">
+                                <h5>Long established fact that a reader distracted</h5>
+                                <span class="ic-date">12 Dec 2023</span>
+                            </div>
+                            <a href="hotel-detail.html" class="fclick"></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- HELP BOX -->
+                <div class="prof-rhs-help">
+                    <div class="inn">
+                        <h3>Tell us your Needs</h3>
+                        <p>Tell us what kind of service you are looking for.</p>
+                        <a href="register.html">Register for free</a>
+                    </div>
+                </div>
+                <!-- END HELP BOX -->
+            </div>
+        </div>
+    <!-- END HEADER & MENU -->
+    </section>
+    <!--END HEADER SECTION-->
+
+    <!--HEADER SECTION-->
+    <section>
+        <div class="tourz-search">
+            <div class="container">
+                <div class="row">
+                    <div class="tourz-search-1">
+                        <h1>Plan Your Travel Now!</h1>
+                        <p>With Jaipur Tour Travles</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--END HEADER SECTION-->
+
+    <section>
+        <div class="rows tb-space pad-bot-redu tb-space">
+            <div class="container">
+                <div class="tourz-hom-ser">
+                    <ul class="slider-all">
+                        <li>
+                            <div class="hom-quick-acc hom-quick-acc-1">
+                                <h2>Book your<span>Travel package</span></h2>
+                                <a href="booking-tour-package.html" class="cta-1">Book now</a>
+                                <img src="images/home-1.png" loading="lazy" alt="">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="hom-quick-acc hom-quick-acc-2">
+                                <h2>Book your<span>Car Rentals</span></h2>
+                                <a href="booking-car-rentals.html" class="cta-1">Book now</a>
+                                <img src="images/home-2.png" loading="lazy" alt="">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="hom-quick-acc hom-quick-acc-3">
+                                <h2>Explore<span>Destinations </span></h2>
+                                <a href="destinations.html" class="cta-1">Explore</a>
+                                <img src="images/home-3.png" loading="lazy" alt="">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="hom-quick-acc hom-quick-acc-4">
+                                <h2>Over 30,000+<span>Hotels</span></h2>
+                                <a href="hotels-list.html" class="cta-1">Book now</a>
+                                <img src="images/home-4.png" loading="lazy" alt="">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="hom-quick-acc hom-quick-acc-5">
+                                <h2>Travel Events <span>Events</span></h2>
+                                <a href="events.html" class="cta-1">Explore</a>
+                                <img src="images/home-5.png" loading="lazy" alt="">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--====== HOME HOTELS ==========-->
+    <section>
+        <div class="rows pad-bot-redu">
+            <div class="container">
+                <!-- TITLE & DESCRIPTION -->
+                <div class="spe-title">
+                    <h2>Top <span>Destinations</span> </h2>
+                    <div class="title-line">
+                        <div class="tl-1"></div>
+                        <div class="tl-2"></div>
+                        <div class="tl-3"></div>
+                    </div>
+                    <p>Jaipur Tour Travles have multiple types tour package at different different places.</p>
+                </div>
+                <!-- CITY -->
+                <div class="col-md-6">
+                    <a href="jaipur-details.html">
+                        <div class="tour-mig-like-com">
+                            <div class="tour-mig-lc-img"> <img src="images/listing/a4.jpg" alt=""> </div>
+                            <div class="tour-mig-lc-con">
+                                <h5>Jaipur</h5>
+                                <p><span>5 Packages</span> </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="jais-details.html">
+                        <div class="tour-mig-like-com">
+                            <div class="tour-mig-lc-img"> 
+                                <img src="images/listing/j4.jpg" alt=""> 
+                            </div>
+                            <div class="tour-mig-lc-con tour-mig-lc-con2">
+                                <h5>Jaisalmer</h5>
+                                <!-- <p>Starting from INR 1500</p> -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="agra-details.html">
+                        <div class="tour-mig-like-com">
+                            <div class="tour-mig-lc-img"> <img src="images/listing/ag8.jpg" alt=""> </div>
+                            <div class="tour-mig-lc-con tour-mig-lc-con2">
+                                <h5>Agra</h5>
+                                <!-- <p>Starting from $2400</p> -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="pushkar-details.html">
+                        <div class="tour-mig-like-com">
+                            <div class="tour-mig-lc-img"> <img src="images/listing/pu7.jpg" alt=""> </div>
+                            <div class="tour-mig-lc-con tour-mig-lc-con2">
+                                <h5>Pushkar</h5>
+                                <!-- <p>Starting from $2400</p> -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="udaipur-details.html">
+                        <div class="tour-mig-like-com">
+                            <div class="tour-mig-lc-img"> <img src="images/listing/ud9.jpg" alt=""> </div>
+                            <div class="tour-mig-lc-con tour-mig-lc-con2">
+                                <h5>Uadipur</h5>
+                                <!-- <p>Starting from $2400</p> -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="rows pad-bot-redu">
+            <div class="container">
+                <!-- TITLE & DESCRIPTION -->
+                <div class="spe-title">
+                    <h2>Tour <span>Packages</span></h2>
+                    <div class="title-line">
+                        <div class="tl-1"></div>
+                        <div class="tl-2"></div>
+                        <div class="tl-3"></div>
+                    </div>
+                    <p>Book Your Tour Package with Jaipur Tour Travels. We will Provide best Hotels and Transportations.</p>
+                </div>
+                <!-- HOTEL GRID -->
+                <div class="to-ho-hotel">
+                    <ul class="multiple-items">
+                        <li class="col-md-4">
+                            <div class="to-ho-hotel-con pack-new-box">
+                                <div class="to-ho-hotel-con-1">
+                                    <img src="images/places/g8.jpg" alt="">
+                                    <div class="hom-pack-deta">
+                                        <h2>Family package</h2>
+                                        <h4><span>10+</span> destinations</h4>
+                                        <span class="cta-2">Book now</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="to-ho-hotel-con pack-new-box">
+                                <div class="to-ho-hotel-con-1">
+                                    <img src="images/places/s3.jpg" alt="">
+                                    <div class="hom-pack-deta">
+                                        <h2>Honeymoon package</h2>
+                                        <h4><span>15+</span> destinations</h4>
+                                        <span class="cta-2">Book now</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="to-ho-hotel-con pack-new-box">
+                                <div class="to-ho-hotel-con-1">
+                                    <img src="images/places/g4.jpg" alt="">
+                                    <div class="hom-pack-deta">
+                                        <h2>Group package</h2>
+                                        <h4><span>10+</span> destinations</h4>
+                                        <span class="cta-2">Book now</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="to-ho-hotel-con pack-new-box">
+                                <div class="to-ho-hotel-con-1">
+                                    <img src="images/places/g5.jpg" alt="">
+                                    <div class="hom-pack-deta">
+                                        <h2>Friends package</h2>
+                                        <h4><span>20+</span> destinations</h4>
+                                        <span class="cta-2">Book now</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="to-ho-hotel-con pack-new-box">
+                                <div class="to-ho-hotel-con-1">
+                                    <img src="images/places/raj124.jpg" alt="">
+                                    <div class="hom-pack-deta">
+                                        <h2>Solo package</h2>
+                                        <h4><span>13+</span> destinations</h4>
+                                        <span class="cta-2">Book now</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="to-ho-hotel-con pack-new-box">
+                                <div class="to-ho-hotel-con-1">
+                                    <img src="images/places/raj123.jpg" alt="">
+                                    <div class="hom-pack-deta">
+                                        <h2>Adventure package</h2>
+                                        <h4><span>20+</span> destinations</h4>
+                                        <span class="cta-2">Book now</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="to-ho-hotel-con pack-new-box">
+                                <div class="to-ho-hotel-con-1">
+                                    <img src="images/places/raj121.jpg" alt="">
+                                    <div class="hom-pack-deta">
+                                        <h2>Religious package</h2>
+                                        <h4><span>10+</span> destinations</h4>
+                                        <span class="cta-2">Book now</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="to-ho-hotel-con pack-new-box">
+                                <div class="to-ho-hotel-con-1">
+                                    <img src="images/places/raj122.jpg" alt="">
+                                    <div class="hom-pack-deta">
+                                        <h2>Water sports package</h2>
+                                        <h4><span>15+</span> destinations</h4>
+                                        <span class="cta-2">Book now</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="fclick"></a>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!--====== HOME HOTELS ==========-->
+    <section>
+        <div class="rows hom-hotels tb-space pad-top-o">
+            <div class="container">
+                <!-- TITLE & DESCRIPTION -->
+                <div class="spe-title">
+                    <h2>Popular <span>Destinations</span> </h2>
+                    <div class="title-line">
+                        <div class="tl-1"></div>
+                        <div class="tl-2"></div>
+                        <div class="tl-3"></div>
+                    </div>
+                    <p>Book Your Popular Tour Package with Jaipur Tour Travels.</p>
+                </div>
+                <!-- HOTEL GRID -->
+                <div class="to-ho-hotel">
+                    <ul class="multiple-items7">
+                        <li class="col-md-4">
+                            <div class="plac-hom-box">
+                                <div class="plac-hom-box-im">
+                                    <img src="images/places/10.jpg" alt="" loading="lazy">
+                                    <h4>Taj Mahal</h4>
+                                </div>
+                                <a href="destinations.html" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="plac-hom-box">
+                                <div class="plac-hom-box-im">
+                                    <img src="images/places/a5.jpg" alt="" loading="lazy">
+                                    <h4>Jaipur Local Sight Seen</h4>
+                                </div>
+                                <a href="destinations.html" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="plac-hom-box">
+                                <div class="plac-hom-box-im">
+                                    <img src="images/places/golden.jpg" alt="" loading="lazy">
+                                    <h4>Golden Triangle Tour</h4>
+                                </div>
+                                <a href="destinations.html" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="plac-hom-box">
+                                <div class="plac-hom-box-im">
+                                    <img src="images/places/hanwa.jpg" alt="" loading="lazy">
+                                    <h4>Rajasthan Tour Package</h4>
+                                </div>
+                                <a href="destinations.html" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="plac-hom-box">
+                                <div class="plac-hom-box-im">
+                                    <img src="images/places/jm.jpg" alt="" loading="lazy">
+                                    <h4>Jaipur Mandawa Tour</h4>
+                                </div>
+                                <a href="destinations.html" class="fclick"></a>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="plac-hom-box">
+                                <div class="plac-hom-box-im">
+                                    <img src="images/places/jr.jpg" alt="" loading="lazy">
+                                    <h4>Jaipur Ranthomber Tour</h4>
+                                </div>
+                                <a href="destinations.html" class="fclick"></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== SECTION: FREE CONSULTANT ==========-->
+    <section>
+        <div class="offer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="offer-l"> <span class="ol-1"></span> <span class="ol-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span> <span class="ol-4">Visit Jaipur Same Day</span>                            
+                            <span class="ol-3"></span> <span class="ol-5">INR 1500/-</span>
+                            <ul>
+                                <li class="wow fadeInUp" data-wow-duration="0.5s">
+                                    <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img src="images/icon/dis1.png" alt="">
+									</a><span>Free WiFi</span>
+                                </li>
+                                <li class="wow fadeInUp" data-wow-duration="0.7s">
+                                    <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img src="images/icon/dis2.png" alt=""> </a><span>Breakfast</span>
+                                </li>
+                                <li class="wow fadeInUp" data-wow-duration="0.9s">
+                                    <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img src="images/icon/dis3.png" alt=""> </a><span>Pool</span>
+                                </li>
+                                <li class="wow fadeInUp" data-wow-duration="1.1s">
+                                    <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img src="images/icon/dis4.png" alt=""> </a><span>Television</span>
+                                </li>
+                                <li class="wow fadeInUp" data-wow-duration="1.3s">
+                                    <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img src="images/icon/dis5.png" alt=""> </a><span>GYM</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="offer-r">
+                            <div class="or-1"> <span class="or-11">go</span> <span class="or-12">Stays</span> </div>
+                            <div class="or-2"> <span class="or-21">Get</span> <span class="or-22">70%</span> <span class="or-23">Off</span> <!-- <span class="or-24">use code: RG5481WERQ</span> --> <span class="or-25"></span> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+    <!--====== POPULAR TOUR PLACES ==========-->
+    <section>
+        <div class="rows pla pad-bot-redu tb-space">
+            <div class="pla1 p-home container">
+                <!-- TITLE & DESCRIPTION -->
+                <div class="spe-title spe-title-1">
+                    <h2>Top <span>Sight Seeing</span> With Jaipur Tour Travles</h2>
+                    <div class="title-line">
+                        <div class="tl-1"></div>
+                        <div class="tl-2"></div>
+                        <div class="tl-3"></div>
+                    </div>
+                    <p>Rajasthan's leading tour and travels Booking website,Over 100 packages In India. Book travel packages and enjoy your holidays with distinctive experience with Jaipur Tour Travles.</p>
+                </div>
+                <div class="popu-places-home">
+                    <!-- POPULAR PLACES 1 -->
+                    <div class="col-md-6 col-sm-6 col-xs-12 place">
+                        <div class="col-md-6 col-sm-12 col-xs-12"> <img src="images/sight/des1.jpg" alt="" /> </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <h3><span>Desert Triangle Tour</span> 6 Days / 5 Nights</h3>
+                            <p>The tour offers the opportunity to visit the three beautiful cities of Jodhpur, Jaisalmer and Bikaner and fulfill your dream.</a> </div>
+                    </div>
+                    <!-- POPULAR PLACES 2 -->
+                    <div class="col-md-6 col-sm-6 col-xs-12 place">
+                        <div class="col-md-6 col-sm-12 col-xs-12"> <img src="images/sight/fm1.jpg" alt="" /> </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <h3><span>Family package</span> 14 Days / 13 Nights</h3>
+                            <p>Book a family tour package with Jaipur Tour Travles and enjoy your holidays.</a> </div>
+                    </div>
+                </div>
+                <div class="popu-places-home">
+                    <!-- POPULAR PLACES 3 -->
+                    <div class="col-md-6 col-sm-6 col-xs-12 place">
+                        <div class="col-md-6 col-sm-12 col-xs-12"> <img src="images/religious.jpg" alt="" /> </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <h3><span>Religious Rajasthan Tour </span> 11 Days / 10 Nights</h3>
+                            <p>Visit famous religious and spiritual pilgrimage places of India are found in Rajasthan. Explore these places for an exceptional experience.</a> </div>
+                    </div>
+                    <!-- POPULAR PLACES 4 -->
+                    <div class="col-md-6 col-sm-6 col-xs-12 place">
+                        <div class="col-md-6 col-sm-12 col-xs-12"> <img src="images/group.jpg" alt="" /> </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <h3><span>Group Package</span> 7 Days / 6 Nights</h3>
+                            <p>Visit group package with family and friends with Jaipur Tour Travels and enjoy your holidays.</a> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    <!--====== REQUEST A QUOTE ==========-->
+    <!-- <section>
+        <div class="form tb-space">
+            <div class="rows container">
+                <div class="spe-title">
+                    <h2>Book your <span>favourite Package</span> Now!</h2>
+                    <div class="title-line">
+                        <div class="tl-1"></div>
+                        <div class="tl-2"></div>
+                        <div class="tl-3"></div>
+                    </div>
+                    <p>World's leading tour and travels Booking website,Over 30,000 packages worldwide. Book travel packages and enjoy your holidays with distinctive experience</p>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form_1">
+                    <div class="succ_mess">Thank you for contacting us we will get back to you soon.</div>
+                    <form id="home_form" name="home_form" action="mail/send.php">
+                        <ul>
+                            <li>
+                                <input type="text" name="ename" value="" id="ename" placeholder="Name" required>
+                            </li>
+                            <li>
+                                <input type="tel" name="emobile" value="" id="emobile" placeholder="Mobile" required>
+                            </li>
+                            <li>
+                                <input type="email" name="eemail" value="" id="eemail" placeholder="Email id" required>
+                            </li>
+                            <li>
+                                <input type="text" name="esubject" value="" id="esubject" placeholder="Subject" required>
+                            </li>
+                            <li>
+                                <input type="text" name="ecity" value="" id="ecity" placeholder="City" required>
+                            </li>
+                            <li>
+                                <input type="text" name="ecount" value="" id="ecount" placeholder="Country" required>
+                            </li>
+                            <li>
+                                <textarea name="emess" cols="40" rows="3" id="text-comment" placeholder="Enter your message"></textarea>
+                            </li>
+                            <li>
+                                <input type="submit" value="Submit" id="send_button">
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 family">
+                    <img src="images/family.png" alt="" />
+                </div>
+            </div>
+        </div>
+    </section> -->
+    <!--====== Testimonials of our clients ==========-->
+    <section>
+        <div class="rows pad-bot-redu" style="margin-top: 50px;">
+            <div class="container">
+                <!-- TITLE & DESCRIPTION -->
+                <div class="spe-title">
+                    <h2>Testimonials <span>of Clients</span></h2>
+                    <div class="title-line">
+                        <div class="tl-1"></div>
+                        <div class="tl-2"></div>
+                        <div class="tl-3"></div>
+                    </div>
+                    <p>Our Happy Clients good testimonials for Jaipur Tour Travles.</p>
+                </div>
+                <!-- HOTEL GRID -->
+                <div class="to-ho-hotel">
+                    <ul class="multiple-items">
+                        <li class="col-md-4">
+                            <div class="p-tesi">
+                                <div class="col-md-3 col-sm-3"> <img src="images/testi/t1.png" alt="" height="80px;" width="70px;" class="img-circle"> 
+                                </div>
+                                <div class="col-md-9 col-sm-9">
+                                    <h4>Best tour package forever</h4>
+                                    <div>
+                                        <span class="tour_star">
+                                        <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-half-o" aria-hidden="true"></i></span> 
+                                    </div>
+                                    <p>I did a day tour with driver Faizal and had an amazing time. Faizal was polite and always had a smile - his English skills are basic but we were still able to converse, and with a lot of extensive English signage at most sights.</p> <address>Veli, USA</address> 
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="p-tesi">
+                            <div class="col-md-3 col-sm-3"> <img src="images/testi/t2.png" alt="" height="80px;" width="70px;" class="img-circle"> </div>
+                                <div class="col-md-9 col-sm-9">
+                                    <h4>Excellient Service by Mr. Imran</h4>
+                                    <div><span class="tour_star"><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-half-o" aria-hidden="true"></i></span> </div>
+                                    <p>Me and my friend recently visited jaipur and would like to recommend you all to use this taxi service for sightseeing in jaipur. Akim ji the driver with me he is superb in all aspects. He is not just a driver but is a guider and perfect photographer also.</p> <address>Jayant Kumar, India</address> 
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="p-tesi">
+                            <div class="col-md-3 col-sm-3"> <img src="images/testi/t3.jpg" alt="" height="80px;" width="70px;" class="img-circle"> </div>
+                                <div class="col-md-9 col-sm-9">
+                                    <h4>Enjoy Trip with Jaipur Tour Travles</h4>
+                                    <div><span class="tour_star"><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-half-o" aria-hidden="true"></i></span> </div>
+                                    <p>Our travel guide "Imran" has such a peaceful and pleasant personality which made it so comfortable and enjoyable being around him. He is one of the reasons our experience of Jaipur is one to remember! He was always patient, punctual.</p> <address>Jeetpal Singh, Canada</address> 
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="p-tesi">
+                            <div class="col-md-3 col-sm-3"> <img src="images/testi/t4.jpg" alt="" height="80px;" width="70px;" class="img-circle"> </div>
+                                <div class="col-md-9 col-sm-9">
+                                    <h4>Amazing, Unbelievable Trip</h4>
+                                    <div><span class="tour_star"><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-half-o" aria-hidden="true"></i></span> </div>
+                                    <p>Excellent trip and experience. Two day is not so enough for complete Jaipur tour but if we go through good travel agency then it's quite easy to cover all part of Jaipur. Specially Thanks to Sanjay Thakur(driver) for such excellent hospitality.</p> <address>Shiba Sankar Pradhan, India</address> 
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="p-tesi">
+                            <div class="col-md-3 col-sm-3"> <img src="images/testi/t5.png" alt="" height="80px;" width="70px;" class="img-circle"> </div>
+                                <div class="col-md-9 col-sm-9">
+                                    <h4>Wonderful experience with Jaipur Tour Travles</h4>
+                                    <div><span class="tour_star"><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-half-o" aria-hidden="true"></i></span> </div>
+                                    <p>Wonderful experience ! We were so lucky to have such great driver with us Mr Manoj Kumar, very kind, very professional, very good English and great service :) Namaste India, Lovely India, And thank you India.</p> <address>Paulina Gorska, USA</address> 
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="p-tesi">
+                            <div class="col-md-3 col-sm-3"> <img src="images/testi/t6.jpg" alt="" height="80px;" width="70px;" class="img-circle"> </div>
+                                <div class="col-md-9 col-sm-9">
+                                    <h4>Best tour package forever</h4>
+                                    <div><span class="tour_star"><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-half-o" aria-hidden="true"></i></span> </div>
+                                    <p>Hello everyone, i was under visit to Jaipur in September month with my spouse and on getting suggestions from one of my friends I hired a car with Jaipur travel, whose coordinator Mr. Pintu Singh explained me itinerary in a very elusive way.</p> <address>Vishal Keshri, India</address> 
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="p-tesi">
+                            <div class="col-md-3 col-sm-3"> <img src="images/testi/t7.jpg" alt="" height="80px;" width="70px;" class="img-circle"> </div>
+                                <div class="col-md-9 col-sm-9">
+                                    <h4>Excellent Company for Tour Package</h4>
+                                    <div><span class="tour_star"><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-half-o" aria-hidden="true"></i></span> </div>
+                                    <p>The car was clean and in good condition. The best part was our driver - Mr faizal.He was a thorough professional who ensured that our needs were met every time. He ensured that we need extra time with kids, always was soft spoken.Thank you Imran</p> <address>Vipur Saini, India</address> 
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-md-4">
+                            <div class="p-tesi">
+                            <div class="col-md-3 col-sm-3"> <img src="images/testi/t8.png" alt="" height="80px;" width="70px;" class="img-circle"> </div>
+                                <div class="col-md-9 col-sm-9">
+                                    <h4>Really Thanks to jaipur tour travles</h4>
+                                    <div><span class="tour_star"><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-half-o" aria-hidden="true"></i></span> </div>
+                                    <p>We had booked an one day trip with Jaipur Tour and Travel for Nahargarh fort, Jaigarh Fort and Amber Fort with our driver dada Faizal. He was very polite and suggested affortable place to eat. We had nice time seeing Jaipur. Thank you!</p> <address>Puja Roy, India</address> 
+                                </div>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== FOOTER 1 ==========-->
+    <section>
+        <div class="rows">
+            <div class="footer1 home_title tb-space">
+                <div class="pla1 container">
+                    <!-- FOOTER OFFER 1 -->
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="disco">
+                            <h3>30%<span>OFF</span></h3>
+                            <h4>Rajasthan Tour</h4>
+                            <p>Its Valid for fix time</p> <a href="#">Book Now</a> </div>
+                    </div>
+                    <!-- FOOTER OFFER 2 -->
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="disco1 disco">
+                            <h3>20%<span>OFF</span></h3>
+                            <h4>Golden Triangle Tour</h4>
+                            <p>valid only for 18th Nov</p> <a href="#">Book Now</a> </div>
+                    </div>
+                    <!-- FOOTER MOST POPULAR VACATIONS -->
+                    <div class="col-md-6 col-sm-12 col-xs-12 foot-spec footer_places">
+                        <h4><span>Most Popular</span> Vacations</h4>
+                        <ul>
+                            <li><a href="#">Jaipur</a> </li>
+                            <li><a href="#">Udaipur</a> </li>
+                            <li><a href="#">Ranthomber</a> </li>
+                            <li><a href="#">Jodhpur</a> </li>
+                            <li><a href="#">Jaisalmer </a> </li>
+                            <li><a href="#">Ajmer</a> </li>
+                            <li><a href="#">Taj Mahal</a> </li>
+                            <li><a href="#">Pushkar</a> </li>
+                            <li><a href="#">Golden Triangle Tour</a> </li>
+                            <li><a href="#">Village Tour</a> </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== FOOTER 2 ==========-->
+    <section>
+        <div class="rows">
+            <div class="footer">
+                <div class="container">
+                    <div class="foot-sec2">
+                        <div>
+                            <div class="row">
+                                <div class="col-sm-3 foot-spec foot-com">
+                                    <h4><span>Jaipur</span> Tour Travels</h4>
+                                    <p>Jaipur Tour Travles rajasthan best tour and travles company with 50+ packages.</p>
+                                </div>
+                                <div class="col-sm-3 foot-spec foot-com">
+                                    <h4><span>Address</span> & Contact Info</h4>
+                                    <p>79, Kalwar Scheme, Gopalbari, Jaipur, Rajasthan 302001</p>
+                                    <p> <span class="strong">Phone: </span> <span class="highlighted">+91- 8890602986</span> </p>
+                                </div>
+                                <div class="col-sm-3 col-md-3 foot-spec foot-com">
+                                    <h4><span>SUPPORT</span> & HELP</h4>
+                                    <ul class="two-columns">
+                                        <li> <a href="about.html">About Us</a> </li>
+                                        <li> <a href="faq.html">FAQ</a> </li>
+                                        <li> <a href="galleries.html">Gallery</a> </li>
+                                        <li> <a href="#">Blog </a> </li>
+                                        <li> <a href="testimonials.html">Testimonials</a> </li>
+                                        <li> <a href="contact.html">Contact Us</a> </li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-3 foot-social foot-spec foot-com">
+                                    <div id="TA_selfserveprop810" class="TA_selfserveprop"><ul id="Zf4mZqamO" class="TA_links Eg3gA8"><li id="yMoagJVj" class="TuJxB92lZXo"><a target="_blank" href="https://www.tripadvisor.in/Attraction_Review-g304555-d19086071-Reviews-Jaipur_Tour_Travels-Jaipur_Jaipur_District_Rajasthan.html"><img src="https://www.tripadvisor.in/img/cdsi/img2/branding/v2/Tripadvisor_lockup_horizontal_secondary_registered-11900-2.svg" alt="TripAdvisor"/></a></li></ul></div><script async src="https://www.jscache.com/wejs?wtype=selfserveprop&amp;uniq=810&amp;locationId=19086071&amp;lang=en_IN&amp;rating=true&amp;nreviews=5&amp;writereviewlink=true&amp;popIdx=true&amp;iswide=false&amp;border=true&amp;display_version=2" data-loadtrk onload="this.loadtrk=true"></script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== FOOTER - COPYRIGHT ==========-->
+    <section>
+        <div class="rows copy">
+            <div class="container">
+                <p>Copyrights © 2019 Jaipur Tour Travels. All Rights Reserved</p>
+            </div>
+        </div>
+    </section>
+    
+    <!--========= Scripts ===========-->
+    <script src="js/jquery-latest.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/select-opt.js"></script>
+    <script src="js/slick.js"></script>
+    <script src="js/custom.js"></script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var submenuLinks = document.querySelectorAll('.ed-mm-menu > .ed-mm-inn > ul > .ed-has-submenu > a');
+
+            submenuLinks.forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var submenu = this.parentElement.querySelector('.submenu');
+                    if (submenu.classList.contains('active')) {
+                        submenu.classList.remove('active');
+                    } else {
+                        closeAllSubmenus();
+                        submenu.classList.add('active');
+                    }
+                });
+            });
+
+            function closeAllSubmenus() {
+                var submenus = document.querySelectorAll('.submenu');
+                submenus.forEach(function(submenu) {
+                    submenu.classList.remove('active');
+                });
+            }
+        });
+
+    </script>
+
+    <script>
+         
+    $('.multiple-items').slick({
+        dots: true,
+        arrows: false,
+        infinite: false,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        responsive: [{
+            breakpoint: 992,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                centerMode: false,
+            }
+        }]
+
+    });
+    $('.slider-all').slick({
+        dots: true,
+        infinite: false,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: false,
+        autoplaySpeed: 3000,
+        responsive: [{
+            breakpoint: 992,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                centerMode: false,
+            }
+        }]
+
+    });
+  </script>
+</body>
+</html>

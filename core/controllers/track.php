@@ -1,11 +1,24 @@
 <?php
 
 defined('APP_NAME') or die(header('HTTP/1.0 403 Forbidden'));
+ 
+// Dynamic CORS header based on the incoming Origin header
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    $origin = $_SERVER['HTTP_ORIGIN'];
+    // Allow only subdomains matching http://[subdomain].localhost
+    if (preg_match('/^http:\/\/[a-z0-9-]+\.localhost$/i', $origin)) {
+        header("Access-Control-Allow-Origin: " . $origin);
+        header("Access-Control-Allow-Credentials: true");
+        header("Access-Control-Max-Age: 86400"); // cache for 1 day
+    }
+}
+
+// Rest of your codeâ€¦
 
 /*
  * @author Balaji
  * @name: Rainbow PHP Framework
- * @copyright © 2017 ProThemes.Biz
+ * @copyright ï¿½ 2017 ProThemes.Biz
  *
  */
 

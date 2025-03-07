@@ -504,18 +504,29 @@ function in_multiarray($elem, $array) {
     return false;
 }
 
-function createLink($link='',$return=false, $noLang=false){
-    $langShortCode = '';
-    if(!defined('BASEURL'))
-        die('Base URL not set!');
-    if(!$noLang){
-        if(defined('LANG_SHORT_CODE'))
-            $langShortCode = LANG_SHORT_CODE.'/';
+function createLink($link = '', $return = false, $noLang = false) {
+    // Determine the protocol.
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+    
+    // Get the current host dynamically.
+    $host = $_SERVER['HTTP_HOST'];
+    
+    // (Optional) If your application is in a subfolder, set it here. Otherwise, leave empty.
+    $baseFolder = ''; // e.g. '/scriptfiles'
+    
+    // Append language segment if needed.
+    $langSegment = '';
+    if (!$noLang && defined('LANG_SHORT_CODE')) {
+        $langSegment = LANG_SHORT_CODE . '/';
     }
-    if($return)
-        return BASEURL.$langShortCode.$link;
-    else
-        echo BASEURL.$langShortCode.$link;
+    
+    $url = $protocol . $host . $baseFolder . '/' . $langSegment . $link;
+    
+    if ($return) {
+        return $url;
+    } else {
+        echo $url;
+    }
 }
 
 function getAdminMenuIcon($ba_laji, $array) {
@@ -548,13 +559,26 @@ function adminLink($link='',$return=false){
         echo BASEURL.ADMIN_PATH.$link;
 }
 
-function themeLink($link='',$return=false){
-    if(!defined('THEMEURL'))
-        die('Theme URL not set!');
-    if($return)
-        return THEMEURL.$link;
-    else
-        echo THEMEURL.$link;
+function themeLink($link = '', $return = false) {
+    // Determine the protocol.
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+    
+    // Get the current host dynamically.
+    $host = $_SERVER['HTTP_HOST'];
+    
+    // (Optional) If your application is in a subfolder, set it here.
+    $baseFolder = ''; // e.g. '/scriptfiles'
+    
+    // Get the theme name dynamically. You might have this defined in your config.
+    $themeName = defined('THEME_NAME') ? THEME_NAME : 'default';
+    
+    $themeURL = $protocol . $host . $baseFolder . '/theme/' . $themeName . '/';
+    
+    if ($return) {
+        return $themeURL . $link;
+    } else {
+        echo $themeURL . $link;
+    }
 }
 
 function scriptLink($link='',$type=false,$isExternal=false,$typeStr=null,$return=false){
