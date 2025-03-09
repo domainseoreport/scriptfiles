@@ -14,18 +14,21 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 require_once 'ServerInfoHelper.php';
 
 class SeoTools {
-    // Global properties used by all handlers.
-    protected string $html;         // Normalized HTML source (with meta tag names in lowercase)
-    protected $con;                 // Database connection
-    protected string $domainStr;    // Normalized domain string (used for DB lookups)
-    protected array $lang;          // Language strings array
-    protected ?array $urlParse;     // Parsed URL array (from parse_url())
-    protected string $sepUnique;    // Unique separator string for output sections
-    protected string $seoBoxLogin;  // HTML snippet for a login box (if user isn’t logged in)
-    protected string $true;         // Icon for "true"
-    protected string $false;        // Icon for "false"
+    // Existing properties...
+    protected string $html;
+    protected $con;
+    protected string $domainStr;
+    protected array $lang;
+    protected ?array $urlParse;
+    protected string $sepUnique;
+    protected string $seoBoxLogin;
+    protected string $true;
+    protected string $false;
     protected string $scheme;
     protected string $host;
+
+    // New property for Domain ID.
+    protected int $domainId;
 
     /**
      * Constructor.
@@ -33,10 +36,11 @@ class SeoTools {
      * @param string|null $html       The normalized HTML source.
      * @param mixed       $con        The database connection.
      * @param string      $domainStr  The normalized domain string.
-     * @param array|null  $lang       The language strings array. If not provided, defaults to an empty array.
-     * @param array|null  $urlParse   The parsed URL (via parse_url()).
-     * @param string|null $sepUnique  A unique separator string. Defaults to '!!!!8!!!!'.
+     * @param array|null  $lang       The language strings array.
+     * @param array|null  $urlParse   The parsed URL array.
+     * @param string|null $sepUnique  A unique separator string.
      * @param string|null $seoBoxLogin HTML snippet for a login box.
+     * @param int         $domainId   The Domain ID (default 0 if not provided).
      */
     public function __construct(
         ?string $html, 
@@ -45,28 +49,24 @@ class SeoTools {
         ?array $lang = null, 
         ?array $urlParse, 
         ?string $sepUnique = null, 
-        ?string $seoBoxLogin = null
+        ?string $seoBoxLogin = null,
+        int $domainId = 0
     ) {
-        // If no language array is provided, default to an empty array (or a default set of language strings)
         $this->lang = $lang ?? [];
-        
         $this->html = $this->normalizeHtml($html);
         $this->con = $con;
         
-        // If domainStr is empty but the parsed URL contains a host, use that.
         if (empty($domainStr) && isset($urlParse['host'])) {
             $domainStr = strtolower($urlParse['host']);
         }
         $this->domainStr = $domainStr;
     
-        // If no parsed URL is provided, try creating one using the domain string.
         if (!$urlParse && !empty($domainStr)) {
             $defaultUrl = "http://" . $domainStr;
             $urlParse = parse_url($defaultUrl);
         }
         $this->urlParse = $urlParse;
     
-        // Validate that both scheme and host are available.
         if (!isset($this->urlParse['scheme']) || !isset($this->urlParse['host'])) {
             throw new Exception("Invalid URL: Both scheme and host must be provided.");
         }
@@ -77,6 +77,9 @@ class SeoTools {
         $this->seoBoxLogin = $seoBoxLogin ?? '<div class="lowImpactBox"><div class="msgBox">Please log in to view SEO details.</div></div>';
         $this->true = '<img src="' . themeLink('img/true.png', true) . '" alt="True" />';
         $this->false = '<img src="' . themeLink('img/false.png', true) . '" alt="False" />';
+
+        // Set the new Domain ID property.
+        $this->domainId = $domainId;
     }
     
 
@@ -254,10 +257,12 @@ class SeoTools {
         $completeMetaJson = jsonEncode($completeMetaData);
         
         // Update the DB with both the complete meta data and the overall score in one call.
-        updateToDbPrepared($this->con, 'domains_data', [
-            'meta_data' => $completeMetaJson,
-            'score'     => $score
-        ], ['domain' => $this->domainStr]);
+ 
+        $resultMeta = ajaxDbUpsert($this->con, 'domains_meta_data', [
+            'domain_id' => $this->domainId,
+            'meta_data' => $completeMetaJson
+        ], ['domain_id' => $this->domainId]);
+        
         
         // Return the complete meta JSON.
         return $completeMetaJson;
@@ -558,7 +563,7 @@ private function buildGooglePreview(string $title, string $description, string $
                 foreach ($elements as $element) {
                     $content = trim(strip_tags($element->textContent));
                     if ($content !== "") {
-                        // Use a trim that removes regular whitespace as well as non-breaking spaces.
+                        // Remove extra whitespace and non-breaking spaces.
                         $headings[$tag][] = trim($content, " \t\n\r\0\x0B\xc2\xa0");
                     }
                 }
@@ -567,19 +572,30 @@ private function buildGooglePreview(string $title, string $description, string $
             // === 2. Compute heading report ===
             $report = $this->computeHeadingReport($tags, $headings);
     
-            // === 3. Combine raw headings and report, update the DB in one call ===
+            // === 3. Combine raw headings and report ===
             $completeHeadingData = [
                 'raw'    => $headings,
                 'report' => $report
             ];
             $completeHeadingJson = json_encode($completeHeadingData);
     
-            // Update the DB column "headings" with the complete JSON
-            updateToDbPrepared($this->con, 'domains_data', ['headings' => $completeHeadingJson], ['domain' => $this->domainStr]);
-            // Optionally update the overall score field (if combining with other tests)
-            updateToDbPrepared($this->con, 'domains_data', ['score' => $report['score']], ['domain' => $this->domainStr]);
+            // === 4. Upsert heading data into the separate table ===
+            // Use the new ajaxDbUpsert function to handle insert/update in domains_headings.
+            $resultHeadings = ajaxDbUpsert($this->con, 'domains_headings', [
+                'domain_id' => $this->domainId,      // Domain ID passed via the class property.
+                'headings'  => $completeHeadingJson  // The JSON-encoded heading data.
+            ], ['domain_id' => $this->domainId]);
     
-            // --- Store the complete heading data in session for later use ---
+            if ($resultHeadings !== true) {
+                error_log("Failed to upsert headings: " . $resultHeadings);
+            }
+    
+            // === 5. Update the overall score in the main table ===
+            updateToDbPrepared($this->con, 'domains_data', [
+                'score' => $report['score']
+            ], ['domain' => $this->domainStr]);
+    
+            // === 6. Store heading data in session for later use ===
             if (session_status() !== PHP_SESSION_ACTIVE) {
                 session_start();
             }
@@ -591,6 +607,7 @@ private function buildGooglePreview(string $title, string $description, string $
             return json_encode(['error' => 'An error occurred while processing headings.']);
         }
     }
+    
     
     
     private function computeHeadingReport(array $tags, array $headings): array {
@@ -804,243 +821,235 @@ private function buildGooglePreview(string $title, string $description, string $
      * IMAGE ALT TAG HANDLER
      *=================================================================== 
      */
-    /**
- * Processes image tags to extract raw metrics about alt attributes,
- * then computes a detailed report with scoring and suggestions.
- *
- * The returned JSON contains:
- *   - raw: all collected metrics (counts for total images, missing alt, empty alt, short alt, long alt, and redundant alt).
- *   - report: a computed report with:
- *         • score: total points earned (max 10)
- *         • passed: count of conditions passing (2 points each)
- *         • improve: count of conditions “to improve” (1 point each)
- *         • errors: count of error conditions (0 points)
- *         • percent: overall percentage score
- *         • details: a per‑condition status (Pass, To Improve, Error)
- *         • comment: an overall comment.
- *
- * The final JSON is updated in the DB (field "image_alt") and saved in session.
- *
- * @return string JSON-encoded combined raw data and report.
- */
-public function processImage(): string {
-    $doc = $this->getDom();
-    $xpath = new DOMXPath($doc);
-    $imgTags = $xpath->query("//img");
-    $results = [
-        'total_images' => $imgTags->length,
-        'images_missing_alt'       => [],
-        'images_with_empty_alt'    => [],
-        'images_with_short_alt'    => [],
-        'images_with_long_alt'     => [],
-        'images_with_redundant_alt'=> [],
-        'suggestions' => []  // raw suggestions
-    ];
-
-    $aggregate = function (&$array, $data) {
-        $src = $data['src'];
-        if (isset($array[$src])) {
-            $array[$src]['count']++;
-        } else {
-            $data['count'] = 1;
-            $array[$src] = $data;
-        }
-    };
-
-    foreach ($imgTags as $img) {
-        $src = trim($img->getAttribute('src')) ?: 'N/A';
-        // Convert relative URL to absolute.
-        $src = $this->toAbsoluteUrl($src);
-        $alt = $img->getAttribute('alt');
-        $title = trim($img->getAttribute('title')) ?: 'N/A';
-        $width = trim($img->getAttribute('width')) ?: 'N/A';
-        $height = trim($img->getAttribute('height')) ?: 'N/A';
-        $class = trim($img->getAttribute('class')) ?: 'N/A';
-        $parentTag = $img->parentNode->nodeName;
-        $parentTxt = trim($img->parentNode->textContent);
-        $position = method_exists($this, 'getNodePosition') ? $this->getNodePosition($img) : 'N/A';
-
-        $data = compact('src', 'title', 'width', 'height', 'class', 'parentTag', 'parentTxt', 'position');
-
-        if (!$img->hasAttribute('alt')) {
-            $aggregate($results['images_missing_alt'], $data);
-        } elseif (trim($alt) === "") {
-            $aggregate($results['images_with_empty_alt'], $data);
-        } else {
-            $altLength = mb_strlen($alt);
-            $normalizedAlt = strtolower($alt);
-            $redundantAlt = in_array($normalizedAlt, ['image', 'photo', 'picture', 'logo']);
-            // We consider alt text with less than 5 characters as too short.
-            if ($altLength < 5) {
-                $data['alt'] = $alt;
-                $data['length'] = $altLength;
-                $aggregate($results['images_with_short_alt'], $data);
+    public function processImage(): string {
+        $doc = $this->getDom();
+        $xpath = new DOMXPath($doc);
+        $imgTags = $xpath->query("//img");
+        $results = [
+            'total_images' => $imgTags->length,
+            'images_missing_alt'       => [],
+            'images_with_empty_alt'    => [],
+            'images_with_short_alt'    => [],
+            'images_with_long_alt'     => [],
+            'images_with_redundant_alt'=> [],
+            'suggestions' => []  // raw suggestions
+        ];
+    
+        $aggregate = function (&$array, $data) {
+            $src = $data['src'];
+            if (isset($array[$src])) {
+                $array[$src]['count']++;
+            } else {
+                $data['count'] = 1;
+                $array[$src] = $data;
             }
-            // If alt text is very long (e.g. >100 characters), flag it.
-            if ($altLength > 100) {
-                $data['alt'] = $alt;
-                $data['length'] = $altLength;
-                $aggregate($results['images_with_long_alt'], $data);
-            }
-            if ($redundantAlt) {
-                $data['alt'] = $alt;
-                $aggregate($results['images_with_redundant_alt'], $data);
+        };
+    
+        foreach ($imgTags as $img) {
+            $src = trim($img->getAttribute('src')) ?: 'N/A';
+            // Convert relative URL to absolute.
+            $src = $this->toAbsoluteUrl($src);
+            $alt = $img->getAttribute('alt');
+            $title = trim($img->getAttribute('title')) ?: 'N/A';
+            $width = trim($img->getAttribute('width')) ?: 'N/A';
+            $height = trim($img->getAttribute('height')) ?: 'N/A';
+            $class = trim($img->getAttribute('class')) ?: 'N/A';
+            $parentTag = $img->parentNode->nodeName;
+            $parentTxt = trim($img->parentNode->textContent);
+            $position = method_exists($this, 'getNodePosition') ? $this->getNodePosition($img) : 'N/A';
+    
+            $data = compact('src', 'title', 'width', 'height', 'class', 'parentTag', 'parentTxt', 'position');
+    
+            if (!$img->hasAttribute('alt')) {
+                $aggregate($results['images_missing_alt'], $data);
+            } elseif (trim($alt) === "") {
+                $aggregate($results['images_with_empty_alt'], $data);
+            } else {
+                $altLength = mb_strlen($alt);
+                $normalizedAlt = strtolower($alt);
+                $redundantAlt = in_array($normalizedAlt, ['image', 'photo', 'picture', 'logo']);
+                // We consider alt text with less than 5 characters as too short.
+                if ($altLength < 5) {
+                    $data['alt'] = $alt;
+                    $data['length'] = $altLength;
+                    $aggregate($results['images_with_short_alt'], $data);
+                }
+                // If alt text is very long (e.g. >100 characters), flag it.
+                if ($altLength > 100) {
+                    $data['alt'] = $alt;
+                    $data['length'] = $altLength;
+                    $aggregate($results['images_with_long_alt'], $data);
+                }
+                if ($redundantAlt) {
+                    $data['alt'] = $alt;
+                    $aggregate($results['images_with_redundant_alt'], $data);
+                }
             }
         }
-    }
-
-    // Calculate totals.
-    $totalMissing = array_sum(array_map(fn($i) => $i['count'], $results['images_missing_alt']));
-    $totalEmpty   = array_sum(array_map(fn($i) => $i['count'], $results['images_with_empty_alt']));
-    $totalShort   = array_sum(array_map(fn($i) => $i['count'], $results['images_with_short_alt']));
-    $totalLong    = array_sum(array_map(fn($i) => $i['count'], $results['images_with_long_alt']));
-    $totalRedund  = array_sum(array_map(fn($i) => $i['count'], $results['images_with_redundant_alt']));
-
-    // Add raw suggestions.
-    if ($totalMissing > 0) {
-        $results['suggestions'][] = "There are {$totalMissing} image instance(s) missing alt attributes.";
-    }
-    if ($totalEmpty > 0) {
-        $results['suggestions'][] = "There are {$totalEmpty} image instance(s) with empty alt attributes.";
-    }
-    if ($totalShort > 0) {
-        $results['suggestions'][] = "There are {$totalShort} image instance(s) with very short alt text (<5 chars).";
-    }
-    if ($totalLong > 0) {
-        $results['suggestions'][] = "There are {$totalLong} image instance(s) with very long alt text (>100 chars).";
-    }
-    if ($totalRedund > 0) {
-        $results['suggestions'][] = "There are {$totalRedund} image instance(s) with redundant alt text (e.g., 'image','logo').";
-    }
-    if ($totalMissing === 0 && $totalEmpty === 0 && $totalShort === 0 && $totalLong === 0 && $totalRedund === 0) {
-        $results['suggestions'][] = "Great job! All images have appropriate alt attributes.";
-    }
-
-    // --- Compute Report ---
-    // We'll define five conditions based on our raw data.
-    // (Note: total_images is available from $results['total_images'].)
-    $totalImages = $results['total_images'];
-
-    // Condition 1: Missing Alt Attributes.
-    // Ideal: 0 missing. If missing ratio <= 5%, then "To Improve", else "Error".
-    $ratioMissing = $totalImages > 0 ? $totalMissing / $totalImages : 1;
-    if ($ratioMissing == 0) {
-        $cond1Status = "Pass";
-        $cond1Score = 2;
-    } elseif ($ratioMissing <= 0.05) {
-        $cond1Status = "To Improve";
-        $cond1Score = 1;
-    } else {
-        $cond1Status = "Error";
-        $cond1Score = 0;
-    }
-
-    // Condition 2: Empty Alt Text Ratio.
-    $ratioEmpty = $totalImages > 0 ? $totalEmpty / $totalImages : 1;
-    if ($ratioEmpty <= 0.10) {
-        $cond2Status = "Pass";
-        $cond2Score = 2;
-    } elseif ($ratioEmpty <= 0.20) {
-        $cond2Status = "To Improve";
-        $cond2Score = 1;
-    } else {
-        $cond2Status = "Error";
-        $cond2Score = 0;
-    }
-
-    // Condition 3: Short Alt Text Ratio.
-    // Consider only images that have alt text (i.e. total effective = totalImages - missing - empty).
-    $imagesWithAlt = ($totalImages - $totalMissing - $totalEmpty);
-    $ratioShort = $imagesWithAlt > 0 ? $totalShort / $imagesWithAlt : 1;
-    if ($ratioShort == 0) {
-        $cond3Status = "Pass";
-        $cond3Score = 2;
-    } elseif ($ratioShort <= 0.10) {
-        $cond3Status = "To Improve";
-        $cond3Score = 1;
-    } else {
-        $cond3Status = "Error";
-        $cond3Score = 0;
-    }
-
-    // Condition 4: Redundant Alt Text.
-    if ($totalRedund == 0) {
-        $cond4Status = "Pass";
-        $cond4Score = 2;
-    } else {
-        $cond4Status = "Error";
-        $cond4Score = 0;
-    }
-
-    // Condition 5: Long Alt Text.
-    if ($totalLong == 0) {
-        $cond5Status = "Pass";
-        $cond5Score = 2;
-    } else {
-        $cond5Status = "Error";
-        $cond5Score = 0;
-    }
-
-    $totalScore = $cond1Score + $cond2Score + $cond3Score + $cond4Score + $cond5Score;
-    $maxPoints = 10;
-    $scorePercent = $maxPoints > 0 ? round(($totalScore / $maxPoints) * 100) : 0;
-
-    // Count conditions that pass, need improvement, or error.
-    $passedCount = 0;
-    $improveCount = 0;
-    $errorCount = 0;
-    $conditions = [
-        'Alt Missing Ratio' => $cond1Status,
-        'Empty Alt Ratio' => $cond2Status,
-        'Short Alt Ratio' => $cond3Status,
-        'Redundant Alt' => $cond4Status,
-        'Long Alt' => $cond5Status
-    ];
-    foreach ($conditions as $status) {
-        if ($status === "Pass") {
-            $passedCount++;
-        } elseif ($status === "To Improve") {
-            $improveCount++;
-        } else {
-            $errorCount++;
+    
+        // Calculate totals.
+        $totalMissing = array_sum(array_map(fn($i) => $i['count'], $results['images_missing_alt']));
+        $totalEmpty   = array_sum(array_map(fn($i) => $i['count'], $results['images_with_empty_alt']));
+        $totalShort   = array_sum(array_map(fn($i) => $i['count'], $results['images_with_short_alt']));
+        $totalLong    = array_sum(array_map(fn($i) => $i['count'], $results['images_with_long_alt']));
+        $totalRedund  = array_sum(array_map(fn($i) => $i['count'], $results['images_with_redundant_alt']));
+    
+        // Add raw suggestions.
+        if ($totalMissing > 0) {
+            $results['suggestions'][] = "There are {$totalMissing} image instance(s) missing alt attributes.";
         }
+        if ($totalEmpty > 0) {
+            $results['suggestions'][] = "There are {$totalEmpty} image instance(s) with empty alt attributes.";
+        }
+        if ($totalShort > 0) {
+            $results['suggestions'][] = "There are {$totalShort} image instance(s) with very short alt text (<5 chars).";
+        }
+        if ($totalLong > 0) {
+            $results['suggestions'][] = "There are {$totalLong} image instance(s) with very long alt text (>100 chars).";
+        }
+        if ($totalRedund > 0) {
+            $results['suggestions'][] = "There are {$totalRedund} image instance(s) with redundant alt text (e.g., 'image','logo').";
+        }
+        if ($totalMissing === 0 && $totalEmpty === 0 && $totalShort === 0 && $totalLong === 0 && $totalRedund === 0) {
+            $results['suggestions'][] = "Great job! All images have appropriate alt attributes.";
+        }
+    
+        // --- Compute Report ---
+        $totalImages = $results['total_images'];
+    
+        // Condition 1: Missing Alt Attributes.
+        $ratioMissing = $totalImages > 0 ? $totalMissing / $totalImages : 1;
+        if ($ratioMissing == 0) {
+            $cond1Status = "Pass";
+            $cond1Score = 2;
+        } elseif ($ratioMissing <= 0.05) {
+            $cond1Status = "To Improve";
+            $cond1Score = 1;
+        } else {
+            $cond1Status = "Error";
+            $cond1Score = 0;
+        }
+    
+        // Condition 2: Empty Alt Text Ratio.
+        $ratioEmpty = $totalImages > 0 ? $totalEmpty / $totalImages : 1;
+        if ($ratioEmpty <= 0.10) {
+            $cond2Status = "Pass";
+            $cond2Score = 2;
+        } elseif ($ratioEmpty <= 0.20) {
+            $cond2Status = "To Improve";
+            $cond2Score = 1;
+        } else {
+            $cond2Status = "Error";
+            $cond2Score = 0;
+        }
+    
+        // Condition 3: Short Alt Text Ratio.
+        $imagesWithAlt = ($totalImages - $totalMissing - $totalEmpty);
+        $ratioShort = $imagesWithAlt > 0 ? $totalShort / $imagesWithAlt : 1;
+        if ($ratioShort == 0) {
+            $cond3Status = "Pass";
+            $cond3Score = 2;
+        } elseif ($ratioShort <= 0.10) {
+            $cond3Status = "To Improve";
+            $cond3Score = 1;
+        } else {
+            $cond3Status = "Error";
+            $cond3Score = 0;
+        }
+    
+        // Condition 4: Redundant Alt Text.
+        if ($totalRedund == 0) {
+            $cond4Status = "Pass";
+            $cond4Score = 2;
+        } else {
+            $cond4Status = "Error";
+            $cond4Score = 0;
+        }
+    
+        // Condition 5: Long Alt Text.
+        if ($totalLong == 0) {
+            $cond5Status = "Pass";
+            $cond5Score = 2;
+        } else {
+            $cond5Status = "Error";
+            $cond5Score = 0;
+        }
+    
+        $totalScore = $cond1Score + $cond2Score + $cond3Score + $cond4Score + $cond5Score;
+        $maxPoints = 10;
+        $scorePercent = $maxPoints > 0 ? round(($totalScore / $maxPoints) * 100) : 0;
+    
+        // Count conditions.
+        $passedCount = 0;
+        $improveCount = 0;
+        $errorCount = 0;
+        $conditions = [
+            'Alt Missing Ratio' => $cond1Status,
+            'Empty Alt Ratio'   => $cond2Status,
+            'Short Alt Ratio'   => $cond3Status,
+            'Redundant Alt'     => $cond4Status,
+            'Long Alt'          => $cond5Status
+        ];
+        foreach ($conditions as $status) {
+            if ($status === "Pass") {
+                $passedCount++;
+            } elseif ($status === "To Improve") {
+                $improveCount++;
+            } else {
+                $errorCount++;
+            }
+        }
+    
+        // Build overall comment.
+        $comment = "Image analysis computed. ";
+        if ($scorePercent >= 90) {
+            $comment .= "Excellent image alt attribute usage.";
+        } elseif ($scorePercent >= 70) {
+            $comment .= "Good, but consider improving alt text quality.";
+        } elseif ($scorePercent >= 50) {
+            $comment .= "Average performance; review alt text issues.";
+        } else {
+            $comment .= "Poor image alt attributes; significant improvements are needed.";
+        }
+    
+        // Assemble final report.
+        $report = [
+            'score'   => $totalScore,
+            'passed'  => $passedCount,
+            'improve' => $improveCount,
+            'errors'  => $errorCount,
+            'percent' => $scorePercent,
+            'details' => $conditions,
+            'comment' => $comment
+        ];
+    
+        // Combine raw data and report.
+        $completeImageData = [
+            'raw'    => $results,
+            'report' => $report
+        ];
+    
+        $updateStr = jsonEncode($completeImageData);
+    
+        // Upsert image alt data into the separate table (domains_image_alt) using domain_id.
+        $resultImage = ajaxDbUpsert($this->con, 'domains_image_alt', [
+            'domain_id'  => $this->domainId,
+            'image_alt'  => $updateStr
+        ], ['domain_id' => $this->domainId]);
+    
+        if ($resultImage !== true) {
+            error_log("Failed to upsert image alt data: " . $resultImage);
+        }
+        
+        // Optionally, still update the main table if needed (or you can remove this if not required).
+        // updateToDbPrepared($this->con, 'domains_data', ['image_alt' => $updateStr], ['domain' => $this->domainStr]);
+    
+        // Store the complete report in session.
+        $_SESSION['report_data']['imageAltReport'] = $completeImageData;
+    
+        return $updateStr;
     }
-
-    // Build an overall comment.
-    $comment = "Image analysis computed. ";
-    if ($scorePercent >= 90) {
-        $comment .= "Excellent image alt attribute usage.";
-    } elseif ($scorePercent >= 70) {
-        $comment .= "Good, but consider improving alt text quality.";
-    } elseif ($scorePercent >= 50) {
-        $comment .= "Average performance; review alt text issues.";
-    } else {
-        $comment .= "Poor image alt attributes; significant improvements are needed.";
-    }
     
-    // Assemble final report.
-    $report = [
-        'score'   => $totalScore,
-        'passed'  => $passedCount,
-        'improve' => $improveCount,
-        'errors'  => $errorCount,
-        'percent' => $scorePercent,
-        'details' => $conditions,
-        'comment' => $comment
-    ];
-    
-    // Combine raw data and report.
-    $completeImageData = [
-        'raw' => $results,
-        'report' => $report
-    ];
-    
-    $updateStr = jsonEncode($completeImageData);
-    updateToDbPrepared($this->con, 'domains_data', ['image_alt' => $updateStr], ['domain' => $this->domainStr]);
-    $_SESSION['report_data']['imageAltReport'] = $completeImageData;
-    
-    return $updateStr;
-}
 
     /**
  * Displays image analysis data.
@@ -1403,16 +1412,7 @@ private function generateKeywordCloud(DOMDocument $dom): array {
  */
 
 
-/**
- * Merged function: Builds the keyword cloud + does n-gram consistency checks
- * and returns a single HTML output that includes both the top unigrams cloud
- * and the tabbed consistency tables (Trigrams/Bigrams/Unigrams).
- *
- * Also stores the combined data in the DB.
- *
- * @return string HTML output for immediate echo in domains.php
- */
-public function processKeyCloudAndConsistency(): string {
+ public function processKeyCloudAndConsistency(): string {
     // Generate the keyword cloud JSON and decode it.
     $keyCloudJson = $this->processKeyCloud();
     $keyCloudData = json_decode($keyCloudJson, true);
@@ -1447,20 +1447,28 @@ public function processKeyCloudAndConsistency(): string {
         'outCount'     => $keyCloudData['outCount'] ?? 0,
         'fullCloud'    => $keyCloudData['fullCloud'] ?? [],
         'report'       => $keyCloudData['report'] ?? [],
-        'metaData'     => $metaData,      // NEW: include meta data
-        'headings'     => $headingData    // NEW: include full heading data
+        'metaData'     => $metaData,      // include meta data
+        'headings'     => $headingData    // include full heading data
     ];
     $completeKeyCloudJson = json_encode($completeKeyCloudData);
 
-    // Update DB (one call).
-    updateToDbPrepared($this->con, 'domains_data', ['keywords_cloud' => $completeKeyCloudJson], ['domain' => $this->domainStr]);
+    // Upsert the keyword cloud data into the separate table (domains_keywords_cloud)
+    $result = ajaxDbUpsert($this->con, 'domains_keywords_cloud', [
+        'domain_id'      => $this->domainId,
+        'keywords_cloud' => $completeKeyCloudJson
+    ], ['domain_id' => $this->domainId]);
+
+    if ($result !== true) {
+        error_log("Failed to upsert keywords cloud: " . $result);
+    }
 
     // Save complete data to session.
     $_SESSION['report_data']['keyCloudReport'] = $completeKeyCloudData;
 
-    // Return the complete HTML output.
+    // Return the combined HTML output.
     return $keywordCloudHtml . $consistencyHtml . $suggestionHtml;
 }
+
 
 
 
@@ -2084,11 +2092,11 @@ public function processTextRatio(): string {
     $improveCount = 0;
     $errorCount = 0;
     $conditions = [
-        'Text Ratio' => $condAStatus,
-        'Load Time'  => $condBStatus,
-        'Word Count' => $condCStatus,
+        'Text Ratio'    => $condAStatus,
+        'Load Time'     => $condBStatus,
+        'Word Count'    => $condCStatus,
         'HTTP Response' => $condDStatus,
-        'HTML Size'  => $condEStatus,
+        'HTML Size'     => $condEStatus,
     ];
     foreach ($conditions as $status) {
         if ($status === "Pass") {
@@ -2140,11 +2148,11 @@ public function processTextRatio(): string {
     }
     
     $detailedSuggestions = [
-        "Text Ratio" => $suggestA,
-        "Load Time"  => $suggestB,
-        "Word Count" => $suggestC,
+        "Text Ratio"    => $suggestA,
+        "Load Time"     => $suggestB,
+        "Word Count"    => $suggestC,
         "HTTP Response" => $suggestD,
-        "HTML Size"  => $suggestE,
+        "HTML Size"     => $suggestE,
     ];
     
     // Overall comment based on the overall percentage.
@@ -2160,27 +2168,35 @@ public function processTextRatio(): string {
     
     // Build the final report array.
     $report = [
-        'score'     => $totalScore,
-        'max_points'=> $maxPoints,
-        'percent'   => $scorePercent,
-        'passed'    => $passedCount,
-        'improve'   => $improveCount,
-        'errors'    => $errorCount,
-        'details'   => $conditions,
+        'score'         => $totalScore,
+        'max_points'    => $maxPoints,
+        'percent'       => $scorePercent,
+        'passed'        => $passedCount,
+        'improve'       => $improveCount,
+        'errors'        => $errorCount,
+        'details'       => $conditions,
         'detailed_suggestions' => $detailedSuggestions,
-        'comment'   => $overallComment
+        'comment'       => $overallComment
     ];
     
     // Combine raw data and report.
     $completeTextRatioData = [
-        'raw' => $rawData,
+        'raw'    => $rawData,
         'report' => $report
     ];
     
     $textRatioJson = jsonEncode($completeTextRatioData);
-    updateToDbPrepared($this->con, 'domains_data', ['ratio_data' => $textRatioJson], ['domain' => $this->domainStr]);
     
-    // Save the report in a session array.
+    // Upsert the text ratio data into a separate table (domains_text_ratio) using domain_id.
+    $resultTextRatio = ajaxDbUpsert($this->con, 'domains_text_ratio', [
+        'domain_id'  => $this->domainId,
+        'ratio_data' => $textRatioJson
+    ], ['domain_id' => $this->domainId]);
+    if ($resultTextRatio !== true) {
+        error_log("Failed to upsert Text Ratio data: " . $resultTextRatio);
+    }
+    
+    // Save the report in the session.
     if (!isset($_SESSION['seoReports'])) {
         $_SESSION['seoReports'] = [];
     }
@@ -2188,6 +2204,7 @@ public function processTextRatio(): string {
     
     return $textRatioJson;
 }
+
 
 /**
  * Displays the text ratio analysis in a user-friendly layout.
@@ -2524,312 +2541,281 @@ public function showTextRatio($textRatio): string {
      * IP CANONICALIZATION HANDLER
      *=================================================================== 
      */
-    public function processIPCanonicalization() {
-        $hostIP = gethostbyname($this->urlParse['host']);
-        $ch = curl_init($hostIP);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-        $response = curl_exec($ch);
-        preg_match_all('/^Location:(.*)$/mi', $response, $matches);
-        curl_close($ch);
-        $tType = false;
-        $redirectURLhost = '';
-        if (!empty($matches[1])) {
-            $redirectURL = 'http://' . clean_url(trim($matches[1][0]));
-            $redirectURLparse = parse_url($redirectURL);
-            $redirectURLhost = isset($redirectURLparse['host']) ? str_replace('www.', '', $redirectURLparse['host']) : '';
-            $tType = true;
-        }
-        $updateStr = jsonEncode([$hostIP, $tType, $this->urlParse['host'], $redirectURLhost]);
-        updateToDbPrepared($this->con, 'domains_data', ['ip_can' => $updateStr], ['domain' => $this->domainStr]);
-        return $updateStr;
-    }
-
-    public function showIPCanonicalization($ipData) {
-        $ipData = jsonDecode($ipData);
-        if ($this->urlParse['host'] == $ipData['redirectURLhost']) {
-            $ipClass = 'passedBox';
-            $ipMsg = str_replace(['[ip]', '[host]'], [$ipData['hostIP'], $this->urlParse['host']], $this->lang['AN50']);
+    public function processInPageLinks(): string {
+        // Use pre-loaded DOMDocument if available.
+        if (isset($this->dom) && $this->dom instanceof DOMDocument) {
+            $doc = $this->dom;
         } else {
-            $ipClass = 'improveBox';
-            $ipMsg = str_replace(['[ip]', '[host]'], [$ipData['hostIP'], $this->urlParse['host']], $this->lang['AN49']);
+            $doc = new DOMDocument();
+            @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
+            $this->dom = $doc;
         }
-        $output = '<div class="' . $ipClass . '">
-                        <div class="msgBox">' . $ipMsg . '<br /><br /></div>
-                        <div class="seoBox12 suggestionBox">' . $this->lang['AN184'] . '</div>
-                   </div>';
-        return $output;
-    }
-
-    /*===================================================================
-     * IN-PAGE LINKS HANDLER
-     *=================================================================== 
-     */
-    /**
- * Processes in-page links by extracting various metrics and computing a link analysis report.
- * The returned structure follows the same pattern as processMeta() and processHeading():
- * it contains a 'raw' key (with all metrics) and a 'report' key (with score, passes, to improve, errors, details, and a comment).
- * The complete JSON is saved in the DB (in the "links_analyser" column) and in a session variable.
- *
- * @return string JSON-encoded combined raw data and report.
- */
-public function processInPageLinks(): string {
-    // Use pre-loaded DOMDocument if available.
-    if (isset($this->dom) && $this->dom instanceof DOMDocument) {
-        $doc = $this->dom;
-    } else {
-        $doc = new DOMDocument();
-        @$doc->loadHTML(mb_convert_encoding($this->html, 'HTML-ENTITIES', 'UTF-8'));
-        $this->dom = $doc;
-    }
-    
-    // Initialize arrays and counters.
-    $internalLinks = [];
-    $externalLinks = [];
-    $uniqueLinkSet = [];
-    $externalDomainSet = [];
-    
-    $totalTargetBlank = 0;
-    $totalHttps = 0;
-    $totalHttp = 0;
-    $totalTracking = 0;
-    $totalTextLength = 0;
-    $totalImageLinks = 0;
-    $totalNoFollow = 0;
-    $totalDoFollow = 0;
-    $totalEmptyLinks = 0;
-    
-    // Count links by position (for potential use).
-    $linksByPosition = [
-        'header'  => 0,
-        'nav'     => 0,
-        'main'    => 0,
-        'footer'  => 0,
-        'aside'   => 0,
-        'section' => 0,
-        'body'    => 0,
-    ];
-    
-    $baseUrl = $this->scheme . "://" . $this->host;
-    $myHost = strtolower($this->urlParse['host']);
-    
-    // Loop through all anchor tags.
-    $anchors = $doc->getElementsByTagName('a');
-    foreach ($anchors as $a) {
-        $rawHref = trim($a->getAttribute('href'));
-        if ($rawHref === "" || $rawHref === "#") {
-            continue;
-        }
-        $href = $rawHref;
-        $rel = strtolower($a->getAttribute('rel'));
-        $target = strtolower($a->getAttribute('target'));
-        $anchorText = trim(strip_tags($a->textContent));
-        if ($anchorText === "") {
-            $totalEmptyLinks++;
-        }
-        if (strpos($rel, 'nofollow') !== false) {
-            $followType = 'nofollow';
-            $totalNoFollow++;
-        } else {
-            $followType = 'dofollow';
-            $totalDoFollow++;
-        }
-        if ($target === '_blank') {
-            $totalTargetBlank++;
-        }
-        $parsed = parse_url($href);
-        if ($parsed === false) {
-            continue;
-        }
-        if (isset($parsed['scheme'])) {
-            $scheme = strtolower($parsed['scheme']);
-            if ($scheme === 'https') {
-                $totalHttps++;
-            } elseif ($scheme === 'http') {
-                $totalHttp++;
+        
+        // Initialize arrays and counters.
+        $internalLinks = [];
+        $externalLinks = [];
+        $uniqueLinkSet = [];
+        $externalDomainSet = [];
+        
+        $totalTargetBlank = 0;
+        $totalHttps = 0;
+        $totalHttp = 0;
+        $totalTracking = 0;
+        $totalTextLength = 0;
+        $totalImageLinks = 0;
+        $totalNoFollow = 0;
+        $totalDoFollow = 0;
+        $totalEmptyLinks = 0;
+        
+        // Count links by position.
+        $linksByPosition = [
+            'header'  => 0,
+            'nav'     => 0,
+            'main'    => 0,
+            'footer'  => 0,
+            'aside'   => 0,
+            'section' => 0,
+            'body'    => 0,
+        ];
+        
+        $baseUrl = $this->scheme . "://" . $this->host;
+        $myHost = strtolower($this->urlParse['host']);
+        
+        // Loop through all anchor tags.
+        $anchors = $doc->getElementsByTagName('a');
+        foreach ($anchors as $a) {
+            $rawHref = trim($a->getAttribute('href'));
+            if ($rawHref === "" || $rawHref === "#") {
+                continue;
             }
-        }
-        if (isset($parsed['query']) && stripos($parsed['query'], 'utm_') !== false) {
-            $totalTracking++;
-        }
-        $hasImage = false;
-        foreach ($a->childNodes as $child) {
-            if ($child->nodeType === XML_ELEMENT_NODE && strtolower($child->nodeName) === 'img') {
-                $hasImage = true;
-                break;
+            $href = $rawHref;
+            $rel = strtolower($a->getAttribute('rel'));
+            $target = strtolower($a->getAttribute('target'));
+            $anchorText = trim(strip_tags($a->textContent));
+            if ($anchorText === "") {
+                $totalEmptyLinks++;
             }
-        }
-        if ($hasImage) {
-            $totalImageLinks++;
-            $linkType = 'image';
-        } else {
-            $linkType = 'text';
-            $totalTextLength += mb_strlen($anchorText);
-        }
-        $position = $this->getLinkPosition($a->parentNode);
-        if (isset($linksByPosition[$position])) {
-            $linksByPosition[$position]++;
-        } else {
-            $linksByPosition['body']++;
-        }
-        $isInternal = false;
-        if (!empty($parsed['host'])) {
-            $linkHost = strtolower($parsed['host']);
-            if ($linkHost === $myHost || $linkHost === "www.$myHost") {
+            if (strpos($rel, 'nofollow') !== false) {
+                $followType = 'nofollow';
+                $totalNoFollow++;
+            } else {
+                $followType = 'dofollow';
+                $totalDoFollow++;
+            }
+            if ($target === '_blank') {
+                $totalTargetBlank++;
+            }
+            $parsed = parse_url($href);
+            if ($parsed === false) {
+                continue;
+            }
+            if (isset($parsed['scheme'])) {
+                $scheme = strtolower($parsed['scheme']);
+                if ($scheme === 'https') {
+                    $totalHttps++;
+                } elseif ($scheme === 'http') {
+                    $totalHttp++;
+                }
+            }
+            if (isset($parsed['query']) && stripos($parsed['query'], 'utm_') !== false) {
+                $totalTracking++;
+            }
+            $hasImage = false;
+            foreach ($a->childNodes as $child) {
+                if ($child->nodeType === XML_ELEMENT_NODE && strtolower($child->nodeName) === 'img') {
+                    $hasImage = true;
+                    break;
+                }
+            }
+            if ($hasImage) {
+                $totalImageLinks++;
+                $linkType = 'image';
+            } else {
+                $linkType = 'text';
+                $totalTextLength += mb_strlen($anchorText);
+            }
+            $position = $this->getLinkPosition($a->parentNode);
+            if (isset($linksByPosition[$position])) {
+                $linksByPosition[$position]++;
+            } else {
+                $linksByPosition['body']++;
+            }
+            $isInternal = false;
+            if (!empty($parsed['host'])) {
+                $linkHost = strtolower($parsed['host']);
+                if ($linkHost === $myHost || $linkHost === "www.$myHost") {
+                    $isInternal = true;
+                }
+            } else {
                 $isInternal = true;
             }
-        } else {
-            $isInternal = true;
-        }
-        if ($isInternal) {
-            $internalLinks[] = $href;
-        } else {
-            $externalLinks[] = [
-                'href'        => $href,
-                'follow_type' => $followType,
-                'target'      => $target,
-                'innertext'   => $anchorText,
-                'rel'         => $rel
-            ];
-            if (isset($parsed['host'])) {
-                $externalDomainSet[strtolower($parsed['host'])] = true;
+            if ($isInternal) {
+                $internalLinks[] = $href;
+            } else {
+                $externalLinks[] = [
+                    'href'        => $href,
+                    'follow_type' => $followType,
+                    'target'      => $target,
+                    'innertext'   => $anchorText,
+                    'rel'         => $rel
+                ];
+                if (isset($parsed['host'])) {
+                    $externalDomainSet[strtolower($parsed['host'])] = true;
+                }
             }
+            $uniqueLinkSet[$href] = true;
         }
-        $uniqueLinkSet[$href] = true;
+        
+        // Prepare raw metrics.
+        $rawData = [
+            'total_links'                   => count($internalLinks) + count($externalLinks),
+            'total_internal_links'          => count($internalLinks),
+            'total_external_links'          => count($externalLinks),
+            'unique_links_count'            => count($uniqueLinkSet),
+            'total_nofollow_links'          => $totalNoFollow,
+            'total_dofollow_links'          => $totalDoFollow,
+            'percentage_nofollow_links'     => (count($internalLinks) + count($externalLinks)) > 0 ? round(($totalNoFollow / (count($internalLinks) + count($externalLinks))) * 100, 2) : 0,
+            'percentage_dofollow_links'     => (count($internalLinks) + count($externalLinks)) > 0 ? round(($totalDoFollow / (count($internalLinks) + count($externalLinks))) * 100, 2) : 0,
+            'total_target_blank_links'      => $totalTargetBlank,
+            'total_image_links'             => $totalImageLinks,
+            'total_text_links'              => count($internalLinks),
+            'total_empty_links'             => $totalEmptyLinks,
+            'external_domains'              => array_keys($externalDomainSet),
+            'unique_external_domains_count' => count($externalDomainSet),
+            'total_https_links'             => $totalHttps,
+            'total_http_links'              => $totalHttp,
+            'total_tracking_links'          => $totalTracking,
+            'total_non_tracking_links'      => (count($internalLinks) + count($externalLinks)) - $totalTracking,
+            'average_anchor_text_length'    => count($internalLinks) > 0 ? round($totalTextLength / count($internalLinks), 2) : 0,
+            'link_diversity_score'          => (count($internalLinks) + count($externalLinks)) > 0 ? round(count($uniqueLinkSet) / (count($internalLinks) + count($externalLinks)), 2) : 0,
+            'external_links'                => $externalLinks // Save raw external links for later display.
+        ];
+        
+        // -----------------------------------------------------------------
+        // Compute the report following the same logic as meta/heading.
+        // Define five conditions (Pass = 2, To Improve = 1, Error = 0). Maximum score is 10.
+        // Condition A: At least one link exists.
+        $passA = ($rawData['total_links'] > 0) ? 2 : 0;
+        $passAStatus = ($rawData['total_links'] > 0) ? 'Pass' : 'Error';
+        
+        // Condition B: Link Diversity Score >= 0.5 (if between 0.3-0.5 then To Improve).
+        if ($rawData['link_diversity_score'] >= 0.5) {
+            $passB = 2;
+            $passBStatus = 'Pass';
+        } elseif ($rawData['link_diversity_score'] >= 0.3) {
+            $passB = 1;
+            $passBStatus = 'To Improve';
+        } else {
+            $passB = 0;
+            $passBStatus = 'Error';
+        }
+        
+        // Condition C: Average Anchor Text Length: >= 10 = Pass; 5-10 = To Improve; < 5 = Error.
+        if ($rawData['average_anchor_text_length'] >= 10) {
+            $passC = 2;
+            $passCStatus = 'Pass';
+        } elseif ($rawData['average_anchor_text_length'] >= 5) {
+            $passC = 1;
+            $passCStatus = 'To Improve';
+        } else {
+            $passC = 0;
+            $passCStatus = 'Error';
+        }
+        
+        // Condition D: Empty Link Ratio (total_empty_links / total_links).
+        $emptyRatio = ($rawData['total_links'] > 0) ? $rawData['total_empty_links'] / $rawData['total_links'] : 1;
+        if ($emptyRatio <= 0.1) {
+            $passD = 2;
+            $passDStatus = 'Pass';
+        } elseif ($emptyRatio <= 0.2) {
+            $passD = 1;
+            $passDStatus = 'To Improve';
+        } else {
+            $passD = 0;
+            $passDStatus = 'Error';
+        }
+        
+        // Condition E: Tracking Links should be zero.
+        $passE = ($rawData['total_tracking_links'] == 0) ? 2 : 0;
+        $passEStatus = ($rawData['total_tracking_links'] == 0) ? 'Pass' : 'Error';
+        
+        $totalScore = $passA + $passB + $passC + $passD + $passE;
+        $maxScore = 10;
+        $scorePercent = ($maxScore > 0) ? round(($totalScore / $maxScore) * 100) : 0;
+        
+        // Build an overall comment.
+        $comment = "";
+        if ($rawData['total_links'] == 0) {
+            $comment .= "No links found on the page. ";
+        } else {
+            $comment .= "Links extracted successfully. ";
+        }
+        if ($passBStatus !== 'Pass') {
+            $comment .= "Link diversity is low. ";
+        }
+        if ($passCStatus !== 'Pass') {
+            $comment .= "Average anchor text length is below optimal. ";
+        }
+        if ($passDStatus !== 'Pass') {
+            $comment .= "A high proportion of links have empty anchor text. ";
+        }
+        if ($passEStatus !== 'Pass') {
+            $comment .= "Tracking parameters are detected in some links. ";
+        }
+        
+        // Prepare a summary of condition statuses.
+        $conditions = [
+            'Total Links'         => $passAStatus,
+            'Diversity Score'     => $passBStatus,
+            'Anchor Text Length'  => $passCStatus,
+            'Empty Link Ratio'    => $passDStatus,
+            'Tracking Links'      => $passEStatus
+        ];
+        
+        $report = [
+            'score'   => $totalScore,
+            'passed'  => ($passAStatus==='Pass' ? 1 : 0) 
+                         + ($passBStatus==='Pass' ? 1 : 0) 
+                         + ($passCStatus==='Pass' ? 1 : 0) 
+                         + ($passDStatus==='Pass' ? 1 : 0) 
+                         + ($passEStatus==='Pass' ? 1 : 0),
+            'improve' => ($passBStatus==='To Improve' ? 1 : 0) 
+                         + ($passCStatus==='To Improve' ? 1 : 0) 
+                         + ($passDStatus==='To Improve' ? 1 : 0),
+            'errors'  => ($passAStatus==='Error' ? 1 : 0) 
+                         + ($passBStatus==='Error' ? 1 : 0) 
+                         + ($passCStatus==='Error' ? 1 : 0) 
+                         + ($passDStatus==='Error' ? 1 : 0) 
+                         + ($passEStatus==='Error' ? 1 : 0),
+            'percent' => $scorePercent,
+            'details' => $conditions,
+            'comment' => $comment
+        ];
+        
+        // Combine raw data and report.
+        $completeLinkData = [
+            'raw'    => $rawData,
+            'report' => $report
+        ];
+        
+        $reportJson = json_encode($completeLinkData);
+        
+        // Upsert the links analysis report into a dedicated table using domain_id.
+        $resultLinks = ajaxDbUpsert($this->con, 'domains_links_analyser', [
+            'domain_id'      => $this->domainId,
+            'links_analyser' => $reportJson
+        ], ['domain_id' => $this->domainId]);
+        if ($resultLinks !== true) {
+            error_log("Failed to upsert links analysis: " . $resultLinks);
+        }
+        
+        // Optionally store the report in session.
+        $_SESSION['report_data']['linksReport'] = $completeLinkData;
+        
+        return $reportJson;
     }
     
-    // Prepare raw metrics.
-    $rawData = [
-        'total_links'                   => count($internalLinks) + count($externalLinks),
-        'total_internal_links'          => count($internalLinks),
-        'total_external_links'          => count($externalLinks),
-        'unique_links_count'            => count($uniqueLinkSet),
-        'total_nofollow_links'          => $totalNoFollow,
-        'total_dofollow_links'          => $totalDoFollow,
-        'percentage_nofollow_links'     => (count($internalLinks)+count($externalLinks)) > 0 ? round(($totalNoFollow / (count($internalLinks)+count($externalLinks)))*100, 2) : 0,
-        'percentage_dofollow_links'     => (count($internalLinks)+count($externalLinks)) > 0 ? round(($totalDoFollow / (count($internalLinks)+count($externalLinks)))*100, 2) : 0,
-        'total_target_blank_links'      => $totalTargetBlank,
-        'total_image_links'             => $totalImageLinks,
-        'total_text_links'              => count($internalLinks),
-        'total_empty_links'             => $totalEmptyLinks,
-        'external_domains'              => array_keys($externalDomainSet),
-        'unique_external_domains_count' => count($externalDomainSet),
-        'total_https_links'             => $totalHttps,
-        'total_http_links'              => $totalHttp,
-        'total_tracking_links'          => $totalTracking,
-        'total_non_tracking_links'      => (count($internalLinks)+count($externalLinks)) - $totalTracking,
-        'average_anchor_text_length'    => count($internalLinks) > 0 ? round($totalTextLength / count($internalLinks), 2) : 0,
-        'link_diversity_score'          => (count($internalLinks)+count($externalLinks)) > 0 ? round(count($uniqueLinkSet) / (count($internalLinks)+count($externalLinks)), 2) : 0,
-        // NEW: Save raw external links array for later display.
-        'external_links'                => $externalLinks
-    ];
     
-    // -----------------------------------------------------------------
-    // Compute the report following the same logic pattern as meta/heading.
-    // We'll define five conditions and assign points (Pass = 2, To Improve = 1, Error = 0).
-    // Maximum score is 10.
-    // Condition A: At least one link exists.
-    $passA = ($rawData['total_links'] > 0) ? 2 : 0;
-    $passAStatus = ($rawData['total_links'] > 0) ? 'Pass' : 'Error';
-    
-    // Condition B: Link Diversity Score >= 0.5 (otherwise, if between 0.3-0.5, to improve).
-    if ($rawData['link_diversity_score'] >= 0.5) {
-        $passB = 2;
-        $passBStatus = 'Pass';
-    } elseif ($rawData['link_diversity_score'] >= 0.3) {
-        $passB = 1;
-        $passBStatus = 'To Improve';
-    } else {
-        $passB = 0;
-        $passBStatus = 'Error';
-    }
-    
-    // Condition C: Average Anchor Text Length: >= 10 = pass; 5-10 = to improve; < 5 = error.
-    if ($rawData['average_anchor_text_length'] >= 10) {
-        $passC = 2;
-        $passCStatus = 'Pass';
-    } elseif ($rawData['average_anchor_text_length'] >= 5) {
-        $passC = 1;
-        $passCStatus = 'To Improve';
-    } else {
-        $passC = 0;
-        $passCStatus = 'Error';
-    }
-    
-    // Condition D: Empty Link Ratio (empty_ratio = total_empty_links / total_links).
-    $emptyRatio = ($rawData['total_links'] > 0) ? $rawData['total_empty_links'] / $rawData['total_links'] : 1;
-    if ($emptyRatio <= 0.1) {
-        $passD = 2;
-        $passDStatus = 'Pass';
-    } elseif ($emptyRatio <= 0.2) {
-        $passD = 1;
-        $passDStatus = 'To Improve';
-    } else {
-        $passD = 0;
-        $passDStatus = 'Error';
-    }
-    
-    // Condition E: Tracking Links: Ideally, zero tracking links.
-    $passE = ($rawData['total_tracking_links'] == 0) ? 2 : 0;
-    $passEStatus = ($rawData['total_tracking_links'] == 0) ? 'Pass' : 'Error';
-    
-    $totalScore = $passA + $passB + $passC + $passD + $passE;
-    $maxScore = 10;
-    $scorePercent = ($maxScore > 0) ? round(($totalScore / $maxScore) * 100) : 0;
-    
-    // Build an overall comment.
-    $comment = "";
-    if ($rawData['total_links'] == 0) {
-        $comment .= "No links found on the page. ";
-    } else {
-        $comment .= "Links extracted successfully. ";
-    }
-    if ($passBStatus !== 'Pass') {
-        $comment .= "Link diversity is low. ";
-    }
-    if ($passCStatus !== 'Pass') {
-        $comment .= "Average anchor text length is below optimal. ";
-    }
-    if ($passDStatus !== 'Pass') {
-        $comment .= "A high proportion of links have empty anchor text. ";
-    }
-    if ($passEStatus !== 'Pass') {
-        $comment .= "Tracking parameters are detected in some links. ";
-    }
-    
-    // Prepare a details summary.
-    $conditions = [
-        'Total Links' => $passAStatus,
-        'Diversity Score' => $passBStatus,
-        'Anchor Text Length' => $passCStatus,
-        'Empty Link Ratio' => $passDStatus,
-        'Tracking Links' => $passEStatus
-    ];
-    
-    $report = [
-        'score'   => $totalScore,
-        'passed'  => ($passAStatus==='Pass' ? 1 : 0) + ($passBStatus==='Pass' ? 1 : 0) + ($passCStatus==='Pass' ? 1 : 0) + ($passDStatus==='Pass' ? 1 : 0) + ($passEStatus==='Pass' ? 1 : 0),
-        'improve' => ($passBStatus==='To Improve' ? 1 : 0) + ($passCStatus==='To Improve' ? 1 : 0) + ($passDStatus==='To Improve' ? 1 : 0),
-        'errors'  => ($passAStatus==='Error' ? 1 : 0) + ($passBStatus==='Error' ? 1 : 0) + ($passCStatus==='Error' ? 1 : 0) + ($passDStatus==='Error' ? 1 : 0) + ($passEStatus==='Error' ? 1 : 0),
-        'percent' => $scorePercent,
-        'details' => $conditions,
-        'comment' => $comment
-    ];
-    
-    // Combine raw data and report.
-    $completeLinkData = [
-        'raw'    => $rawData,
-        'report' => $report
-    ];
-    
-    $reportJson = json_encode($completeLinkData);
-    updateToDbPrepared($this->con, 'domains_data', ['links_analyser' => $reportJson], ['domain' => $this->domainStr]);
-    $_SESSION['report_data']['linksReport'] = $completeLinkData;
-    return $reportJson;
-}
 
 public function showInPageLinks($linksData): string {
     // 1) Decode if $linksData is a JSON string.
@@ -3346,7 +3332,7 @@ public function processSiteCards(): string {
                 $cards['discord'][$property]   = $content;
             }
         }
-        // Process tags that use "name"
+        // Process tags that use "name".
         if ($tag->hasAttribute('name')) {
             $name = $tag->getAttribute('name');
             $content  = $tag->getAttribute('content');
@@ -3415,12 +3401,11 @@ public function processSiteCards(): string {
         ],
     ];
     
-    // We'll compute an individual report per platform.
+    // Compute an individual report per platform.
     $cardReport = [];
     $totalScoreAccum = 0;
     $platformCount = 0;
     
-    // Use our helper below to calculate score for a single platform.
     foreach ($cardTypes as $platform => $settings) {
         $required = $settings['required'];
         $platformData = $cards[$platform] ?? [];
@@ -3449,12 +3434,12 @@ public function processSiteCards(): string {
             $suggestion = "Most required tags are missing: " . implode(", ", $missing) . ".";
         }
         $cardReport[$platform] = [
-            'label'       => $settings['label'],
-            'score'       => $score,
-            'percentage'  => round($percentage),
-            'status'      => $status,
-            'missing'     => $missing,
-            'suggestion'  => $suggestion
+            'label'      => $settings['label'],
+            'score'      => $score,
+            'percentage' => round($percentage),
+            'status'     => $status,
+            'missing'    => $missing,
+            'suggestion' => $suggestion
         ];
         $totalScoreAccum += $score;
         $platformCount++;
@@ -3492,11 +3477,21 @@ public function processSiteCards(): string {
     ];
     
     $jsonData = json_encode($completeCardsData);
-    updateToDbPrepared($this->con, 'domains_data', ['sitecards' => $jsonData], ['domain' => $this->domainStr]);
+    
+    // Upsert the site cards data into a separate table (e.g., domains_sitecards) using domain_id.
+    $resultSiteCards = ajaxDbUpsert($this->con, 'domains_sitecards', [
+        'domain_id'  => $this->domainId,
+        'sitecards'  => $jsonData
+    ], ['domain_id' => $this->domainId]);
+    if ($resultSiteCards !== true) {
+        error_log("Failed to upsert Site Cards data: " . $resultSiteCards);
+    }
+    
     $_SESSION['report_data']['sitecardsReport'] = $completeCardsData;
     
     return $jsonData;
 }
+
     
 
     
@@ -4203,7 +4198,7 @@ private function calculateCardScore(array $cardData, array $requiredTags): array
  * @return string JSON encoded array containing both raw data and the report.
  */
 public function processServerInfo(): string {
-    // (A) Gather Raw Data (unchanged)
+    // (A) Gather Raw Data
     $scheme = $this->scheme ?? 'http';
     $host = $this->urlParse['host'] ?? '';
     if ($host === '') {
@@ -4229,8 +4224,7 @@ public function processServerInfo(): string {
         'whois_info'       => $whoisInfo
     ];
     
-    // (B) Compute Score Report
-    // We'll use six conditions (each worth 2 points; total max = 12)
+    // (B) Compute Score Report (max 12 points; each condition is worth 2)
     $maxScore = 12;
     $score = 0;
     $details = [];
@@ -4310,20 +4304,32 @@ public function processServerInfo(): string {
         'comment'     => $overallComment
     ];
     
-    // (C) Combine Raw Data and Report, then save
+    // (C) Combine Raw Data and Report.
     $combined = [
         'raw'    => $rawData,
         'report' => $report
     ];
     
     $combinedJson = json_encode($combined);
+    
+    // Upsert the server info into a dedicated table (e.g., domains_server_info) using domain_id.
+    $resultServer = ajaxDbUpsert($this->con, 'domains_server_info', [
+        'domain_id'   => $this->domainId,
+        'server_info' => $combinedJson
+    ], ['domain_id' => $this->domainId]);
+    if ($resultServer !== true) {
+        error_log("Failed to upsert server info: " . $resultServer);
+    }
+    
+    // Optionally, update the main table for backward compatibility.
     updateToDbPrepared($this->con, 'domains_data', ['server_loc' => $combinedJson], ['domain' => $this->domainStr]);
     
-    // Save to session for later use (e.g., in the cleanout process)
+    // Save to session for later use.
     $_SESSION['report_data']['serverInfo'] = $combined;
     
     return $combinedJson;
 }
+
 
 private function getIpInfo(string $ip): array
 {
@@ -5073,8 +5079,7 @@ return $finalOutput;
  *
  * @return string JSON-encoded complete schema data (raw + report).
  */
-public function processSchema(): string
-{
+public function processSchema(): string {
     $doc = $this->getDom();
     $xpath = new DOMXPath($doc);
 
@@ -5125,7 +5130,6 @@ public function processSchema(): string
         }
     }
     if (empty($schemas['json_ld'])) {
-        // Provide a suggestion if no JSON‑LD found.
         $schemas['suggestions']['json_ld'][] = "No JSON‑LD markup was detected. Google recommends using JSON‑LD for structured data.";
     }
     if (empty($schemas['json_ld']['Organization'])) {
@@ -5174,7 +5178,8 @@ public function processSchema(): string
     // JSON‑LD Presence
     if (!empty($schemas['json_ld']) && is_array($schemas['json_ld'])) {
         $details['JSON‑LD Presence'] = "Pass – JSON‑LD markup is present.";
-        $score += 2; $passedCount++;
+        $score += 2; 
+        $passedCount++;
     } else {
         $details['JSON‑LD Presence'] = "Error – JSON‑LD markup is missing. It is highly recommended to include JSON‑LD.";
         $errorCount++;
@@ -5182,7 +5187,8 @@ public function processSchema(): string
     // Microdata Presence
     if (!empty($schemas['microdata']) && is_array($schemas['microdata'])) {
         $details['Microdata Presence'] = "Pass – Microdata markup is present.";
-        $score += 2; $passedCount++;
+        $score += 2; 
+        $passedCount++;
     } else {
         $details['Microdata Presence'] = "Error – No microdata was detected. Consider adding microdata for better structured data.";
         $errorCount++;
@@ -5190,7 +5196,8 @@ public function processSchema(): string
     // RDFa Presence
     if (!empty($schemas['rdfa']) && is_array($schemas['rdfa'])) {
         $details['RDFa Presence'] = "Pass – RDFa markup is present.";
-        $score += 2; $passedCount++;
+        $score += 2; 
+        $passedCount++;
     } else {
         $details['RDFa Presence'] = "Error – RDFa markup is missing. Including RDFa can help provide additional context.";
         $errorCount++;
@@ -5198,7 +5205,8 @@ public function processSchema(): string
     // Organization Schema (within JSON‑LD)
     if (!empty($schemas['json_ld']['Organization'])) {
         $details['Organization Schema'] = "Pass – Organization schema is present.";
-        $score += 2; $passedCount++;
+        $score += 2; 
+        $passedCount++;
     } else {
         $details['Organization Schema'] = "Error – Organization schema is missing. Adding organization details is important for brand recognition.";
         $errorCount++;
@@ -5211,10 +5219,12 @@ public function processSchema(): string
     );
     if (empty($markupSuggestions)) {
         $details['Markup Quality'] = "Pass – Markup quality is excellent.";
-        $score += 2; $passedCount++;
+        $score += 2; 
+        $passedCount++;
     } else {
         $details['Markup Quality'] = "To Improve – Some issues were noted: " . implode(" ", $markupSuggestions);
-        $score += 1; $improveCount++;
+        $score += 1; 
+        $improveCount++;
     }
 
     $maxScore = 10;
@@ -5222,19 +5232,19 @@ public function processSchema(): string
 
     // Build overall comment based on the scores
     $comment = "";
-    if ($details['JSON‑LD Presence'] && strpos($details['JSON‑LD Presence'], 'Error') !== false) {
+    if (strpos($details['JSON‑LD Presence'], 'Error') !== false) {
         $comment .= "JSON‑LD markup is missing. ";
     }
-    if ($details['Microdata Presence'] && strpos($details['Microdata Presence'], 'Error') !== false) {
+    if (strpos($details['Microdata Presence'], 'Error') !== false) {
         $comment .= "Microdata is missing. ";
     }
-    if ($details['RDFa Presence'] && strpos($details['RDFa Presence'], 'Error') !== false) {
+    if (strpos($details['RDFa Presence'], 'Error') !== false) {
         $comment .= "RDFa markup is missing. ";
     }
-    if ($details['Organization Schema'] && strpos($details['Organization Schema'], 'Error') !== false) {
+    if (strpos($details['Organization Schema'], 'Error') !== false) {
         $comment .= "Organization schema is missing. ";
     }
-    if ($details['Markup Quality'] && strpos($details['Markup Quality'], 'To Improve') !== false) {
+    if (strpos($details['Markup Quality'], 'To Improve') !== false) {
         $comment .= "Overall, the structured data markup quality could be improved. ";
     }
 
@@ -5254,11 +5264,21 @@ public function processSchema(): string
     ];
 
     $schemaJson = json_encode($completeSchema);
-    updateToDbPrepared($this->con, 'domains_data', ['schema_data' => $schemaJson], ['domain' => $this->domainStr]);
-    // Optionally, store the report in session for later use (if needed)
+
+    // Upsert the schema data into a dedicated table (e.g., domains_schema_data) using ajaxDbUpsert.
+    $resultSchema = ajaxDbUpsert($this->con, 'domains_schema_data', [
+        'domain_id'   => $this->domainId,
+        'schema_data' => $schemaJson
+    ], ['domain_id' => $this->domainId]);
+    if ($resultSchema !== true) {
+        error_log("Failed to upsert schema data: " . $resultSchema);
+    }
+
+    // Optionally, store the report in session for later use.
     $_SESSION['report_data']['schemaReport'] = $completeSchema;
     return $schemaJson;
 }
+
 
 /**
  * Recursively renders an array as a nested table in a "Google-like" style.
@@ -5519,456 +5539,447 @@ public function showSchema(string $jsonData): string
 }
 
 
- /*===================================================================
+    /*===================================================================
      * Page Analytics Handelers
      *=================================================================== 
      */
-/**
- * processPageAnalytics()
- *
- * Gathers data for a variety of on‑page SEO checks and stores the results as JSON in the
- * `page_analytics` field in your database.
- *
- * The checks include:
- *
- *  1. Encoding
- *  2. Doc Type
- *  3. W3C Validity
- *  4. Analytics
- *  5. Mobile Compatibility
- *  6. IP Canonicalization
- *  7. XML Sitemap
- *  8. Robots.txt
- *  9. URL Rewrite
- * 10. Embedded Objects
- * 11. Iframe
- * 12. Usability
- * 13. URL
- * 14. Canonical Tag
- * 15. Canonical Tag Accuracy
- * 16. Hreflang Tags
- * 17. AMP HTML
- * 18. Robots Meta Tag
- * 19. Favicon and Touch Icons
- * 20. HTTP Status Code
- * 21. Indexability (noindex/nofollow)
- * 22. URL Canonicalization & Redirects
- * 23. Content Freshness (Last-Modified/Publish Date)
- * 24. Language and Localization Tags
- * 25. Error Page Handling
- * 26. Page Security Headers (CSP, X-Frame-Options, etc.)
- * 27. Google Safe Browsing
- * 28. Gzip Compression
- * 29. Structured Data
- * 30. Cache Headers
- * 31. CDN Usage
- * 32. Noindex Tag
- * 33. Nofollow Tag
- * 34. Meta Refresh
- * 35. SPF Record
- * 36. Ads.txt
- *
- * @return string JSON string stored in `page_analytics`.
- */
-public function processPageAnalytics(): string {
-    $results = [];
-
-    // 1) ENCODING
-    $encoding = 'Not Detected';
-    if (preg_match('#<meta[^>]+charset=[\'"]?([^\'">]+)#i', $this->html, $m)) {
-        $encoding = strtoupper(trim($m[1]));
-    } elseif (preg_match('#<meta[^>]+http-equiv=[\'"]content-type[\'"].+charset=([^\'">]+)#i', $this->html, $m)) {
-        $encoding = strtoupper(trim($m[1]));
-    }
-    $results['Encoding'] = $encoding;
-
-    // 2) DOC TYPE
-    $docType = 'Missing';
-    if (preg_match('#<!doctype\s+html.*?>#is', $this->html)) {
-        $docType = 'HTML5';
-    } elseif (preg_match('#<!doctype\s+html\s+public\s+"-//w3c//dtd xhtml 1\.0#i', $this->html)) {
-        $docType = 'XHTML 1.0';
-    } elseif (preg_match('#<!doctype\s+html\s+public\s+"-//w3c//dtd html 4\.01#i', $this->html)) {
-        $docType = 'HTML 4.01';
-    }
-    $results['Doc Type'] = $docType;
-
-    // 3) W3C VALIDITY
-    // (This example doesn't run actual validation; ideally, you'd integrate the validator.)
-    $results['W3C Validity'] = 'Not validated';
-
-    // 4) ANALYTICS
-    $analytics = 'Not Found';
-    if (preg_match('/UA-\d{4,}-\d{1,}/i', $this->html) || stripos($this->html, "gtag(") !== false) {
-        $analytics = 'Google Analytics Detected';
-    }
-    $results['Analytics'] = $analytics;
-
-    // 5) MOBILE COMPATIBILITY
-    $mobileCompatible = (preg_match('#<meta[^>]+name=[\'"]viewport[\'"]#i', $this->html)) ? 'Yes' : 'No';
-    $results['Mobile Compatibility'] = $mobileCompatible;
-
-    // 6) IP CANONICALIZATION
-    $hostIP = gethostbyname($this->urlParse['host']);
-    if (!empty($hostIP) && filter_var($hostIP, FILTER_VALIDATE_IP)) {
-        $ipCanResult = ($hostIP == $this->urlParse['host']) ? 'No redirection from IP' : 'IP resolves to domain';
-    } else {
-        $ipCanResult = 'Not Checked';
-    }
-    $results['IP Canonicalization'] = $ipCanResult;
-
-    // 7) XML SITEMAP
-    $sitemapStatus = 'Not Found';
-    $possibleSitemaps = ['/sitemap.xml', '/sitemap_index.xml'];
-    $foundSitemapUrl = null;
-    foreach ($possibleSitemaps as $s) {
-        $testUrl = $this->scheme . '://' . $this->host . $s;
-        if ($this->getHttpResponseCode($testUrl) == 200) {
-            $sitemapStatus = 'Found';
-            $foundSitemapUrl = $testUrl;
-            break;
+    public function processPageAnalytics(): string {
+        $results = [];
+        
+        // 1) ENCODING
+        $encoding = 'Not Detected';
+        if (preg_match('#<meta[^>]+charset=[\'"]?([^\'">]+)#i', $this->html, $m)) {
+            $encoding = strtoupper(trim($m[1]));
+        } elseif (preg_match('#<meta[^>]+http-equiv=["\']content-type["\'][^>]+charset=([^\'">]+)#i', $this->html, $m)) {
+            $encoding = strtoupper(trim($m[1]));
         }
-    }
-    $results['XML Sitemap'] = ($foundSitemapUrl) ? "$sitemapStatus at $foundSitemapUrl" : $sitemapStatus;
-
-    // 8) ROBOTS.TXT
-    $robotsUrl = $this->scheme . '://' . $this->host . '/robots.txt';
-    $results['Robots.txt'] = ($this->getHttpResponseCode($robotsUrl) == 200) ? "Found at $robotsUrl" : "Not Found";
-
-    // 9) URL REWRITE
-    $results['URL Rewrite'] = (isset($this->urlParse['query']) && !empty($this->urlParse['query']))
-        ? 'Likely using query strings' : 'Clean URLs detected';
-
-    // 10) EMBEDDED OBJECTS
-    $embeddedFound = (preg_match('#<embed\b[^>]*>#i', $this->html) || preg_match('#<object\b[^>]*>#i', $this->html))
-        ? 'Yes' : 'No';
-    $results['Embedded Objects'] = ($embeddedFound === 'No')
-        ? 'No embedded objects detected. This is ideal.'
-        : 'Embedded objects detected. Review if they are necessary.';
-
-    // 11) IFRAME
-    $results['Iframe'] = (preg_match('#<iframe\b[^>]*>#i', $this->html)) ? 'Yes' : 'No';
-
-    // 12) USABILITY
-    $results['Usability'] = ($mobileCompatible === 'Yes')
-        ? 'Mobile meta tag found. Possibly good usability.'
-        : 'Mobile meta tag not found. Usability may be affected.';
-
-    // 13) URL
-    $hostLength = strlen($this->host);
-    $hyphenCount = substr_count($this->host, '-');
-    $results['URL'] = "Scheme: {$this->scheme}, Host: {$this->host} (Length: {$hostLength}, Hyphens: {$hyphenCount})";
-
-    // 14) CANONICAL TAG
-    $canonical = 'Not Found';
-    if (preg_match('#<link\s+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)["\']#i', $this->html, $m)) {
-        $canonical = $m[1];
-    }
-    $results['Canonical Tag'] = $canonical;
-
-    // 15) CANONICAL TAG ACCURACY
-    $homepageUrl = $this->scheme . '://' . $this->host;
-    if ($canonical === 'Not Found') {
-        $results['Canonical Tag Accuracy'] = 'No canonical tag found';
-    } else {
-        $results['Canonical Tag Accuracy'] = (trim($canonical, '/') === trim($homepageUrl, '/'))
-            ? 'Canonical tag accurately matches homepage URL'
-            : 'Canonical tag does not match homepage URL';
-    }
-
-    // 16) HREFLANG TAGS
-    $hreflang = 'Not Found';
-    if (preg_match_all('#<link\s+rel=["\']alternate["\']\s+hreflang=["\']([^"\']+)["\'][^>]+href=["\']([^"\']+)["\']#i', $this->html, $matches)) {
-        $count = count($matches[0]);
-        $tagsList = [];
-        for ($i = 0; $i < $count; $i++) {
-            $tagsList[] = $matches[1][$i] . ' => ' . $matches[2][$i];
+        $results['Encoding'] = $encoding;
+        
+        // 2) DOC TYPE
+        $docType = 'Missing';
+        if (preg_match('#<!doctype\s+html.*?>#is', $this->html)) {
+            $docType = 'HTML5';
+        } elseif (preg_match('#<!doctype\s+html\s+public\s+"-//w3c//dtd xhtml 1\.0#i', $this->html)) {
+            $docType = 'XHTML 1.0';
+        } elseif (preg_match('#<!doctype\s+html\s+public\s+"-//w3c//dtd html 4\.01#i', $this->html)) {
+            $docType = 'HTML 4.01';
         }
-        $hreflang = "Found ({$count} tag" . ($count > 1 ? 's' : '') . "): " . implode(', ', $tagsList);
-    }
-    $results['Hreflang Tags'] = $hreflang;
-
-    // 17) AMP HTML
-    $amp = 'Not Found';
-    if (preg_match('#<link\s+rel=["\']amphtml["\']\s+href=["\']([^"\']+)["\']#i', $this->html, $m)) {
-        $amp = $m[1];
-    }
-    $results['AMP HTML'] = $amp;
-
-    // 18) ROBOTS META TAG
-    $robotsMeta = 'Not Found';
-    if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
-        $robotsMeta = $m[1];
-    }
-    $results['Robots Meta Tag'] = $robotsMeta;
-
-    // 19) FAVICON & TOUCH ICONS
-    $faviconUrl = $this->getFaviconUrl();
-    $results['Favicon and Touch Icons'] = (!empty($faviconUrl))
-        ? '<img src="' . htmlspecialchars($faviconUrl) . '" alt="Favicon" style="vertical-align:middle; margin-right:5px;"> Favicon and touch icons detected.'
-        : 'No favicon or touch icons detected. This may affect brand recognition in bookmarks and mobile devices.';
- 
-    // 20) HTTP STATUS CODE
-    $httpStatus = $this->getHttpResponseCode($homepageUrl);
-    switch ($httpStatus) {
-        case 200:
-            $statusMsg = 'HTTP 200 OK: The page is accessible.';
-            break;
-        case 404:
-            $statusMsg = 'HTTP 404 Not Found: The page was not found.';
-            break;
-        case 301:
-        case 302:
-            $statusMsg = "HTTP {$httpStatus} Redirect: The page is redirecting.";
-            break;
-        default:
-            $statusMsg = "HTTP {$httpStatus}: Check the response for details.";
-    }
-    $results['HTTP Status Code'] = $statusMsg;
-
-    // 21) INDEXABILITY
-    $indexability = 'Indexable';
-    if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
-        $content = strtolower($m[1]);
-        if (strpos($content, 'noindex') !== false) {
-            $indexability = 'Noindex Detected';
+        $results['Doc Type'] = $docType;
+        
+        // 3) W3C VALIDITY
+        $results['W3C Validity'] = 'Not validated';
+        
+        // 4) ANALYTICS
+        $analytics = 'Not Found';
+        if (preg_match('/UA-\d{4,}-\d{1,}/i', $this->html) || stripos($this->html, "gtag(") !== false) {
+            $analytics = 'Google Analytics Detected';
         }
-        if (strpos($content, 'nofollow') !== false) {
-            $indexability .= ' & Nofollow Detected';
+        $results['Analytics'] = $analytics;
+        
+        // 5) MOBILE COMPATIBILITY
+        $mobileCompatible = (preg_match('#<meta[^>]+name=["\']viewport["\']#i', $this->html)) ? 'Yes' : 'No';
+        $results['Mobile Compatibility'] = $mobileCompatible;
+        
+        // 6) IP CANONICALIZATION
+        $hostIP = gethostbyname($this->urlParse['host']);
+        if (!empty($hostIP) && filter_var($hostIP, FILTER_VALIDATE_IP)) {
+            $ipCanResult = ($hostIP == $this->urlParse['host']) ? 'No redirection from IP' : 'IP resolves to domain';
+        } else {
+            $ipCanResult = 'Not Checked';
         }
-    }
-    $results['Indexability'] = $indexability;
-
-    // 22) URL CANONICALIZATION & REDIRECTS
-    if (!empty($canonical) && $canonical !== 'Not Found') {
-        $results['URL Canonicalization & Redirects'] = ($canonical == $homepageUrl)
-            ? 'Canonical URL matches homepage'
-            : 'Canonical URL differs from homepage';
-    } else {
-        $results['URL Canonicalization & Redirects'] = 'Not Checked';
-    }
-
-    // 23) CONTENT FRESHNESS
-    $freshness = 'Not Detected';
-    if (preg_match('#<meta\s+property=["\']article:published_time["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
-        $freshness = 'Published on ' . $m[1];
-    } elseif (preg_match('#<meta\s+http-equiv=["\']last-modified["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
-        $freshness = 'Last Modified: ' . $m[1];
-    }
-    $results['Content Freshness'] = $freshness;
-
-    // 24) LANGUAGE & LOCALIZATION TAGS
-    $langTag = 'Not Detected';
-    if (preg_match('#<html[^>]+lang=["\']([^"\']+)["\']#i', $this->html, $m)) {
-        $langTag = $m[1];
-    }
-    $results['Language and Localization Tags'] = $langTag;
-
-    // 25) ERROR PAGE HANDLING
-    $errorPage = (stripos($this->html, '404 Not Found') !== false || stripos($this->html, 'Page Not Found') !== false)
-        ? 'Custom 404 Detected' : 'Standard Page';
-    $results['Error Page Handling'] = $errorPage;
-
-    // 26) PAGE SECURITY HEADERS
-    $headers = @get_headers($homepageUrl, 1) ?: [];
-    $csp = isset($headers['Content-Security-Policy']) ? 'CSP Detected' : 'No CSP';
-    $xFrame = isset($headers['X-Frame-Options']) ? 'X-Frame-Options Detected' : 'No X-Frame-Options';
-    $results['Page Security Headers'] = $csp . ' | ' . $xFrame;
-
-    // 27) GOOGLE SAFE BROWSING
-    $results['Google Safe Browsing'] = safeBrowsing($this->host);
-
-    // 28) GZIP COMPRESSION
-    $gzipData = $this->processGzip();
-    if (is_array($gzipData)) {
-        list($origSize, $compSize, $isCompressed, $fallbackSize, $headerData, $bodyData) = $gzipData;
-        $savings = ($origSize > 0) ? round((($origSize - $compSize) / $origSize) * 100, 2) : 0;
-        $results['Gzip Compression'] = "Original size: " . formatBytes($origSize) .
-            ", Compressed: " . formatBytes($compSize) .
-            " (saving " . $savings . "%)";
-    } else {
-        $results['Gzip Compression'] = "Not available";
-    }
-
-    // 29) STRUCTURED DATA
-    $schema = $this->processSchema();
-    $results['Structured Data'] = ($schema && $schema !== 'No schema data found.')
-        ? 'Structured data detected'
-        : 'No structured data detected';
-
-    // 30) CACHE HEADERS
-    $cacheHeaders = isset($headers['Cache-Control']) ? 'Cache headers detected' : 'No cache headers found';
-    $results['Cache Headers'] = $cacheHeaders;
-
-    // 31) CDN USAGE
-    $cdnUsage = 'No CDN detected';
-    if (!empty($headers)) {
-        $serverVal = $headers['Server'] ?? '';
-        if (is_array($serverVal)) {
-            $serverVal = implode(' ', $serverVal);
-        }
-        $serverVal = trim((string)$serverVal);
-        $server = strtolower($serverVal);
-        // Note: variable $via was referenced but not defined; assuming it should be obtained similarly.
-        $via = '';
-        if (isset($headers['Via'])) {
-            $via = is_array($headers['Via']) ? implode(' ', $headers['Via']) : $headers['Via'];
-        }
-        if (strpos($via, 'cloudflare') !== false || strpos($server, 'cloudflare') !== false) {
-            $cdnUsage = 'Likely using Cloudflare';
-        } elseif (strpos($via, 'fastly') !== false) {
-            $cdnUsage = 'Likely using Fastly';
-        }
-    }
-    $results['CDN Usage'] = $cdnUsage;
-
-    // 32) NOINDEX TAG
-    $noindex = 'No';
-    if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
-        if (stripos($m[1], 'noindex') !== false) {
-            $noindex = 'Yes';
-        }
-    }
-    $results['Noindex Tag'] = $noindex;
-
-    // 33) NOFOLLOW TAG
-    $nofollow = 'No';
-    if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
-        if (stripos($m[1], 'nofollow') !== false) {
-            $nofollow = 'Yes';
-        }
-    }
-    $results['Nofollow Tag'] = $nofollow;
-
-    // 34) META REFRESH
-    $metaRefresh = (preg_match('#<meta\s+http-equiv=["\']refresh["\']#i', $this->html)) ? 'Detected' : 'Not Detected';
-    $results['Meta Refresh'] = $metaRefresh;
-
-    // 35) SPF RECORD
-    $spf = 'Not Found';
-    $txtRecords = dns_get_record($this->host, DNS_TXT);
-    if ($txtRecords) {
-        foreach ($txtRecords as $record) {
-            if (isset($record['txt']) && stripos($record['txt'], 'v=spf1') !== false) {
-                $spf = 'SPF record found';
+        $results['IP Canonicalization'] = $ipCanResult;
+        
+        // 7) XML SITEMAP
+        $sitemapStatus = 'Not Found';
+        $possibleSitemaps = ['/sitemap.xml', '/sitemap_index.xml'];
+        $foundSitemapUrl = null;
+        foreach ($possibleSitemaps as $s) {
+            $testUrl = $this->scheme . '://' . $this->host . $s;
+            if ($this->getHttpResponseCode($testUrl) == 200) {
+                $sitemapStatus = 'Found';
+                $foundSitemapUrl = $testUrl;
                 break;
             }
         }
-    }
-    $results['SPF Record'] = $spf;
-
-    // 36) ADS.TXT
-    $adsUrl = $this->scheme . '://' . $this->host . '/ads.txt';
-    $adsCode = $this->getHttpResponseCode($adsUrl);
-    if ($adsCode == 200) {
-        $results['Ads.txt'] = $adsUrl;
-    } else {
-        $results['Ads.txt'] = 'Ads.txt not found on your domain. <i class="fa fa-times text-danger"></i> Consider adding an ads.txt file to control your ad inventory.';
-    }
-
-    // -----------------------------------------------------------------
-    // Compute score/report based on ideal conditions.
-    // For each check in a defined set, we compare the actual result to an ideal.
-    $scoreDetails = [];
-    $totalScore = 0;
-    $maxPoints = 0;
-    
-    // Define the ideal conditions (adjust as necessary).
-    $idealConditions = [
-        'Encoding' => 'UTF-8',
-        'Doc Type' => 'HTML5',
-        'W3C Validity' => 'Valid',
-        'Analytics' => 'Google Analytics Detected',
-        'Mobile Compatibility' => 'Yes',
-        'IP Canonicalization' => 'No redirection from IP',
-        'XML Sitemap' => 'Found',
-        'Robots.txt' => 'Found',
-        'URL Rewrite' => 'Clean URLs detected',
-        'Embedded Objects' => 'No embedded objects detected. This is ideal.',
-        'Iframe' => 'No',
-        'Usability' => 'Mobile meta tag found. Possibly good usability.',
-        'Canonical Tag' => 'Found',
-        'Canonical Tag Accuracy' => 'Canonical tag accurately matches homepage URL',
-        'Hreflang Tags' => 'Found',
-        'AMP HTML' => 'Found',
-        'Robots Meta Tag' => 'Found',
-        'Favicon and Touch Icons' => 'Favicon and touch icons detected',
-        'HTTP Status Code' => 'HTTP 200 OK',
-        'Indexability' => 'Indexable',
-        'URL Canonicalization & Redirects' => 'Canonical URL matches homepage',
-        'Content Freshness' => 'Detected',
-        'Language and Localization Tags' => 'Detected',
-        'Error Page Handling' => 'Standard Page',
-        'Page Security Headers' => 'CSP Detected',
-        'Google Safe Browsing' => 'Safe',
-        'Gzip Compression' => 'High',  // e.g. saving >50%
-        'Structured Data' => 'Structured data detected',
-        'Cache Headers' => 'Cache headers detected',
-        'CDN Usage' => 'Likely using Cloudflare',
-        'Noindex Tag' => 'No',
-        'Nofollow Tag' => 'No',
-        'Meta Refresh' => 'Not Detected',
-        'SPF Record' => 'SPF record found',
-        'Ads.txt' => 'Found'
-    ];
-    
-    foreach ($idealConditions as $check => $ideal) {
-        $maxPoints += 2;
-        $actual = $results[$check] ?? 'Not Found';
-        // For some checks, we use a substring match.
-        if (stripos($actual, $ideal) !== false) {
-            $scoreDetails[$check] = "Pass";
-            $totalScore += 2;
+        $results['XML Sitemap'] = ($foundSitemapUrl) ? "$sitemapStatus at $foundSitemapUrl" : $sitemapStatus;
+        
+        // 8) ROBOTS.TXT
+        $robotsUrl = $this->scheme . '://' . $this->host . '/robots.txt';
+        $results['Robots.txt'] = ($this->getHttpResponseCode($robotsUrl) == 200) ? "Found at $robotsUrl" : "Not Found";
+        
+        // 9) URL REWRITE
+        $results['URL Rewrite'] = (isset($this->urlParse['query']) && !empty($this->urlParse['query']))
+            ? 'Likely using query strings' : 'Clean URLs detected';
+        
+        // 10) EMBEDDED OBJECTS
+        $embeddedFound = (preg_match('#<embed\b[^>]*>#i', $this->html) || preg_match('#<object\b[^>]*>#i', $this->html))
+            ? 'Yes' : 'No';
+        $results['Embedded Objects'] = ($embeddedFound === 'No')
+            ? 'No embedded objects detected. This is ideal.'
+            : 'Embedded objects detected. Review if they are necessary.';
+        
+        // 11) IFRAME
+        $results['Iframe'] = (preg_match('#<iframe\b[^>]*>#i', $this->html)) ? 'Yes' : 'No';
+        
+        // 12) USABILITY
+        $results['Usability'] = ($mobileCompatible === 'Yes')
+            ? 'Mobile meta tag found. Possibly good usability.'
+            : 'Mobile meta tag not found. Usability may be affected.';
+        
+        // 13) URL
+        $hostLength = strlen($this->host);
+        $hyphenCount = substr_count($this->host, '-');
+        $results['URL'] = "Scheme: {$this->scheme}, Host: {$this->host} (Length: {$hostLength}, Hyphens: {$hyphenCount})";
+        
+        // 14) CANONICAL TAG
+        $canonical = 'Not Found';
+        if (preg_match('#<link\s+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)["\']#i', $this->html, $m)) {
+            $canonical = $m[1];
+        }
+        $results['Canonical Tag'] = $canonical;
+        
+        // 15) CANONICAL TAG ACCURACY
+        $homepageUrl = $this->scheme . '://' . $this->host;
+        if ($canonical === 'Not Found') {
+            $results['Canonical Tag Accuracy'] = 'No canonical tag found';
         } else {
-            // If actual is not "Not Found", mark it as "To Improve", else "Error".
-            if (stripos($actual, 'Not Found') === false && stripos($actual, 'No') === false) {
-                $scoreDetails[$check] = "To Improve";
-                $totalScore += 1;
-            } else {
-                $scoreDetails[$check] = "Error";
+            $results['Canonical Tag Accuracy'] = (trim($canonical, '/') === trim($homepageUrl, '/'))
+                ? 'Canonical tag accurately matches homepage URL'
+                : 'Canonical tag does not match homepage URL';
+        }
+        
+        // 16) HREFLANG TAGS
+        $hreflang = 'Not Found';
+        if (preg_match_all('#<link\s+rel=["\']alternate["\']\s+hreflang=["\']([^"\']+)["\'][^>]+href=["\']([^"\']+)["\']#i', $this->html, $matches)) {
+            $count = count($matches[0]);
+            $tagsList = [];
+            for ($i = 0; $i < $count; $i++) {
+                $tagsList[] = $matches[1][$i] . ' => ' . $matches[2][$i];
+            }
+            $hreflang = "Found ({$count} tag" . ($count > 1 ? 's' : '') . "): " . implode(', ', $tagsList);
+        }
+        $results['Hreflang Tags'] = $hreflang;
+        
+        // 17) AMP HTML
+        $amp = 'Not Found';
+        if (preg_match('#<link\s+rel=["\']amphtml["\']\s+href=["\']([^"\']+)["\']#i', $this->html, $m)) {
+            $amp = $m[1];
+        }
+        $results['AMP HTML'] = $amp;
+        
+        // 18) ROBOTS META TAG
+        $robotsMeta = 'Not Found';
+        if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+            $robotsMeta = $m[1];
+        }
+        $results['Robots Meta Tag'] = $robotsMeta;
+        
+        // 19) FAVICON & TOUCH ICONS
+        $faviconUrl = $this->getFaviconUrl();
+        $results['Favicon and Touch Icons'] = (!empty($faviconUrl))
+            ? '<img src="' . htmlspecialchars($faviconUrl) . '" alt="Favicon" style="vertical-align:middle; margin-right:5px;"> Favicon and touch icons detected.'
+            : 'No favicon or touch icons detected. This may affect brand recognition in bookmarks and mobile devices.';
+        
+        // 20) HTTP STATUS CODE
+        $httpStatus = $this->getHttpResponseCode($homepageUrl);
+        switch ($httpStatus) {
+            case 200:
+                $statusMsg = 'HTTP 200 OK: The page is accessible.';
+                break;
+            case 404:
+                $statusMsg = 'HTTP 404 Not Found: The page was not found.';
+                break;
+            case 301:
+            case 302:
+                $statusMsg = "HTTP {$httpStatus} Redirect: The page is redirecting.";
+                break;
+            default:
+                $statusMsg = "HTTP {$httpStatus}: Check the response for details.";
+        }
+        $results['HTTP Status Code'] = $statusMsg;
+        
+        // 21) INDEXABILITY
+        $indexability = 'Indexable';
+        if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+            $content = strtolower($m[1]);
+            if (strpos($content, 'noindex') !== false) {
+                $indexability = 'Noindex Detected';
+            }
+            if (strpos($content, 'nofollow') !== false) {
+                $indexability .= ' & Nofollow Detected';
             }
         }
+        $results['Indexability'] = $indexability;
+        
+        // 22) URL CANONICALIZATION & REDIRECTS
+        if (!empty($canonical) && $canonical !== 'Not Found') {
+            $results['URL Canonicalization & Redirects'] = ($canonical == $homepageUrl)
+                ? 'Canonical URL matches homepage'
+                : 'Canonical URL differs from homepage';
+        } else {
+            $results['URL Canonicalization & Redirects'] = 'Not Checked';
+        }
+        
+        // 23) CONTENT FRESHNESS
+        $freshness = 'Not Detected';
+        if (preg_match('#<meta\s+property=["\']article:published_time["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+            $freshness = 'Published on ' . $m[1];
+        } elseif (preg_match('#<meta\s+http-equiv=["\']last-modified["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+            $freshness = 'Last Modified: ' . $m[1];
+        }
+        $results['Content Freshness'] = $freshness;
+        
+        // 24) LANGUAGE & LOCALIZATION TAGS
+        $langTag = 'Not Detected';
+        if (preg_match('#<html[^>]+lang=["\']([^"\']+)["\']#i', $this->html, $m)) {
+            $langTag = $m[1];
+        }
+        $results['Language and Localization Tags'] = $langTag;
+        
+        // 25) ERROR PAGE HANDLING
+        $errorPage = (stripos($this->html, '404 Not Found') !== false || stripos($this->html, 'Page Not Found') !== false)
+            ? 'Custom 404 Detected' : 'Standard Page';
+        $results['Error Page Handling'] = $errorPage;
+        
+        // 26) PAGE SECURITY HEADERS
+        $headers = @get_headers($homepageUrl, 1) ?: [];
+        $csp = isset($headers['Content-Security-Policy']) ? 'CSP Detected' : 'No CSP';
+        $xFrame = isset($headers['X-Frame-Options']) ? 'X-Frame-Options Detected' : 'No X-Frame-Options';
+        $results['Page Security Headers'] = $csp . ' | ' . $xFrame;
+        
+        // 27) GOOGLE SAFE BROWSING
+        $results['Google Safe Browsing'] = safeBrowsing($this->host);
+        
+        // 28) GZIP COMPRESSION
+        $gzipData = $this->processGzip();
+        if (is_array($gzipData)) {
+            list($origSize, $compSize, $isCompressed, $fallbackSize, $headerData, $bodyData) = $gzipData;
+            $savings = ($origSize > 0) ? round((($origSize - $compSize) / $origSize) * 100, 2) : 0;
+            $results['Gzip Compression'] = "Original size: " . formatBytes($origSize) .
+                ", Compressed: " . formatBytes($compSize) .
+                " (saving " . $savings . "%)";
+        } else {
+            $results['Gzip Compression'] = "Not available";
+        }
+        
+        // 29) STRUCTURED DATA
+        $schema = $this->processSchema();
+        $results['Structured Data'] = ($schema && $schema !== 'No schema data found.')
+            ? 'Structured data detected'
+            : 'No structured data detected';
+        
+        // 30) CACHE HEADERS
+        $cacheHeaders = isset($headers['Cache-Control']) ? 'Cache headers detected' : 'No cache headers found';
+        $results['Cache Headers'] = $cacheHeaders;
+        
+        // 31) CDN USAGE
+        $cdnUsage = 'No CDN detected';
+        if (!empty($headers)) {
+            $serverVal = $headers['Server'] ?? '';
+            if (is_array($serverVal)) {
+                $serverVal = implode(' ', $serverVal);
+            }
+            $serverVal = trim((string)$serverVal);
+            $server = strtolower($serverVal);
+            $via = '';
+            if (isset($headers['Via'])) {
+                $via = is_array($headers['Via']) ? implode(' ', $headers['Via']) : $headers['Via'];
+            }
+            if (strpos($via, 'cloudflare') !== false || strpos($server, 'cloudflare') !== false) {
+                $cdnUsage = 'Likely using Cloudflare';
+            } elseif (strpos($via, 'fastly') !== false) {
+                $cdnUsage = 'Likely using Fastly';
+            }
+        }
+        $results['CDN Usage'] = $cdnUsage;
+        
+        // 32) NOINDEX TAG
+        $noindex = 'No';
+        if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+            if (stripos($m[1], 'noindex') !== false) {
+                $noindex = 'Yes';
+            }
+        }
+        $results['Noindex Tag'] = $noindex;
+        
+        // 33) NOFOLLOW TAG
+        $nofollow = 'No';
+        if (preg_match('#<meta\s+name=["\']robots["\']\s+content=["\']([^"\']+)["\']#i', $this->html, $m)) {
+            if (stripos($m[1], 'nofollow') !== false) {
+                $nofollow = 'Yes';
+            }
+        }
+        $results['Nofollow Tag'] = $nofollow;
+        
+        // 34) META REFRESH
+        $metaRefresh = (preg_match('#<meta\s+http-equiv=["\']refresh["\']#i', $this->html)) ? 'Detected' : 'Not Detected';
+        $results['Meta Refresh'] = $metaRefresh;
+        
+        // 35) SPF RECORD
+        $spf = 'Not Found';
+        $txtRecords = dns_get_record($this->host, DNS_TXT);
+        if ($txtRecords) {
+            foreach ($txtRecords as $record) {
+                if (isset($record['txt']) && stripos($record['txt'], 'v=spf1') !== false) {
+                    $spf = 'SPF record found';
+                    break;
+                }
+            }
+        }
+        $results['SPF Record'] = $spf;
+        
+        // 36) ADS.TXT
+        $adsUrl = $this->scheme . '://' . $this->host . '/ads.txt';
+        $adsCode = $this->getHttpResponseCode($adsUrl);
+        if ($adsCode == 200) {
+            $results['Ads.txt'] = $adsUrl;
+        } else {
+            $results['Ads.txt'] = 'Ads.txt not found on your domain. <i class="fa fa-times text-danger"></i> Consider adding an ads.txt file to control your ad inventory.';
+        }
+        
+        // ------------------------------
+        // Ensure all 35 keys are present:
+        // ------------------------------
+        $idealConditions = [
+            'Encoding' => 'UTF-8',
+            'Doc Type' => 'HTML5',
+            'W3C Validity' => 'Valid',
+            'Analytics' => 'Google Analytics Detected',
+            'Mobile Compatibility' => 'Yes',
+            'IP Canonicalization' => 'No redirection from IP',
+            'XML Sitemap' => 'Found',
+            'Robots.txt' => 'Found',
+            'URL Rewrite' => 'Clean URLs detected',
+            'Embedded Objects' => 'No embedded objects detected. This is ideal.',
+            'Iframe' => 'No',
+            'Usability' => 'Mobile meta tag found. Possibly good usability.',
+            'Canonical Tag' => 'Found',
+            'Canonical Tag Accuracy' => 'Canonical tag accurately matches homepage URL',
+            'Hreflang Tags' => 'Found',
+            'AMP HTML' => 'Found',
+            'Robots Meta Tag' => 'Found',
+            'Favicon and Touch Icons' => 'Favicon and touch icons detected',
+            'HTTP Status Code' => 'HTTP 200 OK',
+            'Indexability' => 'Indexable',
+            'URL Canonicalization & Redirects' => 'Canonical URL matches homepage',
+            'Content Freshness' => 'Detected',
+            'Language and Localization Tags' => 'Detected',
+            'Error Page Handling' => 'Standard Page',
+            'Page Security Headers' => 'CSP Detected',
+            'Google Safe Browsing' => 'Safe',
+            'Gzip Compression' => 'High',  // ideal saving >50%
+            'Structured Data' => 'Structured data detected',
+            'Cache Headers' => 'Cache headers detected',
+            'CDN Usage' => 'Likely using Cloudflare',
+            'Noindex Tag' => 'No',
+            'Nofollow Tag' => 'No',
+            'Meta Refresh' => 'Not Detected',
+            'SPF Record' => 'SPF record found',
+            'Ads.txt' => 'Found'
+        ];
+        
+        // For each key in idealConditions, if it’s missing from $results, set it to "Not Found"
+        foreach ($idealConditions as $key => $ideal) {
+            if (!isset($results[$key])) {
+                $results[$key] = 'Not Found';
+            }
+        }
+        
+        // ------------------------------
+        // Compute score/report based on all 35 checks.
+        // Each check is worth 2 points -> max points = 35 * 2 = 70.
+        // ------------------------------
+        $scoreDetails = [];
+        $totalScore = 0;
+        $maxPoints = 70;
+        
+        foreach ($idealConditions as $check => $ideal) {
+            $actual = $results[$check]; // now guaranteed to exist
+            if (stripos($actual, $ideal) !== false) {
+                $scoreDetails[$check] = "Pass";
+                $totalScore += 2;
+            } else {
+                if (stripos($actual, 'Not Found') === false && stripos($actual, 'No') === false) {
+                    $scoreDetails[$check] = "To Improve";
+                    $totalScore += 1;
+                } else {
+                    $scoreDetails[$check] = "Error";
+                }
+            }
+        }
+        
+        $overallScorePercent = $maxPoints > 0 ? round(($totalScore / $maxPoints) * 100) : 0;
+        
+        if ($overallScorePercent == 100) {
+            $overallStatus = "Excellent";
+        } elseif ($overallScorePercent >= 70) {
+            $overallStatus = "Good";
+        } elseif ($overallScorePercent >= 50) {
+            $overallStatus = "Average";
+        } else {
+            $overallStatus = "Poor";
+        }
+        
+        $overallComment = "Page analytics computed. ";
+        if ($overallScorePercent >= 90) {
+            $overallComment .= "Excellent technical SEO performance.";
+        } elseif ($overallScorePercent >= 70) {
+            $overallComment .= "Good performance, but there is room for improvement.";
+        } elseif ($overallScorePercent >= 50) {
+            $overallComment .= "Average performance; review the suggestions.";
+        } else {
+            $overallComment .= "Poor technical SEO; significant improvements are needed.";
+        }
+        
+        // --- Compute counts for passed, to improve, and errors ---
+        $passedCount = 0;
+        $improveCount = 0;
+        $errorCount = 0;
+        foreach ($scoreDetails as $status) {
+            if ($status === "Pass") {
+                $passedCount++;
+            } elseif ($status === "To Improve") {
+                $improveCount++;
+            } elseif ($status === "Error") {
+                $errorCount++;
+            }
+        }
+        
+        $finalReport = [
+            'raw' => $results,
+            'report' => [
+                'score' => $totalScore,
+                'max_points' => $maxPoints,
+                'percent' => $overallScorePercent,
+                'passed' => $passedCount,
+                'improve' => $improveCount,
+                'errors' => $errorCount,
+                'details' => $scoreDetails,
+                'comment' => $overallComment
+            ]
+        ];
+        
+        $_SESSION['report_data']['pageAnalyticsReport'] = $finalReport;
+        $jsonOutput = json_encode($finalReport);
+        
+        // Upsert the page analytics data into the separate table using domain_id.
+        $resultAnalytics = ajaxDbUpsert($this->con, 'domains_page_analytics', [
+            'domain_id'      => $this->domainId,
+            'page_analytics' => $jsonOutput
+        ], ['domain_id' => $this->domainId]);
+        
+        if ($resultAnalytics !== true) {
+            error_log("Failed to upsert page analytics: " . $resultAnalytics);
+        }
+        
+        return $jsonOutput;
     }
     
-    $overallScorePercent = $maxPoints > 0 ? round(($totalScore / $maxPoints) * 100) : 0;
-    if ($overallScorePercent == 100) {
-        $overallStatus = "Excellent";
-    } elseif ($overallScorePercent >= 70) {
-        $overallStatus = "Good";
-    } elseif ($overallScorePercent >= 50) {
-        $overallStatus = "Average";
-    } else {
-        $overallStatus = "Poor";
-    }
     
-    // Build an overall comment.
-    $overallComment = "Page analytics computed. ";
-    if ($overallScorePercent >= 90) {
-        $overallComment .= "Excellent technical SEO performance.";
-    } elseif ($overallScorePercent >= 70) {
-        $overallComment .= "Good performance, but there is room for improvement.";
-    } elseif ($overallScorePercent >= 50) {
-        $overallComment .= "Average performance; review the suggestions.";
-    } else {
-        $overallComment .= "Poor technical SEO; significant improvements are needed.";
-    }
     
-    $finalReport = [
-        'raw' => $results,
-        'report' => [
-            'score' => $totalScore,
-            'max_points' => $maxPoints,
-            'percent' => $overallScorePercent,
-            'details' => $scoreDetails,
-            'comment' => $overallComment
-        ]
-    ];
-    $_SESSION['report_data']['pageAnalyticsReport'] = $finalReport;
-    $jsonOutput = json_encode($finalReport);
-    updateToDbPrepared($this->con, 'domains_data', ['page_analytics' => $jsonOutput], ['domain' => $this->domainStr]);
     
-    return $jsonOutput;
-}
+    
+    
 
 
 /**
@@ -6355,20 +6366,6 @@ private function getFaviconUrl(): string {
 
 
 
- /*===================================================================
-     * Social URL Handelers
-     *=================================================================== 
-     */
-
-  /**
- * Processes social page URLs from the HTML.
- * Scans all anchor tags and extracts URLs that match common social network patterns.
- * Ignores "base" URLs (like https://www.pinterest.com/) without additional path components.
- * Computes a score report based on the presence of social URLs.
- * Stores the results (raw data and score report) as a JSON-encoded associative array in the "social_urls" field.
- *
- * @return string JSON data of social URLs (raw + report).
- */
 public function processSocialUrls(): string {
     $doc = $this->getDom();
     $xpath = new DOMXPath($doc);
@@ -6405,7 +6402,7 @@ public function processSocialUrls(): string {
     
     // Loop through each social network pattern.
     foreach ($socialPatterns as $network => $pattern) {
-        // Use XPath to fetch all <a> tags whose href (lowercased) contains the network keyword.
+        // Use XPath to fetch all <a> tags whose href (converted to lowercase) contains the network keyword.
         $nodes = $xpath->query("//a[contains(translate(@href, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '$network')]");
         // Fallback: if no nodes found, iterate all <a> tags.
         if ($nodes->length === 0) {
@@ -6452,7 +6449,7 @@ public function processSocialUrls(): string {
     // Award 2 points per network if at least one URL is found.
     $details = [];
     $totalScore = 0;
-    $maxScore = count($socialPatterns) * 2; // e.g. 10 networks * 2 points each = 20
+    $maxScore = count($socialPatterns) * 2; // e.g., 10 networks * 2 points = 20
     foreach ($socialPatterns as $network => $pattern) {
         if (!empty($socialUrls[$network])) {
             $details[ucfirst($network) . " Presence"] = "Pass – " . ucfirst($network) . " URL(s) found.";
@@ -6466,7 +6463,6 @@ public function processSocialUrls(): string {
     $percent = ($maxScore > 0) ? round(($totalScore / $maxScore) * 100) : 0;
     
     // Overall comment based on score.
-    $comment = "";
     if ($totalScore == $maxScore) {
         $comment = "Excellent – All social URLs are present.";
     } elseif ($totalScore >= ($maxScore / 2)) {
@@ -6489,10 +6485,20 @@ public function processSocialUrls(): string {
     ];
     
     $jsonData = jsonEncode($completeSocialData);
-    updateToDbPrepared($this->con, 'domains_data', ['social_urls' => $jsonData], ['domain' => $this->domainStr]);
+    
+    // Upsert social URLs into a separate table (domains_social_urls) using domain_id as unique key.
+    $resultSocial = ajaxDbUpsert($this->con, 'domains_social_urls', [
+        'domain_id'   => $this->domainId,
+        'social_urls' => $jsonData
+    ], ['domain_id' => $this->domainId]);
+    if ($resultSocial !== true) {
+        error_log("Failed to upsert Social URLs data: " . $resultSocial);
+    }
+    
     $_SESSION['report_data']['socialUrlsReport'] = $completeSocialData;
     return $jsonData;
 }
+
 
 /**
  * Displays the processed social page URLs in a nicely formatted card along with the score report.
@@ -6911,6 +6917,9 @@ public function showSocialUrls($socialData): string {
  * @return string JSON encoded array with keys: pagespeed (including raw and report keys).
  */
 public function processPageSpeedInsightConcurrent(): string {
+    // DEBUG: Start processPageSpeedInsightConcurrent
+    error_log("[DEBUG] processPageSpeedInsightConcurrent() called.");
+    
     // Get API key from DB settings or use a default key.
     if (isset($GLOBALS['con'])) {
         $db = reviewerSettings($GLOBALS['con']);
@@ -6918,14 +6927,19 @@ public function processPageSpeedInsightConcurrent(): string {
     } else {
         $apiKey = 'AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0';
     }
-    
+    error_log("[DEBUG] API Key: " . substr($apiKey, 0, 10) . "...");
+
     // Build the target URL.
     $targetUrl = $this->scheme . "://" . $this->host;
     $encodedUrl = urlencode($targetUrl);
+    error_log("[DEBUG] Target URL: {$targetUrl}");
+    error_log("[DEBUG] Encoded URL: {$encodedUrl}");
     
     // Build the endpoints for desktop and mobile (requesting screenshots).
     $desktopUrl = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key={$apiKey}&screenshot=true&snapshots=true&locale=en_US&url={$encodedUrl}&strategy=desktop";
     $mobileUrl  = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key={$apiKey}&screenshot=true&snapshots=true&locale=en_US&url={$encodedUrl}&strategy=mobile";
+    error_log("[DEBUG] Desktop Endpoint: {$desktopUrl}");
+    error_log("[DEBUG] Mobile Endpoint: {$mobileUrl}");
     
     $endpoints = [
         'desktop' => $desktopUrl,
@@ -6941,14 +6955,16 @@ public function processPageSpeedInsightConcurrent(): string {
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);  // Timeout after 30 seconds.
         curl_multi_add_handle($multiCurl, $ch);
         $handles[$key] = $ch;
+        error_log("[DEBUG] Initialized curl handle for {$key}.");
     }
     
     // Execute the handles concurrently.
     $running = null;
     do {
-        curl_multi_exec($multiCurl, $running);
+        $status = curl_multi_exec($multiCurl, $running);
         curl_multi_select($multiCurl);
     } while ($running > 0);
+    error_log("[DEBUG] Completed curl multi execution.");
     
     // Prepare the results.
     $rawReports = [];  // Filtered reports.
@@ -6958,15 +6974,19 @@ public function processPageSpeedInsightConcurrent(): string {
     foreach ($handles as $key => $ch) {
         $response = curl_multi_getcontent($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        error_log("[DEBUG] Endpoint {$key} returned HTTP Code: {$httpCode}");
         if ($httpCode === 200) {
             $data = json_decode($response, true);
+            error_log("[DEBUG] Raw API response for {$key}: " . substr(print_r($data, true), 0, 300));
             
             // Extract and remove screenshot data.
             if (isset($data['lighthouseResult']['audits']['final-screenshot']['details']['data'])) {
                 $screenshots[$key . 'Screenshot'] = $data['lighthouseResult']['audits']['final-screenshot']['details']['data'];
                 unset($data['lighthouseResult']['audits']['final-screenshot']);
+                error_log("[DEBUG] Screenshot data extracted for {$key}.");
             } else {
                 $screenshots[$key . 'Screenshot'] = '';
+                error_log("[DEBUG] No screenshot data for {$key}.");
             }
             
             // Extract performance score.
@@ -6975,14 +6995,17 @@ public function processPageSpeedInsightConcurrent(): string {
             } else {
                 $scores[$key . 'Score'] = 0;
             }
+            error_log("[DEBUG] {$key} Score: " . $scores[$key . 'Score']);
             
             // Filter the API response.
             $rawReports[$key] = $this->filterReport($data);
+            error_log("[DEBUG] Filtered report for {$key}: " . substr(print_r($rawReports[$key], true), 0, 300));
         } else {
             // In case of error.
             $scores[$key . 'Score'] = 0;
             $screenshots[$key . 'Screenshot'] = '';
             $rawReports[$key] = [];
+            error_log("[DEBUG] API error on {$key}, response: " . $response);
         }
         curl_multi_remove_handle($multiCurl, $ch);
         curl_close($ch);
@@ -6993,11 +7016,12 @@ public function processPageSpeedInsightConcurrent(): string {
     $pagespeedReport = [
         'desktop'   => isset($rawReports['desktop']) ? $rawReports['desktop'] : [],
         'mobile'    => isset($rawReports['mobile']) ? $rawReports['mobile'] : [],
-        'raw'       => $rawReports, // Include the full filtered raw reports.
+        'raw'       => $rawReports, // Full filtered raw reports.
         'timestamp' => date('c'),
         'url'       => $targetUrl,
         'cache_hit' => isset($rawReports['mobile']['fetchTime']) ? $rawReports['mobile']['fetchTime'] : ''
     ];
+    error_log("[DEBUG] Consolidated PageSpeed report: " . substr(print_r($pagespeedReport, true), 0, 300));
     
     // ----- SCORE LOGIC -----
     $evaluateScore = function($score) {
@@ -7015,8 +7039,9 @@ public function processPageSpeedInsightConcurrent(): string {
     
     $desktopEval = $evaluateScore($desktopScore);
     $mobileEval  = $evaluateScore($mobileScore);
+    error_log("[DEBUG] Desktop Evaluation: " . print_r($desktopEval, true));
+    error_log("[DEBUG] Mobile Evaluation: " . print_r($mobileEval, true));
     
-    $overallComment = "";
     if ($desktopEval['status'] === 'Pass' && $mobileEval['status'] === 'Pass') {
         $overallComment = "Outstanding! Both desktop and mobile performance are excellent.";
     } elseif ($desktopEval['status'] === 'Error' && $mobileEval['status'] === 'Error') {
@@ -7041,30 +7066,57 @@ public function processPageSpeedInsightConcurrent(): string {
             'percent' => round((($desktopScore + $mobileScore) / 2), 0)
         ]
     ];
+    error_log("[DEBUG] Score Report: " . print_r($scoreReport, true));
     
     // Add the score report to the consolidated structure.
     $pagespeedReport['report'] = $scoreReport;
     
     // Encode the consolidated report as JSON.
     $jsonOutput = jsonEncode(['pagespeed' => $pagespeedReport]);
+    error_log("[DEBUG] Final JSON output: " . substr($jsonOutput, 0, 300));
     
-    // Save the report (without screenshots) in the "page_speed_insight" field.
-    updateToDbPrepared($this->con, 'domains_data', ['page_speed_insight' => $jsonOutput], ['domain' => $this->domainStr]);
+    // Upsert the PageSpeed Insights report into a separate table.
+    $resultPagespeed = ajaxDbUpsert($this->con, 'domains_pagespeed_insight', [
+        'domain_id'           => $this->domainId,
+        'page_speed_insight'  => $jsonOutput
+    ], ['domain_id' => $this->domainId]);
+    if ($resultPagespeed !== true) {
+        error_log("[DEBUG] Failed to upsert PageSpeed Insights data: " . $resultPagespeed);
+    } else {
+        error_log("[DEBUG] Upserted PageSpeed Insights data successfully.");
+    }
     
-    // Save screenshots separately.
+    // Upsert screenshots into separate tables.
     if (!empty($screenshots['desktopScreenshot'])) {
-        updateToDbPrepared($this->con, 'domains_data', ['desktop_screenshot' => $screenshots['desktopScreenshot']], ['domain' => $this->domainStr]);
+        $resultDesktop = ajaxDbUpsert($this->con, 'domains_desktop_screenshot', [
+            'domain_id'          => $this->domainId,
+            'desktop_screenshot' => $screenshots['desktopScreenshot']
+        ], ['domain_id' => $this->domainId]);
+        if ($resultDesktop !== true) {
+            error_log("[DEBUG] Failed to upsert desktop screenshot: " . $resultDesktop);
+        } else {
+            error_log("[DEBUG] Upserted desktop screenshot successfully.");
+        }
     }
     if (!empty($screenshots['mobileScreenshot'])) {
-        updateToDbPrepared($this->con, 'domains_data', ['mobile_screenshot' => $screenshots['mobileScreenshot']], ['domain' => $this->domainStr]);
+        $resultMobile = ajaxDbUpsert($this->con, 'domains_mobile_screenshot', [
+            'domain_id'          => $this->domainId,
+            'mobile_screenshot'  => $screenshots['mobileScreenshot']
+        ], ['domain_id' => $this->domainId]);
+        if ($resultMobile !== true) {
+            error_log("[DEBUG] Failed to upsert mobile screenshot: " . $resultMobile);
+        } else {
+            error_log("[DEBUG] Upserted mobile screenshot successfully.");
+        }
     }
     
-    // Store the complete report in session for later use.
+    // Store the complete report in session.
     $_SESSION['report_data']['pageSpeedReport'] = ['pagespeed' => $pagespeedReport];
- 
+    error_log("[DEBUG] ProcessPageSpeedInsightConcurrent completed successfully.");
     
     return $jsonOutput;
 }
+
 
 /**
  * Displays the PageSpeed Insights report including the performance score report.
@@ -7377,147 +7429,144 @@ private function filterReport(array $data): array {
      *=================================================================== 
      */
  
-     public function cleanOut(): void
-     {
-         // Ensure that the session is active
-         if (session_status() !== PHP_SESSION_ACTIVE) {
-             session_start();
-             log_message('debug', "Session started in cleanOut().");
-         } else {
-             log_message('debug', "Session already active in cleanOut().");
-         }
-     
-         log_message('debug', "CleanOut Function Called");
-     
-         // List the module keys that produce a single pass/improve/error in their 'report'.
-         $moduleKeys = [
-             'meta',
-             'headingReport',
-             'keyCloudReport',
-             'linksReport',
-             'sitecardsReport',
-             'imageAltReport',
-             'textRatio',
-             'serverInfo',
-             'schemaReport',
-             'socialUrlsReport',
-             'pageAnalyticsReport',
-             'pageSpeedReport',
-         ];
-     
-         $totalPassed  = 0;
-         $totalImprove = 0;
-         $totalErrors  = 0;
-     
-         // Log the entire session data for debugging purposes
-         log_message('debug', "Session report_data: " . print_r($_SESSION['report_data'], true));
-     
-         // Loop over each module and add up the scores.
-         foreach ($moduleKeys as $key) {
-             if (!isset($_SESSION['report_data'][$key]['report'])) {
-                 log_message('debug', "Module key '$key' not found in session.");
-                 continue;
-             }
-             $rpt = $_SESSION['report_data'][$key]['report'];
-     
-             $passed  = (int) ($rpt['passed']  ?? 0);
-             $improve = (int) ($rpt['improve'] ?? 0);
-             $errors  = (int) ($rpt['errors']  ?? 0);
-     
-             log_message('debug', "Module '$key' values: passed=$passed, improve=$improve, errors=$errors");
-     
-             $totalPassed  += $passed;
-             $totalImprove += $improve;
-             $totalErrors  += $errors;
-         }
-     
-         $totalChecks = $totalPassed + $totalImprove + $totalErrors;
-         $maxPoints = $totalChecks * 2;
-         $currentPoints = ($totalPassed * 2) + ($totalImprove * 1);
-         $overallPercent = ($maxPoints > 0) ? round(($currentPoints / $maxPoints) * 100) : 0;
-     
-         log_message('debug', "Total Passed: $totalPassed, Improve: $totalImprove, Errors: $totalErrors");
-         log_message('debug', "Total Checks: $totalChecks, Max Points: $maxPoints, Current Points: $currentPoints, Overall Percent: $overallPercent");
-     
-         $scoreData = [
-             'passed'  => $totalPassed,
-             'improve' => $totalImprove,
-             'errors'  => $totalErrors,
-             'percent' => $overallPercent,
-         ];
-     
-         $consolidatedReports = [
-             'overallScore'        => $scoreData,
-             'meta'                => $_SESSION['report_data']['meta']                ?? [],
-             'headingReport'       => $_SESSION['report_data']['headingReport']       ?? [],
-             'keyCloudReport'      => $_SESSION['report_data']['keyCloudReport']      ?? [],
-             'linksReport'         => $_SESSION['report_data']['linksReport']         ?? [],
-             'sitecardsReport'     => $_SESSION['report_data']['sitecardsReport']     ?? [],
-             'imageAltReport'      => $_SESSION['report_data']['imageAltReport']      ?? [],
-             'textRatio'           => $_SESSION['report_data']['textRatio']           ?? [],
-             'serverInfo'          => $_SESSION['report_data']['serverInfo']          ?? [],
-             'schemaReport'        => $_SESSION['report_data']['schemaReport']        ?? [],
-             'socialUrlsReport'    => $_SESSION['report_data']['socialUrlsReport']    ?? [],
-             'pageAnalyticsReport' => $_SESSION['report_data']['pageAnalyticsReport'] ?? [],
-             'pageSpeedReport'     => $_SESSION['report_data']['pageSpeedReport']     ?? [],
-         ];
-     
-         $finalReportJson = json_encode($consolidatedReports);
-         if (json_last_error() !== JSON_ERROR_NONE) {
-             error_log("JSON encoding error in cleanOut(): " . json_last_error_msg());
-         } else {
-             log_message('debug', "Final report JSON: " . $finalReportJson);
-         }
-     
-         // Prepare update parameters and where clause
-         $updateData = [
-             'score'        => json_encode($scoreData), 
-             'completed'    => 'yes' // Ensure that your DB schema accepts this value
-         ];
-         $whereClause = ['domain' => $this->domainStr];
-     
-         // Log the update data
-         log_message('debug', "CleanOut: Updating domains_data with: " . print_r($updateData, true) . " WHERE " . print_r($whereClause, true));
-     
-         // Update the database with the final consolidated report and mark the analysis as complete.
-         $error = updateToDbPrepared(
-             $this->con,
-             'domains_data',
-             $updateData,
-             $whereClause,
-             false,   // Use default type definitions (all strings)
-             '',      // No custom type definition string
-             true     // Enable debug mode to output SQL query details
-         );
-     
-         if (!empty($error)) {
-             log_message('debug', "Error updating domains_data: " . $error);
-         } else {
-             log_message('debug', "Update successful. Domain " . $this->domainStr . " marked as completed with score.");
-         }
-     
-         // Optionally add to recent sites.
-         $data = mysqliPreparedQuery(
-             $this->con,
-             "SELECT * FROM domains_data WHERE domain=?",
-             's',
-             [$this->domainStr]
-         );
-         if ($data !== false) {
-             $pageSpeedInsightData = json_decode($data['page_speed_insight'] ?? '', true);
-             $desktopScore = (empty($pageSpeedInsightData['pagespeed']['report']['desktop']['score']))
-                 ? 0
-                 : $pageSpeedInsightData['pagespeed']['report']['desktop']['score'];
-     
-             $username = $_SESSION['twebUsername'] ?? 'Guest';
-             $ip = $data['server_ip'] ?? 'N/A';
-             $other = json_encode([$overallPercent, $desktopScore]);
-             addToRecentSites($this->con, $this->domainStr, $ip, $username, $other);
-             log_message('debug', "Added domain to recent sites: " . $this->domainStr);
-         } else {
-             log_message('debug', "No data found in DB for domain: " . $this->domainStr);
-         }
-     }
+     public function cleanOut(): void {
+        // Ensure that the session is active
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+            log_message('debug', "Session started in cleanOut().");
+        } else {
+            log_message('debug', "Session already active in cleanOut().");
+        }
+    
+        log_message('debug', "CleanOut Function Called");
+    
+        // Define the module keys from which we want to extract individual reports.
+        $moduleKeys = [
+            'meta',
+            'headingReport',
+            'keyCloudReport',
+            'linksReport',
+            'sitecardsReport',
+            'imageAltReport',
+            'textRatio',
+            'serverInfo',
+            'schemaReport',
+            'socialUrlsReport',
+            'pageAnalyticsReport',
+            'pageSpeedReport'
+        ];
+    
+        $totalPassed  = 0;
+        $totalImprove = 0;
+        $totalErrors  = 0;
+    
+        // Loop over each module key and add up its "passed", "improve", and "errors" counts.
+        foreach ($moduleKeys as $key) {
+            if (!isset($_SESSION['report_data'][$key]['report'])) {
+                log_message('debug', "Module key '$key' not found in session.");
+                continue;
+            }
+            $rpt = $_SESSION['report_data'][$key]['report'];
+    
+            // If the module is the Page Analytics report, ensure it has 35 conditions.
+            if ($key === 'pageAnalyticsReport') {
+                // Our ideal conditions count for page analytics is 35.
+                $expectedConditions = 35;
+                if (isset($rpt['details']) && is_array($rpt['details'])) {
+                    $actualCount = count($rpt['details']);
+                    if ($actualCount < $expectedConditions) {
+                        // Calculate missing conditions and assume them as errors (0 points).
+                        $missing = $expectedConditions - $actualCount;
+                        log_message('debug', "PageAnalyticsReport is missing $missing condition(s). Padding as Error.");
+                        // For missing keys, we consider them errors.
+                        $rpt['errors'] += $missing;
+                    }
+                } else {
+                    // If no details array, then assume all 35 checks are missing.
+                    $rpt['errors'] = $expectedConditions;
+                    $rpt['passed'] = 0;
+                    $rpt['improve'] = 0;
+                }
+            }
+    
+            $passed  = isset($rpt['passed']) ? (int)$rpt['passed'] : 0;
+            $improve = isset($rpt['improve']) ? (int)$rpt['improve'] : 0;
+            $errors  = isset($rpt['errors']) ? (int)$rpt['errors'] : 0;
+            log_message('debug', "Module '$key' values: passed=$passed, improve=$improve, errors=$errors");
+            $totalPassed  += $passed;
+            $totalImprove += $improve;
+            $totalErrors  += $errors;
+        }
+    
+        // Calculate total number of checks (each check can score a maximum of 2 points).
+        $totalConditions = $totalPassed + $totalImprove + $totalErrors;
+        $maxPoints = $totalConditions * 2;
+        $currentPoints = ($totalPassed * 2) + ($totalImprove * 1);
+        $overallPercent = $maxPoints > 0 ? round(($currentPoints / $maxPoints) * 100) : 0;
+    
+        log_message('debug', "CleanOut Totals: Conditions=$totalConditions, MaxPoints=$maxPoints, CurrentPoints=$currentPoints, OverallPercent=$overallPercent");
+    
+        // Prepare the overall score data.
+        $scoreData = [
+            'passed'  => $totalPassed,
+            'improve' => $totalImprove,
+            'errors'  => $totalErrors,
+            'percent' => $overallPercent,
+        ];
+    
+        // Consolidate all individual module reports into one array.
+        $consolidatedReports = [
+            'overallScore'        => $scoreData,
+            'meta'                => $_SESSION['report_data']['meta']                ?? [],
+            'headingReport'       => $_SESSION['report_data']['headingReport']       ?? [],
+            'keyCloudReport'      => $_SESSION['report_data']['keyCloudReport']      ?? [],
+            'linksReport'         => $_SESSION['report_data']['linksReport']         ?? [],
+            'sitecardsReport'     => $_SESSION['report_data']['sitecardsReport']     ?? [],
+            'imageAltReport'      => $_SESSION['report_data']['imageAltReport']      ?? [],
+            'textRatio'           => $_SESSION['report_data']['textRatio']           ?? [],
+            'serverInfo'          => $_SESSION['report_data']['serverInfo']          ?? [],
+            'schemaReport'        => $_SESSION['report_data']['schemaReport']        ?? [],
+            'socialUrlsReport'    => $_SESSION['report_data']['socialUrlsReport']    ?? [],
+            'pageAnalyticsReport' => $_SESSION['report_data']['pageAnalyticsReport'] ?? [],
+            'pageSpeedReport'     => $_SESSION['report_data']['pageSpeedReport']     ?? [],
+        ];
+    
+        $finalReportJson = json_encode($consolidatedReports);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log("CleanOut: JSON encoding error: " . json_last_error_msg());
+        } else {
+            log_message('debug', "CleanOut: Final consolidated report JSON: " . $finalReportJson);
+        }
+    
+        // Update the main domains_data table with the overall score and mark as completed.
+        $updateData = [
+            'score'     => json_encode($scoreData), 
+            'completed' => 'yes'
+        ];
+        $whereClause = ['domain' => $this->domainStr];
+    
+        log_message('debug', "CleanOut: Updating domains_data with: " . print_r($updateData, true) . " WHERE " . print_r($whereClause, true));
+    
+        $updateError = updateToDbPrepared($this->con, 'domains_data', $updateData, $whereClause, false, '', true);
+        if (!empty($updateError)) {
+            log_message('debug', "CleanOut: Error updating domains_data: " . $updateError);
+        } else {
+            log_message('debug', "CleanOut: Successfully updated domains_data for domain " . $this->domainStr);
+        }
+    
+        // Add the domain to recent sites.
+        $data = mysqliPreparedQuery($this->con, "SELECT * FROM domains_data WHERE domain=?", 's', [$this->domainStr]);
+        if ($data !== false) {
+            $overallScoreValue = isset($scoreData['percent']) ? $scoreData['percent'] : 0;
+            $username = $_SESSION['twebUsername'] ?? 'Guest';
+            $ip = $data['server_ip'] ?? 'N/A';
+            addToRecentSites($this->con, $this->domainStr, $ip, $username, $overallScoreValue);
+            log_message('debug', "CleanOut: Added domain to recent sites: " . $this->domainStr);
+        } else {
+            log_message('debug', "CleanOut: No data found in DB for domain: " . $this->domainStr);
+        }
+    }
+    
      
 
 

@@ -121,9 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Log debug info after processing HTML.
     log_message('info', "Processed HTML for URL: {$my_url}");
-
+    $domainId = isset($_POST['dId']) ? intval($_POST['dId']) : 0;
+  
     // Instantiate the SeoTools class with the cached HTML and parameters.
-    $seoTools = new SeoTools($html, $con, $domainStr, $lang, $my_url_parse, $sepUnique, $seoBoxLogin);
+   // $seoTools = new SeoTools($html, $con, $domainStr, $lang, $my_url_parse, $sepUnique, $seoBoxLogin);
+   $seoTools = new SeoTools($html, $con, $domainStr, $lang, $my_url_parse, $sepUnique, $seoBoxLogin, $domainId);
 
     /*
      * -----------------------------------------------------------------
@@ -152,6 +154,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             die();
         }
     }
+   
+       /*
+     * -----------------------------------------------------------------
+     * IMAGE ALT TAG CHECKER - Processes image alt tags.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['image'])) {
+        log_message('debug', "Image Tag Call for URL {$my_url_host}");
+        $imageData = $seoTools->processImage();
+        echo $seoTools->showImage($imageData);
+        die();
+    }
+   
 
     /*
      * -----------------------------------------------------------------
@@ -164,32 +179,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $htmlOutput;
         die();
     }
+    
 
-    /*
-     * -----------------------------------------------------------------
-     * IN-PAGE LINKS ANALYZER - Analyzes in-page links.
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['linkanalysis'])) {
-        log_message('debug', "In-Page Links Tag Call for URL {$my_url_host}");
-        $linksData = $seoTools->processInPageLinks();
-        echo $seoTools->showInPageLinks($linksData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * CARDS FUNCTION - Generates site cards.
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['sitecards'])) {
-        log_message('debug', "Site Cards Call for URL {$my_url_host}");
-        $sitecardsData = $seoTools->processSiteCards();
-        echo $seoTools->showCards($sitecardsData);
-        die();
-    }
-
-    /*
+      /*
      * -----------------------------------------------------------------
      * PAGE ANALYTICS REPORT - Generates page analytics.
      * -----------------------------------------------------------------
@@ -201,67 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die();
     }
 
-    /*
-     * -----------------------------------------------------------------
-     * IMAGE ALT TAG CHECKER - Processes image alt tags.
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['image'])) {
-        log_message('debug', "Image Tag Call for URL {$my_url_host}");
-        $imageData = $seoTools->processImage();
-        echo $seoTools->showImage($imageData);
-        die();
-    }
-
-    /*
-     * -----------------------------------------------------------------
-     * TEXT TO HTML RATIO CALCULATOR - Calculates text-to-HTML ratio.
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['textRatio'])) {
-        log_message('debug', "Text Ratio Tag Call for URL {$my_url_host}");
-        $textRatio = $seoTools->processTextRatio();
-        echo $seoTools->showTextRatio($textRatio);
-        die();
-    }
- 
-    /*
-     * -----------------------------------------------------------------
-     * SERVER LOCATION INFORMATION - Retrieves server info.
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['serverIP'])) {
-        log_message('debug', "Server IP Tag Call for URL {$my_url_host}");
-        $serverDataJson = $seoTools->processServerInfo();
-        echo $seoTools->showServerInfo($serverDataJson);
-        die();
-    } 
-
-    /*
-     * -----------------------------------------------------------------
-     * SCHEMA DATA RETRIEVAL - Retrieves and shows schema data.
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['SchemaData'])) {
-        log_message('debug', "Schema Data Call for URL {$my_url_host}");
-        $schemaJson = $seoTools->processSchema();
-        echo $seoTools->showSchema($schemaJson);
-        die();
-    }
-    
-    /*
-     * -----------------------------------------------------------------
-     * SOCIAL URL RETRIEVAL - Retrieves social URLs.
-     * -----------------------------------------------------------------
-     */
-    if (isset($_POST['socialurls'])) {
-        log_message('debug', "Social URL Call for URL {$my_url_host}");
-        $socialURLs = $seoTools->processSocialUrls();
-        echo $seoTools->showSocialUrls($socialURLs);
-        die();
-    }
-    
-    /*
+      /*
      * -----------------------------------------------------------------
      * GOOGLE PAGESPEED INSIGHTS REPORT - Retrieves PageSpeed Insights data.
      * -----------------------------------------------------------------
@@ -274,6 +206,93 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $seoTools->showPageSpeedInsightConcurrent($jsonData);
         die();
     }
+
+
+        /*
+     * -----------------------------------------------------------------
+     * TEXT TO HTML RATIO CALCULATOR - Calculates text-to-HTML ratio.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['textRatio'])) {
+        log_message('debug', "Text Ratio Tag Call for URL {$my_url_host}");
+        $textRatio = $seoTools->processTextRatio();
+        echo $seoTools->showTextRatio($textRatio);
+        die();
+    }
+ 
+
+   
+
+     /*
+     * -----------------------------------------------------------------
+     * SOCIAL URL RETRIEVAL - Retrieves social URLs.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['socialurls'])) {
+        log_message('debug', "Social URL Call for URL {$my_url_host}");
+        $socialURLs = $seoTools->processSocialUrls();
+        echo $seoTools->showSocialUrls($socialURLs);
+        die();
+    }
+
+
+     /*
+     * -----------------------------------------------------------------
+     * CARDS FUNCTION - Generates site cards.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['sitecards'])) {
+        log_message('debug', "Site Cards Call for URL {$my_url_host}");
+        $sitecardsData = $seoTools->processSiteCards();
+        echo $seoTools->showCards($sitecardsData);
+        die();
+    }
+   
+    /*
+     * -----------------------------------------------------------------
+     * IN-PAGE LINKS ANALYZER - Analyzes in-page links.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['linkanalysis'])) {
+        log_message('debug', "In-Page Links Tag Call for URL {$my_url_host}");
+        $linksData = $seoTools->processInPageLinks();
+        echo $seoTools->showInPageLinks($linksData);
+        die();
+    }
+   
+   
+    
+  
+
+ 
+
+    /*
+     * -----------------------------------------------------------------
+     * SERVER LOCATION INFORMATION - Retrieves server info.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['serverIP'])) {
+        log_message('debug', "Server IP Tag Call for URL {$my_url_host}");
+        $serverDataJson = $seoTools->processServerInfo();
+        echo $seoTools->showServerInfo($serverDataJson);
+        die();
+    } 
+    
+    /*
+     * -----------------------------------------------------------------
+     * SCHEMA DATA RETRIEVAL - Retrieves and shows schema data.
+     * -----------------------------------------------------------------
+     */
+    if (isset($_POST['SchemaData'])) {
+        log_message('debug', "Schema Data Call for URL {$my_url_host}");
+        $schemaJson = $seoTools->processSchema();
+        echo $seoTools->showSchema($schemaJson);
+        die();
+    }
+    
+   
+    
+  
 
     /*
      * -----------------------------------------------------------------

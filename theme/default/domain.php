@@ -1,7 +1,7 @@
 <?php
 // Prevent direct access to this script
 defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
- 
+
 /*
  * Author: Balaji
  * Theme: Default Style
@@ -57,6 +57,7 @@ if ($updateFound) {
     var domainPath  = '<?php createLink('domains'); ?>';
     var scoreTxt    = '<?php echo makeJavascriptStr($lang['195']); ?>';
     var CANV_GAUGE_FONTS_PATH = '<?php themeLink('fonts'); ?>';
+    var domainId    = <?php echo $data["id"]?>;
 </script>
 
 <!-- Include external JavaScript and CSS files -->

@@ -178,7 +178,9 @@ if ($updateFound) {
             log_message('debug', "New domain to add: $my_url");
             // Continue processing instead of an immediate redirect.
         }
+        
         $result = createDomainRecord($con, $domainStr, $my_url, $nowDate, $title, $description, $keywords);
+      
         if ($result !== true) {
             log_message('error', "DB insert error: $result for $my_url");
             die($result);

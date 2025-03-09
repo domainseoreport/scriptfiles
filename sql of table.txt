@@ -1,0 +1,253 @@
+-- ========================================
+-- 1. Main Domain Table: domains_data
+-- Contains only the core, frequently accessed fields.
+-- ========================================
+DROP TABLE IF EXISTS domains_data;
+CREATE TABLE domains_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain VARCHAR(255) NOT NULL UNIQUE,
+    domain_access_url VARCHAR(255),
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    ipregion VARCHAR(50),
+    country VARCHAR(50),
+    score TEXT,
+    updated_date DATETIME,
+    added_date DATETIME,
+    completed TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_domain (domain)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 2. Meta Data Table: domains_meta_data
+-- Stores meta information as compressed JSON.
+-- ========================================
+DROP TABLE IF EXISTS domains_meta_data;
+CREATE TABLE domains_meta_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    meta_data BLOB,  -- Compressed JSON via PHP (using gzcompress)
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_meta_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 3. Headings Table: domains_headings
+-- Stores headings extracted from the domain pages.
+-- ========================================
+DROP TABLE IF EXISTS domains_headings;
+CREATE TABLE domains_headings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    headings BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_headings_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 4. Image Alt Table: domains_image_alt
+-- Stores alternative text for images.
+-- ========================================
+DROP TABLE IF EXISTS domains_image_alt;
+CREATE TABLE domains_image_alt (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    image_alt BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_image_alt_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 5. Keywords Cloud Table: domains_keywords_cloud
+-- Stores keywords cloud data.
+-- ========================================
+DROP TABLE IF EXISTS domains_keywords_cloud;
+CREATE TABLE domains_keywords_cloud (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    keywords_cloud BLOB,  -- Compressed large JSON/text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_keywords_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 6. Key Consistency Table: domains_key_consistency
+-- Stores key consistency data.
+-- ========================================
+DROP TABLE IF EXISTS domains_key_consistency;
+CREATE TABLE domains_key_consistency (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    key_consistency BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_key_consistency_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 7. Ratio Data Table: domains_ratio_data
+-- Stores ratio-related data.
+-- ========================================
+DROP TABLE IF EXISTS domains_ratio_data;
+CREATE TABLE domains_ratio_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    ratio_data BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_ratio_data_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 8. Schema Data Table: domains_schema_data
+-- Stores schema information.
+-- ========================================
+DROP TABLE IF EXISTS domains_schema_data;
+CREATE TABLE domains_schema_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    schema_data BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_schema_data_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 9. Sitecards Table: domains_sitecards
+-- Stores sitecards data.
+-- ========================================
+DROP TABLE IF EXISTS domains_sitecards;
+CREATE TABLE domains_sitecards (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    sitecards BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_sitecards_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 10. Page Analytics Table: domains_page_analytics
+-- Stores page analytics data.
+-- ========================================
+DROP TABLE IF EXISTS domains_page_analytics;
+CREATE TABLE domains_page_analytics (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    page_analytics BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_page_analytics_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 11. Gzip Table: domains_gzip
+-- Stores GZIP-related data.
+-- ========================================
+DROP TABLE IF EXISTS domains_gzip;
+CREATE TABLE domains_gzip (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    gzip BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_gzip_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 12. Links Analyser Table: domains_links_analyser
+-- Stores links analyser data.
+-- ========================================
+DROP TABLE IF EXISTS domains_links_analyser;
+CREATE TABLE domains_links_analyser (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    links_analyser BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_links_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 13. PageSpeed Insight Table: domains_pagespeed_insight
+-- Stores Google PageSpeed Insight data.
+-- ========================================
+DROP TABLE IF EXISTS domains_pagespeed_insight;
+CREATE TABLE domains_pagespeed_insight (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    page_speed_insight BLOB,  -- Compressed large text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_pagespeed_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 14. Report Data Table: domains_report_data
+-- Stores detailed report data.
+-- ========================================
+DROP TABLE IF EXISTS domains_report_data;
+CREATE TABLE domains_report_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    report_data BLOB,  -- Compressed large text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_report_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 15. Mobile Screenshot Table: domains_mobile_screenshot
+-- Stores mobile screenshot image data.
+-- ========================================
+DROP TABLE IF EXISTS domains_mobile_screenshot;
+CREATE TABLE domains_mobile_screenshot (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    mobile_screenshot BLOB,  -- Compressed image data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_mobile_screenshot_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 16. Desktop Screenshot Table: domains_desktop_screenshot
+-- Stores desktop screenshot image data.
+-- ========================================
+DROP TABLE IF EXISTS domains_desktop_screenshot;
+CREATE TABLE domains_desktop_screenshot (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    desktop_screenshot BLOB,  -- Compressed image data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_desktop_screenshot_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 17. Server Location Table: domains_server_loc
+-- Stores server location data.
+-- ========================================
+DROP TABLE IF EXISTS domains_server_loc;
+CREATE TABLE domains_server_loc (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    server_loc BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_server_loc_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 18. Speed Tips Table: domains_speed_tips
+-- Stores speed tips data.
+-- ========================================
+DROP TABLE IF EXISTS domains_speed_tips;
+CREATE TABLE domains_speed_tips (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    speed_tips BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_speed_tips_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ========================================
+-- 19. Social URLs Table: domains_social_urls
+-- Stores social URLs data.
+-- ========================================
+DROP TABLE IF EXISTS domains_social_urls;
+CREATE TABLE domains_social_urls (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain_id INT NOT NULL,
+    social_urls BLOB,  -- Compressed text data
+    FOREIGN KEY (domain_id) REFERENCES domains_data(id) ON DELETE CASCADE,
+    INDEX idx_social_urls_domain_id (domain_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

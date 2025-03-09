@@ -240,7 +240,7 @@
     async function runAjaxCalls() {
       try {
         // 1. Meta Data Processing
-        let data = await postAjax({ meta: '1', metaOut: '1' });
+        let data = await postAjax({ meta: '1', metaOut: '1', dId: domainId });
         let myArr = data.split('!!!!8!!!!');
         $("#seoBox1").html(myArr[0]);
         let firstChild = $("#seoBox1").children().first();
@@ -259,7 +259,7 @@
         updateProgressStep("Meta Data Processed", 5);
 
         // 2. Heading Data Processing
-        data = await postAjax({ heading: '1', headingOut: '1' });
+        data = await postAjax({ heading: '1', headingOut: '1', dId: domainId });
         $("#seoBox4").html(data);
         firstChild = $("#seoBox4").children().first();
         if (firstChild.length) {
@@ -269,7 +269,7 @@
         updateProgressStep("Headings Processed", 5);
 
         // 3. Image Alt Tags Processing
-        data = await postAjax({ image: '1', loaddom: '1' });
+        data = await postAjax({ image: '1', loaddom: '1', dId: domainId });
         $("#seoBox6").html(data);
         firstChild = $("#seoBox6").children().first();
         if (firstChild.length) {
@@ -279,7 +279,7 @@
         updateProgressStep("Image Alt Tags Processed", 5);
 
         // 4. Combined Keyword Cloud and Consistency Processing
-        data = await postAjax({ keycloudAll: '1', meta: '1', heading: '1' });
+        data = await postAjax({ keycloudAll: '1', meta: '1', heading: '1', dId: domainId });
         $("#seoBox8").html(data);
         firstChild = $("#seoBox8").children().first();
         if (firstChild.length) {
@@ -289,7 +289,7 @@
         updateProgressStep("Keyword Cloud & Consistency Processed", 10);
 
         // 5. Page Analysis Report Processing
-        data = await postAjax({ PageAnalytics: '1' });
+        data = await postAjax({ PageAnalytics: '1', dId: domainId });
         $("#seoBox54").html(data);
         firstChild = $("#seoBox54").children().first();
         if (firstChild.length) {
@@ -299,7 +299,7 @@
         updateProgressStep("Page Analytics Processed", 5);
 
         // 6. Google PageSpeed Insights Processing
-        data = await postAjax({ PageSpeedInsights: '1' });
+        data = await postAjax({ PageSpeedInsights: '1', dId: domainId });
         $("#seoBox55").html(data);
         firstChild = $("#seoBox55").children().first();
         if (firstChild.length) {
@@ -310,7 +310,7 @@
         initPageSpeedGauges();
 
         // 7. Text-to-HTML Ratio Processing
-        data = await postAjax({ textRatio: '1' });
+        data = await postAjax({ textRatio: '1', dId: domainId });
         $("#seoBox9").html(data);
         firstChild = $("#seoBox9").children().first();
         if (firstChild.length) {
@@ -320,7 +320,7 @@
         updateProgressStep("HTML Text Ratio Processed", 5);
 
         // 8. Social Card Processing
-        data = await postAjax({ sitecards: '1' });
+        data = await postAjax({ sitecards: '1', dId: domainId });
         $("#seoBox51").html(data);
         firstChild = $("#seoBox51").children().first();
         if (firstChild.length) {
@@ -330,7 +330,7 @@
         updateProgressStep("Social Card Processed", 5);
 
         // 9. Social URL Processing
-        data = await postAjax({ socialurls: '1' });
+        data = await postAjax({ socialurls: '1', dId: domainId });
         $("#seoBox52").html(data);
         firstChild = $("#seoBox52").children().first();
         if (firstChild.length) {
@@ -340,7 +340,7 @@
         updateProgressStep("Social URL Processed", 5);
 
         // 10. In-Page Links Analysis
-        data = await postAjax({ linkanalysis: '1', loaddom: '1', inPageoutput: '1' });
+        data = await postAjax({ linkanalysis: '1', loaddom: '1', inPageoutput: '1', dId: domainId });
         let arr2 = data.split('!!!!8!!!!');
         $("#seoBox13").html(arr2[0]);
         firstChild = $("#seoBox13").children().first();
@@ -357,12 +357,12 @@
         updateProgressStep("Link Analysis Processed", 5);
 
         // 11. Server IP Information
-        data = await postAjax({ serverIP: '1' });
+        data = await postAjax({ serverIP: '1', dId: domainId });
         $("#seoBox36").html(data);
         updateProgressStep("Server IP Info Processed", 10);
 
         // 12. Schema Data Retrieval
-        data = await postAjax({ SchemaData: '1' });
+        data = await postAjax({ SchemaData: '1', dId: domainId });
         $("#seoBox44").html(data);
         updateProgressStep("Social Data Processed", 5);
 
@@ -371,13 +371,15 @@
           cleanOut: '1',
           passscore: passScore,
           improvescore: improveScore,
-          errorscore: errorScore
+          errorscore: errorScore,
+          dId: domainId
         });
         // Then: fetch the final score from the DB.
         const finalScoreData = await postAjax({
           getFinalScore: '1',
           url: inputHost,
-          hashcode: hashCode
+          hashcode: hashCode,
+          dId: domainId
         });
 
         console.log("Final Score:", finalScoreData);

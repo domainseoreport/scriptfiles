@@ -326,6 +326,9 @@ function updateToDb($con,$tableName,$arr,$where){
     return mysqli_error($con);
 }
 
+
+
+
 // function updateToDbPrepared($con, $tableName, $data, $conditions, $customTypeDef = false, $typeDefStr = '')
 // {
     
@@ -507,6 +510,58 @@ function updateToDbPrepared($con, $tableName, $updateData, $where, $customTypeDe
     // Return the error message if any, or an empty string on success.
     return $error;
 }
+
+
+
+/**
+ * ajaxDbUpsert()
+ *
+ * Inserts or updates data in the given table using INSERT ... ON DUPLICATE KEY UPDATE.
+ *
+ * @param mysqli $con       The database connection.
+ * @param string $table     The table name.
+ * @param array  $data      Associative array of data to insert/update.
+ * @param array  $where     Associative array for the unique key condition.
+ * @return bool|string      True on success, or an error message string on failure.
+ */
+function ajaxDbUpsert($con, string $table, array $data, array $where) {
+    $dataCombined = array_merge($data, $where);
+    $columns = array_keys($dataCombined);
+    $placeholders = implode(',', array_fill(0, count($columns), '?'));
+
+    $updateParts = [];
+    foreach ($data as $col => $val) {
+        $updateParts[] = "$col = VALUES($col)";
+    }
+    $updateSql = implode(', ', $updateParts);
+
+    $sql = "INSERT INTO $table (" . implode(', ', $columns) . ") VALUES ($placeholders)
+            ON DUPLICATE KEY UPDATE $updateSql";
+
+    if (!$stmt = $con->prepare($sql)) {
+        return "Prepare failed: " . $con->error;
+    }
+
+    $types = '';
+    $params = [];
+    foreach ($dataCombined as $value) {
+        $types .= is_int($value) ? 'i' : 's';
+        $params[] = $value;
+    }
+
+    $bind_names[] = $types;
+    for ($i = 0; $i < count($params); $i++) {
+        $bind_names[] = &$params[$i];
+    }
+    call_user_func_array([$stmt, 'bind_param'], $bind_names);
+
+    if (!$stmt->execute()) {
+        return "Execute failed: " . $stmt->error;
+    }
+    $stmt->close();
+    return true;
+}
+
 
 function mysqliPreparedQuery($con,$query,$typeDef = false,$params = false, $noSingle = true){
  

@@ -1029,14 +1029,14 @@ function createDomainRecord($con, $domainStr,$accessurl,$nowDate, $title, $descr
     $data = [
         'domain'    => $domainStr,
         'domain_access_url' => $accessurl,
-        'slug'      => slugify($domainStr),
-        'date'      => $nowDate,
-        'meta_data' => $metaEncrypted // Storing the encrypted meta data
+        'slug'      => slugify($domainStr),  
+       // 'meta_data' => $metaEncrypted // Storing the encrypted meta data
     ];
    
 
     // Check if there is an error returned from the insert.
     $error = insertToDbPrepared($con, 'domains_data', $data);
+  
     if ($error !== '') {
         return trans('Database Error - Contact Support!', 'Error Message', true);
     }
