@@ -1186,3 +1186,63 @@ function extractMetaData($html) {
         $result = mysqliPreparedQuery($con, $query, 's', array($host));
         return $result !== false ? $result : false;
     }
+
+
+  /**
+ * Fetches a specific field's data for a given domain and module from the corresponding table.
+ *
+ * @param mysqli $con      The MySQLi database connection.
+ * @param int    $domainId The Domain ID.
+ * @param string $module   The module name (e.g., 'meta', 'keywords_cloud', 'image_alt', etc.).
+ *
+ * @return mixed|false     Returns the data from the specified field if found, or false on error.
+ */
+function fetchDomainModuleData(mysqli $con, int $domainId, string $module) {
+    // Map module names to an array with table and field names.
+    $mapping = [
+        'meta'           => ['table' => 'domains_meta_data',         'field' => 'meta_data'],
+        'keywords_cloud' => ['table' => 'domains_keywords_cloud',      'field' => 'keywords_cloud'],
+        'image_alt'      => ['table' => 'domains_image_alt',           'field' => 'image_alt'],
+        'text_ratio'     => ['table' => 'domains_text_ratio',          'field' => 'ratio_data'], // change as needed
+        'heading'        => ['table' => 'domains_headings',            'field' => 'headings'],
+        'server_info'    => ['table' => 'domains_server_info',         'field' => 'server_info'],
+        'schema'         => ['table' => 'domains_schema_data',         'field' => 'schema_data'],
+        'social_urls'    => ['table' => 'domains_social_urls',         'field' => 'social_urls'],
+        'page_analytics' => ['table' => 'domains_page_analytics',      'field' => 'page_analytics'],
+        'page_speed'     => ['table' => 'domains_pagespeed_insight',   'field' => 'page_speed_insight'],
+        'desktop_screenshot'     => ['table' => 'domains_desktop_screenshot',          'field' => 'desktop_screenshot'],
+        'sitecards'     => ['table' => 'domains_sitecards',          'field' => 'sitecards'],
+        'linkanalysis'     => ['table' => 'domains_links_analyser',          'field' => 'links_analyser'],
+
+        // Add more mappings as needed.
+    ];
+
+    if (!isset($mapping[$module])) {
+        error_log("fetchDomainModuleData: Invalid module name '$module'");
+        return false;
+    }
+
+    $table = $mapping[$module]['table'];
+    $field = $mapping[$module]['field'];
+
+    // Prepare a parameterized query to fetch only the specified field.
+    $sql = "SELECT `$field` FROM `$table` WHERE domain_id = ?";
+    if ($stmt = $con->prepare($sql)) {
+        $stmt->bind_param("i", $domainId);
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $stmt->close();
+            // Return the field value if the row is found, or false if not.
+            return isset($row[$field]) ? $row[$field] : false;
+        } else {
+            error_log("fetchDomainModuleData: Query execution failed: " . $stmt->error);
+            $stmt->close();
+            return false;
+        }
+    } else {
+        error_log("fetchDomainModuleData: Prepare failed: " . $con->error);
+        return false;
+    }
+}
+

@@ -137,6 +137,8 @@ if (empty($controller)) {
     $controller = CON_MAIN;
 }
 
+
+
 // Include the controller file from CONT_DIR.
 // For subdomain routes, if $controller is 'domain' or 'domains', the corresponding file
 // (e.g. CONT_DIR . 'domain.php' or CONT_DIR . 'domains.php') will be loaded.

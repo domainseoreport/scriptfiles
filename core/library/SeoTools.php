@@ -272,63 +272,62 @@ class SeoTools {
     
     
 
-    public function showMeta(string $jsonData): string {
-        // Decode the JSON stored in DB.
-        $data = jsonDecode($jsonData);
-        if (!is_array($data) || !isset($data['raw']) || !isset($data['report'])) {
-            return '<div class="alert alert-warning">No meta report available.</div>';
-        }
+    public function showMeta(string $jsonData): string
+{
+    // Decode the JSON stored in DB.
+    $data = jsonDecode($jsonData);
+    if (!is_array($data) || !isset($data['raw']) || !isset($data['report'])) {
+        return '<div class="alert alert-warning">No meta report available.</div>';
+    }
+
+    // Extract raw data & computed report.
+    $rawMeta    = $data['raw'];
+    $metaReport = $data['report'];
+
+    // For Title and Description, use the raw data; for Keywords, if empty then display empty.
+    $siteTitle       = !empty($rawMeta['title']) ? $rawMeta['title'] : $this->lang['AN11'];
+    $siteDescription = !empty($rawMeta['description']) ? $rawMeta['description'] : $this->lang['AN12'];
+    $siteKeywords    = (isset($rawMeta['keywords']) && trim($rawMeta['keywords']) !== "") ? $rawMeta['keywords'] : "";
     
-        // Extract raw data & computed report.
-        $rawMeta    = $data['raw'];
-        $metaReport = $data['report'];
-    
-        // For Title and Description, use the raw data; for Keywords, if empty then display empty.
-        $siteTitle       = !empty($rawMeta['title']) ? $rawMeta['title'] : $this->lang['AN11'];
-        $siteDescription = !empty($rawMeta['description']) ? $rawMeta['description'] : $this->lang['AN12'];
-        $siteKeywords    = (isset($rawMeta['keywords']) && trim($rawMeta['keywords']) !== "") ? $rawMeta['keywords'] : ""; // Do NOT fallback to lang string.
-        
-        $host = $this->urlParse['host'] ?? '';
-    
-        // --- Recommended Ranges ---
-        $titleMin = 50; 
-        $titleMax = 60;   // recommended 50–60
-        $descMin  = 120; 
-        $descMax  = 160;  // recommended 120–160
-        $keysMax  = 200;  // example limit for keywords
-    
-        // --- Actual Lengths ---
-        // For title and description, use the report details if available.
-        $actualTitleLen = $metaReport['details']['title_length'] ?? mb_strlen($siteTitle);
-        $actualDescLen  = $metaReport['details']['description_length'] ?? mb_strlen($siteDescription);
-        // For keywords, we now use the actual length of the raw keywords (which will be 0 if empty).
-        $actualKeysLen  = mb_strlen($siteKeywords);
-    
-        // Check permissions.
-        if (!isset($_SESSION['twebUsername']) && !isAllowedStats($this->con, 'seoBox1')) {
-            die(str_repeat($this->seoBoxLogin . $this->sepUnique, 4));
-        }
-    
-        // Build progress bars using the helper function.
-        [$titleBarHTML, $classTitle] = $this->buildLengthBar(
-            actualLen: $actualTitleLen,
-            min: $titleMin,
-            max: $titleMax
-        );
-        [$descBarHTML, $classDesc] = $this->buildLengthBar(
-            actualLen: $actualDescLen,
-            min: $descMin,
-            max: $descMax
-        );
-        [$keysBarHTML, $classKeys] = $this->buildLengthBar(
-            actualLen: $actualKeysLen,
-            min: 0,
-            max: $keysMax
-        );
-    
-        // Build HTML output.
-        // 1) Title Tag block.
-        $output = '
+    $host = $this->urlParse['host'] ?? '';
+
+    // --- Recommended Ranges ---
+    $titleMin = 50; 
+    $titleMax = 60;   // recommended 50–60
+    $descMin  = 120; 
+    $descMax  = 160;  // recommended 120–160
+    $keysMax  = 200;  // example limit for keywords
+
+    // --- Actual Lengths ---
+    $actualTitleLen = $metaReport['details']['title_length']       ?? mb_strlen($siteTitle);
+    $actualDescLen  = $metaReport['details']['description_length'] ?? mb_strlen($siteDescription);
+    $actualKeysLen  = mb_strlen($siteKeywords);
+
+    // Check permissions.
+    if (!isset($_SESSION['twebUsername']) && !isAllowedStats($this->con, 'seoBox1')) {
+        die(str_repeat($this->seoBoxLogin . $this->sepUnique, 4));
+    }
+
+    // Build progress bars using the helper function.
+    [$titleBarHTML, $classTitle] = $this->buildLengthBar(
+        actualLen: $actualTitleLen,
+        min: $titleMin,
+        max: $titleMax
+    );
+    [$descBarHTML, $classDesc] = $this->buildLengthBar(
+        actualLen: $actualDescLen,
+        min: $descMin,
+        max: $descMax
+    );
+    [$keysBarHTML, $classKeys] = $this->buildLengthBar(
+        actualLen: $actualKeysLen,
+        min: 0,
+        max: $keysMax
+    );
+
+    // Build the main output in pieces
+    // 1) Title Tag block.
+    $blockTitle = '
     <div class="seoBox seoBox1 '.$classTitle.'">
       <div class="row">
         <div class="col-md-3">
@@ -346,9 +345,9 @@ class SeoTools {
         </div>
       </div>
     </div>' . $this->sepUnique;
-    
-        // 2) Meta Description block.
-        $output .= '
+
+    // 2) Meta Description block.
+    $blockDesc = '
     <div class="seoBox seoBox2 '.$classDesc.'">
       <div class="row">
         <div class="col-md-3">
@@ -366,11 +365,10 @@ class SeoTools {
         </div>
       </div>
     </div>' . $this->sepUnique;
-    
-        // 3) Meta Keywords block.
-        // If keywords are empty, we display "Not provided" and a length of 0.
-        $displayKeywords = !empty($siteKeywords) ? htmlspecialchars($siteKeywords) : '<em>Not provided</em>';
-        $output .= '
+
+    // 3) Meta Keywords block.
+    $displayKeywords = !empty($siteKeywords) ? htmlspecialchars($siteKeywords) : '<em>Not provided</em>';
+    $blockKeys = '
     <div class="seoBox seoBox3 '.$classKeys.'">
       <div class="row">
         <div class="col-md-3">
@@ -388,9 +386,9 @@ class SeoTools {
         </div>
       </div>
     </div>' . $this->sepUnique;
-    
-        // 4) Google Preview block (unchanged to preserve your JS and styling).
-        $output .= '
+
+    // 4) Google Preview block (unchanged).
+    $blockPreview = '
     <div id="seoBox5" class="seoBox seoBox5 lowImpactBox">
       <div class="msgBox">
         <div class="googlePreview">
@@ -427,13 +425,13 @@ class SeoTools {
         </div>
       </div>
     </div>' . $this->sepUnique;
-    
-        // 5) Summary card for meta analysis.
-        $score   = $metaReport['score']   ?? 0;
-        $percent = $metaReport['percent'] ?? 0;
-        $comment = $metaReport['comment'] ?? '';
-    
-        $output .= '
+
+    // 5) Summary card for meta analysis.
+    $score   = $metaReport['score']   ?? 0;
+    $percent = $metaReport['percent'] ?? 0;
+    $comment = $metaReport['comment'] ?? '';
+
+    $blockSummary = '
     <div class="card my-3">
       <div class="card-header">
         <h4>Meta Analysis Summary</h4>
@@ -443,10 +441,96 @@ class SeoTools {
         <p><strong>Comment:</strong> '.htmlspecialchars($comment).'</p>
       </div>
     </div>';
-    
-        return $output;
+
+    // -----------------------------------------------------------
+    // ADD ONE TOP-LEVEL CONTAINER with passedBox/improveBox/errorBox
+    // -----------------------------------------------------------
+    // Decide class based on $percent
+    $classBox = 'errorBox'; // default
+    if ($percent >= 80) {
+        $classBox = 'passedBox';
+    } elseif ($percent >= 50) {
+        $classBox = 'improveBox';
     }
-        
+
+    // Wrap everything inside this container so your JS can detect it
+    $output = '<div class="seoBox seoBoxMeta '.$classBox.'">'
+            . $blockTitle
+            . $blockDesc
+            . $blockKeys
+            . $blockPreview
+            . $blockSummary
+            . '</div>';
+
+    return $output;
+}
+
+
+/**
+ * Generates the Google Preview HTML using the provided JSON meta data.
+ *
+ * The JSON is expected to have a "raw" key with at least "title" and "description" values.
+ *
+ * @param string $jsonData JSON-encoded meta data.
+ * @return string HTML output for the Google preview block.
+ */
+public function showGooglePreview(string $jsonData): string {
+    // Decode the JSON data.
+    $data = json_decode($jsonData, true);
+    if (!is_array($data) || !isset($data['raw'])) {
+        return '<div class="alert alert-warning">No preview data available.</div>';
+    }
+    
+    // Extract meta information.
+    $raw = $data['raw'];
+    $siteTitle = !empty($raw['title']) ? $raw['title'] : "No Title";
+    $siteDescription = !empty($raw['description']) ? $raw['description'] : "No Description";
+    
+    // Use the host from the URL parse property (ensure $this->urlParse exists).
+    $host = $this->urlParse['host'] ?? '';
+    
+    // Build and return the preview HTML.
+    $html = '
+    <div id="seoBox5" class="seoBox seoBox5 lowImpactBox">
+      <div class="msgBox">
+        <div class="googlePreview">
+          <!-- First Row: Mobile & Tablet Views -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="google-preview-box mobile-preview">
+                <h6>Mobile View</h6>
+                <p class="google-title"><a href="#">'.htmlspecialchars($siteTitle).'</a></p>
+                <p class="google-url"><span class="bold">'.htmlspecialchars($host).'</span>/</p>
+                <p class="google-desc">'.htmlspecialchars($siteDescription).'</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="google-preview-box tablet-preview">
+                <h6>Tablet View</h6>
+                <p class="google-title"><a href="#">'.htmlspecialchars($siteTitle).'</a></p>
+                <p class="google-url"><span class="bold">'.htmlspecialchars($host).'</span>/</p>
+                <p class="google-desc">'.htmlspecialchars($siteDescription).'</p>
+              </div>
+            </div>
+          </div>
+          <!-- Second Row: Desktop View -->
+          <div class="row mt-3">
+            <div class="col-12">
+              <div class="google-preview-box desktop-preview mt-5">
+                <h6>Desktop View</h6>
+                <p class="google-title"><a href="#">'.htmlspecialchars($siteTitle).'</a></p>
+                <p class="google-url"><span class="bold">'.htmlspecialchars($host).'</span>/</p>
+                <p class="google-desc">'.htmlspecialchars($siteDescription).'</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>';
+    
+    return $html;
+}
+
 
 /**
  * Helper function to build a length-based progress bar (always 100% width) with user-friendly text.
@@ -745,10 +829,10 @@ private function buildGooglePreview(string $title, string $description, string $
                     $headingsList = '<em class="text-muted">None found.</em>';
                 }
     
-                // Build suggestion using our updated logic:
+                // Build suggestion using updated logic:
                 // For H1: exactly one is OK, none or more than one is an error.
                 // For H2: at least two are OK; otherwise, a warning.
-                // For other tags, we mark them as OK.
+                // For other tags, simply mark as OK if present, else none found.
                 $suggestion = '';
                 if ($tag === 'h1') {
                     if ($count === 1) {
@@ -765,7 +849,6 @@ private function buildGooglePreview(string $title, string $description, string $
                         $suggestion = '<span class="text-warning">⚠️ Add more H2s for better structure</span>';
                     }
                 } else {
-                    // For other headings, simply mark as OK if present, else none found.
                     $suggestion = ($count > 0) ? '<span class="text-success">OK</span>' : '<span class="text-muted">None found</span>';
                 }
     
@@ -792,7 +875,7 @@ private function buildGooglePreview(string $title, string $description, string $
                 $recomHTML = '<em class="text-muted">No recommendations.</em>';
             }
     
-            // Build a summary card for the overall heading report with recommendations below the table.
+            // Build a summary card for the overall heading report.
             $summaryHTML = '
             <div class="card my-3">
                <div class="card-header">
@@ -805,13 +888,29 @@ private function buildGooglePreview(string $title, string $description, string $
                </div>
             </div>';
     
-            return  $tableHTML . $summaryHTML ;
+            // Decide a top-level container class based on the overall percent.
+            $overallPercent = $report['percent'] ?? 0;
+            if ($overallPercent >= 80) {
+                $containerClass = 'passedBox';
+            } elseif ($overallPercent >= 50) {
+                $containerClass = 'improveBox';
+            } else {
+                $containerClass = 'errorBox';
+            }
     
+            // Wrap the table and summary in a top-level container.
+            $output = '<div class="seoBox seoBoxHeading ' . $containerClass . '">'
+                    . $tableHTML
+                    . $summaryHTML
+                    . '</div>';
+    
+            return $output;
         } catch (Exception $e) {
             error_log("Error in showHeading: " . $e->getMessage());
             return '<div class="alert alert-danger">An error occurred while displaying heading data.</div>';
         }
     }
+    
     
     
     
@@ -1064,38 +1163,37 @@ private function buildGooglePreview(string $title, string $description, string $
  */
 public function showImage($imageData): string {
     $data = jsonDecode($imageData);
-    
     if (!is_array($data) || !isset($data['raw']['total_images'])) {
         return '<div class="alert alert-warning">No image data available.</div>';
     }
     
-    // Extract raw data.
+    // Extract raw data and report
     $raw = $data['raw'];
     $report = $data['report'] ?? [];
     
-    // Calculate overall issues count.
+    // Calculate overall issues count by summing counts from each problematic category
     $issuesCount = array_sum(array_map(fn($i) => $i['count'], $raw['images_missing_alt'] ?? []))
                  + array_sum(array_map(fn($i) => $i['count'], $raw['images_with_empty_alt'] ?? []))
                  + array_sum(array_map(fn($i) => $i['count'], $raw['images_with_short_alt'] ?? []))
                  + array_sum(array_map(fn($i) => $i['count'], $raw['images_with_long_alt'] ?? []))
                  + array_sum(array_map(fn($i) => $i['count'], $raw['images_with_redundant_alt'] ?? []));
     
-    // Set border class based on issues.
+    // Determine container border class based on issues count.
     if ($issuesCount == 0) {
-        $boxClass = 'border-success';
+        $borderClass = 'border-success';
         $headerIcon = themeLink('img/true.png', true);
         $headerText = "No issues detected.";
     } elseif ($issuesCount < 3) {
-        $boxClass = 'border-warning';
+        $borderClass = 'border-warning';
         $headerIcon = themeLink('img/false.png', true);
         $headerText = "Issues found: {$issuesCount}";
     } else {
-        $boxClass = 'border-danger';
+        $borderClass = 'border-danger';
         $headerIcon = themeLink('img/false.png', true);
         $headerText = "Issues found: {$issuesCount}";
     }
     
-    // Build header summary.
+    // Build header summary block
     $headerContent = '
     <div class="d-flex justify-content-between align-items-center">
         <div>
@@ -1105,11 +1203,11 @@ public function showImage($imageData): string {
             <strong>' . $headerText . '</strong>
         </div>
         <div>
-            <span class="badge bg-secondary">Total Images: ' . $raw['total_images'] . '</span>
+            <span class="badge bg-secondary">Total Images: ' . htmlspecialchars($raw['total_images']) . '</span>
         </div>
     </div>';
     
-    // Build nav tabs for detailed raw data.
+    // Build navigation tabs for detailed raw data.
     $tabs = '
     <ul class="nav nav-tabs" id="imageAltTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -1144,11 +1242,11 @@ public function showImage($imageData): string {
         </li>
     </ul>';
     
-    // Helper function (anonymous) to build a table for each category.
+    // Helper function to build table for each category.
     $buildTable = function($title, $items) {
         if (!empty($items)) {
             $total = array_sum(array_map(fn($i) => $i['count'], $items));
-            $table  = '<h5 class="mt-3">' . $title . ' (' . $total . ')</h5>';
+            $table  = '<h5 class="mt-3">' . htmlspecialchars($title) . ' (' . $total . ')</h5>';
             $table .= '<div class="table-responsive"><table class="table table-sm table-striped">';
             $table .= '<thead class="table-light">
                         <tr>
@@ -1158,25 +1256,19 @@ public function showImage($imageData): string {
                         </tr>
                        </thead>
                        <tbody>';
-    
             foreach ($items as $item) {
-                // Determine final displayed width/height.
                 $rawWidth = $item['width'] ?? 'N/A';
                 $rawHeight = $item['height'] ?? 'N/A';
                 $imgWidth = (ctype_digit($rawWidth)) ? (int)$rawWidth : 0;
                 $imgHeight = (ctype_digit($rawHeight)) ? (int)$rawHeight : 0;
                 $thumbWidth = ($imgWidth > 0 && $imgWidth < 50) ? $imgWidth : 50;
                 $thumbHeight = ($imgHeight > 0 && $imgHeight < 50) ? $imgHeight : 50;
-    
-                // Build thumbnail with an overlay if the image src is a data URI.
                 $thumbnail = '<div style="position: relative; display: inline-block;">';
                 $thumbnail .= '<img src="' . htmlspecialchars($item['src']) . '" alt="Image" style="width:' . $thumbWidth . 'px; height:' . $thumbHeight . 'px; object-fit:cover;">';
                 if (stripos($item['src'], 'data:image') === 0) {
                     $thumbnail .= '<span style="position: absolute; bottom: 0; left: 0; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 2px;">Encoded</span>';
                 }
                 $thumbnail .= '</div>';
-    
-                // Build detailed info block.
                 $info = 'Source: ' . htmlspecialchars($item['src']);
                 if (isset($item['title']) && $item['title'] !== 'N/A') {
                     $info .= '<br>Title: ' . htmlspecialchars($item['title']);
@@ -1199,14 +1291,12 @@ public function showImage($imageData): string {
                 $table .= '<td class="text-center">' . $item['count'] . '</td>';
                 $table .= '</tr>';
             }
-    
             $table .= '</tbody></table></div>';
             return $table;
         }
-        return '<div class="alert alert-info py-2">No data found for ' . $title . '.</div>';
+        return '<div class="alert alert-info py-2">No data found for ' . htmlspecialchars($title) . '.</div>';
     };
     
-    // Build tab content.
     $tabContent = '<div class="tab-content" id="imageAltTabContent">';
     $tabContent .= '<div class="tab-pane fade show active" id="missing-alt" role="tabpanel" aria-labelledby="missing-alt-tab">';
     $tabContent .= $buildTable('Images Missing Alt Attribute', $raw['images_missing_alt'] ?? []);
@@ -1226,40 +1316,38 @@ public function showImage($imageData): string {
     $tabContent .= '</div>';
     
     // Build overall report summary.
-    $summaryHtml = '<div class="alert alert-info mt-4">';
-    $summaryHtml .= '<strong>Overall Image Alt Score:</strong> ' . ($report['percent'] ?? 0) . '%<br>';
-    $summaryHtml .= '<strong>Score:</strong> ' . ($report['score'] ?? 0) . ' out of 10<br>';
-    $summaryHtml .= '<strong>Details:</strong><br>';
-    foreach ($report['details'] as $cond => $status) {
-        $summaryHtml .= htmlspecialchars($cond) . ': ' . htmlspecialchars($status) . '<br>';
-    }
-    $summaryHtml .= '<strong>Comment:</strong> ' . ($report['comment'] ?? '');
-    $summaryHtml .= '</div>';
-    
-    // Optionally display any overall suggestions from the raw data.
-    $suggestionHtml = '';
-    if (!empty($raw['suggestions'])) {
-        $suggestionHtml .= '<div class="card border-warning mt-4">';
-        $suggestionHtml .= '  <div class="card-header bg-warning text-dark"><strong>Suggestions for Improvement</strong></div>';
-        $suggestionHtml .= '  <div class="card-body"><ul class="mb-0">';
-        foreach ($raw['suggestions'] as $sug) {
-            $suggestionHtml .= '<li>' . htmlspecialchars($sug) . '</li>';
+    $summaryHTML = '<div class="alert alert-info mt-4">';
+    $summaryHTML .= '<strong>Overall Image Alt Score:</strong> ' . ($report['percent'] ?? 0) . '%<br>';
+    $summaryHTML .= '<strong>Score:</strong> ' . ($report['score'] ?? 0) . ' out of 10<br>';
+    $summaryHTML .= '<strong>Details:</strong><br>';
+    if (isset($report['details']) && is_array($report['details'])) {
+        foreach ($report['details'] as $cond => $status) {
+            $summaryHTML .= htmlspecialchars($cond) . ': ' . htmlspecialchars($status) . '<br>';
         }
-        $suggestionHtml .= '  </ul></div>';
-        $suggestionHtml .= '</div>';
+    }
+    $summaryHTML .= '<strong>Comment:</strong> ' . ($report['comment'] ?? '');
+    $summaryHTML .= '</div>';
+    
+    // Determine container class based on overall image alt report percentage.
+    $overallPercent = $report['percent'] ?? 0;
+    $containerClass = 'errorBox';
+    if ($overallPercent >= 80) {
+        $containerClass = 'passedBox';
+    } elseif ($overallPercent >= 50) {
+        $containerClass = 'improveBox';
     }
     
-    // Wrap everything in a Bootstrap card.
-    $output = '<div id="seoBoxImage" class="card ' . $boxClass . ' my-3 shadow-sm">';
+    // Wrap the whole output in an outer container with the dynamic class.
+    $output = '<div id="seoBoxImage" class="card ' . $containerClass . ' my-3 shadow-sm">';
     $output .= '<div class="card-header">' . $headerContent . '</div>';
-    $output .= '<div class="card-body">' . $tabs . $tabContent . $suggestionHtml . '</div>';
-    $output .= '</div>';
-    
-    // Append the overall report summary below the card.
-    $output .= $summaryHtml;
+    $output .= '<div class="card-body">' . $tabs . $tabContent . '</div>';
+    $output .= '</div>' . $summaryHTML;
     
     return $output;
 }
+
+
+
 
     
             
@@ -1413,61 +1501,93 @@ private function generateKeywordCloud(DOMDocument $dom): array {
 
 
  public function processKeyCloudAndConsistency(): string {
-    // Generate the keyword cloud JSON and decode it.
-    $keyCloudJson = $this->processKeyCloud();
-    $keyCloudData = json_decode($keyCloudJson, true);
+    try {
+        // Generate the keyword cloud JSON and decode it.
+        $keyCloudJson = $this->processKeyCloud();
+        $keyCloudData = json_decode($keyCloudJson, true);
+        if (!is_array($keyCloudData)) {
+            throw new Exception("Keyword cloud data decoding failed.");
+        }
 
-    // Retrieve meta data and headings.
-    $metaData = json_decode($this->processMeta(), true);
-    $headingData = json_decode($this->processHeading(), true);
-    // If headings are stored under 'raw', use that.
-    $headings = isset($headingData['raw']) && is_array($headingData['raw'])
-                    ? $headingData['raw']
-                    : $headingData;
+        // Retrieve meta data and headings.
+        $metaJson = $this->processMeta();
+        $metaData = json_decode($metaJson, true);
+        if (!is_array($metaData)) {
+            throw new Exception("Meta data decoding failed.");
+        }
 
-    // Build keyword cloud HTML using your helper.
-    $keywordCloudHtml = $this->buildKeyCloudHtml($keyCloudData);
-    // Build the consistency report HTML.
-    $consistencyHtml = $this->showKeyConsistencyNgramsTabs($keyCloudData['fullCloud'], $metaData, $headings);
+        $headingJson = $this->processHeading();
+        $headingData = json_decode($headingJson, true);
+        if (!is_array($headingData)) {
+            throw new Exception("Heading data decoding failed.");
+        }
 
-    // Append the report comment (suggestion) if available.
-    $suggestionHtml = '';
-    if (isset($keyCloudData['report']['comment']) && !empty($keyCloudData['report']['comment'])) {
-        $suggestionHtml = '<div class="mt-3">
-            <div class="alert alert-secondary text-center" role="alert">
-                <strong>Suggestion:</strong> ' . htmlspecialchars($keyCloudData['report']['comment']) . '
-            </div>
-        </div>';
+        // If headings are stored under 'raw', use that; otherwise, use the full heading data.
+        $headings = (isset($headingData['raw']) && is_array($headingData['raw']))
+            ? $headingData['raw']
+            : $headingData;
+
+        // Build keyword cloud HTML using the helper function.
+        $keywordCloudHtml = $this->buildKeyCloudHtml($keyCloudData);
+
+        // Build the consistency report HTML.
+        $consistencyHtml = $this->showKeyConsistencyNgramsTabs(
+            $keyCloudData['fullCloud'] ?? [],
+            $metaData,
+            $headings
+        );
+
+        // Append the report comment (suggestion) if available.
+        $suggestionHtml = '';
+        if (isset($keyCloudData['report']['comment']) && !empty($keyCloudData['report']['comment'])) {
+            $suggestionHtml = '<div class="mt-3">
+                <div class="alert alert-secondary text-center" role="alert">
+                    <strong>Suggestion:</strong> ' . htmlspecialchars($keyCloudData['report']['comment']) . '
+                </div>
+            </div>';
+        }
+
+        // Consolidate all the data into one array.
+        $completeKeyCloudData = [
+            'keyCloudData' => $keyCloudData['keyCloudData'] ?? [],
+            'keyDataHtml'  => $keyCloudData['keyDataHtml'] ?? '',
+            'outCount'     => $keyCloudData['outCount'] ?? 0,
+            'fullCloud'    => $keyCloudData['fullCloud'] ?? [],
+            'report'       => $keyCloudData['report'] ?? [],
+            'metaData'     => $metaData,
+            'headings'     => $headingData  // store full heading data
+        ];
+        $completeKeyCloudJson = json_encode($completeKeyCloudData);
+        if ($completeKeyCloudJson === false) {
+            throw new Exception("Failed to encode complete keyword cloud data.");
+        }
+
+        // Upsert the keyword cloud data into the separate table (domains_keywords_cloud)
+        $result = ajaxDbUpsert(
+            $this->con,
+            'domains_keywords_cloud',
+            [
+                'domain_id'      => $this->domainId,
+                'keywords_cloud' => $completeKeyCloudJson
+            ],
+            ['domain_id' => $this->domainId]
+        );
+        if ($result !== true) {
+            error_log("Failed to upsert keywords cloud: " . $result);
+        }
+
+        // Save complete data to session.
+        $_SESSION['report_data']['keyCloudReport'] = $completeKeyCloudData;
+
+        // Return the combined HTML output.
+        return $keywordCloudHtml . $consistencyHtml . $suggestionHtml;
+
+    } catch (Exception $e) {
+        error_log("Error in processKeyCloudAndConsistency: " . $e->getMessage());
+        return '<div class="alert alert-danger">An error occurred while processing keyword cloud and consistency.</div>';
     }
-
-    // Save metaData and headings along with the other data.
-    $completeKeyCloudData = [
-        'keyCloudData' => $keyCloudData['keyCloudData'] ?? [], // existing raw keywords data
-        'keyDataHtml'  => $keyCloudData['keyDataHtml'] ?? '',
-        'outCount'     => $keyCloudData['outCount'] ?? 0,
-        'fullCloud'    => $keyCloudData['fullCloud'] ?? [],
-        'report'       => $keyCloudData['report'] ?? [],
-        'metaData'     => $metaData,      // include meta data
-        'headings'     => $headingData    // include full heading data
-    ];
-    $completeKeyCloudJson = json_encode($completeKeyCloudData);
-
-    // Upsert the keyword cloud data into the separate table (domains_keywords_cloud)
-    $result = ajaxDbUpsert($this->con, 'domains_keywords_cloud', [
-        'domain_id'      => $this->domainId,
-        'keywords_cloud' => $completeKeyCloudJson
-    ], ['domain_id' => $this->domainId]);
-
-    if ($result !== true) {
-        error_log("Failed to upsert keywords cloud: " . $result);
-    }
-
-    // Save complete data to session.
-    $_SESSION['report_data']['keyCloudReport'] = $completeKeyCloudData;
-
-    // Return the combined HTML output.
-    return $keywordCloudHtml . $consistencyHtml . $suggestionHtml;
 }
+
 
 
 
@@ -1973,8 +2093,7 @@ public function showKeyCloudAndConsistency(string $savedJson): string {
         'keyDataHtml' => $data['keyDataHtml'] ?? ''
     ]);
     
-    // Build the consistency report using your helper.
-    // We assume that you saved the meta data and headings with the cloud.
+    // Build the consistency report using the helper.
     $consistencyHtml = $this->showKeyConsistencyNgramsTabs(
         $data['fullCloud'] ?? [],
         $data['metaData'] ?? [],
@@ -1983,17 +2102,33 @@ public function showKeyCloudAndConsistency(string $savedJson): string {
     
     // Retrieve the suggestion comment from the report if available.
     $suggestion = '';
-    if (isset($data['report']) && isset($data['report']['comment'])) {
+    if (isset($data['report']['comment']) && !empty($data['report']['comment'])) {
         $suggestion = '<div class="mt-3">
-                          <div class="alert alert-secondary text-center" role="alert">
-                            <strong>Suggestion:</strong> ' . htmlspecialchars($data['report']['comment']) . '
-                          </div>
-                       </div>';
+            <div class="alert alert-secondary text-center" role="alert">
+                <strong>Suggestion:</strong> ' . htmlspecialchars($data['report']['comment']) . '
+            </div>
+        </div>';
     }
     
-    // Concatenate the outputs.
-    return $keywordCloudHtml . $consistencyHtml . $suggestion;
+    // Determine container class based on overall report percentage.
+    $overallPercent = $data['report']['percent'] ?? 0;
+    $containerClass = 'errorBox';
+    if ($overallPercent >= 80) {
+        $containerClass = 'passedBox';
+    } elseif ($overallPercent >= 50) {
+        $containerClass = 'improveBox';
+    }
+    
+    // Wrap output in container with dynamic class.
+    return '<div class="seoBox seoBox-keywords ' . $containerClass . '">'
+         . $keywordCloudHtml 
+         . $consistencyHtml 
+         . $suggestion
+         . '</div>';
 }
+
+
+
 
     
 
@@ -2224,7 +2359,6 @@ public function showTextRatio($textRatio): string {
     $raw = $data['raw'] ?? [];
     $report = $data['report'] ?? [];
     
-    // Build the raw metrics table.
     $table = '
     <div class="table-responsive">
       <table class="table table-bordered table-striped mb-0">
@@ -2305,7 +2439,6 @@ public function showTextRatio($textRatio): string {
       </table>
     </div>';
     
-    // Build a detailed suggestions list from the report's detailed_suggestions.
     $detailedSugHtml = '';
     if (isset($report['detailed_suggestions']) && is_array($report['detailed_suggestions'])) {
         $detailedSugHtml .= '<div class="mt-3"><h5>Detailed Suggestions:</h5><ul>';
@@ -2315,7 +2448,6 @@ public function showTextRatio($textRatio): string {
         $detailedSugHtml .= '</ul></div>';
     }
     
-    // Build overall summary.
     $summary = '<div class="alert alert-info mt-4">';
     $summary .= '<strong>Overall Text Ratio Score:</strong> ' . ($report['percent'] ?? 0) . '%<br>';
     $summary .= '<strong>Score:</strong> ' . ($report['score'] ?? 0) . ' out of ' . ($report['max_points'] ?? 0) . '<br>';
@@ -2328,7 +2460,6 @@ public function showTextRatio($textRatio): string {
     $summary .= '<strong>Overall Comment:</strong> ' . htmlspecialchars($report['comment'] ?? '') . '<br>';
     $summary .= '</div>';
     
-    // Assemble final output.
     $output = '
     <div id="ajaxTextRatio" class="card mb-3">
         <div class="card-header">
@@ -2346,8 +2477,19 @@ public function showTextRatio($textRatio): string {
         </div>
     </div>' . $summary;
     
-    return $output;
+    // Determine container class based on overall text ratio report percent.
+    $overallPercent = $report['percent'] ?? 0;
+    $containerClass = 'errorBox';
+    if ($overallPercent >= 80) {
+        $containerClass = 'passedBox';
+    } elseif ($overallPercent >= 50) {
+        $containerClass = 'improveBox';
+    }
+    
+    return '<div class="seoBox seoBoxTextRatio ' . $containerClass . '">' . $output . '</div>';
 }
+
+
     
     
 
@@ -2817,218 +2959,209 @@ public function showTextRatio($textRatio): string {
     
     
 
-public function showInPageLinks($linksData): string {
-    // 1) Decode if $linksData is a JSON string.
-    if (is_string($linksData)) {
-        $linksData = json_decode($linksData, true);
-    }
-    if (!is_array($linksData)) {
-        return '<div class="alert alert-danger">Invalid link data provided.</div>';
-    }
-    
-    // 2) Extract raw metrics and computed report.
-    $raw = $linksData['raw'] ?? [];
-    $report = $linksData['report'] ?? [];
-    
-    // 3) Build a table of raw metrics.
-    $rawMetrics = [
-        'Total Links'                   => $raw['total_links'] ?? 'N/A',
-        'Internal Links'                => $raw['total_internal_links'] ?? 'N/A',
-        'External Links'                => $raw['total_external_links'] ?? 'N/A',
-        'Unique Links'                  => $raw['unique_links_count'] ?? 'N/A',
-        'Empty Links'                   => $raw['total_empty_links'] ?? 'N/A',
-        'Link Diversity Score'          => $raw['link_diversity_score'] ?? 'N/A',
-        'Dofollow Links'                => isset($raw['total_dofollow_links'], $raw['percentage_dofollow_links']) ? $raw['total_dofollow_links'] . ' (' . $raw['percentage_dofollow_links'] . '%)' : 'N/A',
-        'Nofollow Links'                => isset($raw['total_nofollow_links'], $raw['percentage_nofollow_links']) ? $raw['total_nofollow_links'] . ' (' . $raw['percentage_nofollow_links'] . '%)' : 'N/A',
-        'Target Blank Links'            => $raw['total_target_blank_links'] ?? 'N/A',
-        'HTTPS Links'                   => $raw['total_https_links'] ?? 'N/A',
-        'HTTP Links'                    => $raw['total_http_links'] ?? 'N/A',
-        'Total Image Links'             => $raw['total_image_links'] ?? 'N/A',
-        'Total Text Links'              => $raw['total_text_links'] ?? 'N/A',
-        'Avg. Anchor Text Length'       => $raw['average_anchor_text_length'] ?? 'N/A',
-        'Total Tracking Links'          => $raw['total_tracking_links'] ?? 'N/A',
-        'Non-Tracking Links'            => $raw['total_non_tracking_links'] ?? 'N/A',
-        'Unique External Domains'       => $raw['unique_external_domains_count'] ?? 'N/A'
-    ];
-    
-    $rawTableRows = '';
-    foreach ($rawMetrics as $metric => $value) {
-        $rawTableRows .= "<tr><td>{$metric}</td><td>{$value}</td></tr>";
-    }
-    $rawTable = '<table class="table table-bordered table-sm">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>' . $rawTableRows . '</tbody>
-                 </table>';
-    
-    // 4) Build the detailed report card.
-    // Define human-friendly messages for each condition.
-    $conditionMessages = [
-        'Total Links' => [
-            'Pass' => 'The page has sufficient links.',
-            'Error' => 'No links found on the page.'
-        ],
-        'Diversity Score' => [
-            'Pass' => 'Link diversity is healthy.',
-            'To Improve' => 'Link diversity could be improved.',
-            'Error' => 'Link diversity is critically low.'
-        ],
-        'Anchor Text Length' => [
-            'Pass' => 'Average anchor text length is within the optimal range.',
-            'To Improve' => 'Anchor text length is lower than optimal. Consider adding more descriptive anchor texts.',
-            'Error' => 'Anchor text is too short, which may hurt SEO.'
-        ],
-        'Empty Link Ratio' => [
-            'Pass' => 'Very few links have empty anchor text.',
-            'To Improve' => 'Some links have empty anchor text. Consider adding descriptive text.',
-            'Error' => 'A high proportion of links have empty anchor text. It is recommended to provide descriptive anchor texts.'
-        ],
-        'Tracking Links' => [
-            'Pass' => 'No tracking parameters are detected in the links.',
-            'Error' => 'Tracking parameters are found, which might affect user privacy and link value.'
-        ]
-    ];
-    
-    // We'll iterate through the conditions in the report details.
-    $detailsHtml = '';
-    $suggestionsList = [];
-    if (isset($report['details']) && is_array($report['details'])) {
-        foreach ($report['details'] as $condition => $status) {
-            $statusClean = ucfirst(trim($status));
-            $message = isset($conditionMessages[$condition][$statusClean])
-                        ? $conditionMessages[$condition][$statusClean]
-                        : $statusClean;
-            $detailsHtml .= htmlspecialchars($condition) . ': ' . htmlspecialchars($message) . '<br>';
-            if ($statusClean !== 'Pass') {
-                $suggestionsList[] = $message;
+    public function showInPageLinks($linksData): string {
+        // 1) Decode if $linksData is a JSON string.
+        if (is_string($linksData)) {
+            $linksData = json_decode($linksData, true);
+        }
+        if (!is_array($linksData)) {
+            return '<div class="alert alert-danger">Invalid link data provided.</div>';
+        }
+        
+        // 2) Extract raw metrics and report.
+        $raw = $linksData['raw'] ?? [];
+        $report = $linksData['report'] ?? [];
+        
+        // Build raw metrics table.
+        $rawMetrics = [
+            'Total Links'                   => $raw['total_links'] ?? 'N/A',
+            'Internal Links'                => $raw['total_internal_links'] ?? 'N/A',
+            'External Links'                => $raw['total_external_links'] ?? 'N/A',
+            'Unique Links'                  => $raw['unique_links_count'] ?? 'N/A',
+            'Empty Links'                   => $raw['total_empty_links'] ?? 'N/A',
+            'Link Diversity Score'          => $raw['link_diversity_score'] ?? 'N/A',
+            'Dofollow Links'                => isset($raw['total_dofollow_links'], $raw['percentage_dofollow_links']) ? $raw['total_dofollow_links'] . ' (' . $raw['percentage_dofollow_links'] . '%)' : 'N/A',
+            'Nofollow Links'                => isset($raw['total_nofollow_links'], $raw['percentage_nofollow_links']) ? $raw['total_nofollow_links'] . ' (' . $raw['percentage_dofollow_links'] . '%)' : 'N/A',
+            'Target Blank Links'            => $raw['total_target_blank_links'] ?? 'N/A',
+            'HTTPS Links'                   => $raw['total_https_links'] ?? 'N/A',
+            'HTTP Links'                    => $raw['total_http_links'] ?? 'N/A',
+            'Total Image Links'             => $raw['total_image_links'] ?? 'N/A',
+            'Total Text Links'              => $raw['total_text_links'] ?? 'N/A',
+            'Avg. Anchor Text Length'       => $raw['average_anchor_text_length'] ?? 'N/A',
+            'Total Tracking Links'          => $raw['total_tracking_links'] ?? 'N/A',
+            'Non-Tracking Links'            => $raw['total_non_tracking_links'] ?? 'N/A',
+            'Unique External Domains'       => $raw['unique_external_domains_count'] ?? 'N/A'
+        ];
+        
+        $rawTableRows = "";
+        foreach ($rawMetrics as $metric => $value) {
+            $rawTableRows .= "<tr><td>" . htmlspecialchars($metric) . "</td><td>" . htmlspecialchars($value) . "</td></tr>";
+        }
+        $rawTable = '<table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>' . $rawTableRows . '</tbody>
+                     </table>';
+        
+        // Build detailed report card.
+        $conditionMessages = [
+            'Total Links' => [
+                'Pass' => 'The page has sufficient links.',
+                'Error' => 'No links found on the page.'
+            ],
+            'Diversity Score' => [
+                'Pass' => 'Link diversity is healthy.',
+                'To Improve' => 'Link diversity could be improved.',
+                'Error' => 'Link diversity is critically low.'
+            ],
+            'Anchor Text Length' => [
+                'Pass' => 'Average anchor text length is within the optimal range.',
+                'To Improve' => 'Average anchor text length is lower than optimal. Consider adding more descriptive anchor texts.',
+                'Error' => 'Anchor text is too short, which may hurt SEO.'
+            ],
+            'Empty Link Ratio' => [
+                'Pass' => 'Very few links have empty anchor text.',
+                'To Improve' => 'Some links have empty anchor text. Consider adding descriptive text.',
+                'Error' => 'A high proportion of links have empty anchor text. Provide descriptive anchor texts.'
+            ],
+            'Tracking Links' => [
+                'Pass' => 'No tracking parameters are detected in the links.',
+                'Error' => 'Tracking parameters are found, which might affect user privacy and link value.'
+            ]
+        ];
+        
+        $detailsHtml = '';
+        $suggestionsList = [];
+        if (isset($report['details']) && is_array($report['details'])) {
+            foreach ($report['details'] as $cond => $status) {
+                $statusClean = ucfirst(trim($status));
+                $message = isset($conditionMessages[$cond][$statusClean]) ? $conditionMessages[$cond][$statusClean] : $statusClean;
+                $detailsHtml .= htmlspecialchars($cond) . ': ' . htmlspecialchars($message) . '<br>';
+                if ($statusClean !== 'Pass') {
+                    $suggestionsList[] = $message;
+                }
             }
         }
-    }
-    
-    $reportHtml = '<div class="card mb-3">';
-    $reportHtml .= '<div class="card-header"><strong>Detailed Link Analysis Report</strong></div>';
-    $reportHtml .= '<div class="card-body">';
-    $reportHtml .= '<p><strong>Score:</strong> ' . ($report['score'] ?? 0) . ' (Percentage: ' . ($report['percent'] ?? 0) . '%)</p>';
-    $reportHtml .= '<p><strong>Passed:</strong> ' . ($report['passed'] ?? 0) . ', <strong>To Improve:</strong> ' . ($report['improve'] ?? 0) . ', <strong>Errors:</strong> ' . ($report['errors'] ?? 0) . '</p>';
-    $reportHtml .= '<p><strong>Condition Status:</strong><br>' . $detailsHtml . '</p>';
-    $reportHtml .= '<p><strong>Overall Comment:</strong> ' . ($report['comment'] ?? '') . '</p>';
-    $reportHtml .= '</div></div>';
-    
-    // 5) Process external links: use the "external_links" key from raw data.
-    $externalLinksRaw = $raw['external_links'] ?? [];
-    $uniqueExternalLinks = [];
-    foreach ($externalLinksRaw as $ext) {
-        $href = $ext['href'];
-        if (!isset($uniqueExternalLinks[$href])) {
-            $uniqueExternalLinks[$href] = $ext;
-            $uniqueExternalLinks[$href]['count'] = 1;
+        
+        $reportHtml = '<div class="card mb-3">
+                            <div class="card-header"><strong>Detailed Link Analysis Report</strong></div>
+                            <div class="card-body">
+                                <p><strong>Score:</strong> ' . ($report['score'] ?? 0) . ' (Percentage: ' . ($report['percent'] ?? 0) . '%)</p>
+                                <p><strong>Passed:</strong> ' . ($report['passed'] ?? 0) . ', <strong>To Improve:</strong> ' . ($report['improve'] ?? 0) . ', <strong>Errors:</strong> ' . ($report['errors'] ?? 0) . '</p>
+                                <p><strong>Condition Status:</strong><br>' . $detailsHtml . '</p>
+                                <p><strong>Overall Comment:</strong> ' . ($report['comment'] ?? '') . '</p>
+                            </div>
+                      </div>';
+        
+        // External Links processing.
+        $externalLinksRaw = $raw['external_links'] ?? [];
+        $uniqueExternalLinks = [];
+        foreach ($externalLinksRaw as $ext) {
+            $href = $ext['href'];
+            if (!isset($uniqueExternalLinks[$href])) {
+                $uniqueExternalLinks[$href] = $ext;
+                $uniqueExternalLinks[$href]['count'] = 1;
+            } else {
+                $uniqueExternalLinks[$href]['count']++;
+            }
+        }
+        if (!empty($uniqueExternalLinks)) {
+            $externalLinksTable = '<div class="table-responsive"><table class="table table-striped table-hover">';
+            $externalLinksTable .= '<thead class="table-dark"><tr><th>Link</th><th>Follow Type</th><th>Anchor Text</th><th>Count</th></tr></thead><tbody>';
+            foreach ($uniqueExternalLinks as $ext) {
+                $displayText = !empty($ext['innertext']) ? $ext['innertext'] : $ext['href'];
+                $externalLinksTable .= '<tr>';
+                $externalLinksTable .= '<td>' . htmlspecialchars($ext['href']) . '</td>';
+                $externalLinksTable .= '<td>' . htmlspecialchars($ext['follow_type']) . '</td>';
+                $externalLinksTable .= '<td>' . htmlspecialchars($displayText) . '</td>';
+                $externalLinksTable .= '<td>' . $ext['count'] . '</td>';
+                $externalLinksTable .= '</tr>';
+            }
+            $externalLinksTable .= '</tbody></table></div>';
         } else {
-            $uniqueExternalLinks[$href]['count']++;
+            $externalLinksTable = '<div class="alert alert-info">No external links found.</div>';
         }
+        
+        // External Domains list.
+        $externalDomains = $raw['external_domains'] ?? [];
+        if (!empty($externalDomains)) {
+            $domainsHtml = '<ul class="list-group">';
+            foreach ($externalDomains as $domain) {
+                $domainsHtml .= '<li class="list-group-item">' . htmlspecialchars($domain) . '</li>';
+            }
+            $domainsHtml .= '</ul>';
+        } else {
+            $domainsHtml = '<div class="alert alert-info">No external domains found.</div>';
+        }
+        
+        // Build nav tabs.
+        $htmlOutput = '<div class="container my-4">';
+        $htmlOutput .= '<ul class="nav nav-tabs" id="linkReportTabs" role="tablist">';
+        $htmlOutput .= '  <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summaryTab" type="button" role="tab" aria-controls="summaryTab" aria-selected="true">
+                                Summary
+                            </button>
+                        </li>';
+        $htmlOutput .= '  <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="externalLinks-tab" data-bs-toggle="tab" data-bs-target="#externalLinksTab" type="button" role="tab" aria-controls="externalLinksTab" aria-selected="false">
+                                External Links
+                            </button>
+                        </li>';
+        $htmlOutput .= '  <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="externalDomains-tab" data-bs-toggle="tab" data-bs-target="#externalDomainsTab" type="button" role="tab" aria-controls="externalDomainsTab" aria-selected="false">
+                                External Domains
+                            </button>
+                        </li>';
+        $htmlOutput .= '</ul>';
+        
+        $htmlOutput .= '<div class="tab-content" id="linkReportTabsContent">';
+        $htmlOutput .= '<div class="tab-pane fade show active" id="summaryTab" role="tabpanel" aria-labelledby="summary-tab">';
+        $htmlOutput .= '  <div class="card my-3">';
+        $htmlOutput .= '    <div class="card-header"><h5>Raw Metrics</h5></div>';
+        $htmlOutput .= '    <div class="card-body">' . $rawTable . '</div>';
+        $htmlOutput .= '  </div>';
+        $htmlOutput .= $reportHtml;
+        if (!empty($suggestionsList)) {
+            $htmlOutput .= '<div class="alert alert-warning mt-3"><strong>Suggestions:</strong><ul>';
+            foreach ($suggestionsList as $sug) {
+                $htmlOutput .= '<li>' . htmlspecialchars($sug) . '</li>';
+            }
+            $htmlOutput .= '</ul></div>';
+        }
+        $htmlOutput .= '</div>';
+        $htmlOutput .= '<div class="tab-pane fade" id="externalLinksTab" role="tabpanel" aria-labelledby="externalLinks-tab">';
+        $htmlOutput .= '  <div class="card my-3">';
+        $htmlOutput .= '    <div class="card-header"><h5>Unique External Links</h5></div>';
+        $htmlOutput .= '    <div class="card-body">' . $externalLinksTable . '</div>';
+        $htmlOutput .= '  </div>';
+        $htmlOutput .= '</div>';
+        $htmlOutput .= '<div class="tab-pane fade" id="externalDomainsTab" role="tabpanel" aria-labelledby="externalDomains-tab">';
+        $htmlOutput .= '  <div class="card my-3">';
+        $htmlOutput .= '    <div class="card-header"><h5>External Domains</h5></div>';
+        $htmlOutput .= '    <div class="card-body">' . $domainsHtml . '</div>';
+        $htmlOutput .= '  </div>';
+        $htmlOutput .= '</div>';
+        $htmlOutput .= '</div>'; // end tab-content
+        $htmlOutput .= '</div>'; // end container
+        
+        // Determine container class based on overall links report percentage.
+        $overallPercent = $report['percent'] ?? 0;
+        $containerClass = 'errorBox';
+        if ($overallPercent >= 80) {
+            $containerClass = 'passedBox';
+        } elseif ($overallPercent >= 50) {
+            $containerClass = 'improveBox';
+        }
+        
+        // Wrap everything in a top-level container.
+        return '<div class="seoBox seoBoxLinks ' . $containerClass . '">' . $htmlOutput . '</div>';
     }
     
-    // Build External Links table.
-    $externalLinksTable = '';
-    if (!empty($uniqueExternalLinks)) {
-        $externalLinksTable .= '<div class="table-responsive"><table class="table table-striped table-hover">';
-        $externalLinksTable .= '<thead class="table-dark"><tr><th>Link</th><th>Follow Type</th><th>Anchor Text</th><th>Count</th></tr></thead><tbody>';
-        foreach ($uniqueExternalLinks as $ext) {
-            $displayText = !empty($ext['innertext']) ? $ext['innertext'] : $ext['href'];
-            $externalLinksTable .= '<tr>';
-            $externalLinksTable .= '<td>' . htmlspecialchars($ext['href']) . '</td>';
-            $externalLinksTable .= '<td>' . htmlspecialchars($ext['follow_type']) . '</td>';
-            $externalLinksTable .= '<td>' . htmlspecialchars($displayText) . '</td>';
-            $externalLinksTable .= '<td>' . $ext['count'] . '</td>';
-            $externalLinksTable .= '</tr>';
-        }
-        $externalLinksTable .= '</tbody></table></div>';
-    } else {
-        $externalLinksTable = '<div class="alert alert-info">No external links found.</div>';
-    }
     
-    // 6) Build External Domains list.
-    $externalDomains = $raw['external_domains'] ?? [];
-    $domainsHtml = '';
-    if (!empty($externalDomains)) {
-        $domainsHtml .= '<ul class="list-group">';
-        foreach ($externalDomains as $domain) {
-            $domainsHtml .= '<li class="list-group-item">' . htmlspecialchars($domain) . '</li>';
-        }
-        $domainsHtml .= '</ul>';
-    } else {
-        $domainsHtml = '<div class="alert alert-info">No external domains found.</div>';
-    }
-    
-    // 7) Build the nav tabs and tab content.
-    $html = '<div class="container my-4">';
-    
-    // Nav Tabs.
-    $html .= '<ul class="nav nav-tabs" id="linkReportTabs" role="tablist">';
-    $html .= '  <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summaryTab" type="button" role="tab" aria-controls="summaryTab" aria-selected="true">
-                        Summary
-                    </button>
-                </li>';
-    $html .= '  <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="externalLinks-tab" data-bs-toggle="tab" data-bs-target="#externalLinksTab" type="button" role="tab" aria-controls="externalLinksTab" aria-selected="false">
-                        External Links
-                    </button>
-                </li>';
-    $html .= '  <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="externalDomains-tab" data-bs-toggle="tab" data-bs-target="#externalDomainsTab" type="button" role="tab" aria-controls="externalDomainsTab" aria-selected="false">
-                        External Domains
-                    </button>
-                </li>';
-    $html .= '</ul>';
-    
-    // Tab Content.
-    $html .= '<div class="tab-content" id="linkReportTabsContent">';
-    
-    // Tab 1: Summary.
-    $html .= '<div class="tab-pane fade show active" id="summaryTab" role="tabpanel" aria-labelledby="summary-tab">';
-    $html .= '  <div class="card my-3">';
-    $html .= '    <div class="card-header"><h5>Raw Metrics</h5></div>';
-    $html .= '    <div class="card-body">' . $rawTable . '</div>';
-    $html .= '  </div>';
-    $html .= $reportHtml; // Detailed report card appended below.
-    // Also, if there are suggestions gathered from conditions, show them.
-    if (!empty($suggestionsList)) {
-        $html .= '<div class="alert alert-warning mt-3"><strong>Suggestions:</strong><ul>';
-        foreach ($suggestionsList as $sug) {
-            $html .= '<li>' . htmlspecialchars($sug) . '</li>';
-        }
-        $html .= '</ul></div>';
-    }
-    $html .= '</div>';
-    
-    // Tab 2: External Links.
-    $html .= '<div class="tab-pane fade" id="externalLinksTab" role="tabpanel" aria-labelledby="externalLinks-tab">';
-    $html .= '  <div class="card my-3">';
-    $html .= '    <div class="card-header"><h5>Unique External Links</h5></div>';
-    $html .= '    <div class="card-body">' . $externalLinksTable . '</div>';
-    $html .= '  </div>';
-    $html .= '</div>';
-    
-    // Tab 3: External Domains.
-    $html .= '<div class="tab-pane fade" id="externalDomainsTab" role="tabpanel" aria-labelledby="externalDomains-tab">';
-    $html .= '  <div class="card my-3">';
-    $html .= '    <div class="card-header"><h5>External Domains</h5></div>';
-    $html .= '    <div class="card-body">' . $domainsHtml . '</div>';
-    $html .= '  </div>';
-    $html .= '</div>';
-    
-    $html .= '</div>'; // End tab-content.
-    
-  
-    
-    $html .= '</div>'; // End container.
-    
-    return $html;
-}
 
 
 
@@ -3226,19 +3359,64 @@ private function fallbackWhois(string $domain): array {
  * @return array An array of DNS records.
  */
 private function checkDNSRecords(string $domain): array {
-    $recordTypes = [DNS_A, DNS_AAAA, DNS_MX, DNS_NS, DNS_TXT];
-    if (defined('DNS_CAA')) {
-        $recordTypes[] = DNS_CAA;
-    }
     $records = [];
-    foreach ($recordTypes as $type) {
-        $result = @dns_get_record($domain, $type);
-        if ($result !== false && !empty($result)) {
-            $records = array_merge($records, $result);
+    
+    // First, try to use dns_get_record with DNS_ALL (if defined)
+    if (defined('DNS_ALL')) {
+        // DNS_ALL (value 255) attempts to fetch all available record types.
+        $records = @dns_get_record($domain, DNS_ALL);
+    }
+    
+    // If DNS_ALL is not defined or records are empty, fall back to individual queries.
+    if (empty($records) || !is_array($records)) {
+        // Define the record types you want to collect
+        $types = [DNS_A, DNS_AAAA, DNS_MX, DNS_NS, DNS_TXT];
+        // Optionally include DNS_CAA if available
+        if (defined('DNS_CAA')) {
+            $types[] = DNS_CAA;
+        }
+        
+        foreach ($types as $type) {
+            $res = @dns_get_record($domain, $type);
+            if (is_array($res)) {
+                $records = array_merge($records, $res);
+            }
         }
     }
+    
+    // If still no records are returned, try a fallback using the "dig" command.
+    if (empty($records)) {
+        // Check if shell_exec is enabled.
+        if (function_exists('shell_exec')) {
+            $digOutput = shell_exec("dig {$domain} ANY +noall +answer 2>&1");
+            if (!empty($digOutput)) {
+                // Parse the dig output line by line.
+                $lines = explode("\n", trim($digOutput));
+                foreach ($lines as $line) {
+                    if (empty($line)) {
+                        continue;
+                    }
+                    // A simple parser: split by whitespace.
+                    $parts = preg_split('/\s+/', $line);
+                    if (count($parts) >= 5) {
+                        // Example: "example.com.  3600  IN  A  93.184.216.34"
+                        $record = [];
+                        $record['host'] = rtrim($parts[0], '.');
+                        $record['ttl'] = $parts[1];
+                        $record['class'] = $parts[2];
+                        $record['type'] = strtoupper($parts[3]);
+                        // For some types, the answer may have additional fields.
+                        $record['value'] = implode(' ', array_slice($parts, 4));
+                        $records[] = $record;
+                    }
+                }
+            }
+        }
+    }
+    
     return $records;
 }
+
 
 
 
@@ -3507,12 +3685,10 @@ public function processSiteCards(): string {
  */
 public function showCards($cardsData): string {
     $data = jsonDecode($cardsData);
-  
     if (!is_array($data)) {
         return '<div class="alert alert-warning">No card data available.</div>';
     }
   
-    // Use the same $cardTypes definition as in processSiteCards().
     $cardTypes = [
         'facebook' => [
             'label'    => 'FACEBOOK',
@@ -3558,7 +3734,6 @@ public function showCards($cardsData): string {
         ],
     ];
   
-    // Overall report data.
     $overallReport = $data['report'] ?? [];
     $overallScore = $overallReport['overall_score'] ?? 0;
     $overallStatus = $overallReport['overall_status'] ?? '';
@@ -3569,7 +3744,6 @@ public function showCards($cardsData): string {
                         <br><em>' . (!empty($overallSuggestions) ? implode(" | ", $overallSuggestions) : 'All required meta tags are present.') . '</em>
                        </div>';
   
-    // Build tab navigation.
     $tabsNav = '<ul class="nav nav-tabs" id="cardsTab" role="tablist">';
     $tabsContent = '';
     $i = 0;
@@ -3586,7 +3760,6 @@ public function showCards($cardsData): string {
                     </button>
                 </li>';
     
-        // Extract preview data.
         list($titleKey, $descKey, $imgKey, $urlKey) = $card['preview'];
         $cData = $card['data'];
         $title = $cData[$titleKey] ?? '';
@@ -3594,17 +3767,14 @@ public function showCards($cardsData): string {
         $image = $cData[$imgKey] ?? '';
         $url   = $cData[$urlKey] ?? '';
     
-        // Parse domain from URL.
         $domain = '';
         if (!empty($url)) {
             $parsed = parse_url($url);
             $domain = $parsed['host'] ?? '';
         }
     
-        // Build preview HTML.
         $previewHtml = $this->buildPlatformPreview($key, $title, $desc, $image, $domain);
     
-        // Build meta tags table for required fields.
         $missing = [];
         $tableHtml = '<div class="table-responsive">
                 <table class="table table-sm table-bordered">
@@ -3612,7 +3782,7 @@ public function showCards($cardsData): string {
                         <tr><th style="width: 40%;">Meta Tag</th><th style="width: 60%;">Value</th></tr>
                     </thead>
                     <tbody>';
-        foreach ($cardTypes[$key]['required'] as $tag) {
+        foreach ($card['required'] as $tag) {
             $value = $cData[$tag] ?? '';
             if (empty($value)) {
                 $tableHtml .= '
@@ -3631,21 +3801,18 @@ public function showCards($cardsData): string {
         }
         $tableHtml .= '</tbody></table></div>';
     
-        // Retrieve the pre-calculated score for this platform from the overall report.
         $platformReport = $overallReport['platforms'][$key] ?? ['score' => 0, 'status' => 'Error', 'percentage' => 0, 'suggestion' => 'No data'];
-        $scoreBox = '<div class="alert alert-' . ($platformReport['score'] == 2 ? 'success' : ($platformReport['score'] == 1 ? 'warning' : 'danger')) . ' mt-2">
+        $scoreBox = '<div class="alert alert-' . (($platformReport['score'] == 2) ? 'success' : (($platformReport['score'] == 1) ? 'warning' : 'danger')) . ' mt-2">
                         <strong>Status:</strong> ' . $platformReport['status'] . ' (' . $platformReport['percentage'] . '%)<br>
                         <em>' . $platformReport['suggestion'] . '</em>
                      </div>';
     
-        // Combine preview, table and score box.
         $fullContent = '
                 <div class="row">
                     <div class="col-md-5 mb-3">' . $previewHtml . '</div>
                     <div class="col-md-7 mb-3">' . $tableHtml . $scoreBox . '</div>
                 </div>';
     
-        // Build tab pane.
         $tabsContent .= '
                 <div class="tab-pane fade ' . ($i === 0 ? 'show active' : '') . '" id="' . $key . '"
                      role="tabpanel" aria-labelledby="' . $key . '-tab">
@@ -3656,15 +3823,25 @@ public function showCards($cardsData): string {
   
     $tabsNav .= '</ul>';
   
-    // Wrap everything in a Bootstrap card.
     $output = '<div class="card my-3 shadow-sm">
                       <div class="card-header"><strong>Social Cards Overview</strong></div>
                       <div class="card-body">'.$tabsNav .'
                       <div class="tab-content mt-3" id="cardsTabContent">' . $tabsContent . '</div>'. $overallSummary .'
                        </div></div>';
   
-    return $output;
+    // Determine container class based on overall social cards report percent.
+    $overallPercent = $overallReport['overall_score'] ?? 0;
+    $containerClass = 'errorBox';
+    if ($overallPercent >= 80) {
+        $containerClass = 'passedBox';
+    } elseif ($overallPercent >= 50) {
+        $containerClass = 'improveBox';
+    }
+  
+    return '<div class="seoBox seoBoxCards ' . $containerClass . '">' . $output . '</div>';
 }
+
+
     
     /**
      * buildPlatformPreview()
@@ -4214,17 +4391,33 @@ public function processServerInfo(): string {
     $technologyUsed = $this->detectFromHtml($this->html, $headers, $host);
     $whoisInfo = $this->fetchDomainRdap($host);
     
+    // Extract region and country from the normalized IP geo data.
+    $geo = isset($ipInfo["geo"]) ? $ipInfo["geo"] : [];
+    $ipRegion = "";
+    if (!empty($geo["region"])) {
+        $ipRegion = $geo["region"];
+    } elseif (!empty($geo["regionName"])) {
+        $ipRegion = $geo["regionName"];
+    }
+    $ipCountry = "";
+    if (!empty($geo["country"])) {
+        $ipCountry = $geo["country"];
+    } elseif (!empty($geo["countryName"])) {
+        $ipCountry = $geo["countryName"];
+    }
+    
+    // Build the "raw" portion using normalized keys.
     $rawData = [
-        'dns_records'      => $dnsRecords,
-        'server_ip'        => $serverIP,
-        'ip_info'          => $ipInfo,
-        'server_signature' => $serverSignature,
-        'ssl_info'         => $sslInfo,
-        'technology_used'  => $technologyUsed,
-        'whois_info'       => $whoisInfo
+        "dns_records"      => $dnsRecords,
+        "server_ip"        => $serverIP,
+        "ip_info"          => $ipInfo,
+        "server_signature" => $serverSignature,
+        "ssl_info"         => $sslInfo,
+        "technology_used"  => $technologyUsed,
+        "whois_info"       => $whoisInfo
     ];
     
-    // (B) Compute Score Report (max 12 points; each condition is worth 2)
+    // (B) Compute the Score Report (max = 12 points; 2 points per check)
     $maxScore = 12;
     $score = 0;
     $details = [];
@@ -4232,60 +4425,62 @@ public function processServerInfo(): string {
     
     // Condition 1: DNS records exist.
     if (!empty($dnsRecords)) {
-        $details['DNS Records'] = 'Pass';
+        $details["DNS Records"] = "Pass";
         $score += 2;
     } else {
-        $details['DNS Records'] = 'Error';
-        $suggestions[] = 'No DNS records found. Verify your domain DNS settings.';
+        $details["DNS Records"] = "Error";
+        $suggestions[] = "No DNS records found. Verify your domain DNS settings.";
     }
     
     // Condition 2: Valid Server IP detected.
     if (filter_var($serverIP, FILTER_VALIDATE_IP)) {
-        $details['Server IP'] = 'Pass';
+        $details["Server IP"] = "Pass";
         $score += 2;
     } else {
-        $details['Server IP'] = 'Error';
-        $suggestions[] = 'A valid server IP was not detected.';
+        $details["Server IP"] = "Error";
+        $suggestions[] = "A valid server IP was not detected.";
     }
     
     // Condition 3: IP Geolocation data available.
-    if (!empty($ipInfo['geo']) && !isset($ipInfo['geo']['error'])) {
-        $details['IP Geolocation'] = 'Pass';
+    if (!empty($ipInfo["geo"]) && !isset($ipInfo["geo"]["error"])) {
+        $details["IP Geolocation"] = "Pass";
         $score += 2;
     } else {
-        $details['IP Geolocation'] = 'Error';
-        $suggestions[] = 'Unable to retrieve IP geolocation data.';
+        $details["IP Geolocation"] = "Error";
+        $suggestions[] = "Unable to retrieve IP geolocation data.";
     }
     
     // Condition 4: SSL enabled.
-    if (isset($sslInfo['has_ssl']) && $sslInfo['has_ssl'] === true) {
-        $details['SSL'] = 'Pass';
+    if (isset($sslInfo["has_ssl"]) && $sslInfo["has_ssl"] === true) {
+        $details["SSL"] = "Pass";
         $score += 2;
     } else {
-        $details['SSL'] = 'Error';
-        $suggestions[] = 'SSL is not enabled or certificate information is missing.';
+        $details["SSL"] = "Error";
+        $suggestions[] = "SSL is not enabled or certificate information is missing.";
     }
     
     // Condition 5: Technology used detected.
     if (!empty($technologyUsed) && is_array($technologyUsed)) {
-        $details['Technology'] = 'Pass';
+        $details["Technology"] = "Pass";
         $score += 2;
     } else {
-        $details['Technology'] = 'Error';
-        $suggestions[] = 'No technologies were detected. Ensure your server sends standard headers.';
+        $details["Technology"] = "Error";
+        $suggestions[] = "No technologies were detected. Ensure your server sends standard headers.";
     }
     
     // Condition 6: Whois info available.
     if (!empty($whoisInfo)) {
-        $details['Whois'] = 'Pass';
+        $details["Whois"] = "Pass";
         $score += 2;
     } else {
-        $details['Whois'] = 'Error';
-        $suggestions[] = 'Whois data is missing. Verify your domain registration details.';
+        $details["Whois"] = "Error";
+        $suggestions[] = "Whois data is missing. Verify your domain registration details.";
     }
     
     $percent = ($maxScore > 0) ? round(($score / $maxScore) * 100) : 0;
-    if ($score == $maxScore) {
+    
+    // Overall comment based on the overall score.
+    if ($score === $maxScore) {
         $overallComment = "Excellent server configuration. All checks passed.";
     } elseif ($score >= 8) {
         $overallComment = "Good server configuration. Minor improvements can be made.";
@@ -4295,40 +4490,44 @@ public function processServerInfo(): string {
         $overallComment = "Poor server configuration. Immediate attention required.";
     }
     
+    // Build the "report" portion using normalized keys.
     $report = [
-        'score'       => $score,
-        'max_score'   => $maxScore,
-        'percent'     => $percent,
-        'details'     => $details,
-        'suggestions' => $suggestions,
-        'comment'     => $overallComment
+        "score"         => $score,
+        "max_score"     => $maxScore,
+        "percent"       => $percent,
+        "details"       => $details,
+        "suggestions"   => $suggestions,
+        "comment"       => $overallComment
     ];
     
-    // (C) Combine Raw Data and Report.
+    // (C) Combine Raw Data and Report into the final normalized structure.
     $combined = [
-        'raw'    => $rawData,
-        'report' => $report
+        "raw"    => $rawData,
+        "report" => $report
     ];
-    
     $combinedJson = json_encode($combined);
     
-    // Upsert the server info into a dedicated table (e.g., domains_server_info) using domain_id.
+    // Update the dedicated server info table.
     $resultServer = ajaxDbUpsert($this->con, 'domains_server_info', [
-        'domain_id'   => $this->domainId,
-        'server_info' => $combinedJson
-    ], ['domain_id' => $this->domainId]);
+        "domain_id"   => $this->domainId,
+        "server_info" => $combinedJson
+    ], ["domain_id" => $this->domainId]);
     if ($resultServer !== true) {
         error_log("Failed to upsert server info: " . $resultServer);
     }
     
-    // Optionally, update the main table for backward compatibility.
-    updateToDbPrepared($this->con, 'domains_data', ['server_loc' => $combinedJson], ['domain' => $this->domainStr]);
+    // Now update the main table with the normalized IP region and country.
+    updateToDbPrepared($this->con, 'domains_data', [
+        "ipregion" => $ipRegion,
+        "country"  => $ipCountry
+    ], ["domain" => $this->domainStr]);
     
-    // Save to session for later use.
-    $_SESSION['report_data']['serverInfo'] = $combined;
+    // Save the report in session for later use.
+    $_SESSION["report_data"]["serverInfo"] = $combined;
     
     return $combinedJson;
 }
+
 
 
 private function getIpInfo(string $ip): array
@@ -4343,26 +4542,15 @@ private function getIpInfo(string $ip): array
         'isp'     => 'Unknown ISP'
     ];
 }
-/**
- * Retrieves IP information (IPv4, IPv6, and geolocation data) for a given domain.
- *
- * This method first resolves the domain to its IPv4 address and then
- * attempts to get IPv6 addresses. If an IPv4 is found, it uses an external
- * API (ip-api.com) to get geolocation details.
- *
- * @param string $domain The domain name.
- * @return array An associative array with keys 'IPv4', 'IPv6' (if available),
- *               and 'geo' containing geolocation data or error information.
- */
 private function checkIP(string $domain): array {
     $ipInfo = [];
-    
+
     // Resolve IPv4 using gethostbyname()
     $ipv4 = gethostbyname($domain);
     if ($ipv4 !== $domain && filter_var($ipv4, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
         $ipInfo['IPv4'] = $ipv4;
     }
-    
+
     // Get IPv6 records using dns_get_record()
     $AAAA = @dns_get_record($domain, DNS_AAAA);
     $ipv6Arr = [];
@@ -4376,43 +4564,81 @@ private function checkIP(string $domain): array {
             $ipInfo['IPv6'] = $ipv6Arr;
         }
     }
-    
-    // If we have an IPv4, attempt to get geolocation data using ip-api.com
+
+    // If we have an IPv4, attempt to get geolocation data.
     if (!empty($ipInfo['IPv4'])) {
         $ip = $ipInfo['IPv4'];
-        $apiUrl = "http://ip-api.com/json/{$ip}?fields=status,message,country,regionName,city,zip,isp,org,as,query";
+        // Primary API: freeipapi.com
+        $apiUrl = "https://freeipapi.com/api/json/{$ip}";
         $response = @file_get_contents($apiUrl);
         if ($response !== false) {
             $data = json_decode($response, true);
-            if (json_last_error() === JSON_ERROR_NONE && isset($data['status']) && $data['status'] === 'success') {
+            if (json_last_error() === JSON_ERROR_NONE && isset($data['ipAddress'])) {
+                // Map freeipapi.com keys to our normalized structure.
                 $ipInfo['geo'] = [
-                    'ip'      => $data['query']      ?? $ip,
-                    'country' => $data['country']    ?? '',
-                    'region'  => $data['regionName'] ?? '',
-                    'city'    => $data['city']       ?? '',
-                    'zip'     => $data['zip']        ?? '',
-                    'isp'     => $data['isp']        ?? '',
-                    'org'     => $data['org']        ?? '',
-                    'as'      => $data['as']         ?? ''
+                    'ipVersion'     => $data['ipVersion'] ?? null,
+                    'ipAddress'     => $data['ipAddress'] ?? $ip,
+                    'latitude'      => $data['latitude'] ?? null,
+                    'longitude'     => $data['longitude'] ?? null,
+                    'countryName'   => $data['countryName'] ?? '',
+                    'countryCode'   => $data['countryCode'] ?? '',
+                    'timeZone'      => $data['timeZone'] ?? '',
+                    'zipCode'       => $data['zipCode'] ?? '',
+                    'cityName'      => $data['cityName'] ?? '',
+                    'regionName'    => $data['regionName'] ?? '',
+                    'isProxy'       => $data['isProxy'] ?? false,
+                    'continent'     => $data['continent'] ?? '',
+                    'continentCode' => $data['continentCode'] ?? '',
+                    'currency'      => isset($data['currency']) ? [
+                        'code' => $data['currency']['code'] ?? '',
+                        'name' => $data['currency']['name'] ?? ''
+                    ] : [],
+                    'language'      => $data['language'] ?? '',
+                    'timeZones'     => $data['timeZones'] ?? [],
+                    'tlds'          => $data['tlds'] ?? []
                 ];
             } else {
+                // If freeipapi returns an error message
                 $ipInfo['geo'] = [
-                    'error' => isset($data['message']) ? $data['message'] : 'Unknown error'
+                    'error' => $data['message'] ?? 'Unknown error from freeipapi.com'
                 ];
             }
         } else {
-            $ipInfo['geo'] = [
-                'error' => 'Unable to fetch IP geolocation data.'
-            ];
+            // Fallback: Use ip-api.com if freeipapi.com call fails.
+            $fallbackApiUrl = "http://ip-api.com/json/{$ip}?fields=status,message,country,regionName,city,zip,isp,org,as,query";
+            $fallbackResponse = @file_get_contents($fallbackApiUrl);
+            if ($fallbackResponse !== false) {
+                $fallbackData = json_decode($fallbackResponse, true);
+                if (json_last_error() === JSON_ERROR_NONE && isset($fallbackData['status']) && $fallbackData['status'] === 'success') {
+                    $ipInfo['geo'] = [
+                        'ipAddress'   => $fallbackData['query']      ?? $ip,
+                        'countryName' => $fallbackData['country']    ?? '',
+                        'regionName'  => $fallbackData['regionName'] ?? '',
+                        'cityName'    => $fallbackData['city']       ?? '',
+                        'zipCode'     => $fallbackData['zip']        ?? '',
+                        'isp'         => $fallbackData['isp']        ?? '',
+                        'org'         => $fallbackData['org']        ?? '',
+                        'as'          => $fallbackData['as']         ?? ''
+                    ];
+                } else {
+                    $ipInfo['geo'] = [
+                        'error' => $fallbackData['message'] ?? 'Unknown error from ip-api.com'
+                    ];
+                }
+            } else {
+                $ipInfo['geo'] = [
+                    'error' => 'Unable to fetch IP geolocation data from freeipapi.com and ip-api.com.'
+                ];
+            }
         }
-        
-        // Optionally, add IP history information if available.
-        // For now, we'll add a placeholder.
+        // Optional placeholder for IP history.
         $ipInfo['ip_history'] = "Not available";
     }
-    
+
     return $ipInfo;
 }
+
+
 
 
 
@@ -4644,34 +4870,26 @@ public static function formatWhoisData($data): string
  * @param string $jsonData JSON-encoded server info (raw data + report) from DB.
  * @return string HTML output.
  */
-public function showServerInfo(string $jsonData): string {
-    // Decode the combined JSON data (raw data + report)
+/**
+ * Displays the server information stored in the "server_loc" JSON in a tabbed layout,
+ * and appends a Server Score Report based on the computed report.
+ * If IP geolocation (latitude/longitude) data is present, a Google Maps iframe (free embed)
+ * is shown at the bottom of the Server Info tab.
+ *
+ * @param string $jsonData JSON-encoded server info (raw data + report) from DB.
+ * @return string HTML output.
+ */
+public function showServerInfo(string $jsonData): string
+{
     $combined = json_decode($jsonData, true);
     if (!is_array($combined)) {
         return '<div class="alert alert-danger">No server information available.</div>';
     }
-    
-    // Extract raw data and report.
+
     $data = $combined['raw'] ?? [];
     $report = $combined['report'] ?? [];
-    
-    // --- Existing Raw Data Tabs (unchanged) ---
-    // Helper functions for date formatting & domain age.
-    $formatDateFriendly = function ($rawDate) {
-        $ts = strtotime($rawDate);
-        return ($ts !== false) ? date('M d, Y H:i:s', $ts) : $rawDate;
-    };
-    $computeDomainAge = function ($rawDate) {
-        $ts = strtotime($rawDate);
-        if ($ts === false) {
-            return ['years' => 'N/A', 'days' => 'N/A'];
-        }
-        $daysDiff = floor((time() - $ts) / 86400);
-        $years = round($daysDiff / 365, 1);
-        return ['years' => $years, 'days' => $daysDiff];
-    };
-    
-    // Build DNS Info Accordion.
+
+    // ----- DNS Info Accordion -----
     $dnsRecords = $data['dns_records'] ?? [];
     $dnsHtml = '<div class="alert alert-info">No DNS records found.</div>';
     if (!empty($dnsRecords)) {
@@ -4685,18 +4903,15 @@ public function showServerInfo(string $jsonData): string {
         foreach ($dnsByType as $type => $records) {
             $i++;
             $collapseId = "collapseDns{$i}";
-            $expanded = 'false';
-            $collapseClass = 'accordion-collapse collapse';
-            $buttonClass = 'accordion-button collapsed';
             $dnsHtml .= '<div class="accordion-item">
                 <h2 class="accordion-header" id="headingDns' . $i . '">
-                  <button class="' . $buttonClass . '" type="button" data-bs-toggle="collapse"
-                          data-bs-target="#' . $collapseId . '" aria-expanded="' . $expanded . '"
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#' . $collapseId . '" aria-expanded="false"
                           aria-controls="' . $collapseId . '">
                     ' . htmlspecialchars($type) . ' Records (' . count($records) . ')
                   </button>
                 </h2>
-                <div id="' . $collapseId . '" class="' . $collapseClass . '"
+                <div id="' . $collapseId . '" class="accordion-collapse collapse"
                      aria-labelledby="headingDns' . $i . '" data-bs-parent="#dnsAccordion">
                   <div class="accordion-body">
                     <table class="table table-sm table-bordered">
@@ -4724,8 +4939,8 @@ public function showServerInfo(string $jsonData): string {
         }
         $dnsHtml .= '</div>';
     }
-    
-    // Build WHOIS + Domain Info (Name Servers Tab).
+
+    // ----- WHOIS + Domain Info -----
     $whoisInfo = $data['whois_info'] ?? [];
     $rawWhois = '';
     if (is_array($whoisInfo) && isset($whoisInfo['raw_data'])) {
@@ -4734,20 +4949,31 @@ public function showServerInfo(string $jsonData): string {
         $rawWhois = trim($whoisInfo);
     }
     $domainName = $this->urlParse['host'] ?? 'N/A';
-    $registrar = 'N/A';
-    $ianaID = 'N/A';
+    $registrar  = 'N/A';
+    $ianaID     = 'N/A';
     $registrarUrl = 'N/A';
-    $whoisServer = 'N/A';
+    $whoisServer  = 'N/A';
     $abuseContact = 'N/A';
     $domainStatus = 'N/A';
-    $createdDate = 'N/A';
-    $expiryDate = 'N/A';
-    $updatedDate = 'N/A';
-    $hostedIP = $data['server_ip'] ?? 'N/A';
+    $createdDate  = 'N/A';
+    $expiryDate   = 'N/A';
+    $updatedDate  = 'N/A';
     $nsRecordsParsed = [];
     $domainAgeYears = 'N/A';
-    $domainAgeDays = 'N/A';
-    
+    $domainAgeDays  = 'N/A';
+
+    $formatDateFriendly = function ($rawDate) {
+        $ts = strtotime($rawDate);
+        return ($ts !== false) ? date('M d, Y H:i:s', $ts) : $rawDate;
+    };
+    $computeDomainAge = function ($rawDate) {
+        $ts = strtotime($rawDate);
+        if ($ts === false) return ['years' => 'N/A', 'days' => 'N/A'];
+        $daysDiff = floor((time() - $ts) / 86400);
+        $years = round($daysDiff / 365, 1);
+        return ['years' => $years, 'days' => $daysDiff];
+    };
+
     if ($rawWhois !== '') {
         $lines = explode("\n", $rawWhois);
         foreach ($lines as $line) {
@@ -4791,13 +5017,13 @@ public function showServerInfo(string $jsonData): string {
         }
         $age = $computeDomainAge($createdDate);
         $domainAgeYears = $age['years'];
-        $domainAgeDays = $age['days'];
+        $domainAgeDays  = $age['days'];
     }
-    
+
+    $finalNsList = [];
     $nsRecordsDNS = array_filter($dnsRecords, function($r) {
         return (isset($r['type']) && strtoupper($r['type']) === 'NS');
     });
-    $finalNsList = [];
     if (!empty($nsRecordsDNS)) {
         foreach ($nsRecordsDNS as $r) {
             $finalNsList[] = $r['target'] ?? $r['ip'] ?? 'N/A';
@@ -4805,11 +5031,11 @@ public function showServerInfo(string $jsonData): string {
     } elseif (!empty($nsRecordsParsed)) {
         $finalNsList = $nsRecordsParsed;
     }
-    
+
     $createdDateFriendly = ($createdDate !== 'N/A') ? $formatDateFriendly($createdDate) : 'N/A';
-    $expiryDateFriendly = ($expiryDate !== 'N/A') ? $formatDateFriendly($expiryDate) : 'N/A';
+    $expiryDateFriendly  = ($expiryDate  !== 'N/A') ? $formatDateFriendly($expiryDate)  : 'N/A';
     $updatedDateFriendly = ($updatedDate !== 'N/A') ? $formatDateFriendly($updatedDate) : 'N/A';
-    
+
     $nsHtml = '<table class="table table-bordered table-sm mb-3">
         <tbody>
           <tr><th>Domain Name</th><td>' . htmlspecialchars($domainName) . '</td></tr>
@@ -4823,7 +5049,7 @@ public function showServerInfo(string $jsonData): string {
           <tr><th>Expiry Date</th><td>' . htmlspecialchars($expiryDateFriendly) . '</td></tr>
           <tr><th>Updated Date</th><td>' . htmlspecialchars($updatedDateFriendly) . '</td></tr>
           <tr><th>Age</th><td>' . htmlspecialchars($domainAgeYears . ' years (' . $domainAgeDays . ' days)') . '</td></tr>
-          <tr><th>Hosted IP Address</th><td>' . htmlspecialchars($hostedIP) . '</td></tr>';
+          <tr><th>Hosted IP Address</th><td>' . htmlspecialchars($data['server_ip'] ?? 'N/A') . '</td></tr>';
     if (!empty($finalNsList)) {
         $nsHtml .= '<tr><th>Name Servers</th><td><ul>';
         foreach ($finalNsList as $oneNs) {
@@ -4834,44 +5060,84 @@ public function showServerInfo(string $jsonData): string {
         $nsHtml .= '<tr><th>Name Servers</th><td><div class="alert alert-info mb-0">No Name Server records found.</div></td></tr>';
     }
     $nsHtml .= '</tbody></table>';
-    
-    $serverIP = $data['server_ip'] ?? null;
+
+    $normalizedGeo = $this->normalizeIpGeo($data['ip_info']['geo'], $data['ip_info']['IPv4'] ?? null);
+    // Then store it back:
+    $data['ip_info']['geo'] = $normalizedGeo;
+
+
+    // ----- Server Info (Geo + IP) -----
     $geo = $data['ip_info']['geo'] ?? [];
-    $city = $geo['city'] ?? 'N/A';
-    $region = $geo['region'] ?? 'N/A';
-    $country = $geo['country'] ?? 'N/A';
-    $asn = $geo['as'] ?? 'N/A';
-    $isp = $geo['isp'] ?? 'N/A';
-    $org = $geo['org'] ?? 'N/A';
-    $ipHistory = $data['ip_info']['ip_history'] ?? 'Not available';
-    
+    $ipVersion  = $geo['ipVersion']      ?? 'N/A';
+    $latitude   = isset($geo['latitude'])   ? $geo['latitude']   : null;
+    $longitude  = isset($geo['longitude'])  ? $geo['longitude']  : null;
+    $city       = $geo['cityName']          ?? 'N/A';
+    $region     = $geo['regionName']        ?? 'N/A';
+    $country    = $geo['countryName']       ?? 'N/A';
+    $zipCode    = $geo['zipCode']           ?? 'N/A';
+    $timeZone   = $geo['timeZone']          ?? 'N/A';
+    $continent  = $geo['continent']         ?? 'N/A';
+    $language   = $geo['language']          ?? 'N/A';
+    $isProxy    = isset($geo['isProxy'])    ? ($geo['isProxy'] ? 'Yes' : 'No') : 'N/A';
+    $currencyCode = $geo['currency']['code'] ?? 'N/A';
+    $currencyName = $geo['currency']['name'] ?? '';
+
     $serverInfoHtml = '
       <table class="table table-bordered table-sm">
         <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
         <tbody>
-          <tr><td>Server IP</td><td>' . htmlspecialchars($serverIP ?? 'N/A') . '</td></tr>
-          <tr><td>IP Location</td><td>' . htmlspecialchars($city . ', ' . $region . ', ' . $country) . '</td></tr>
-          <tr><td>ASN</td><td>' . htmlspecialchars($asn) . '</td></tr>
-          <tr><td>Hosting Company</td><td>' . htmlspecialchars($org) . '</td></tr>
-          <tr><td>ISP</td><td>' . htmlspecialchars($isp) . '</td></tr>
-          <tr><td>IP History</td><td>' . htmlspecialchars($ipHistory) . '</td></tr>
+          <tr><td>Server IP</td><td>' . htmlspecialchars($data['server_ip'] ?? 'N/A') . '</td></tr>
+          <tr><td>IP Version</td><td>' . htmlspecialchars($ipVersion) . '</td></tr>
+          <tr><td>City</td><td>' . htmlspecialchars($city) . '</td></tr>
+          <tr><td>Region</td><td>' . htmlspecialchars($region) . '</td></tr>
+          <tr><td>Country</td><td>' . htmlspecialchars($country) . '</td></tr>
+          <tr><td>Zip Code</td><td>' . htmlspecialchars($zipCode) . '</td></tr>
+          <tr><td>Time Zone</td><td>' . htmlspecialchars($timeZone) . '</td></tr>
+          <tr><td>Continent</td><td>' . htmlspecialchars($continent) . '</td></tr>
+          <tr><td>Language</td><td>' . htmlspecialchars($language) . '</td></tr>
+          <tr><td>Currency</td><td>' . htmlspecialchars($currencyCode . " " . $currencyName) . '</td></tr>
+          <tr><td>Is Proxy?</td><td>' . htmlspecialchars($isProxy) . '</td></tr>
         </tbody>
       </table>';
-    
+
+    // ----- Embed Google Map if lat/lng are available -----
+    $mapHtml = '';
+    if (is_numeric($latitude) && is_numeric($longitude)) {
+        $mapHtml = <<<HTML
+<div class="mt-3">
+  <h5>Location Map</h5>
+  <div style="width: 100%; height: 350px; border:1px solid #ccc;">
+    <iframe
+      width="100%"
+      height="350"
+      style="border:0;"
+      loading="lazy"
+      allowfullscreen
+      referrerpolicy="no-referrer-when-downgrade"
+      src="https://www.google.com/maps?q={$latitude},{$longitude}&hl=en&z=11&output=embed">
+    </iframe>
+  </div>
+</div>
+HTML;
+    }
+    $serverTabContent = $serverInfoHtml . $mapHtml;
+
+    // ----- SSL Info -----
     $sslHtml = '<div class="alert alert-info">No SSL certificate details found.</div>';
     $sslInfo = $data['ssl_info'] ?? [];
     if (is_array($sslInfo) && !empty($sslInfo['ssl_info']) && is_array($sslInfo['ssl_info'])) {
         $sslCert = $sslInfo['ssl_info'];
         $subject = $sslCert['subject'] ?? [];
-        $issuer = $sslCert['issuer'] ?? [];
+        $issuer  = $sslCert['issuer']  ?? [];
         $validFromUnix = $sslCert['validFrom_time_t'] ?? null;
-        $validToUnix = $sslCert['validTo_time_t'] ?? null;
+        $validToUnix   = $sslCert['validTo_time_t']   ?? null;
         $validFrom = $validFromUnix ? date('M d, Y H:i:s', $validFromUnix) : 'N/A';
-        $validTo = $validToUnix ? date('M d, Y H:i:s', $validToUnix) : 'N/A';
-        $san = $sslCert['extensions']['subjectAltName'] ?? 'N/A';
-        $keyUsage = $sslCert['extensions']['keyUsage'] ?? 'N/A';
+        $validTo   = $validToUnix   ? date('M d, Y H:i:s', $validToUnix)   : 'N/A';
+        $san       = $sslCert['extensions']['subjectAltName']       ?? 'N/A';
+        $keyUsage  = $sslCert['extensions']['keyUsage']             ?? 'N/A';
         $extendedKeyUsage = $sslCert['extensions']['extendedKeyUsage'] ?? 'N/A';
-        $certPolicies = $sslCert['extensions']['certificatePolicies'] ?? 'N/A';
+        $certPolicies = $sslCert['extensions']['certificatePolicies']   ?? 'N/A';
+
         $sslHtml = '<div style="font-family:Arial, sans-serif; border:1px solid #ccc; padding:15px; border-radius:5px; background:#f9f9f9;">';
         $sslHtml .= '<h3 style="margin-top:0;">SSL Certificate Details for ' . htmlspecialchars($this->urlParse['host']) . '</h3>';
         $sslHtml .= '<h4>Subject</h4><ul>';
@@ -4895,7 +5161,7 @@ public function showServerInfo(string $jsonData): string {
         $sslHtml .= '</ul>';
         $sslHtml .= '<h4>Validity Period</h4><ul>';
         $sslHtml .= '<li><strong>Valid From:</strong> ' . $validFrom . ' <em>(Unix Time: ' . ($validFromUnix ?? 'N/A') . ')</em></li>';
-        $sslHtml .= '<li><strong>Valid To:</strong> ' . $validTo . ' <em>(Unix Time: ' . ($validToUnix ?? 'N/A') . ')</em></li>';
+        $sslHtml .= '<li><strong>Valid To:</strong> ' . $validTo   . ' <em>(Unix Time: ' . ($validToUnix   ?? 'N/A') . ')</em></li>';
         $sslHtml .= '</ul>';
         $sslHtml .= '<h4>Subject Alternative Names (SAN)</h4>';
         $sslHtml .= '<p>' . htmlspecialchars($san) . '</p>';
@@ -4905,10 +5171,11 @@ public function showServerInfo(string $jsonData): string {
         $sslHtml .= '</ul>';
         $sslHtml .= '<h4>Certificate Policies</h4>';
         $sslHtml .= '<p>' . htmlspecialchars($certPolicies) . '</p>';
-        $sslHtml .= '<p style="font-size:0.9em; color:#555;">Other technical details (such as serial number, version, and extensions) are available for advanced troubleshooting and security audits.</p>';
+        $sslHtml .= '<p style="font-size:0.9em; color:#555;">Other technical details are available for advanced troubleshooting.</p>';
         $sslHtml .= '</div>';
     }
-    
+
+    // ----- Technology Used -----
     $techUsed = $data['technology_used'] ?? [];
     $techHtml = '<div class="alert alert-info">No technology information found.</div>';
     if (!empty($techUsed)) {
@@ -4918,7 +5185,8 @@ public function showServerInfo(string $jsonData): string {
         }
         $techHtml .= '</ul>';
     }
-    
+
+    // ----- WHOIS Raw -----
     $whoisHtml = '<div class="alert alert-info">No WHOIS data available.</div>';
     if ($rawWhois !== '') {
         $whoisFormatted = preg_replace(
@@ -4928,7 +5196,8 @@ public function showServerInfo(string $jsonData): string {
         );
         $whoisHtml = '<div>' . $whoisFormatted . '</div>';
     }
-    
+
+    // ----- Build the Tabs -----
     $rawTabsHtml = '
 <div class="container my-3">
   <ul class="nav nav-tabs" id="serverInfoTab" role="tablist">
@@ -4977,7 +5246,7 @@ public function showServerInfo(string $jsonData): string {
       ' . $dnsHtml . '
     </div>
     <div class="tab-pane fade" id="server" role="tabpanel" aria-labelledby="server-tab">
-      ' . $serverInfoHtml . '
+      ' . $serverTabContent . '
     </div>
     <div class="tab-pane fade" id="ssl" role="tabpanel" aria-labelledby="ssl-tab">
       ' . $sslHtml . '
@@ -4990,68 +5259,230 @@ public function showServerInfo(string $jsonData): string {
     </div>
   </div>
 </div>';
-    
-   // --- Build the Server Score Report Card (Updated Look) ---
-$score = $report['score'] ?? 0;
-$maxScore = $report['max_score'] ?? 12;
-$percent = $report['percent'] ?? 0;
-$overallComment = $report['comment'] ?? '';
-$detailsArr = $report['details'] ?? [];
-$suggestionsArr = $report['suggestions'] ?? [];
 
-// Build a progress bar color based on percentage
-$progressBarClass = ($percent >= 80) ? 'bg-success' : (($percent >= 50) ? 'bg-warning' : 'bg-danger');
+    // ----- Score Report -----
+    $score     = $report['score']        ?? 0;
+    $maxScore  = $report['max_score']    ?? 12;
+    $percent   = $report['percent']      ?? 0;
+    $overallComment = $report['comment'] ?? '';
+    $detailsArr = $report['details']     ?? [];
+    $suggestionsArr = $report['suggestions'] ?? [];
 
-// Build condition details list with icons
-$conditionsHtml = '<ul class="list-group mb-3">';
-foreach ($detailsArr as $cond => $status) {
-    // Choose an icon based on the status value
-    $icon = '';
-    $statusLower = strtolower($status);
-    if ($statusLower === 'pass') {
-        $icon = '<i class="fa fa-check-circle text-success"></i>';
-    } elseif ($statusLower === 'error') {
-        $icon = '<i class="fa fa-times-circle text-danger"></i>';
+    $progressBarClass = ($percent >= 80) ? 'bg-success' : (($percent >= 50) ? 'bg-warning' : 'bg-danger');
+
+    $conditionsHtml = '<ul class="list-group mb-3">';
+    foreach ($detailsArr as $cond => $status) {
+        $icon = '';
+        $statusLower = strtolower($status);
+        if ($statusLower === 'pass') {
+            $icon = '<i class="fa fa-check-circle text-success"></i>';
+        } elseif ($statusLower === 'error') {
+            $icon = '<i class="fa fa-times-circle text-danger"></i>';
+        } else {
+            $icon = '<i class="fa fa-info-circle text-warning"></i>';
+        }
+        $conditionsHtml .= '<li class="list-group-item d-flex justify-content-between align-items-center">'
+            . htmlspecialchars($cond)
+            . '<span>' . $icon . ' ' . htmlspecialchars($status) . '</span></li>';
+    }
+    $conditionsHtml .= '</ul>';
+
+    $suggestionsHtml = '';
+    if (!empty($suggestionsArr)) {
+        $suggestionsHtml .= '<div class="alert alert-warning">';
+        $suggestionsHtml .= '<h5 class="mb-1">Suggestions for Improvement:</h5>';
+        $suggestionsHtml .= '<ul class="mb-0">';
+        foreach ($suggestionsArr as $sug) {
+            $suggestionsHtml .= '<li>' . htmlspecialchars($sug) . '</li>';
+        }
+        $suggestionsHtml .= '</ul></div>';
+    }
+
+    $reportCard = '
+    <div class="card my-3 shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Server Score Report: <strong>' . $score . ' / ' . $maxScore . '</strong> (' . $percent . '%)</h4>
+      </div>
+      <div class="card-body">
+        <div class="progress mb-3" style="height: 25px;">
+          <div class="progress-bar ' . $progressBarClass . '" role="progressbar" style="width: ' . $percent . '%;" aria-valuenow="' . $percent . '" aria-valuemin="0" aria-valuemax="100">' . $percent . '%</div>
+        </div>
+        <p><strong>Overall Comment:</strong> ' . htmlspecialchars($overallComment) . '</p>
+        <h5>Condition Details:</h5>
+        ' . $conditionsHtml . '
+        ' . $suggestionsHtml . '
+      </div>
+    </div>';
+
+    $finalOutput = $rawTabsHtml . $reportCard;
+
+    // Determine top-level container class based on overall percent.
+    $overallPercent = $report['percent'] ?? 0;
+    $containerClass = 'errorBox';
+    if ($overallPercent >= 80) {
+        $containerClass = 'passedBox';
+    } elseif ($overallPercent >= 50) {
+        $containerClass = 'improveBox';
+    }
+
+    return '<div class="seoBox seoBoxServerInfo ' . $containerClass . '">' . $finalOutput . '</div>';
+}
+
+
+/**
+ * Normalize the raw geo data from our IP lookup so that we always
+ * return a consistent set of keys and structure.
+ *
+ * @param array $geoRaw The raw array from the IP lookup (e.g. 'geo' key).
+ * @param string|null $ipv4 If you know the IPv4 address, pass it here (optional).
+ * @param string|null $ipv6 If you have an IPv6, pass it here (optional).
+ * @return array A normalized array with keys:
+ *    - ipVersion (int)
+ *    - ipAddress (string)
+ *    - latitude (float|null)
+ *    - longitude (float|null)
+ *    - countryName (string)
+ *    - countryCode (string)
+ *    - timeZone (string)
+ *    - zipCode (string)
+ *    - cityName (string)
+ *    - regionName (string)
+ *    - isProxy (bool)
+ *    - continent (string)
+ *    - continentCode (string)
+ *    - currency => [ "code" => string, "name" => string ]
+ *    - language (string)
+ *    - timeZones (array)
+ *    - tlds (array)
+ */
+private function normalizeIpGeo(array $geoRaw, ?string $ipv4 = null, ?string $ipv6 = null): array
+{
+    // Default structure so we never miss keys:
+    $normalized = [
+        'ipVersion'     => 4,
+        'ipAddress'     => '',
+        'latitude'      => null,
+        'longitude'     => null,
+        'countryName'   => '',
+        'countryCode'   => '',
+        'timeZone'      => '',
+        'zipCode'       => '',
+        'cityName'      => '',
+        'regionName'    => '',
+        'isProxy'       => false,
+        'continent'     => '',
+        'continentCode' => '',
+        'currency'      => [
+            'code' => '',
+            'name' => ''
+        ],
+        'language'      => '',
+        'timeZones'     => [],
+        'tlds'          => []
+    ];
+
+    // If the lookup said "status" => "fail", we might want to short‑circuit
+    // or just keep the defaults:
+    if (isset($geoRaw['status']) && strtolower($geoRaw['status']) === 'fail') {
+        // Return as-is, or set an error key, etc.
+        return $normalized;
+    }
+
+    // If you know you have IPv4 vs IPv6:
+    if ($ipv6) {
+        $normalized['ipVersion'] = 6;
+        $normalized['ipAddress'] = $ipv6;
     } else {
-        $icon = '<i class="fa fa-info-circle text-warning"></i>';
+        // By default we assume IPv4
+        $normalized['ipVersion'] = 4;
+        // Possibly read from $geoRaw['ip'] if available, else use $ipv4 param
+        $normalized['ipAddress'] = $geoRaw['ip'] ?? ($ipv4 ?: '');
     }
-    $conditionsHtml .= '<li class="list-group-item d-flex justify-content-between align-items-center">'
-        . htmlspecialchars($cond)
-        . '<span>' . $icon . ' ' . htmlspecialchars($status) . '</span></li>';
-}
-$conditionsHtml .= '</ul>';
 
-// Build suggestions list if available
-$suggestionsHtml = '';
-if (!empty($suggestionsArr)) {
-    $suggestionsHtml .= '<div class="alert alert-warning">';
-    $suggestionsHtml .= '<h5 class="mb-1">Suggestions for Improvement:</h5>';
-    $suggestionsHtml .= '<ul class="mb-0">';
-    foreach ($suggestionsArr as $sug) {
-        $suggestionsHtml .= '<li>' . htmlspecialchars($sug) . '</li>';
+    // Fill the rest, carefully checking array keys:
+    if (isset($geoRaw['latitude'])) {
+        $normalized['latitude'] = (float)$geoRaw['latitude'];
     }
-    $suggestionsHtml .= '</ul></div>';
-}
+    if (isset($geoRaw['longitude'])) {
+        $normalized['longitude'] = (float)$geoRaw['longitude'];
+    }
+    if (!empty($geoRaw['country'])) {
+        $normalized['countryName'] = (string)$geoRaw['country'];
+    } elseif (!empty($geoRaw['countryName'])) {
+        // Some APIs use "countryName" key
+        $normalized['countryName'] = (string)$geoRaw['countryName'];
+    }
+    if (!empty($geoRaw['countryCode'])) {
+        $normalized['countryCode'] = (string)$geoRaw['countryCode'];
+    }
+    // Some APIs return "region" or "regionName"
+    if (!empty($geoRaw['region'])) {
+        $normalized['regionName'] = (string)$geoRaw['region'];
+    } elseif (!empty($geoRaw['regionName'])) {
+        $normalized['regionName'] = (string)$geoRaw['regionName'];
+    }
+    if (!empty($geoRaw['city'])) {
+        $normalized['cityName'] = (string)$geoRaw['city'];
+    } elseif (!empty($geoRaw['cityName'])) {
+        $normalized['cityName'] = (string)$geoRaw['cityName'];
+    }
+    if (!empty($geoRaw['zip'])) {
+        $normalized['zipCode'] = (string)$geoRaw['zip'];
+    } elseif (!empty($geoRaw['zipCode'])) {
+        $normalized['zipCode'] = (string)$geoRaw['zipCode'];
+    }
+    if (isset($geoRaw['proxy'])) {
+        $normalized['isProxy'] = (bool)$geoRaw['proxy'];
+    } elseif (isset($geoRaw['isProxy'])) {
+        $normalized['isProxy'] = (bool)$geoRaw['isProxy'];
+    }
+    if (!empty($geoRaw['continent'])) {
+        $normalized['continent'] = (string)$geoRaw['continent'];
+    }
+    if (!empty($geoRaw['continentCode'])) {
+        $normalized['continentCode'] = (string)$geoRaw['continentCode'];
+    }
+    // Some APIs store currency as a string "US Dollar (USD)"
+    // Others store it as an array with 'code' => 'USD', 'name' => 'US Dollar'
+    if (isset($geoRaw['currency'])) {
+        if (is_array($geoRaw['currency'])) {
+            // e.g. ["code" => "USD", "name" => "US Dollar"]
+            $normalized['currency']['code'] = $geoRaw['currency']['code'] ?? '';
+            $normalized['currency']['name'] = $geoRaw['currency']['name'] ?? '';
+        } elseif (is_string($geoRaw['currency'])) {
+            // Try to parse something like "US Dollar (USD)"
+            if (preg_match('/^(.*?)\s*\(([A-Z]{3,})\)$/', $geoRaw['currency'], $m)) {
+                $normalized['currency']['name'] = trim($m[1]);
+                $normalized['currency']['code'] = $m[2];
+            } else {
+                // fallback
+                $normalized['currency']['name'] = $geoRaw['currency'];
+            }
+        }
+    }
+    if (!empty($geoRaw['language'])) {
+        $normalized['language'] = (string)$geoRaw['language'];
+    }
+    if (!empty($geoRaw['timeZones']) && is_array($geoRaw['timeZones'])) {
+        $normalized['timeZones'] = $geoRaw['timeZones'];
+    }
+    // If there's a single "timeZone" string, put it in the array:
+    elseif (!empty($geoRaw['timeZone']) && is_string($geoRaw['timeZone'])) {
+        $normalized['timeZones'] = [$geoRaw['timeZone']];
+    }
+    // Some APIs do "tlds" or "topLevelDomains"
+    if (!empty($geoRaw['tlds']) && is_array($geoRaw['tlds'])) {
+        $normalized['tlds'] = $geoRaw['tlds'];
+    } elseif (!empty($geoRaw['topLevelDomains']) && is_array($geoRaw['topLevelDomains'])) {
+        $normalized['tlds'] = $geoRaw['topLevelDomains'];
+    }
 
-// Final Server Score Report Card HTML
-$reportCard = '
-<div class="card my-3 shadow-sm">
-  <div class="card-header bg-primary text-white">
-    <h4 class="mb-0">Server Score Report: <strong>' . $score . ' / ' . $maxScore . '</strong> (' . $percent . '%)</h4>
-  </div>
-  <div class="card-body">
-    <div class="progress mb-3" style="height: 25px;">
-      <div class="progress-bar ' . $progressBarClass . '" role="progressbar" style="width: ' . $percent . '%;" aria-valuenow="' . $percent . '" aria-valuemin="0" aria-valuemax="100">' . $percent . '%</div>
-    </div>
-    <p><strong>Overall Comment:</strong> ' . htmlspecialchars($overallComment) . '</p>
-    <h5>Condition Details:</h5>
-    ' . $conditionsHtml . '
-    ' . $suggestionsHtml . '
-  </div>
-</div>';
-    
-$finalOutput = $rawTabsHtml . $reportCard;
-return $finalOutput;
+    // If the API returns a "timeZone" string like "-08:00", store it directly:
+    if (!empty($geoRaw['timeZone']) && is_string($geoRaw['timeZone'])) {
+        $normalized['timeZone'] = $geoRaw['timeZone'];
+    }
+
+    return $normalized;
 }
 
 
@@ -5356,14 +5787,12 @@ private function renderOrganization(array $data): string
  * @param string $jsonData JSON-encoded schema data (raw and report) from the database.
  * @return string HTML output.
  */
-public function showSchema(string $jsonData): string
-{
+public function showSchema(string $jsonData): string {
     $data = json_decode($jsonData, true);
     if (!is_array($data)) {
         return '<div class="alert alert-danger">No schema data available.</div>';
     }
-
-    // Build the score summary card
+    
     $report = $data['report'] ?? [];
     $scoreSummary = '<div class="card mb-4 border-info">';
     $scoreSummary .= '<div class="card-header bg-info text-white"><h4>Schema Analysis Report</h4></div>';
@@ -5386,13 +5815,10 @@ public function showSchema(string $jsonData): string
         $scoreSummary .= '<div class="alert alert-warning">No score data available.</div>';
     }
     $scoreSummary .= '</div></div>';
-
-    // -------------------------------------------------------------------------
-    // 1. Build JSON‑LD Section
-    // -------------------------------------------------------------------------
+    
+    // JSON‑LD Section.
     $jsonLdContent = '';
     if (!empty($data['raw']['json_ld']) && is_array($data['raw']['json_ld'])) {
-        // Order types so that "Organization" is first if present.
         $types = array_keys($data['raw']['json_ld']);
         $ordered = [];
         if (isset($data['raw']['json_ld']['Organization'])) {
@@ -5402,7 +5828,6 @@ public function showSchema(string $jsonData): string
         sort($otherTypes);
         $ordered = array_merge($ordered, $otherTypes);
 
-        // Build sub-tabs for JSON‑LD
         $subTabNav = '<ul class="nav nav-pills mb-3" id="jsonLdSubTab" role="tablist">';
         $subTabContent = '<div class="tab-content" id="jsonLdSubTabContent">';
         $i = 0;
@@ -5444,10 +5869,7 @@ public function showSchema(string $jsonData): string
     } else {
         $jsonLdContent = '<div class="alert alert-info">No JSON‑LD schema data found.</div>';
     }
-
-    // -------------------------------------------------------------------------
-    // 2. Microdata Section
-    // -------------------------------------------------------------------------
+    
     $microContent = '';
     if (!empty($data['raw']['microdata']) && is_array($data['raw']['microdata'])) {
         $microContent .= '<div class="container mt-3"><h4>Microdata</h4>';
@@ -5461,10 +5883,7 @@ public function showSchema(string $jsonData): string
     } else {
         $microContent = '<div class="alert alert-info">No Microdata found.</div>';
     }
-
-    // -------------------------------------------------------------------------
-    // 3. RDFa Section
-    // -------------------------------------------------------------------------
+    
     $rdfaContent = '';
     if (!empty($data['raw']['rdfa']) && is_array($data['raw']['rdfa'])) {
         $rdfaContent .= '<div class="container mt-3"><h4>RDFa</h4>';
@@ -5478,10 +5897,7 @@ public function showSchema(string $jsonData): string
     } else {
         $rdfaContent = '<div class="alert alert-info">No RDFa data found.</div>';
     }
-
-    // -------------------------------------------------------------------------
-    // Build top-level tabs for JSON‑LD, Microdata, RDFa
-    // -------------------------------------------------------------------------
+    
     $tabs = '
     <ul class="nav nav-tabs" id="schemaMainTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -5494,17 +5910,14 @@ public function showSchema(string $jsonData): string
             <button class="nav-link" id="rdfa-tab" data-bs-toggle="tab" data-bs-target="#rdfa" type="button" role="tab" aria-controls="rdfa" aria-selected="false">RDFa</button>
         </li>
     </ul>';
-
+    
     $content = '
     <div class="tab-content" id="schemaMainTabContent">
         <div class="tab-pane show active" id="jsonld" role="tabpanel" aria-labelledby="jsonld-tab">' . $jsonLdContent . '</div>
         <div class="tab-pane fade" id="microdata" role="tabpanel" aria-labelledby="microdata-tab">' . $microContent . '</div>
         <div class="tab-pane fade" id="rdfa" role="tabpanel" aria-labelledby="rdfa-tab">' . $rdfaContent . '</div>
     </div>';
-
-    // -------------------------------------------------------------------------
-    // 4. Global Suggestions
-    // -------------------------------------------------------------------------
+    
     $globalSuggestions = [];
     if (empty($data['raw']['json_ld'])) {
         $globalSuggestions[] = 'No JSON‑LD markup was detected. Google recommends JSON‑LD for modern structured data.';
@@ -5529,14 +5942,24 @@ public function showSchema(string $jsonData): string
         }
         $suggestionHtml .= '</ul></div></div>';
     }
-
-    return '<div class="container my-3">' 
-            . $tabs
-            . $content
-            . $suggestionHtml
-            . $scoreSummary
-            . '</div>';
+    
+    // Determine container class based on overall schema report percent.
+    $overallPercent = $report['percent'] ?? 0;
+    $containerClass = 'errorBox';
+    if ($overallPercent >= 80) {
+        $containerClass = 'passedBox';
+    } elseif ($overallPercent >= 50) {
+        $containerClass = 'improveBox';
+    }
+    
+    return '<div class="container my-3">'
+         . $tabs
+         . $content
+         . $suggestionHtml
+         . $scoreSummary
+         . '</div><div class="seoBox seoBoxSchema ' . $containerClass . '">' . '</div>';
 }
+
 
 
     /*===================================================================
@@ -6002,7 +6425,6 @@ public function showPageAnalytics(string $jsonData): string {
         return '<div class="alert alert-danger">Invalid or missing page analytics data.</div>';
     }
     
-    // Define groups and the keys (headings) that belong in each group.
     $groups = [
         "General Information" => [
             "Encoding",
@@ -6048,11 +6470,9 @@ public function showPageAnalytics(string $jsonData): string {
         ]
     ];
     
-    // Build cards for each check.
     $cards = [];
     $suggestions = [];
     foreach ($data['raw'] as $heading => $value) {
-        // Only include headings that are in our defined groups.
         foreach ($groups as $group) {
             if (in_array($heading, $group)) {
                 $cards[$heading] = $this->buildCardData($heading, $value, $suggestions);
@@ -6060,15 +6480,12 @@ public function showPageAnalytics(string $jsonData): string {
         }
     }
     
-    // Build HTML output by groups.
     $html = '<div class="container my-4">';
     foreach ($groups as $groupName => $headings) {
         $html .= '<h3 class="mb-3">' . htmlspecialchars($groupName) . '</h3>';
         $html .= '<div class="row row-cols-1 row-cols-md-2 g-4 mb-4">';
         foreach ($headings as $heading) {
-            if (!isset($cards[$heading])) {
-                continue;
-            }
+            if (!isset($cards[$heading])) continue;
             $card = $cards[$heading];
             $html .= '<div class="col">';
             $html .= '<div class="card h-100 shadow-sm">';
@@ -6076,7 +6493,6 @@ public function showPageAnalytics(string $jsonData): string {
             $html .= '    <div class="me-3" style="font-size:1.8rem;">' . $card['icon'] . '</div>';
             $html .= '    <div>';
             $html .= '      <h5 class="card-title mb-1">' . htmlspecialchars($card['heading']) . '</h5>';
-            // If the description has HTML (for keys like Favicon or Ads.txt), output it raw.
             if (in_array($card['heading'], ['Favicon and Touch Icons', 'Ads.txt'])) {
                 $html .= '      <p class="card-text text-muted small mb-0">' . $card['description'] . '</p>';
             } else {
@@ -6090,7 +6506,6 @@ public function showPageAnalytics(string $jsonData): string {
         $html .= '</div>';
     }
     
-    // Overall summary.
     $overallReport = $data['report'] ?? [];
     $summaryHtml = '<div class="alert alert-info mt-4">';
     $summaryHtml .= '<strong>Overall Page Analytics Score:</strong> ' . ($overallReport['percent'] ?? 0) . '%<br>';
@@ -6098,7 +6513,6 @@ public function showPageAnalytics(string $jsonData): string {
     $summaryHtml .= '<strong>Comment:</strong> ' . ($overallReport['comment'] ?? '');
     $summaryHtml .= '</div>';
     
-    // Optionally, display suggestions.
     if (!empty($suggestions)) {
         $summaryHtml .= '<div class="card border-warning mt-4">';
         $summaryHtml .= '  <div class="card-header bg-warning text-dark"><strong>Suggestions for Improvement</strong></div>';
@@ -6112,8 +6526,19 @@ public function showPageAnalytics(string $jsonData): string {
     
     $html .= $summaryHtml;
     $html .= '</div>';
-    return $html;
+    
+    // Determine container class based on overall analytics report percent.
+    $overallPercent = $overallReport['percent'] ?? 0;
+    $containerClass = 'errorBox';
+    if ($overallPercent >= 80) {
+        $containerClass = 'passedBox';
+    } elseif ($overallPercent >= 50) {
+        $containerClass = 'improveBox';
+    }
+    
+    return '<div class="seoBox seoBoxAnalytics ' . $containerClass . '">' . $html . '</div>';
 }
+
  
 
 
@@ -6369,7 +6794,7 @@ private function getFaviconUrl(): string {
 public function processSocialUrls(): string {
     $doc = $this->getDom();
     $xpath = new DOMXPath($doc);
-    
+
     // Define social networks and regex patterns to match in the href attribute.
     $socialPatterns = [
         'facebook'    => '/facebook\.com/i',
@@ -6383,7 +6808,7 @@ public function processSocialUrls(): string {
         'tripadvisor' => '/tripadvisor\.[a-z]{2,6}/i',  // handles multiple TLDs
         'tiktok'      => '/tiktok\.com/i'
     ];
-    
+
     // Define "base" URLs for each network to ignore if no additional path exists.
     $baseUrls = [
         'facebook'    => ['https://facebook.com', 'https://www.facebook.com'],
@@ -6397,33 +6822,33 @@ public function processSocialUrls(): string {
         'tripadvisor' => ['https://tripadvisor.com', 'https://www.tripadvisor.com'],
         'tiktok'      => ['https://tiktok.com', 'https://www.tiktok.com']
     ];
-    
+
     $socialUrls = [];
-    
+
     // Loop through each social network pattern.
     foreach ($socialPatterns as $network => $pattern) {
-        // Use XPath to fetch all <a> tags whose href (converted to lowercase) contains the network keyword.
+        // Get all <a> nodes whose href (converted to lowercase) contains the network keyword.
         $nodes = $xpath->query("//a[contains(translate(@href, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '$network')]");
-        // Fallback: if no nodes found, iterate all <a> tags.
+        // If none found, fallback to all <a> nodes.
         if ($nodes->length === 0) {
             $nodes = $xpath->query("//a");
         }
-        
+
         $urls = [];
         foreach ($nodes as $node) {
             $href = trim($node->getAttribute('href'));
             if (empty($href)) {
                 continue;
             }
-            // Check if the URL matches our pattern.
+            // If the href matches the network pattern:
             if (preg_match($pattern, $href)) {
                 // Normalize relative URLs.
                 if (!preg_match('#^(?:https?:)?//#i', $href)) {
                     $href = $this->toAbsoluteUrl($href);
                 }
-                // Remove trailing slash for comparison.
+                // Remove any trailing slash.
                 $normalizedHref = rtrim($href, '/');
-                // Check if the URL is exactly one of the base URLs for this network.
+                // Skip the URL if it exactly matches a base URL.
                 $skip = false;
                 if (isset($baseUrls[$network])) {
                     foreach ($baseUrls[$network] as $base) {
@@ -6444,12 +6869,12 @@ public function processSocialUrls(): string {
             $socialUrls[$network] = array_values(array_unique($urls));
         }
     }
-    
+
     // ----- SCORE LOGIC -----
     // Award 2 points per network if at least one URL is found.
     $details = [];
     $totalScore = 0;
-    $maxScore = count($socialPatterns) * 2; // e.g., 10 networks * 2 points = 20
+    $maxScore = count($socialPatterns) * 2; // e.g., 10 networks * 2 = 20 points
     foreach ($socialPatterns as $network => $pattern) {
         if (!empty($socialUrls[$network])) {
             $details[ucfirst($network) . " Presence"] = "Pass – " . ucfirst($network) . " URL(s) found.";
@@ -6458,10 +6883,10 @@ public function processSocialUrls(): string {
             $details[ucfirst($network) . " Presence"] = "Error – No " . ucfirst($network) . " URL found.";
         }
     }
-    
+
     // Compute overall percentage.
     $percent = ($maxScore > 0) ? round(($totalScore / $maxScore) * 100) : 0;
-    
+
     // Overall comment based on score.
     if ($totalScore == $maxScore) {
         $comment = "Excellent – All social URLs are present.";
@@ -6470,7 +6895,7 @@ public function processSocialUrls(): string {
     } else {
         $comment = "Critical – Most social URLs are missing. It's highly recommended to include your social network profiles.";
     }
-    
+
     $report = [
         'score'     => $totalScore,
         'max_score' => $maxScore,
@@ -6478,26 +6903,30 @@ public function processSocialUrls(): string {
         'details'   => $details,
         'comment'   => $comment
     ];
-    
+
     $completeSocialData = [
         'raw'    => $socialUrls,
         'report' => $report
     ];
-    
-    $jsonData = jsonEncode($completeSocialData);
-    
-    // Upsert social URLs into a separate table (domains_social_urls) using domain_id as unique key.
+
+    $jsonData = json_encode($completeSocialData);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        error_log("processSocialUrls: JSON encoding error: " . json_last_error_msg());
+    }
+
+    // Upsert the social URLs into the domains_social_urls table.
     $resultSocial = ajaxDbUpsert($this->con, 'domains_social_urls', [
         'domain_id'   => $this->domainId,
         'social_urls' => $jsonData
     ], ['domain_id' => $this->domainId]);
     if ($resultSocial !== true) {
-        error_log("Failed to upsert Social URLs data: " . $resultSocial);
+        error_log("processSocialUrls: Failed to upsert Social URLs data: " . $resultSocial);
     }
-    
+
     $_SESSION['report_data']['socialUrlsReport'] = $completeSocialData;
     return $jsonData;
 }
+
 
 
 /**
@@ -6513,10 +6942,9 @@ public function showSocialUrls($socialData): string {
         return '<div class="alert alert-info">No social URLs found.</div>';
     }
     
-    // Define Font Awesome icons for each social network.
     $icons = [
         'facebook'    => 'fa-facebook',
-        'x'           => 'fa-twitter', // Replace with custom X icon if available.
+        'x'           => 'fa-twitter',
         'instagram'   => 'fa-instagram',
         'linkedin'    => 'fa-linkedin',
         'youtube'     => 'fa-youtube',
@@ -6527,20 +6955,19 @@ public function showSocialUrls($socialData): string {
         'tiktok'      => 'fa-tiktok'
     ];
     
-    // Build the score summary card.
     $report = $data['report'] ?? [];
     $scoreSummary = '<div class="card mb-4 border-primary">';
     $scoreSummary .= '<div class="card-header bg-primary text-white"><h4>Social URLs Report</h4></div>';
     $scoreSummary .= '<div class="card-body">';
     if (!empty($report)) {
-        $scoreSummary .= '<p><strong>Score:</strong> ' . ($report['score'] ?? 0) . ' / ' . ($report['max_score'] ?? 0);
-        $scoreSummary .= ' (<strong>' . ($report['percent'] ?? 0) . '%</strong>)</p>';
+        $scoreSummary .= '<p><strong>Score:</strong> ' . ($report['score'] ?? 0) . ' / ' . ($report['max_score'] ?? 0)
+                        . ' (<strong>' . ($report['percent'] ?? 0) . '%</strong>)</p>';
         $scoreSummary .= '<ul class="list-group">';
         foreach ($report['details'] as $metric => $status) {
-            $icon = (strpos($status, 'Pass') !== false)
+            $iconHtml = (strpos($status, 'Pass') !== false)
                 ? '<i class="fa fa-check text-success"></i>'
                 : '<i class="fa fa-times text-danger"></i>';
-            $scoreSummary .= '<li class="list-group-item">' . $icon . ' <strong>' . htmlspecialchars($metric) . ':</strong> ' . htmlspecialchars($status) . '</li>';
+            $scoreSummary .= '<li class="list-group-item">' . $iconHtml . ' <strong>' . htmlspecialchars($metric) . ':</strong> ' . htmlspecialchars($status) . '</li>';
         }
         $scoreSummary .= '</ul>';
         $scoreSummary .= '<p class="mt-2"><em>' . htmlspecialchars($report['comment'] ?? '') . '</em></p>';
@@ -6549,12 +6976,10 @@ public function showSocialUrls($socialData): string {
     }
     $scoreSummary .= '</div></div>';
     
-    // Build the social URLs card.
     $output = '<div class="card my-3 shadow-sm">
                     <div class="card-header"><strong>Social Page URLs</strong></div>
                     <div class="card-body">';
     
-    // Loop through each network found.
     foreach ($data['raw'] as $network => $urls) {
         $icon = $icons[$network] ?? 'fa-globe';
         $output .= '<div class="social-url-group mb-3">';
@@ -6570,9 +6995,19 @@ public function showSocialUrls($socialData): string {
                 <div class="card-footer"><small>Social page URLs extracted from the site.</small></div>
                 </div>';
     
-    // Return the combined output with the score summary at the top.
-    return '<div class="container my-3">'  . $output . $scoreSummary. '</div>';
+    // Determine container class based on overall social URLs report percent.
+    $overallPercent = $report['percent'] ?? 0;
+    $containerClass = 'errorBox';
+    if ($overallPercent >= 80) {
+        $containerClass = 'passedBox';
+    } elseif ($overallPercent >= 50) {
+        $containerClass = 'improveBox';
+    }
+    
+    return '<div class="container my-3"><div class="seoBox seoBoxSocial ' . $containerClass . '">' . $scoreSummary . $output . '</div></div>';
 }
+
+
 
 
     /*===================================================================
@@ -7129,28 +7564,21 @@ public function processPageSpeedInsightConcurrent(): string {
  * @param string $jsonData JSON-encoded PageSpeed Insights data.
  * @return string HTML output.
  */
-public function showPageSpeedInsightConcurrent(string $jsonData): string
-{
-    // Attempt to decode the JSON data.
+public function showPageSpeedInsightConcurrent(string $jsonData): string {
     $data = json_decode($jsonData, true);
     if (!is_array($data) || !isset($data['pagespeed'])) {
         return '<div class="alert alert-warning">No PageSpeed Insights data available.</div>';
     }
-
+    
     $report = $data['pagespeed'];
-    
-    // Extract scores from the score report; default to 0 if not set.
-    $scoreReport = isset($report['report']) && is_array($report['report']) ? $report['report'] : [];
+    $scoreReport = (isset($report['report']) && is_array($report['report'])) ? $report['report'] : [];
     $desktopScore = isset($scoreReport['desktop']['score']) ? intval($scoreReport['desktop']['score']) : 0;
-    $mobileScore  = isset($scoreReport['mobile']['score'])  ? intval($scoreReport['mobile']['score'])  : 0;
+    $mobileScore  = isset($scoreReport['mobile']['score']) ? intval($scoreReport['mobile']['score']) : 0;
     
-    // Prepare the HTML for the detailed report.
-    // (This is your original HTML output for the PageSpeed report.)
     $timestamp = htmlspecialchars($report['timestamp'] ?? '');
     $url       = htmlspecialchars($report['url'] ?? '');
     $cacheHit  = htmlspecialchars($report['cache_hit'] ?? '');
     
-    // Build the Score Report section.
     $scoreSection = '
     <div class="card mb-4 shadow-sm">
       <div class="card-header bg-secondary text-white">
@@ -7187,9 +7615,7 @@ public function showPageSpeedInsightConcurrent(string $jsonData): string
         </table>
       </div>
     </div>';
-
-    // Build the detailed reports for Desktop and Mobile.
-    // (This part uses your existing code to render the lab metrics and diagnostics.)
+    
     $renderPlatformReport = function(string $platform, array $reportData) {
         $allowedMetrics = [
             'timeToFirstByte'        => 'Time to First Byte',
@@ -7223,7 +7649,6 @@ public function showPageSpeedInsightConcurrent(string $jsonData): string
         $metrics = isset($reportData['metrics']) && is_array($reportData['metrics']) ? $reportData['metrics'] : [];
         $diagnostics = isset($reportData['diagnostics']) && is_array($reportData['diagnostics']) ? $reportData['diagnostics'] : [];
         
-        // Build the metrics table.
         $rows = '';
         $foundMetric = false;
         foreach ($allowedMetrics as $key => $label) {
@@ -7237,7 +7662,6 @@ public function showPageSpeedInsightConcurrent(string $jsonData): string
             $rows = '<tr><td colspan="2">No key metrics available.</td></tr>';
         }
         
-        // Build diagnostics accordion.
         $diagHtml = '';
         if (!empty($diagnostics)) {
             foreach ($diagnostics as $i => $item) {
@@ -7269,7 +7693,6 @@ HTML;
             $diagHtml = '<p>No diagnostic opportunities found.</p>';
         }
         
-        // Gauge canvas ID (for your gauge script)
         $canvasId = ($platform === 'Desktop') ? 'desktopPageSpeed' : 'mobilePageSpeed';
         return <<<HTML
 <div class="card mb-4">
@@ -7301,12 +7724,11 @@ HTML;
 </div>
 HTML;
     };
-
+    
     $desktopHtml = $renderPlatformReport('Desktop', isset($report['desktop']) ? $report['desktop'] : []);
     $mobileHtml  = $renderPlatformReport('Mobile',  isset($report['mobile']) ? $report['mobile'] : []);
-
-    // Build top-level tabs for Desktop and Mobile.
-    $tabs = '
+    
+    $tabsNav = '
     <ul class="nav nav-tabs" id="pagespeedReportTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="desktop-tab" data-bs-toggle="tab" data-bs-target="#desktopReportTab" type="button" role="tab" aria-controls="desktopReportTab" aria-selected="true">Desktop</button>
@@ -7315,7 +7737,7 @@ HTML;
         <button class="nav-link" id="mobile-tab" data-bs-toggle="tab" data-bs-target="#mobileReportTab" type="button" role="tab" aria-controls="mobileReportTab" aria-selected="false">Mobile</button>
       </li>
     </ul>';
-
+    
     $tabContent = '
     <div class="tab-content" id="pagespeedReportTabContent">
       <div class="tab-pane fade show active" id="desktopReportTab" role="tabpanel" aria-labelledby="desktop-tab">
@@ -7325,8 +7747,7 @@ HTML;
         ' . $mobileHtml . '
       </div>
     </div>';
-
-    // Build an inline script to update the global pageSpeedReport variable and reinitialize gauges.
+    
     $globalScript = '<script type="text/javascript">
       window.pageSpeedReport = {
         desktop: { score: ' . $desktopScore . ' },
@@ -7337,23 +7758,31 @@ HTML;
           initPageSpeedGauges();
       }
     </script>';
-
-    // Assemble the final HTML.
-    $html = '
+    
+    $finalHtml = '
 <div class="container my-4">
   <h3>PageSpeed Insights Detailed Report</h3>
   <p><strong>URL:</strong> ' . $url . '</p>
   <p><strong>Report Generated:</strong> ' . $timestamp . '</p>
   <p><strong>Cache Hit Timestamp:</strong> ' . $cacheHit . '</p>
   ' . $scoreSection . '
-  ' . $tabs . '
+  ' . $tabsNav . '
   ' . $tabContent . '
 </div>
 ' . $globalScript;
-
-// Return the final assembled HTML.
-    return $html;
+    
+    // Determine container class based on overall PageSpeed report percent.
+    $overallPercent = $report['report']['overall']['percent'] ?? 0;
+    $containerClass = 'errorBox';
+    if ($overallPercent >= 80) {
+        $containerClass = 'passedBox';
+    } elseif ($overallPercent >= 50) {
+        $containerClass = 'improveBox';
+    }
+    
+    return '<div class="seoBox seoBoxPageSpeed ' . $containerClass . '">' . $finalHtml . '</div>';
 }
+
 
 
 

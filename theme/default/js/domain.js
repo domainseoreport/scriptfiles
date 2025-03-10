@@ -5,77 +5,145 @@
   let passScore = 0;
   let improveScore = 0;
   let errorScore = 0;
+
+  // The progress bar level (0 to 100)
   let progressLevel = 0;
-  let scoreTxt = '%'; // Customize as needed
+
+  // The textual suffix to show near the overall score circle
+  let scoreTxt = '%';
+
+  // A handle to any "suggestion" box we might open
   let showSuggestionBox = '';
 
-  // Ensure that your PHP code outputs a global variable "window.pageSpeedReport"
-  // containing the "report" object with desktop and mobile scores.
+  // We have 13 modules in total
+  const totalModules = 13;
+  let modulesDone = 0;
+
+  /**
+   * We define an array of increments for each step so that they sum up to 100.
+   * For example:
+   * Steps 1..10 mostly get 6 or 8 points,
+   * Steps 11 & 12 get 10,
+   * Step 13 (final) gets enough to reach 100.
+   *
+   * Make sure the sum of all increments is exactly 100.
+   */
+  const stepIncrements = [
+    6,  // Step 1:  Meta Data
+    6,  // Step 2:  Headings
+    6,  // Step 3:  Image Alt
+    8,  // Step 4:  Key Cloud
+    6,  // Step 5:  Page Analytics
+    6,  // Step 6:  Text Ratio
+    6,  // Step 7:  Social Card
+    6,  // Step 8:  Social URL
+    6,  // Step 9:  In-Page Links
+    6,  // Step 10: Schema
+    10, // Step 11: Server IP
+    10, // Step 12: PageSpeed
+    18  // Step 13: Final Clean Out => jump from ~82% to 100%
+  ];
+
+  // Keep track of which step we are on
+  let currentStepIndex = 0;
+
+  // Ensure a global object for pageSpeedReport exists (for the gauge)
   window.pageSpeedReport = window.pageSpeedReport || { 
     desktop: { score: 0 },
     mobile: { score: 0 }
   };
 
   // ---------------------------
-  // Utility Functions
+  // Helper Functions
   // ---------------------------
 
+  /**
+   * Show or hide a suggestion box
+   */
   function showSuggestion(sugBox) {
     showSuggestionBox = sugBox;
     $('#' + sugBox).slideToggle(100);
   }
 
-  function updateProgress(increment) {
-    progressLevel += increment * 2;
+  /**
+   * A single function to increment the progress bar by a fixed amount,
+   * and update the label with a "step name".
+   */
+  function updateProgressStep(stepName, incrementValue) {
+    progressLevel += incrementValue;
     if (progressLevel > 100) progressLevel = 100;
-    $("#progressbar").css("width", progressLevel + "%");
-    $("#progress-label").html(progressLevel + "%");
-  }
-
-  function updateProgressStep(stepName, increment) {
-    progressLevel += increment * 2;
-    if (progressLevel > 100) progressLevel = 100;
-    let animSpeed = (stepName === "Social Data Processed") ? 1000 : 500;
-    $("#progressbar").animate({ width: progressLevel + "%" }, animSpeed);
+    // Animate the progress bar to that new percentage
+    $("#progressbar").animate({ width: progressLevel + "%" }, 500);
     $("#progress-label").html(stepName + " (" + progressLevel + "%)");
   }
 
+  /**
+   * Initialize the top 3 bar charts (pass/improve/error) to zero
+   */
   function initialScore() {
     $("#passScore").css("width", passScore + '%');
     $("#improveScore").css("width", improveScore + '%');
     $("#errorScore").css("width", errorScore + '%');
   }
 
-  // ---------------------------
-  // New finalScore() Function
-  // ---------------------------
+  /**
+   * finalScore: Compute the overall score percentage and update the UI
+   */
   function finalScore() {
-    // Calculate percentages based on current scores.
-    var pCount = parseInt(passScore, 10) || 0;
-    var iCount = parseInt(improveScore, 10) || 0;
-    var eCount = parseInt(errorScore, 10) || 0;
-    
-    var totalChecks = pCount + iCount + eCount;
-    var pBar = totalChecks > 0 ? Math.round((pCount / totalChecks) * 100) : 0;
-    var iBar = totalChecks > 0 ? Math.round((iCount / totalChecks) * 100) : 0;
-    var eBar = totalChecks > 0 ? Math.round((eCount / totalChecks) * 100) : 0;
-    
-    // Update progress bars
+    let totalPoints = passScore * 2 + improveScore; // pass => 2, improve => 1
+    let checksCount = passScore + improveScore + errorScore;
+    let maxPoints   = checksCount * 2;
+    let overallPercent = (maxPoints > 0) ? Math.round((totalPoints / maxPoints) * 100) : 0;
+
+    // For the bar chart segments:
+    let pBar = (checksCount > 0) ? Math.round((passScore / checksCount) * 100) : 0;
+    let iBar = (checksCount > 0) ? Math.round((improveScore / checksCount) * 100) : 0;
+    let eBar = (checksCount > 0) ? Math.round((errorScore / checksCount) * 100) : 0;
+
     $("#passScore").css("width", pBar + '%').find(".scoreProgress-value").text(pBar + '%');
     $("#improveScore").css("width", iBar + '%').find(".scoreProgress-value").text(iBar + '%');
     $("#errorScore").css("width", eBar + '%').find(".scoreProgress-value").text(eBar + '%');
-    
-    // Use overallPercent (assumed updated elsewhere) to update the circle gauge.
-    var finalP = parseInt(overallPercent, 10) || 0;
+
+    // Update the big circle
     $('.second.circle').circleProgress({
-      value: finalP / 100,
+      value: overallPercent / 100,
       animation: false
     });
-    $("#overallscore").html(finalP + '<i class="newI">' + scoreTxt + '</i>');
+    $("#overallscore").html(overallPercent + '<i class="newI">' + scoreTxt + '</i>');
   }
 
+  /**
+   * moduleDone: Called after each module’s HTML is inserted,
+   * to update pass/improve/error aggregator and run finalScore
+   */
+  function moduleDone(scoreClass) {
+    console.log("Module returned score class:", scoreClass);
+    let lc = (scoreClass || "").toLowerCase();
+
+    if (lc.indexOf('passedbox') > -1) {
+      passScore += 3;
+    } else if (lc.indexOf('improvebox') > -1) {
+      improveScore += 3;
+    } else if (lc.indexOf('errorbox') > -1) {
+      errorScore += 3;
+    }
+
+    finalScore();
+
+    modulesDone++;
+    console.log("Updated scores:", { passScore, improveScore, errorScore, modulesDone });
+
+    if (modulesDone === totalModules) {
+      console.log("All modules completed => pass:", passScore, "improve:", improveScore, "error:", errorScore);
+      // finalScore(); // optional extra call
+    }
+  }
+
+  /**
+   * initPageSpeedGauges: called after the PageSpeed data is loaded
+   */
   function initPageSpeedGauges() {
-    // Initialize the Desktop Gauge
+    // Desktop gauge
     var desktopGauge = new Gauge({
       renderTo  : 'desktopPageSpeed',
       width     : 250,
@@ -100,8 +168,8 @@
       animation: { delay: 10, duration: 300, fn: 'bounce' }
     });
     desktopGauge.draw();
-  
-    // Initialize the Mobile Gauge
+
+    // Mobile gauge
     var mobileGauge = new Gauge({
       renderTo  : 'mobilePageSpeed',
       width     : 250,
@@ -126,65 +194,155 @@
       animation: { delay: 10, duration: 300, fn: 'bounce' }
     });
     mobileGauge.draw();
-  
-    // Get the scores from the global variable
-    var desktopScore = parseInt(window.pageSpeedReport.desktop.score || '0', 10);
-    var mobileScore  = parseInt(window.pageSpeedReport.mobile.score || '0', 10);
-  
-    desktopGauge.setValue(desktopScore);
-    mobileGauge.setValue(mobileScore);
+
+    // Set the gauge values from window.pageSpeedReport if available
+    var dsScore = parseInt(window.pageSpeedReport.desktop.score || '0', 10);
+    var mbScore = parseInt(window.pageSpeedReport.mobile.score || '0', 10);
+
+    desktopGauge.setValue(dsScore);
+    mobileGauge.setValue(mbScore);
   }
 
-  function updateScore(scoreClass) {
-    scoreClass = scoreClass.toLowerCase();
-    if (scoreClass === 'passedbox') {
-      passScore += 3;
-    } else if (scoreClass === 'improvebox') {
-      improveScore += 3;
-    } else {
-      errorScore += 3;
-    }
-    
-    // Update the visual progress bars.
-    $("#passScore").css("width", passScore + '%');
-    $("#improveScore").css("width", improveScore + '%');
-    $("#errorScore").css("width", errorScore + '%');
-  
-    // Update the overall circle gauge using circleProgress plugin.
-    $('.second.circle').circleProgress({
-      value: passScore / 100,
-      animation: false
+  // Helper for AJAX
+  function postAjax(params) {
+    return new Promise((resolve, reject) => {
+      $.post(domainPath, Object.assign({}, params, { hashcode: hashCode, url: inputHost }), function (data) {
+        resolve(data);
+      }).fail(function (err) {
+        reject(err);
+      });
     });
-    
-    $("#overallscore").html(passScore + '<i class="newI">' + scoreTxt + '</i>');
-    console.log("Score updated:", scoreClass, passScore, improveScore, errorScore);
-    
-    // Update the global session report object
-    window.seoReport = window.seoReport || {};
-    window.seoReport.passScore = passScore;
-    window.seoReport.improveScore = improveScore;
-    window.seoReport.errorScore = errorScore;
-    window.seoReport.overallScore = Math.round(passScore);
   }
 
-  function toggleRows(suffix, show) {
-    const rows = $(`.hideTr${suffix}`);
-    const showMoreBtn = $(`.showMore${suffix}`);
-    const showLessBtn = $(`.showLess${suffix}`);
-    if (show) {
-        rows.removeClass("d-none").hide().fadeIn();
-        showMoreBtn.hide();
-        showLessBtn.removeClass("d-none").show();
-    } else {
-        rows.fadeOut(function () {
-            $(this).addClass("d-none");
-        });
-        showLessBtn.hide();
-        showMoreBtn.removeClass("d-none").show();
-        $('html, body').animate({ scrollTop: $('.keyConsResult').offset().top }, 800);
+  // The main chain of calls
+  async function runAjaxCalls() {
+    try {
+      // STEP 1: Meta Data
+      let data = await postAjax({ meta: '1', metaOut: '1', dId: domainId });
+      let metaArr = data.split('!!!!8!!!!');
+      $("#seoBox1").html(metaArr[0]);
+      $("#seoBox2").html(metaArr[1]);
+      $("#seoBox3").html(metaArr[2]);
+      $("#seoBox5").html(metaArr[3]);
+      updateProgressStep("Meta Data Processed", stepIncrements[currentStepIndex++]);
+      let metaClass = $("#seoBox1").children().first().attr("class") || "";
+      moduleDone(metaClass);
+
+      
+
+      // STEP 2: Heading Data
+      data = await postAjax({ heading: '1', headingOut: '1', dId: domainId });
+      $("#seoBox4").html(data);
+      updateProgressStep("Headings Processed", stepIncrements[currentStepIndex++]);
+      let headClass = $("#seoBox4").children().first().attr("class") || "";
+      moduleDone(headClass);
+
+      // STEP 3: Image Alt
+      data = await postAjax({ image: '1', loaddom: '1', dId: domainId });
+      $("#seoBox6").html(data);
+      updateProgressStep("Image Alt Tags Processed", stepIncrements[currentStepIndex++]);
+      let imgClass = $("#seoBox6").children().first().attr("class") || "";
+      moduleDone(imgClass);
+
+      // STEP 4: Keyword Cloud
+      data = await postAjax({ keycloudAll: '1', meta: '1', heading: '1', dId: domainId });
+      $("#seoBox8").html(data);
+      updateProgressStep("Keyword Cloud & Consistency", stepIncrements[currentStepIndex++]);
+      let keyCloudClass = $("#seoBox8").children().first().attr("class") || "";
+      moduleDone(keyCloudClass);
+
+    // STEP 5: Page Analytics
+    data = await postAjax({ PageAnalytics: '1', dId: domainId });
+    $("#seoBox54").html(data);
+    updateProgressStep("Page Analytics Processed", stepIncrements[currentStepIndex++]);
+    let pageAnalClass = $("#seoBox54").children().first().attr("class") || "";
+    moduleDone(pageAnalClass);
+
+      // STEP 6: Text-to-HTML Ratio
+      data = await postAjax({ textRatio: '1', dId: domainId });
+      $("#seoBox9").html(data);
+      updateProgressStep("HTML Text Ratio Processed", stepIncrements[currentStepIndex++]);
+      let textRatioClass = $("#seoBox9").children().first().attr("class") || "";
+      moduleDone(textRatioClass);
+
+      // STEP 7: Social Cards
+      data = await postAjax({ sitecards: '1', dId: domainId });
+      $("#seoBox51").html(data);
+      updateProgressStep("Social Card Processed", stepIncrements[currentStepIndex++]);
+      let socialCardClass = $("#seoBox51").children().first().attr("class") || "";
+      moduleDone(socialCardClass);
+
+      // STEP 8: Social URL
+      data = await postAjax({ socialurls: '1', dId: domainId });
+      $("#seoBox52").html(data);
+      updateProgressStep("Social URL Processed", stepIncrements[currentStepIndex++]);
+      let socialUrlClass = $("#seoBox52").children().first().attr("class") || "";
+      moduleDone(socialUrlClass);
+
+      // STEP 9: In-Page Links
+      data = await postAjax({ linkanalysis: '1', loaddom: '1', inPageoutput: '1', dId: domainId });
+      let linkArr = data.split('!!!!8!!!!');
+      $("#seoBox13").html(linkArr[0]);
+      $("#seoBox17").html(linkArr[1]);
+      updateProgressStep("Link Analysis Processed", stepIncrements[currentStepIndex++]);
+      let linkClass = $("#seoBox13").children().first().attr("class") || "";
+      moduleDone(linkClass);
+
+      // STEP 10: Schema Data
+      data = await postAjax({ SchemaData: '1', dId: domainId });
+      $("#seoBox44").html(data);
+      updateProgressStep("Schema Data Processed", stepIncrements[currentStepIndex++]);
+      let schemaClass = $("#seoBox44").children().first().attr("class") || "";
+      moduleDone(schemaClass);
+
+      // STEP 11: Server IP
+      data = await postAjax({ serverIP: '1', dId: domainId });
+      $("#seoBox36").html(data);
+      updateProgressStep("Server IP Info Processed", stepIncrements[currentStepIndex++]);
+      let serverIPClass = $("#seoBox36").children().first().attr("class") || "";
+      moduleDone(serverIPClass);
+
+      // STEP 12: PageSpeed Insights
+      data = await postAjax({ PageSpeedInsights: '1', dId: domainId });
+      $("#seoBox55").html(data);
+      updateProgressStep("PageSpeed Insights Processed", stepIncrements[currentStepIndex++]);
+      initPageSpeedGauges();
+      let psClass = $("#seoBox55").children().first().attr("class") || "";
+      moduleDone(psClass);
+
+      // STEP 13: Final Clean Out
+      await postAjax({
+        cleanOut: '1',
+        passscore: passScore,
+        improvescore: improveScore,
+        errorscore: errorScore,
+        dId: domainId
+      });
+      updateProgressStep("Final Clean Out Done", stepIncrements[currentStepIndex++]);
+
+      // Final summary
+      finalScore();
+
+      $("#debugOutput").text(
+        "Pass: " + passScore +
+        ", Improve: " + improveScore +
+        ", Errors: " + errorScore +
+        ", Overall: " + (
+          (passScore + improveScore + errorScore)
+            ? Math.round((passScore * 2 + improveScore) / ((passScore + improveScore + errorScore) * 2) * 100)
+            : 0
+        )
+      );
+      $('#progress-bar').fadeOut();
+
+    } catch (error) {
+      console.error("Error in AJAX chain:", error);
     }
   }
 
+  // ---------------
+  // Toggling Rows
+  // ---------------
   $(document).on("click", "[class^='showMore']", function () {
     let className = $(this).attr("class");
     let match = className.match(/showMore([A-Za-z]+)/);
@@ -213,205 +371,45 @@
     $(targetPane).find("[class^='showMore']").show();
   });
 
+  function toggleRows(suffix, show) {
+    const rows = $(`.hideTr${suffix}`);
+    const showMoreBtn = $(`.showMore${suffix}`);
+    const showLessBtn = $(`.showLess${suffix}`);
+    if (show) {
+      rows.removeClass("d-none").hide().fadeIn();
+      showMoreBtn.hide();
+      showLessBtn.removeClass("d-none").show();
+    } else {
+      rows.fadeOut(function () {
+        $(this).addClass("d-none");
+      });
+      showLessBtn.hide();
+      showMoreBtn.removeClass("d-none").show();
+      $('html, body').animate({ scrollTop: $('.keyConsResult').offset().top }, 800);
+    }
+  }
+
   // ---------------------------
-  // Document Ready: Initialization and AJAX Calls
+  // Document Ready
   // ---------------------------
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
+    // Preload screenshot (if you do this)
     $.get(domainPath + '?getImage&site=' + inputHost, function (data) {
       $("#screenshotData").html('<img src="data:image/jpeg;base64,' + data + '"/>');
     });
     
+    // Start a small initial progress
     updateProgressStep("Initializing", 1);
+
+    // Initialize the top bar segments to zero
     initialScore();
+
+    // Possibly disable PDF link until complete
     $("a#pdfLink").attr("href", '#').prop("disabled", true);
 
-    function postAjax(params) {
-      return new Promise((resolve, reject) => {
-        $.post(domainPath, Object.assign({}, params, { hashcode: hashCode, url: inputHost }), function (data) {
-          resolve(data);
-        }).fail(function (err) {
-          reject(err);
-        });
-      });
-    }
-
-    async function runAjaxCalls() {
-      try {
-        // 1. Meta Data Processing
-        let data = await postAjax({ meta: '1', metaOut: '1', dId: domainId });
-        let myArr = data.split('!!!!8!!!!');
-        $("#seoBox1").html(myArr[0]);
-        let firstChild = $("#seoBox1").children().first();
-        if (firstChild.length) {
-          let cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        $("#seoBox2").html(myArr[1]);
-        firstChild = $("#seoBox2").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        $("#seoBox3").html(myArr[2]);
-        $("#seoBox5").html(myArr[3]);
-        updateProgressStep("Meta Data Processed", 5);
-
-        // 2. Heading Data Processing
-        data = await postAjax({ heading: '1', headingOut: '1', dId: domainId });
-        $("#seoBox4").html(data);
-        firstChild = $("#seoBox4").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        updateProgressStep("Headings Processed", 5);
-
-        // 3. Image Alt Tags Processing
-        data = await postAjax({ image: '1', loaddom: '1', dId: domainId });
-        $("#seoBox6").html(data);
-        firstChild = $("#seoBox6").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        updateProgressStep("Image Alt Tags Processed", 5);
-
-        // 4. Combined Keyword Cloud and Consistency Processing
-        data = await postAjax({ keycloudAll: '1', meta: '1', heading: '1', dId: domainId });
-        $("#seoBox8").html(data);
-        firstChild = $("#seoBox8").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        updateProgressStep("Keyword Cloud & Consistency Processed", 10);
-
-        // 5. Page Analysis Report Processing
-        data = await postAjax({ PageAnalytics: '1', dId: domainId });
-        $("#seoBox54").html(data);
-        firstChild = $("#seoBox54").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        updateProgressStep("Page Analytics Processed", 5);
-
-        // 6. Google PageSpeed Insights Processing
-        data = await postAjax({ PageSpeedInsights: '1', dId: domainId });
-        $("#seoBox55").html(data);
-        firstChild = $("#seoBox55").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        updateProgressStep("PageSpeed Insights Processed", 5);
-        initPageSpeedGauges();
-
-        // 7. Text-to-HTML Ratio Processing
-        data = await postAjax({ textRatio: '1', dId: domainId });
-        $("#seoBox9").html(data);
-        firstChild = $("#seoBox9").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        updateProgressStep("HTML Text Ratio Processed", 5);
-
-        // 8. Social Card Processing
-        data = await postAjax({ sitecards: '1', dId: domainId });
-        $("#seoBox51").html(data);
-        firstChild = $("#seoBox51").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        updateProgressStep("Social Card Processed", 5);
-
-        // 9. Social URL Processing
-        data = await postAjax({ socialurls: '1', dId: domainId });
-        $("#seoBox52").html(data);
-        firstChild = $("#seoBox52").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        updateProgressStep("Social URL Processed", 5);
-
-        // 10. In-Page Links Analysis
-        data = await postAjax({ linkanalysis: '1', loaddom: '1', inPageoutput: '1', dId: domainId });
-        let arr2 = data.split('!!!!8!!!!');
-        $("#seoBox13").html(arr2[0]);
-        firstChild = $("#seoBox13").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        $("#seoBox17").html(arr2[1]);
-        firstChild = $("#seoBox17").children().first();
-        if (firstChild.length) {
-          cls = firstChild.attr("class");
-          if (cls) updateScore(cls);
-        }
-        updateProgressStep("Link Analysis Processed", 5);
-
-        // 11. Server IP Information
-        data = await postAjax({ serverIP: '1', dId: domainId });
-        $("#seoBox36").html(data);
-        updateProgressStep("Server IP Info Processed", 10);
-
-        // 12. Schema Data Retrieval
-        data = await postAjax({ SchemaData: '1', dId: domainId });
-        $("#seoBox44").html(data);
-        updateProgressStep("Social Data Processed", 5);
-
-        // 13. Clean Out / Finalize Analysis
-        await postAjax({
-          cleanOut: '1',
-          passscore: passScore,
-          improvescore: improveScore,
-          errorscore: errorScore,
-          dId: domainId
-        });
-        // Then: fetch the final score from the DB.
-        const finalScoreData = await postAjax({
-          getFinalScore: '1',
-          url: inputHost,
-          hashcode: hashCode,
-          dId: domainId
-        });
-
-        console.log("Final Score:", finalScoreData);
-        
-        // Parse the finalScoreData (if it's a string, otherwise it may already be an object)
-        let scoreObj = typeof finalScoreData === 'string' 
-            ? JSON.parse(finalScoreData) 
-            : finalScoreData;
-
-        // Update your global score variables with the returned data
-        passScore = scoreObj.passed;
-        improveScore = scoreObj.improve;
-        errorScore = scoreObj.errors;
-        overallPercent = scoreObj.percent;
-
-        // Now call finalScore() to update the DOM
-        finalScore();
-
-        // Optionally, update a debug element on the page (if you have one)
-        $("#debugOutput").text(
-          "Pass: " + passScore +
-          ", Improve: " + improveScore +
-          ", Errors: " + errorScore +
-          ", Overall: " + overallPercent
-        );
-
-        $('#progress-bar').fadeOut();
-      } catch (error) {
-        console.error("Error in AJAX chain:", error);
-      }
-    }
-
+    // Start the chain
     runAjaxCalls();
   });
 })();

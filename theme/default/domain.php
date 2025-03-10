@@ -25,7 +25,7 @@ $loadingBar = '
 
 // If update is found, initialize each SEO box with the loading bar content
 if ($updateFound) {
-    for ($i = 1; $i <= 49; $i++) {
+    for ($i = 1; $i <= 60; $i++) {
         ${'seoBox' . $i} = $loadingBar;
     }
    
