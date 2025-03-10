@@ -14,31 +14,44 @@ $subdomainRoute = false;
 
 if (!empty($host)) {
     // For local testing, assume subdomains follow the pattern: slug.localhost 
-    // e.g. "jaipurroutes-com.localhost"
+    // e.g. "silverandgem-com.localhost"
     if (preg_match('/^([a-z0-9-]+)\.localhost$/i', $host, $matches)) {
         $slug = $matches[1];
-        // Use helper function getDomainBySlug() to fetch the domain record using the slug.
+        // Try to fetch the domain record using the slug.
         $domainRecord = getDomainBySlug($con, $slug);
+        $subdomainRoute = true;
+        define('SUBDOMAIN_ROUTE', true);
+        
+        // Default controller for subdomain requests is "domain"
+        $controller = 'domain';
         if ($domainRecord) {
-            // Set default controller as 'domain'
-            $controller = 'domain';
             $pointOut = $domainRecord['domain']; // e.g. "jaipurroutes.com"
-            // Also, parse additional URI segments from REQUEST_URI
-            $uri = $_SERVER['REQUEST_URI'] ?? '';
-            $uriPath = parse_url($uri, PHP_URL_PATH);
-            $uriParts = array_filter(explode('/', trim($uriPath, '/')));
-            $route = array_values($uriParts); // reindex numerically
-            $args = []; // additional arguments if needed
-
-            $subdomainRoute = true;
-            define('SUBDOMAIN_ROUTE', true);
-            log_message('debug', "Subdomain detected: $slug, loading domain record: " . $pointOut);
-            
-            // *** NEW: If the route is non-empty and its first element is "domains",
-            // then force the controller to "domains" (for AJAX update requests).
-            if (!empty($route) && strtolower(raino_trim($route[0])) === 'domains') {
-                $controller = 'domains';
-                // Optionally, remove "domains" from the route array if you wish:
+        } else {
+            // Fallback: assume the slug represents the domain, replacing dashes with dots.
+            $pointOut = str_replace('-', '.', $slug);
+        }
+        
+        // Parse the additional URI segments from REQUEST_URI.
+        $uri = $_SERVER['REQUEST_URI'] ?? '';
+        $uriPath = parse_url($uri, PHP_URL_PATH);
+        $uriParts = array_filter(explode('/', trim($uriPath, '/')));
+        $route = array_values($uriParts); // reindex numerically
+        $args = []; // additional arguments if needed
+        log_message('debug', "Subdomain detected: $slug, using domain: " . $pointOut);
+        
+        // If the first route segment is "domains", then force controller "domains" (for AJAX requests).
+        if (!empty($route) && strtolower(raino_trim($route[0])) === 'domains') {
+            $controller = 'domains';
+            log_message('debug', "AJAX route detected: forcing controller 'domains'.");
+            // Optionally, remove "domains" from the route array:
+            array_shift($route);
+        }
+        // Else, if the first segment is "update", then set update flag.
+        elseif (!empty($route) && strtolower(raino_trim($route[0])) === 'update') {
+            $updateFound = true;
+            log_message('debug', "Update flag set (subdomain route).");
+            // Remove "update" from route if additional segments exist.
+            if (count($route) > 1) {
                 array_shift($route);
             }
         }
@@ -47,6 +60,7 @@ if (!empty($host)) {
 
 // ------------------ Normal Routing ------------------
 if (!$subdomainRoute) {
+    // No subdomain detected; use standard (GET‑based) routing.
     $controller = $route = $pointOut = null;
     $args = $custom_route = array();
 
@@ -136,10 +150,8 @@ if (!$subdomainRoute) {
 if (empty($controller)) {
     $controller = CON_MAIN;
 }
-
-
-
+// echo "Controller: " . $controller . "<br>";
+// die();  
 // Include the controller file from CONT_DIR.
-// For subdomain routes, if $controller is 'domain' or 'domains', the corresponding file
-// (e.g. CONT_DIR . 'domain.php' or CONT_DIR . 'domains.php') will be loaded.
+// For subdomain routes, the controller will be either "domain" (for report/update) or "domains" (for AJAX).
 require_once CONT_DIR . $controller . '.php';

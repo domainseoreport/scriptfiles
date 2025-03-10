@@ -1,12 +1,6 @@
 <?php
 defined('DB_DOMAIN') or die(header('HTTP/1.1 403 Forbidden'));
-$output = shell_exec('echo Hello World');
-if ($output === null) {
-    echo "shell_exec() is disabled or not working.";
-} else {
-    echo "shell_exec() output: " . $output;
-}
-die();
+ 
 require_once(LIB_DIR . 'SeoTools.php');
 
 // Get the Domain ID from your data.
