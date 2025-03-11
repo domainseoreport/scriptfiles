@@ -107,7 +107,7 @@ if ($updateFound) {
                         <div class="col-md-4 screenBox">
                             <div id="screenshot">
                                 <div id="screenshotData"> 
-                                    <img src="<?php echo $screenshot;?>" alt="screenshot" />
+                                    <?php echo $screenshot;?>
                                 </div>
                                 <div class="computer"></div>
                             </div>
@@ -169,7 +169,7 @@ if ($updateFound) {
 
                 <!-- Social Sharing and Download/Update Links Section -->
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                         <div class="top40">
                             <ul class="social-icons icon-circle icon-rotate list-unstyled list-inline text-center">
                                 <li><?php trans('SHARE', $lang['122']); ?></li>
@@ -186,15 +186,60 @@ if ($updateFound) {
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-3 align-items-center">
-                        <div class="pdfBox text-end">
-                            <a href="<?php echo $pdfUrl; ?>" id="pdfLink" class="btn btn-lgreen btn-sm me-2">
-                                <i class="fa fa-cloud-download"></i> <?php trans('Download as PDF', $lang['28']); ?>
-                            </a>
-                            <a href="<?php echo $updateUrl; ?>" class="btn btn-red btn-sm">
-                                <i class="fa fa-refresh"></i> <?php trans('Update Data', $lang['27']); ?>
-                            </a>
-                        </div>
+                    <div class="col-md-6 align-items-center">
+                       
+                   
+                    
+
+                    <div class="card p-3 mb-4" style="max-width: 400px;">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <!-- Title -->
+      <h5 class="card-title mb-1" style="font-weight: 600;">Analysis Status</h5>
+
+      <!-- Last Analyzed Date -->
+      <?php if (!empty($lastAnalyzedDate)): ?>
+        <small class="text-muted">
+          <strong>Last Analyzed:</strong> 
+          <?php echo htmlspecialchars($lastAnalyzedDate); ?>
+        </small>
+      <?php else: ?>
+        <small class="text-muted">No previous analysis date found.</small>
+      <?php endif; ?>
+    </div>
+
+    <div>
+      <?php if ($canUpdateNow): ?>
+        <!-- Re-analyze button is enabled -->
+        <a href="<?php echo $updateUrl; ?>" class="btn btn-success btn-sm">
+          <i class="fa fa-refresh me-1"></i> Re‑Analyze
+        </a>
+      <?php else: ?>
+        <!-- Re-analyze is disabled, show the next possible date -->
+        <button class="btn btn-secondary btn-sm" type="button" disabled
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Next update available on <?php echo htmlspecialchars($nextAnalyzeDate); ?>">
+          <i class="fa fa-clock-o me-1"></i> Re‑Analyze on 
+          <?php echo htmlspecialchars($nextAnalyzeDate); ?>
+        </button>
+      <?php endif; ?>
+    </div>
+  </div>
+</div>
+
+<!-- (Optional) Initialize Bootstrap tooltips -->
+<script>
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+</script>
+
+
+
+
+
                     </div>
                 </div>
 
@@ -489,6 +534,16 @@ if ($updateFound) {
 <?php } ?><?php
 
 ?>
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="updateToast" class="toast align-items-center text-bg-info border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        <?php echo $nextUpdateMessage; ?>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
 <!-- Conditionally include JavaScript based on update status -->
 <?php if ($updateFound) { ?>
     <script src="<?php themeLink('js/domain.js?v6'); ?>" type="text/javascript"></script>

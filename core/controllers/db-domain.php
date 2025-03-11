@@ -21,8 +21,34 @@ $seoBoxLogin = '
   </div>
 </div>';
 
+
+$updatedDate = $data['updated_date'] ?? null;
+$lastAnalyzedDate = '';
+$nextAnalyzeDate = '';
+$canUpdateNow = true;
+
+if (!empty($updatedDate)) {
+    // Convert to timestamp
+    $lastUpdateTs = strtotime($updatedDate);
+    // Format as e.g. "10.03.2025"
+    $lastAnalyzedDate = date('d.m.Y', $lastUpdateTs);
+
+    // Next update is 24 hours after last update
+    $nextUpdateTs = $lastUpdateTs + 86400;
+    $nextAnalyzeDate = date('d.m.Y', $nextUpdateTs);
+
+    // If we haven't hit nextUpdateTs yet, then updates are disallowed
+    if (time() < $nextUpdateTs) {
+        $canUpdateNow = false;
+    }
+}
+
+
 // Initialize the SeoTools class.
 $seoTools = new SeoTools($dummyHtml, $con, $domainStr, $lang, $urlParse, $sepUnique, $seoBoxLogin, $domainId);   
+
+
+
 
 // -------------------------------------------------------------------------
 // Meta Data
@@ -113,6 +139,17 @@ $seoBox36 = $seoTools->showServerInfo($server_loc);
 // -------------------------------------------------------------------------
 $schemadata = fetchDomainModuleData($con, $domainId, "schema") ?? '';
 $seoBox44 = $seoTools->showSchema($schemadata);
+
+// -------------------------------------------------------------------------
+// Screen Shot
+// -------------------------------------------------------------------------
+$websiteScreenshot = fetchDomainModuleData($con, $domainId, "desktop_screenshot") ?? '';
+if ($websiteScreenshot) {
+    $screenshot = '<img src="'.$websiteScreenshot.'" alt="'.$data["domain"].'" />';
+} else {
+    $screenshot = '<img src="<?php echo $screenshot;?>" alt="'.$data["domain"].'" />';
+}
+
 
 // -------------------------------------------------------------------------
 // Final Score

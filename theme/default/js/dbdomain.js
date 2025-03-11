@@ -273,3 +273,11 @@ $(document).ready(function () {
     initPageSpeedGauges();
   }
 });
+
+
+function showUpdateToast() {
+  var toastEl = document.getElementById('updateToast');
+  var toast = new bootstrap.Toast(toastEl, {delay: 5000});
+  toast.show();
+}
+

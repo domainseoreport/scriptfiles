@@ -3,8 +3,6 @@
 defined('APP_NAME') or die(header('HTTP/1.1 403 Forbidden'));
 define('TEMP_DIR', APP_DIR . 'temp' . D_S);
 
-
-
 /* ------------------------- Main POST Handler ------------------------- */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!isset($_POST['url']) || trim($_POST['url']) == '') {
@@ -39,6 +37,7 @@ if (empty($pointOut) || strpos($pointOut, '.') === false) {
 
 // Initialize variables.
 $domainFound   = $updateFound = $customSnapAPI = $newDomain = false;
+$updateAllowed = true; // Assume update is allowed unless we find a recent update
 $pdfUrl        = $updateUrl = $shareLink = $pageTitle = $des = $keyword = $customSnapLink = '';
 $isOnline      = '0';
 $nowDate       = date('m/d/Y h:i:sA');
@@ -48,12 +47,11 @@ $trueIcon  = '<img src="' . themeLink('img/true.png', true) . '" alt="' . trans(
 $falseIcon = '<img src="' . themeLink('img/false.png', true) . '" alt="' . trans('False', $lang['9'], true) . '" />';
 
 // Check for update flag (e.g. if URL is /update)
-// Check for update flag (e.g. if URL is /update)
 if (defined('SUBDOMAIN_ROUTE')) {
     if (isset($route[0]) && strtolower(raino_trim($route[0])) == 'update') {
         $updateFound = true;
         log_message('debug', "Update flag set (subdomain route).");
-        // Only remove the flag if there are more elements (if desired)
+        // Remove the 'update' segment if additional route segments exist.
         if (count($route) > 1) {
             array_shift($route);
         }
@@ -95,8 +93,6 @@ if (defined('SUBDOMAIN_ROUTE')) {
 }
 $pdfUrl = createLink('genpdf/' . $domainStr, true);
 
-// (Login check code omitted here if not required for updates)
-
 // Setup Screenshot API.
 $reviewerSettings['snap_service'] = dbStrToArr($reviewerSettings['snap_service']);
 if ($reviewerSettings['snap_service']['options'] == 'prothemes_pro') {
@@ -117,6 +113,16 @@ log_message('debug', "Screenshot API configured.");
 // Check if the domain exists in DB.
 $data = mysqliPreparedQuery($con, "SELECT * FROM domains_data WHERE domain=?", 's', [$domainStr]);
 if ($data !== false) {
+    // Check the updated_date to decide if an update is allowed (24-hour threshold).
+    if (!empty($data['updated_date'])) {
+        $lastUpdateTs = strtotime($data['updated_date']);
+        if ($lastUpdateTs !== false && $lastUpdateTs > (time() - 86400)) {
+            // Less than 24 hours since last update; disallow new update.
+            $updateAllowed = false;
+            log_message('debug', "Update not allowed: Last update done at {$data['updated_date']}");
+        }
+    }
+    
     if ($data['completed'] == 'yes') {
         $domainFound = true;
         log_message('info', "Domain already processed: $domainStr");
@@ -130,6 +136,24 @@ if ($data !== false) {
     $domainFound = false;
     $newDomain = true;
     log_message('debug', "New domain: $domainStr");
+}
+
+// If update is flagged but not allowed (i.e. last update was within 24 hrs), force load stored data.
+if ($updateFound && !$updateAllowed) {
+    log_message('debug', "Update requested but not allowed (24-hour limit). Loading stored data.");
+    $updateFound = false;
+    $domainFound = true;
+}
+
+// Optionally, you may want to prepare a next-update message for display (e.g. via a toast).
+if (!$updateAllowed && isset($lastUpdateTs)) {
+    $nextUpdateInSeconds = ($lastUpdateTs + 86400) - time();
+    $hours   = floor($nextUpdateInSeconds / 3600);
+    $minutes = floor(($nextUpdateInSeconds % 3600) / 60);
+    $seconds = $nextUpdateInSeconds % 60;
+    $nextUpdateMessage = "Next update in: {$hours}h {$minutes}m {$seconds}s";
+} else {
+    $nextUpdateMessage = "";
 }
 
 // Determine the working URL.
@@ -190,10 +214,8 @@ if ($updateFound) {
             if (isset($domainRecord['slug']) && !empty($domainRecord['slug'])) {
                 $subdomainSlug = $domainRecord['slug'];
             } else {
-                // Fallback: define createSlug if not already defined.
                 if (!function_exists('createSlug')) {
                     function createSlug($domain) {
-                        // Simple slug: convert to lowercase and replace dots with dashes.
                         return str_replace('.', '-', strtolower($domain));
                     }
                 }

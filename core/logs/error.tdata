@@ -512,3 +512,740 @@
 [10-Mar-2025 14:50:57 Asia/Calcutta] [DEBUG] Upserted PageSpeed Insights data successfully.
 [10-Mar-2025 14:50:57 Asia/Calcutta] [DEBUG] ProcessPageSpeedInsightConcurrent completed successfully.
 [10-Mar-2025 14:50:57 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:33 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:33 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:33 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:33 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:33 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:42 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:45 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:45 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:45 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:45 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:45 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:50 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 15:37:50 Asia/Calcutta] [DEBUG] processPageSpeedInsightConcurrent() called.
+[10-Mar-2025 15:37:50 Asia/Calcutta] [DEBUG] API Key: AIzaSyAO7d...
+[10-Mar-2025 15:37:50 Asia/Calcutta] [DEBUG] Target URL: http://indiatraveletc.com
+[10-Mar-2025 15:37:50 Asia/Calcutta] [DEBUG] Encoded URL: http%3A%2F%2Findiatraveletc.com
+[10-Mar-2025 15:37:50 Asia/Calcutta] [DEBUG] Desktop Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=http%3A%2F%2Findiatraveletc.com&strategy=desktop
+[10-Mar-2025 15:37:50 Asia/Calcutta] [DEBUG] Mobile Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=http%3A%2F%2Findiatraveletc.com&strategy=mobile
+[10-Mar-2025 15:37:50 Asia/Calcutta] [DEBUG] Initialized curl handle for desktop.
+[10-Mar-2025 15:37:50 Asia/Calcutta] [DEBUG] Initialized curl handle for mobile.
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] Completed curl multi execution.
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] Endpoint desktop returned HTTP Code: 0
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] API error on desktop, response: 
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] Endpoint mobile returned HTTP Code: 0
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] API error on mobile, response: 
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] Consolidated PageSpeed report: Array
+(
+    [desktop] => Array
+        (
+        )
+
+    [mobile] => Array
+        (
+        )
+
+    [raw] => Array
+        (
+            [desktop] => Array
+                (
+                )
+
+            [mobile] => Array
+                (
+                )
+
+        )
+
+    [timestamp] => 2025-03-10T
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] Desktop Evaluation: Array
+(
+    [status] => Error
+    [message] => Performance is poor. Immediate improvements are needed.
+)
+
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] Mobile Evaluation: Array
+(
+    [status] => Error
+    [message] => Performance is poor. Immediate improvements are needed.
+)
+
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] Score Report: Array
+(
+    [desktop] => Array
+        (
+            [score] => 0
+            [status] => Error
+            [message] => Performance is poor. Immediate improvements are needed.
+        )
+
+    [mobile] => Array
+        (
+            [score] => 0
+            [status] => Error
+            [message] => Performance is poor. Immediate improvements are needed.
+        )
+
+    [overall] => Array
+        (
+            [comment] => Critical issues detected on both desktop and mobile. Immediate optimizations are necessary.
+            [percent] => 0
+        )
+
+)
+
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] Final JSON output: {"pagespeed":{"desktop":[],"mobile":[],"raw":{"desktop":[],"mobile":[]},"timestamp":"2025-03-10T15:38:21+05:30","url":"http:\/\/indiatraveletc.com","cache_hit":"","report":{"desktop":{"score":0,"status":"Error","message":"Performance is poor. Immediate improvements are needed."},"mobile":{"score":0,
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] Upserted PageSpeed Insights data successfully.
+[10-Mar-2025 15:38:21 Asia/Calcutta] [DEBUG] ProcessPageSpeedInsightConcurrent completed successfully.
+[10-Mar-2025 15:38:21 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 16:34:12 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:12 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:12 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:12 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:12 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:14 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:15 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:15 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:15 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:15 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:15 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:24 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:34:24 Asia/Calcutta] [DEBUG] processPageSpeedInsightConcurrent() called.
+[10-Mar-2025 16:34:24 Asia/Calcutta] [DEBUG] API Key: AIzaSyAO7d...
+[10-Mar-2025 16:34:24 Asia/Calcutta] [DEBUG] Target URL: https://www.silverandgem.com
+[10-Mar-2025 16:34:24 Asia/Calcutta] [DEBUG] Encoded URL: https%3A%2F%2Fwww.silverandgem.com
+[10-Mar-2025 16:34:24 Asia/Calcutta] [DEBUG] Desktop Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=https%3A%2F%2Fwww.silverandgem.com&strategy=desktop
+[10-Mar-2025 16:34:24 Asia/Calcutta] [DEBUG] Mobile Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=https%3A%2F%2Fwww.silverandgem.com&strategy=mobile
+[10-Mar-2025 16:34:24 Asia/Calcutta] [DEBUG] Initialized curl handle for desktop.
+[10-Mar-2025 16:34:24 Asia/Calcutta] [DEBUG] Initialized curl handle for mobile.
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] Completed curl multi execution.
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] Endpoint desktop returned HTTP Code: 500
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] API error on desktop, response: {
+  "error": {
+    "code": 500,
+    "message": "Lighthouse returned error: TARGET_CRASHED. Browser tab has unexpectedly crashed.",
+    "errors": [
+      {
+        "message": "Lighthouse returned error: TARGET_CRASHED. Browser tab has unexpectedly crashed.",
+        "domain": "lighthouse",
+        "reason": "lighthouseError"
+      }
+    ]
+  }
+}
+
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] Endpoint mobile returned HTTP Code: 0
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] API error on mobile, response: 
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] Consolidated PageSpeed report: Array
+(
+    [desktop] => Array
+        (
+        )
+
+    [mobile] => Array
+        (
+        )
+
+    [raw] => Array
+        (
+            [desktop] => Array
+                (
+                )
+
+            [mobile] => Array
+                (
+                )
+
+        )
+
+    [timestamp] => 2025-03-10T
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] Desktop Evaluation: Array
+(
+    [status] => Error
+    [message] => Performance is poor. Immediate improvements are needed.
+)
+
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] Mobile Evaluation: Array
+(
+    [status] => Error
+    [message] => Performance is poor. Immediate improvements are needed.
+)
+
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] Score Report: Array
+(
+    [desktop] => Array
+        (
+            [score] => 0
+            [status] => Error
+            [message] => Performance is poor. Immediate improvements are needed.
+        )
+
+    [mobile] => Array
+        (
+            [score] => 0
+            [status] => Error
+            [message] => Performance is poor. Immediate improvements are needed.
+        )
+
+    [overall] => Array
+        (
+            [comment] => Critical issues detected on both desktop and mobile. Immediate optimizations are necessary.
+            [percent] => 0
+        )
+
+)
+
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] Final JSON output: {"pagespeed":{"desktop":[],"mobile":[],"raw":{"desktop":[],"mobile":[]},"timestamp":"2025-03-10T16:34:54+05:30","url":"https:\/\/www.silverandgem.com","cache_hit":"","report":{"desktop":{"score":0,"status":"Error","message":"Performance is poor. Immediate improvements are needed."},"mobile":{"score"
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] Upserted PageSpeed Insights data successfully.
+[10-Mar-2025 16:34:54 Asia/Calcutta] [DEBUG] ProcessPageSpeedInsightConcurrent completed successfully.
+[10-Mar-2025 16:34:54 Asia/Calcutta] Final URL being parsed: https://www.silverandgem.com
+[10-Mar-2025 16:59:06 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:06 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:06 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:06 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:06 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:17 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:19 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:19 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:20 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:20 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:20 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:32 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:32 Asia/Calcutta] [DEBUG] processPageSpeedInsightConcurrent() called.
+[10-Mar-2025 16:59:32 Asia/Calcutta] [DEBUG] API Key: AIzaSyAO7d...
+[10-Mar-2025 16:59:32 Asia/Calcutta] [DEBUG] Target URL: https://www.jaipurroutes.com
+[10-Mar-2025 16:59:32 Asia/Calcutta] [DEBUG] Encoded URL: https%3A%2F%2Fwww.jaipurroutes.com
+[10-Mar-2025 16:59:32 Asia/Calcutta] [DEBUG] Desktop Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=https%3A%2F%2Fwww.jaipurroutes.com&strategy=desktop
+[10-Mar-2025 16:59:32 Asia/Calcutta] [DEBUG] Mobile Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=https%3A%2F%2Fwww.jaipurroutes.com&strategy=mobile
+[10-Mar-2025 16:59:32 Asia/Calcutta] [DEBUG] Initialized curl handle for desktop.
+[10-Mar-2025 16:59:32 Asia/Calcutta] [DEBUG] Initialized curl handle for mobile.
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Completed curl multi execution.
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Endpoint desktop returned HTTP Code: 200
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Raw API response for desktop: Array
+(
+    [captchaResult] => CAPTCHA_NOT_NEEDED
+    [kind] => pagespeedonline#result
+    [id] => https://www.jaipurroutes.com/
+    [loadingExperience] => Array
+        (
+            [id] => https://www.jaipurroutes.com
+            [metrics] => Array
+                (
+                    [CUMULATIV
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Screenshot data extracted for desktop.
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] desktop Score: 98
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Filtered report for desktop: Array
+(
+    [score] => 98
+    [metrics] => Array
+        (
+            [observedTimeOrigin] => 0
+            [lcpLoadEnd] => 1058
+            [cumulativeLayoutShift] => 0.018576718495707
+            [speedIndex] => 960
+            [interactive] => 1104
+            [observedTraceEnd] => 3579
+        
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Endpoint mobile returned HTTP Code: 200
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Raw API response for mobile: Array
+(
+    [captchaResult] => CAPTCHA_NOT_NEEDED
+    [kind] => pagespeedonline#result
+    [id] => https://www.jaipurroutes.com/
+    [loadingExperience] => Array
+        (
+            [id] => https://www.jaipurroutes.com
+            [metrics] => Array
+                (
+                    [CUMULATIV
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Screenshot data extracted for mobile.
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] mobile Score: 77
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Filtered report for mobile: Array
+(
+    [score] => 77
+    [metrics] => Array
+        (
+            [observedFirstContentfulPaint] => 930
+            [observedLargestContentfulPaintAllFramesTs] => 286028720807
+            [observedFirstContentfulPaintTs] => 286028604497
+            [observedLargestContentfulPaintTs] => 28602872
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Consolidated PageSpeed report: Array
+(
+    [desktop] => Array
+        (
+            [score] => 98
+            [metrics] => Array
+                (
+                    [observedTimeOrigin] => 0
+                    [lcpLoadEnd] => 1058
+                    [cumulativeLayoutShift] => 0.018576718495707
+                    [speedIndex]
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Desktop Evaluation: Array
+(
+    [status] => Pass
+    [message] => Excellent performance.
+)
+
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Mobile Evaluation: Array
+(
+    [status] => To Improve
+    [message] => Performance is acceptable, but there is room for improvement.
+)
+
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Score Report: Array
+(
+    [desktop] => Array
+        (
+            [score] => 98
+            [status] => Pass
+            [message] => Excellent performance.
+        )
+
+    [mobile] => Array
+        (
+            [score] => 77
+            [status] => To Improve
+            [message] => Performance is acceptable, but there is room for improvement.
+        )
+
+    [overall] => Array
+        (
+            [comment] => Mixed results. Review the detailed diagnostics for opportunities to improve performance.
+            [percent] => 88
+        )
+
+)
+
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Final JSON output: {"pagespeed":{"desktop":{"score":98,"metrics":{"observedTimeOrigin":0,"lcpLoadEnd":1058,"cumulativeLayoutShift":0.018576718495706572,"speedIndex":960,"interactive":1104,"observedTraceEnd":3579,"observedLastVisualChange":1294,"maxPotentialFID":16,"observedCumulativeLayoutShiftMainFrame":0.01857671849
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Upserted PageSpeed Insights data successfully.
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Upserted desktop screenshot successfully.
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] Upserted mobile screenshot successfully.
+[10-Mar-2025 16:59:51 Asia/Calcutta] [DEBUG] ProcessPageSpeedInsightConcurrent completed successfully.
+[10-Mar-2025 16:59:52 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:03:03 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:04 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:04 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:04 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:04 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:13 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:15 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:15 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:15 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:15 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:15 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:22 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:03:22 Asia/Calcutta] [DEBUG] processPageSpeedInsightConcurrent() called.
+[10-Mar-2025 17:03:22 Asia/Calcutta] [DEBUG] API Key: AIzaSyAO7d...
+[10-Mar-2025 17:03:22 Asia/Calcutta] [DEBUG] Target URL: http://indiatraveletc.com
+[10-Mar-2025 17:03:22 Asia/Calcutta] [DEBUG] Encoded URL: http%3A%2F%2Findiatraveletc.com
+[10-Mar-2025 17:03:22 Asia/Calcutta] [DEBUG] Desktop Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=http%3A%2F%2Findiatraveletc.com&strategy=desktop
+[10-Mar-2025 17:03:22 Asia/Calcutta] [DEBUG] Mobile Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=http%3A%2F%2Findiatraveletc.com&strategy=mobile
+[10-Mar-2025 17:03:22 Asia/Calcutta] [DEBUG] Initialized curl handle for desktop.
+[10-Mar-2025 17:03:22 Asia/Calcutta] [DEBUG] Initialized curl handle for mobile.
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] Completed curl multi execution.
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] Endpoint desktop returned HTTP Code: 0
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] API error on desktop, response: 
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] Endpoint mobile returned HTTP Code: 0
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] API error on mobile, response: 
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] Consolidated PageSpeed report: Array
+(
+    [desktop] => Array
+        (
+        )
+
+    [mobile] => Array
+        (
+        )
+
+    [raw] => Array
+        (
+            [desktop] => Array
+                (
+                )
+
+            [mobile] => Array
+                (
+                )
+
+        )
+
+    [timestamp] => 2025-03-10T
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] Desktop Evaluation: Array
+(
+    [status] => Error
+    [message] => Performance is poor. Immediate improvements are needed.
+)
+
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] Mobile Evaluation: Array
+(
+    [status] => Error
+    [message] => Performance is poor. Immediate improvements are needed.
+)
+
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] Score Report: Array
+(
+    [desktop] => Array
+        (
+            [score] => 0
+            [status] => Error
+            [message] => Performance is poor. Immediate improvements are needed.
+        )
+
+    [mobile] => Array
+        (
+            [score] => 0
+            [status] => Error
+            [message] => Performance is poor. Immediate improvements are needed.
+        )
+
+    [overall] => Array
+        (
+            [comment] => Critical issues detected on both desktop and mobile. Immediate optimizations are necessary.
+            [percent] => 0
+        )
+
+)
+
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] Final JSON output: {"pagespeed":{"desktop":[],"mobile":[],"raw":{"desktop":[],"mobile":[]},"timestamp":"2025-03-10T17:03:52+05:30","url":"http:\/\/indiatraveletc.com","cache_hit":"","report":{"desktop":{"score":0,"status":"Error","message":"Performance is poor. Immediate improvements are needed."},"mobile":{"score":0,
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] Upserted PageSpeed Insights data successfully.
+[10-Mar-2025 17:03:52 Asia/Calcutta] [DEBUG] ProcessPageSpeedInsightConcurrent completed successfully.
+[10-Mar-2025 17:03:52 Asia/Calcutta] Final URL being parsed: http://indiatraveletc.com
+[10-Mar-2025 17:34:13 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:34:14 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:34:14 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:34:14 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:34:14 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:34:24 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:34:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:34:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:34:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:34:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:34:25 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:35:10 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[10-Mar-2025 17:35:10 Asia/Calcutta] [DEBUG] processPageSpeedInsightConcurrent() called.
+[10-Mar-2025 17:35:10 Asia/Calcutta] [DEBUG] API Key: AIzaSyAO7d...
+[10-Mar-2025 17:35:10 Asia/Calcutta] [DEBUG] Target URL: https://www.jaipurroutes.com
+[10-Mar-2025 17:35:10 Asia/Calcutta] [DEBUG] Encoded URL: https%3A%2F%2Fwww.jaipurroutes.com
+[10-Mar-2025 17:35:10 Asia/Calcutta] [DEBUG] Desktop Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=https%3A%2F%2Fwww.jaipurroutes.com&strategy=desktop
+[10-Mar-2025 17:35:10 Asia/Calcutta] [DEBUG] Mobile Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=https%3A%2F%2Fwww.jaipurroutes.com&strategy=mobile
+[10-Mar-2025 17:35:10 Asia/Calcutta] [DEBUG] Initialized curl handle for desktop.
+[10-Mar-2025 17:35:10 Asia/Calcutta] [DEBUG] Initialized curl handle for mobile.
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Completed curl multi execution.
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Endpoint desktop returned HTTP Code: 200
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Raw API response for desktop: Array
+(
+    [captchaResult] => CAPTCHA_NOT_NEEDED
+    [kind] => pagespeedonline#result
+    [id] => https://www.jaipurroutes.com/
+    [loadingExperience] => Array
+        (
+            [id] => https://www.jaipurroutes.com
+            [metrics] => Array
+                (
+                    [CUMULATIV
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Screenshot data extracted for desktop.
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] desktop Score: 97
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Filtered report for desktop: Array
+(
+    [score] => 97
+    [metrics] => Array
+        (
+            [observedTraceEnd] => 3862
+            [observedDomContentLoaded] => 1376
+            [observedLargestContentfulPaintAllFrames] => 1597
+            [observedDomContentLoadedTs] => 397398914025
+            [observedLastVisualChang
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Endpoint mobile returned HTTP Code: 200
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Raw API response for mobile: Array
+(
+    [captchaResult] => CAPTCHA_NOT_NEEDED
+    [kind] => pagespeedonline#result
+    [id] => https://www.jaipurroutes.com/
+    [loadingExperience] => Array
+        (
+            [id] => https://www.jaipurroutes.com
+            [metrics] => Array
+                (
+                    [CUMULATIV
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Screenshot data extracted for mobile.
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] mobile Score: 79
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Filtered report for mobile: Array
+(
+    [score] => 79
+    [metrics] => Array
+        (
+            [interactive] => 4441
+            [observedFirstPaintTs] => 388121713310
+            [observedCumulativeLayoutShiftMainFrame] => 0
+            [observedLoadTs] => 388121963599
+            [speedIndex] => 3001
+            [observe
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Consolidated PageSpeed report: Array
+(
+    [desktop] => Array
+        (
+            [score] => 97
+            [metrics] => Array
+                (
+                    [observedTraceEnd] => 3862
+                    [observedDomContentLoaded] => 1376
+                    [observedLargestContentfulPaintAllFrames] => 1597
+            
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Desktop Evaluation: Array
+(
+    [status] => Pass
+    [message] => Excellent performance.
+)
+
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Mobile Evaluation: Array
+(
+    [status] => To Improve
+    [message] => Performance is acceptable, but there is room for improvement.
+)
+
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Score Report: Array
+(
+    [desktop] => Array
+        (
+            [score] => 97
+            [status] => Pass
+            [message] => Excellent performance.
+        )
+
+    [mobile] => Array
+        (
+            [score] => 79
+            [status] => To Improve
+            [message] => Performance is acceptable, but there is room for improvement.
+        )
+
+    [overall] => Array
+        (
+            [comment] => Mixed results. Review the detailed diagnostics for opportunities to improve performance.
+            [percent] => 88
+        )
+
+)
+
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Final JSON output: {"pagespeed":{"desktop":{"score":97,"metrics":{"observedTraceEnd":3862,"observedDomContentLoaded":1376,"observedLargestContentfulPaintAllFrames":1597,"observedDomContentLoadedTs":397398914025,"observedLastVisualChangeTs":397399119871,"firstContentfulPaint":601,"observedLargestContentfulPaintTs":3973
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Upserted PageSpeed Insights data successfully.
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Upserted desktop screenshot successfully.
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] Upserted mobile screenshot successfully.
+[10-Mar-2025 17:35:33 Asia/Calcutta] [DEBUG] ProcessPageSpeedInsightConcurrent completed successfully.
+[10-Mar-2025 17:35:33 Asia/Calcutta] Final URL being parsed: https://www.jaipurroutes.com
+[11-Mar-2025 13:15:04 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:04 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:04 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:04 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:04 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:11 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:13 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:13 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:13 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:13 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:13 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:22 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:15:22 Asia/Calcutta] [DEBUG] processPageSpeedInsightConcurrent() called.
+[11-Mar-2025 13:15:22 Asia/Calcutta] [DEBUG] API Key: AIzaSyAO7d...
+[11-Mar-2025 13:15:22 Asia/Calcutta] [DEBUG] Target URL: https://grebert.law
+[11-Mar-2025 13:15:22 Asia/Calcutta] [DEBUG] Encoded URL: https%3A%2F%2Fgrebert.law
+[11-Mar-2025 13:15:22 Asia/Calcutta] [DEBUG] Desktop Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=https%3A%2F%2Fgrebert.law&strategy=desktop
+[11-Mar-2025 13:15:22 Asia/Calcutta] [DEBUG] Mobile Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=https%3A%2F%2Fgrebert.law&strategy=mobile
+[11-Mar-2025 13:15:22 Asia/Calcutta] [DEBUG] Initialized curl handle for desktop.
+[11-Mar-2025 13:15:22 Asia/Calcutta] [DEBUG] Initialized curl handle for mobile.
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Completed curl multi execution.
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Endpoint desktop returned HTTP Code: 200
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Raw API response for desktop: Array
+(
+    [captchaResult] => CAPTCHA_NOT_NEEDED
+    [kind] => pagespeedonline#result
+    [id] => https://grebert.law/
+    [loadingExperience] => Array
+        (
+            [initial_url] => https://grebert.law/
+        )
+
+    [lighthouseResult] => Array
+        (
+            [requestedUrl] => http
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Screenshot data extracted for desktop.
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] desktop Score: 57
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Filtered report for desktop: Array
+(
+    [score] => 57
+    [metrics] => Array
+        (
+            [largestContentfulPaint] => 2101
+            [observedLargestContentfulPaintAllFramesTs] => 391910956137
+            [observedDomContentLoadedTs] => 391910300685
+            [observedLargestContentfulPaintAllFrames] => 3345
+     
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Endpoint mobile returned HTTP Code: 200
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Raw API response for mobile: Array
+(
+    [captchaResult] => CAPTCHA_NOT_NEEDED
+    [kind] => pagespeedonline#result
+    [id] => https://grebert.law/
+    [loadingExperience] => Array
+        (
+            [initial_url] => https://grebert.law/
+        )
+
+    [lighthouseResult] => Array
+        (
+            [requestedUrl] => http
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Screenshot data extracted for mobile.
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] mobile Score: 40
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Filtered report for mobile: Array
+(
+    [score] => 40
+    [metrics] => Array
+        (
+            [observedCumulativeLayoutShift] => 0.86143072622532
+            [observedFirstVisualChange] => 2030
+            [observedTimeOrigin] => 0
+            [observedNavigationStart] => 0
+            [firstContentfulPaint] => 2402
+     
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Consolidated PageSpeed report: Array
+(
+    [desktop] => Array
+        (
+            [score] => 57
+            [metrics] => Array
+                (
+                    [largestContentfulPaint] => 2101
+                    [observedLargestContentfulPaintAllFramesTs] => 391910956137
+                    [observedDomContentLoadedTs] =>
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Desktop Evaluation: Array
+(
+    [status] => Error
+    [message] => Performance is poor. Immediate improvements are needed.
+)
+
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Mobile Evaluation: Array
+(
+    [status] => Error
+    [message] => Performance is poor. Immediate improvements are needed.
+)
+
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Score Report: Array
+(
+    [desktop] => Array
+        (
+            [score] => 57
+            [status] => Error
+            [message] => Performance is poor. Immediate improvements are needed.
+        )
+
+    [mobile] => Array
+        (
+            [score] => 40
+            [status] => Error
+            [message] => Performance is poor. Immediate improvements are needed.
+        )
+
+    [overall] => Array
+        (
+            [comment] => Critical issues detected on both desktop and mobile. Immediate optimizations are necessary.
+            [percent] => 49
+        )
+
+)
+
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Final JSON output: {"pagespeed":{"desktop":{"score":57,"metrics":{"largestContentfulPaint":2101,"observedLargestContentfulPaintAllFramesTs":391910956137,"observedDomContentLoadedTs":391910300685,"observedLargestContentfulPaintAllFrames":3345,"observedDomContentLoaded":2690,"observedCumulativeLayoutShiftMainFrame":0.82
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Upserted PageSpeed Insights data successfully.
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Upserted desktop screenshot successfully.
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] Upserted mobile screenshot successfully.
+[11-Mar-2025 13:15:46 Asia/Calcutta] [DEBUG] ProcessPageSpeedInsightConcurrent completed successfully.
+[11-Mar-2025 13:15:46 Asia/Calcutta] Final URL being parsed: https://grebert.law
+[11-Mar-2025 13:23:01 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:01 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:01 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:01 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:01 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:03 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:03 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:03 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:03 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:03 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:03 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:08 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
+[11-Mar-2025 13:23:08 Asia/Calcutta] [DEBUG] processPageSpeedInsightConcurrent() called.
+[11-Mar-2025 13:23:08 Asia/Calcutta] [DEBUG] API Key: AIzaSyAO7d...
+[11-Mar-2025 13:23:08 Asia/Calcutta] [DEBUG] Target URL: https://seriouslawyer.com
+[11-Mar-2025 13:23:08 Asia/Calcutta] [DEBUG] Encoded URL: https%3A%2F%2Fseriouslawyer.com
+[11-Mar-2025 13:23:08 Asia/Calcutta] [DEBUG] Desktop Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=https%3A%2F%2Fseriouslawyer.com&strategy=desktop
+[11-Mar-2025 13:23:08 Asia/Calcutta] [DEBUG] Mobile Endpoint: https://www.googleapis.com/pagespeedonline/v5/runPagespeed?key=AIzaSyAO7dTSPW3f8lOKJ0pP4nPxSMUY29ne-K0&screenshot=true&snapshots=true&locale=en_US&url=https%3A%2F%2Fseriouslawyer.com&strategy=mobile
+[11-Mar-2025 13:23:08 Asia/Calcutta] [DEBUG] Initialized curl handle for desktop.
+[11-Mar-2025 13:23:08 Asia/Calcutta] [DEBUG] Initialized curl handle for mobile.
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] Completed curl multi execution.
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] Endpoint desktop returned HTTP Code: 0
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] API error on desktop, response: 
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] Endpoint mobile returned HTTP Code: 0
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] API error on mobile, response: 
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] Consolidated PageSpeed report: Array
+(
+    [desktop] => Array
+        (
+        )
+
+    [mobile] => Array
+        (
+        )
+
+    [raw] => Array
+        (
+            [desktop] => Array
+                (
+                )
+
+            [mobile] => Array
+                (
+                )
+
+        )
+
+    [timestamp] => 2025-03-11T
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] Desktop Evaluation: Array
+(
+    [status] => Error
+    [message] => Performance is poor. Immediate improvements are needed.
+)
+
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] Mobile Evaluation: Array
+(
+    [status] => Error
+    [message] => Performance is poor. Immediate improvements are needed.
+)
+
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] Score Report: Array
+(
+    [desktop] => Array
+        (
+            [score] => 0
+            [status] => Error
+            [message] => Performance is poor. Immediate improvements are needed.
+        )
+
+    [mobile] => Array
+        (
+            [score] => 0
+            [status] => Error
+            [message] => Performance is poor. Immediate improvements are needed.
+        )
+
+    [overall] => Array
+        (
+            [comment] => Critical issues detected on both desktop and mobile. Immediate optimizations are necessary.
+            [percent] => 0
+        )
+
+)
+
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] Final JSON output: {"pagespeed":{"desktop":[],"mobile":[],"raw":{"desktop":[],"mobile":[]},"timestamp":"2025-03-11T13:23:38+05:30","url":"https:\/\/seriouslawyer.com","cache_hit":"","report":{"desktop":{"score":0,"status":"Error","message":"Performance is poor. Immediate improvements are needed."},"mobile":{"score":0,
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] Upserted PageSpeed Insights data successfully.
+[11-Mar-2025 13:23:38 Asia/Calcutta] [DEBUG] ProcessPageSpeedInsightConcurrent completed successfully.
+[11-Mar-2025 13:23:38 Asia/Calcutta] Final URL being parsed: https://seriouslawyer.com/berry-turnage
